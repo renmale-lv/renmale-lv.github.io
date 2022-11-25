@@ -19,30 +19,30 @@
 
 <script class="next-config" data-name="main" type="application/json">{"hostname":"renmale-lv.github.io","root":"/","images":"/images","scheme":"Muse","darkmode":false,"version":"8.13.2","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12},"copycode":{"enable":false,"show_result":true,"style":null},"bookmark":{"enable":false,"color":"#222","save":"auto"},"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"stickytabs":false,"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"fadeInDown","post_body":"fadeInDown","coll_header":"fadeInLeft","sidebar":"fadeInUp"}},"prism":false,"i18n":{"placeholder":"搜索...","empty":"没有找到任何搜索结果：${query}","hits_time":"找到 ${hits} 个搜索结果（用时 ${time} 毫秒）","hits":"找到 ${hits} 个搜索结果"}}</script><script src="/js/config.js"></script>
 
-    <meta name="description" content="C++内存管理一、四种内存的分配释放方法    分配 释放 类别 可否重载    malloc() free() C函数 不可   new delete C++表达式 不可   ::operator new() ::operator delete() C++函数 不可   allocator::allocate() allocator::deallocate() C++标准库 可自由设计并搭配任何">
+    <meta name="description" content="一、四种内存的分配释放方法    分配 释放 类别 可否重载    malloc() free() C函数 不可   new delete C++表达式 不可   ::operator new() ::operator delete() C++函数 不可   allocator::allocate() allocator::deallocate() C++标准库 可自由设计并搭配任何容器">
 <meta property="og:type" content="article">
 <meta property="og:title" content="内存管理">
-<meta property="og:url" content="https://renmale-lv.github.io/2022/11/26/C++%E5%86%85%E5%AD%98%E7%AE%A1%E7%90%86/index.html">
+<meta property="og:url" content="https://renmale-lv.github.io/2022/11/26/%E5%86%85%E5%AD%98%E7%AE%A1%E7%90%86/index.html">
 <meta property="og:site_name" content="Welcome">
-<meta property="og:description" content="C++内存管理一、四种内存的分配释放方法    分配 释放 类别 可否重载    malloc() free() C函数 不可   new delete C++表达式 不可   ::operator new() ::operator delete() C++函数 不可   allocator::allocate() allocator::deallocate() C++标准库 可自由设计并搭配任何">
+<meta property="og:description" content="一、四种内存的分配释放方法    分配 释放 类别 可否重载    malloc() free() C函数 不可   new delete C++表达式 不可   ::operator new() ::operator delete() C++函数 不可   allocator::allocate() allocator::deallocate() C++标准库 可自由设计并搭配任何容器">
 <meta property="og:locale" content="zh_CN">
-<meta property="og:image" content="https://renmale-lv.github.io/images/malloc/1.jpg">
-<meta property="og:image" content="https://renmale-lv.github.io/images/malloc/2.jpg">
-<meta property="og:image" content="https://renmale-lv.github.io/images/malloc/3.jpg">
+<meta property="og:image" content="d:/blog/renmale_blog/source/images/malloc/1.jpg">
+<meta property="og:image" content="d:/blog/renmale_blog/source/images/malloc/2.jpg">
+<meta property="og:image" content="d:/blog/renmale_blog/source/images/malloc/3.jpg">
 <meta property="og:image" content="https://renmale-lv.github.io/images/malloc/4.jpg">
-<meta property="article:published_time" content="2022-11-25T16:21:26.000Z">
-<meta property="article:modified_time" content="2022-11-25T17:19:03.236Z">
+<meta property="article:published_time" content="2022-11-25T17:20:48.000Z">
+<meta property="article:modified_time" content="2022-11-25T17:21:52.977Z">
 <meta property="article:author" content="John Doe">
 <meta property="article:tag" content="malloc">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:image" content="https://renmale-lv.github.io/images/malloc/1.jpg">
+<meta name="twitter:image" content="d:/blog/renmale_blog/source/images/malloc/1.jpg">
 
 
-<link rel="canonical" href="https://renmale-lv.github.io/2022/11/26/C++%E5%86%85%E5%AD%98%E7%AE%A1%E7%90%86/">
+<link rel="canonical" href="https://renmale-lv.github.io/2022/11/26/%E5%86%85%E5%AD%98%E7%AE%A1%E7%90%86/">
 
 
 
-<script class="next-config" data-name="page" type="application/json">{"sidebar":"","isHome":false,"isPost":true,"lang":"zh-CN","comments":true,"permalink":"https://renmale-lv.github.io/2022/11/26/C++%E5%86%85%E5%AD%98%E7%AE%A1%E7%90%86/","path":"2022/11/26/C++内存管理/","title":"内存管理"}</script>
+<script class="next-config" data-name="page" type="application/json">{"sidebar":"","isHome":false,"isPost":true,"lang":"zh-CN","comments":true,"permalink":"https://renmale-lv.github.io/2022/11/26/%E5%86%85%E5%AD%98%E7%AE%A1%E7%90%86/","path":"2022/11/26/内存管理/","title":"内存管理"}</script>
 
 <script class="next-config" data-name="calendar" type="application/json">""</script>
 <title>内存管理 | Welcome</title>
@@ -112,7 +112,7 @@
       <div class="sidebar-panel-container">
         <!--noindex-->
         <div class="post-toc-wrap sidebar-panel">
-            <div class="post-toc animated"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#C-%E5%86%85%E5%AD%98%E7%AE%A1%E7%90%86"><span class="nav-number">1.</span> <span class="nav-text">C++内存管理</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E4%B8%80%E3%80%81%E5%9B%9B%E7%A7%8D%E5%86%85%E5%AD%98%E7%9A%84%E5%88%86%E9%85%8D%E9%87%8A%E6%94%BE%E6%96%B9%E6%B3%95"><span class="nav-number">1.1.</span> <span class="nav-text">一、四种内存的分配释放方法</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E4%BA%8C%E3%80%81new-amp-delete-expression"><span class="nav-number">1.2.</span> <span class="nav-text">二、new&amp;delete expression</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#1%E3%80%81new-expression"><span class="nav-number">1.2.1.</span> <span class="nav-text">1、new expression</span></a></li></ol></li></ol></li></ol></div>
+            <div class="post-toc animated"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E4%B8%80%E3%80%81%E5%9B%9B%E7%A7%8D%E5%86%85%E5%AD%98%E7%9A%84%E5%88%86%E9%85%8D%E9%87%8A%E6%94%BE%E6%96%B9%E6%B3%95"><span class="nav-number">1.</span> <span class="nav-text">一、四种内存的分配释放方法</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E4%BA%8C%E3%80%81new-amp-delete-expression"><span class="nav-number">2.</span> <span class="nav-text">二、new&amp;delete expression</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#1%E3%80%81new-expression"><span class="nav-number">2.1.</span> <span class="nav-text">1、new expression</span></a></li></ol></li></ol></div>
         </div>
         <!--/noindex-->
 
@@ -159,7 +159,7 @@
   
 
   <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="zh-CN">
-    <link itemprop="mainEntityOfPage" href="https://renmale-lv.github.io/2022/11/26/C++%E5%86%85%E5%AD%98%E7%AE%A1%E7%90%86/">
+    <link itemprop="mainEntityOfPage" href="https://renmale-lv.github.io/2022/11/26/%E5%86%85%E5%AD%98%E7%AE%A1%E7%90%86/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="image" content="/images/avatar.gif">
@@ -189,7 +189,7 @@
       <span class="post-meta-item-text">发表于</span>
       
 
-      <time title="创建时间：2022-11-26 00:21:26 / 修改时间：01:19:03" itemprop="dateCreated datePublished" datetime="2022-11-26T00:21:26+08:00">2022-11-26</time>
+      <time title="创建时间：2022-11-26 01:20:48 / 修改时间：01:21:52" itemprop="dateCreated datePublished" datetime="2022-11-26T01:20:48+08:00">2022-11-26</time>
     </span>
 
   
@@ -217,7 +217,7 @@
     
     
     <div class="post-body" itemprop="articleBody">
-        <h1 id="C-内存管理"><a href="#C-内存管理" class="headerlink" title="C++内存管理"></a>C++内存管理</h1><h2 id="一、四种内存的分配释放方法"><a href="#一、四种内存的分配释放方法" class="headerlink" title="一、四种内存的分配释放方法"></a>一、四种内存的分配释放方法</h2><p><img src="/../images/malloc/1.jpg"></p>
+        <h2 id="一、四种内存的分配释放方法"><a href="#一、四种内存的分配释放方法" class="headerlink" title="一、四种内存的分配释放方法"></a>一、四种内存的分配释放方法</h2><p><img src="D:/blog/renmale_blog/source/images/malloc/1.jpg"></p>
 <table>
 <thead>
 <tr>
@@ -252,8 +252,8 @@
 <td align="center">可自由设计并搭配任何容器</td>
 </tr>
 </tbody></table>
-<p><img src="/../images/malloc/2.jpg"></p>
-<p><img src="/../images/malloc/3.jpg"></p>
+<p><img src="D:/blog/renmale_blog/source/images/malloc/2.jpg"></p>
+<p><img src="D:/blog/renmale_blog/source/images/malloc/3.jpg"></p>
 <h2 id="二、new-amp-delete-expression"><a href="#二、new-amp-delete-expression" class="headerlink" title="二、new&amp;delete expression"></a>二、new&amp;delete expression</h2><h3 id="1、new-expression"><a href="#1、new-expression" class="headerlink" title="1、new expression"></a>1、new expression</h3><p>对于代码：</p>
 <figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">Complex* pc = <span class="keyword">new</span> <span class="built_in">Complex</span>(<span class="number">1</span>,<span class="number">2</span>);</span><br></pre></td></tr></table></figure>
 
