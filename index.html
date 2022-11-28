@@ -116,12 +116,12 @@
   <nav class="site-state">
       <div class="site-state-item site-state-posts">
         <a href="/archives/">
-          <span class="site-state-item-count">3</span>
+          <span class="site-state-item-count">4</span>
           <span class="site-state-item-name">日志</span>
         </a>
       </div>
       <div class="site-state-item site-state-tags">
-        <span class="site-state-item-count">3</span>
+        <span class="site-state-item-count">4</span>
         <span class="site-state-item-name">标签</span>
       </div>
   </nav>
@@ -138,6 +138,125 @@
     </div>
 
     <div class="main-inner index posts-expand">
+
+    
+
+
+<div class="post-block">
+  
+  
+
+  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="">
+    <link itemprop="mainEntityOfPage" href="https://renmale-lv.github.io/2022/11/29/Manacher/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="John Doe">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Welcome">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="post" itemscope itemtype="http://schema.org/CreativeWork">
+      <meta itemprop="name" content="undefined | Welcome">
+      <meta itemprop="description" content="">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          <a href="/2022/11/29/Manacher/" class="post-title-link" itemprop="url">Manacher</a>
+        </h2>
+
+        <div class="post-meta-container">
+          <div class="post-meta">
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar"></i>
+      </span>
+      <span class="post-meta-item-text">发表于</span>
+      
+
+      <time title="创建时间：2022-11-29 01:36:05 / 修改时间：01:52:18" itemprop="dateCreated datePublished" datetime="2022-11-29T01:36:05+08:00">2022-11-29</time>
+    </span>
+
+  
+    <span class="post-meta-break"></span>
+    <span class="post-meta-item" title="本文字数">
+      <span class="post-meta-item-icon">
+        <i class="far fa-file-word"></i>
+      </span>
+      <span class="post-meta-item-text">本文字数：</span>
+      <span>1.8k</span>
+    </span>
+    <span class="post-meta-item" title="阅读时长">
+      <span class="post-meta-item-icon">
+        <i class="far fa-clock"></i>
+      </span>
+      <span class="post-meta-item-text">阅读时长 &asymp;</span>
+      <span>2 分钟</span>
+    </span>
+</div>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+          <p>​		给定一个字符串 $abbcbbbcbbbad$ ，求该字符串的最长回文子串的长度。</p>
+<h3 id="暴力匹配"><a href="#暴力匹配" class="headerlink" title="暴力匹配"></a>暴力匹配</h3><p>​		两个 $for$ 循环遍历所有子串，再判断所有子串是否回文，再通过比较获取最长回文子串长度，算法复杂度为 $O(N^3)$</p>
+<p><img src="/..%5Cimages%5Calgorithm%5CManacher%5C1.png" alt="image-20221128152226685"></p>
+<h3 id="朴素算法"><a href="#朴素算法" class="headerlink" title="朴素算法"></a>朴素算法</h3><p>​		先遍历一遍字符串，对于每个 $i$，以它作为字符串的中心向字符串两边扩展，在遍历获得子串的同时完成对是否回文的判断，这样就将时间复杂度优化到了 $O(N^2)$，需要分别计算奇数串和偶数串</p>
+<p><img src="/..%5Cimages%5Calgorithm%5CManacher%5C2.png" alt="image-20221128152240887"></p>
+<h4 id="代码实现："><a href="#代码实现：" class="headerlink" title="代码实现："></a>代码实现：</h4><figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line"><span class="type">int</span> mmax=<span class="number">0</span>;</span><br><span class="line"><span class="keyword">for</span>(<span class="type">int</span> i=<span class="number">0</span>;i&lt;len;++i)&#123;</span><br><span class="line">    <span class="type">int</span> d1=<span class="number">1</span>,d2=<span class="number">0</span>;</span><br><span class="line">    <span class="comment">//奇数串</span></span><br><span class="line">    <span class="keyword">for</span>(<span class="type">int</span> j=<span class="number">1</span>;j&lt;std::<span class="built_in">min</span>(i,len);++j)&#123;</span><br><span class="line">        <span class="keyword">if</span>(str[i-j]!=str[i+j]) <span class="keyword">return</span>;</span><br><span class="line">        d1+=<span class="number">2</span>;</span><br><span class="line">	&#125;  </span><br><span class="line">    <span class="comment">//偶数串</span></span><br><span class="line">    <span class="keyword">for</span>(<span class="type">int</span> j=<span class="number">0</span>;j&lt;std::<span class="built_in">min</span>(i,len-i<span class="number">-1</span>);++j)&#123;</span><br><span class="line">        <span class="keyword">if</span>(str[i-j]!=str[i+<span class="number">1</span>+j]) <span class="keyword">return</span>;</span><br><span class="line">        d2+=<span class="number">2</span>;</span><br><span class="line">    &#125;</span><br><span class="line">    mmax=std::<span class="built_in">max</span>(mmax,std::<span class="built_in">max</span>(d1,d2));</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h3 id="Manacher算法"><a href="#Manacher算法" class="headerlink" title="Manacher算法"></a>Manacher算法</h3><h4 id="奇数串"><a href="#奇数串" class="headerlink" title="奇数串"></a>奇数串</h4><p>我们先定义：</p>
+<p>$d[i]$：表示以 $i$ 为中心的最长回文子串的长度</p>
+<p>$mx,id$：$mx$ 就是以 $id$ 为中心的最右回文边界，即 $mx&#x3D;max(i+d[i]&#x2F;2)$，$id&#x3D;i$</p>
+<p><img src="/..%5Cimages%5Calgorithm%5CManacher%5C3.png" alt="image-20221128161623346"></p>
+<p>我们继续遍历字符串，当 $i \lt mx$ 时，我们可以发现一个 $j$ 与 $i$ 关于 $id$ 对称</p>
+<p><img src="/..%5Cimages%5Calgorithm%5CManacher%5C4.png" alt="image-20221128161857377"></p>
+<p>此时，我们可以发现，<strong>在 $d[id]$ 的范围内</strong>，任何以 $j$ 为中心的子串，都可以找到一个以 $i$ 为中心的子串与它相反（<del>因为 $i$ 和 $j$ 关于 $id$ 对称，且 $d[id]$ 是回文串</del>），而又因为回文串是以中心对称的，即：</p>
+<p><strong>任何以 $j$ 为中心的回文子串，都可以找到一个以 $i$ 为中心的子串与它相等</strong></p>
+<p><img src="/..%5Cimages%5Calgorithm%5CManacher%5C5.png" alt="image-20221128163006047"></p>
+<p>所以，以 $i$ 为中心的最长回文子串的长度至少为 $min(d[j],2*(mx-i)+1)$，接下来再利用朴素算法来对超过 $mx$ 的部分进行判断</p>
+<p><img src="/..%5Cimages%5Calgorithm%5CManacher%5C6.png" alt="image-20221128164715328"></p>
+<p>最后，再更新 $id$ 和 $mx$</p>
+<p><img src="/..%5Cimages%5Calgorithm%5CManacher%5C7.png" alt="image-20221128164940667"></p>
+<h5 id="代码实现：-1"><a href="#代码实现：-1" class="headerlink" title="代码实现："></a>代码实现：</h5><figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line">std::vector&lt;<span class="type">int</span>&gt; odd;</span><br><span class="line"><span class="type">int</span> id=<span class="number">0</span>,mx=<span class="number">0</span>,mmax=<span class="number">0</span>;</span><br><span class="line"><span class="keyword">for</span>(<span class="type">int</span> i=<span class="number">0</span>;i&lt;len;++i)&#123;</span><br><span class="line">    <span class="comment">//回文半径</span></span><br><span class="line">	<span class="type">int</span> k=(i&gt;mx) ? <span class="number">1</span> : std::<span class="built_in">min</span>(odd[<span class="number">2</span>*id-i]/<span class="number">2</span>,mx-i);</span><br><span class="line">    <span class="keyword">while</span>(<span class="number">0</span>&lt;=i-k &amp;&amp; i+k&lt;len &amp;&amp; str[i-k]==str[i+k]) ++k;</span><br><span class="line">    --k;</span><br><span class="line">    odd[i]=<span class="number">2</span>*k+<span class="number">1</span>;</span><br><span class="line">    mmax=std::<span class="built_in">max</span>(mmax,odd[i]);</span><br><span class="line">    <span class="keyword">if</span>(i+k&gt;mx)&#123;</span><br><span class="line">		id=i;</span><br><span class="line">        mx=i+k;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h4 id="偶数串"><a href="#偶数串" class="headerlink" title="偶数串"></a>偶数串</h4><p>偶数部分只需要对奇数的代码做一点修改即可</p>
+<h5 id="代码实现：-2"><a href="#代码实现：-2" class="headerlink" title="代码实现："></a>代码实现：</h5><figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line">std::vector&lt;<span class="type">int</span>&gt; even;</span><br><span class="line"><span class="type">int</span> id=<span class="number">0</span>,mx=<span class="number">0</span>,mmax=<span class="number">0</span>;</span><br><span class="line"><span class="keyword">for</span>(<span class="type">int</span> i=<span class="number">0</span>;i&lt;len;++i)&#123;</span><br><span class="line">    <span class="comment">//回文半径</span></span><br><span class="line">	<span class="type">int</span> k=(i&gt;mx) ? <span class="number">0</span> : std::<span class="built_in">min</span>(even[<span class="number">2</span>*id-i+<span class="number">1</span>]/<span class="number">2</span>,mx-i);</span><br><span class="line">    <span class="keyword">while</span>(<span class="number">0</span>&lt;=i-k &amp;&amp; i+<span class="number">1</span>+k&lt;len &amp;&amp; str[i-k]==str[i+<span class="number">1</span>+k]) ++k;</span><br><span class="line">    even[i]=<span class="number">2</span>*k;</span><br><span class="line">    mmax=std::<span class="built_in">max</span>(mmax,even[i]);</span><br><span class="line">    <span class="keyword">if</span>(i+k&gt;mx)&#123;</span><br><span class="line">		id=i;</span><br><span class="line">        mx=i+k;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h4 id="改进"><a href="#改进" class="headerlink" title="改进"></a>改进</h4><p>在前面我们都是将奇数串和偶数串分开来算，实际上我们可以通过插入无意义的符号来使二者都统一为奇数串。</p>
+<p>对于前面给定的字符串 $abbcbbbcbbbad$ ，我们插入 $len+1$ 个分隔符 $#$，使字符串变成 $#a#b#b#c#b#b#b#c#b#b#b#a#d#$，这样所有的子串的长度都为奇数了，最后除以2就是真正子串的长度了。</p>
+<h3 id="题目"><a href="#题目" class="headerlink" title="题目"></a>题目</h3><ul>
+<li><a target="_blank" rel="noopener" href="https://www.luogu.com.cn/problem/P1659">P1659 [国家集训队]拉拉队排练</a> </li>
+<li><a target="_blank" rel="noopener" href="https://www.luogu.com.cn/problem/P3501">P3501[POI2010]ANT-Antisymmetry</a> </li>
+<li><a target="_blank" rel="noopener" href="https://www.luogu.com.cn/problem/UVA11475">UVA11475 Extend to Palindrome</a> </li>
+<li><a target="_blank" rel="noopener" href="https://www.luogu.com.cn/problem/P6216">P6216 回文匹配</a> </li>
+<li><a target="_blank" rel="noopener" href="https://www.luogu.com.cn/problem/P4555">P4555[国家集训队]最长双回文串 </a> </li>
+<li><a target="_blank" rel="noopener" href="https://www.luogu.com.cn/problem/P5446">P5446 [THUPC2018]绿绿和串串</a></li>
+</ul>
+
+      
+    </div>
+
+    
+    
+    
+
+    <footer class="post-footer">
+        <div class="post-eof"></div>
+      
+    </footer>
+  </article>
+</div>
+
+
+
 
     
 
@@ -531,13 +650,13 @@
     <span class="post-meta-item-icon">
       <i class="fa fa-chart-line"></i>
     </span>
-    <span title="站点总字数">7k</span>
+    <span title="站点总字数">8k</span>
   </span>
   <span class="post-meta-item">
     <span class="post-meta-item-icon">
       <i class="fa fa-coffee"></i>
     </span>
-    <span title="站点阅读时长">6 分钟</span>
+    <span title="站点阅读时长">8 分钟</span>
   </span>
 </div>
 <!--
