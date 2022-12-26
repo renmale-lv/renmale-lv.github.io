@@ -19,15 +19,15 @@
 
 <script class="next-config" data-name="main" type="application/json">{"hostname":"renmale-lv.github.io","root":"/","images":"/images","scheme":"Muse","darkmode":false,"version":"8.13.2","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12},"copycode":{"enable":false,"show_result":true,"style":null},"bookmark":{"enable":false,"color":"#222","save":"auto"},"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"stickytabs":false,"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"fadeInDown","post_body":"fadeInDown","coll_header":"fadeInLeft","sidebar":"fadeInUp"}},"prism":false,"i18n":{"placeholder":"搜索...","empty":"没有找到任何搜索结果：${query}","hits_time":"找到 ${hits} 个搜索结果（用时 ${time} 毫秒）","hits":"找到 ${hits} 个搜索结果"}}</script><script src="/js/config.js"></script>
 
-    <meta name="description" content="Day01 设置了主窗口大小，隐藏了窗口原生标题栏，重写鼠标事件实现窗口移动。   202211291951934  Day02 实现窗口logo，以及窗口关闭，最小化功能 矢量图网站：iconfont-阿里巴巴矢量图标库 Day03 实现左边QListWidget选项框，利用QSS实现选中高亮，圆角等，不知道怎么实现选中后字体加粗   202211291952777">
+    <meta name="description" content="1 设置了主窗口大小，隐藏了窗口原生标题栏，重写鼠标事件实现窗口移动。   202211291951934  2 实现窗口logo，以及窗口关闭，最小化功能 矢量图网站：iconfont-阿里巴巴矢量图标库 3 实现左边QListWidget选项框，利用QSS实现选中高亮，圆角等，不知道怎么实现选中后字体加粗   202211291952777    2022">
 <meta property="og:type" content="article">
 <meta property="og:title" content="QT5音乐播放器">
 <meta property="og:url" content="https://renmale-lv.github.io/2022/11/26/QT5%E9%9F%B3%E4%B9%90%E6%92%AD%E6%94%BE%E5%99%A8/index.html">
 <meta property="og:site_name" content="Welcome">
-<meta property="og:description" content="Day01 设置了主窗口大小，隐藏了窗口原生标题栏，重写鼠标事件实现窗口移动。   202211291951934  Day02 实现窗口logo，以及窗口关闭，最小化功能 矢量图网站：iconfont-阿里巴巴矢量图标库 Day03 实现左边QListWidget选项框，利用QSS实现选中高亮，圆角等，不知道怎么实现选中后字体加粗   202211291952777">
+<meta property="og:description" content="1 设置了主窗口大小，隐藏了窗口原生标题栏，重写鼠标事件实现窗口移动。   202211291951934  2 实现窗口logo，以及窗口关闭，最小化功能 矢量图网站：iconfont-阿里巴巴矢量图标库 3 实现左边QListWidget选项框，利用QSS实现选中高亮，圆角等，不知道怎么实现选中后字体加粗   202211291952777    2022">
 <meta property="og:locale" content="zh_CN">
 <meta property="article:published_time" content="2022-11-25T17:30:00.000Z">
-<meta property="article:modified_time" content="2022-12-23T14:07:58.593Z">
+<meta property="article:modified_time" content="2022-12-26T15:10:06.306Z">
 <meta property="article:author" content="John Doe">
 <meta property="article:tag" content="QT5">
 <meta name="twitter:card" content="summary">
@@ -107,7 +107,7 @@
       <div class="sidebar-panel-container">
         <!--noindex-->
         <div class="post-toc-wrap sidebar-panel">
-            <div class="post-toc animated"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#day01"><span class="nav-number">1.</span> <span class="nav-text">Day01</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#day02"><span class="nav-number">2.</span> <span class="nav-text">Day02</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#day03"><span class="nav-number">3.</span> <span class="nav-text">Day03</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#day04"><span class="nav-number">4.</span> <span class="nav-text">Day04</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#day05"><span class="nav-number">5.</span> <span class="nav-text">Day05</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#day06"><span class="nav-number">6.</span> <span class="nav-text">Day06</span></a></li></ol></div>
+            <div class="post-toc animated"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#section"><span class="nav-number">1.</span> <span class="nav-text">1</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#section-1"><span class="nav-number">2.</span> <span class="nav-text">2</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#section-2"><span class="nav-number">3.</span> <span class="nav-text">3</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#section-3"><span class="nav-number">4.</span> <span class="nav-text">4</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#section-4"><span class="nav-number">5.</span> <span class="nav-text">5</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#section-5"><span class="nav-number">6.</span> <span class="nav-text">6</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#section-6"><span class="nav-number">7.</span> <span class="nav-text">7</span></a></li></ol></div>
         </div>
         <!--/noindex-->
 
@@ -190,7 +190,7 @@
         <i class="far fa-calendar-check"></i>
       </span>
       <span class="post-meta-item-text">更新于</span>
-      <time title="修改时间：2022-12-23 22:07:58" itemprop="dateModified" datetime="2022-12-23T22:07:58+08:00">2022-12-23</time>
+      <time title="修改时间：2022-12-26 23:10:06" itemprop="dateModified" datetime="2022-12-26T23:10:06+08:00">2022-12-26</time>
     </span>
 
   
@@ -200,7 +200,7 @@
         <i class="far fa-file-word"></i>
       </span>
       <span class="post-meta-item-text">本文字数：</span>
-      <span>515</span>
+      <span>606</span>
     </span>
     <span class="post-meta-item" title="阅读时长">
       <span class="post-meta-item-icon">
@@ -219,7 +219,7 @@
     
     <div class="post-body" itemprop="articleBody">
         <meta name="referrer" content="no-referrer" />
-<h2 id="day01">Day01</h2>
+<h2 id="section">1</h2>
 <p>设置了主窗口大小，隐藏了窗口原生标题栏，重写鼠标事件实现窗口移动。</p>
 <figure>
 <img
@@ -227,11 +227,11 @@ src="https://gitee.com/renmale-sztu/image/raw/master/img/202212212110979.png"
 alt="202211291951934" />
 <figcaption aria-hidden="true">202211291951934</figcaption>
 </figure>
-<h2 id="day02">Day02</h2>
+<h2 id="section-1">2</h2>
 <p>实现窗口logo，以及窗口关闭，最小化功能</p>
 <p>矢量图网站：<a
 target="_blank" rel="noopener" href="https://www.iconfont.cn/?spm=a313x.7781069.1998910419.d4d0a486a">iconfont-阿里巴巴矢量图标库</a></p>
-<h2 id="day03">Day03</h2>
+<h2 id="section-2">3</h2>
 <p>实现左边QListWidget选项框，利用QSS实现选中高亮，圆角等，不知道怎么实现选中后字体加粗</p>
 <figure>
 <img
@@ -245,7 +245,7 @@ src="https://gitee.com/renmale-sztu/image/raw/master/img/202212212114010.png"
 alt="202211291952863" />
 <figcaption aria-hidden="true">202211291952863</figcaption>
 </figure>
-<h2 id="day04">Day04</h2>
+<h2 id="section-3">4</h2>
 <p>这个滚动条有点难搞，还没实现移入QScrollArea就显示滚动条，移出就隐藏的功能，感觉是需要自己写一个类重载enterevent函数来实现的，先完成主体功能先吧。。。。。</p>
 <figure>
 <img
@@ -253,7 +253,7 @@ src="https://gitee.com/renmale-sztu/image/raw/master/img/202212212117920.png"
 alt="202211291952648" />
 <figcaption aria-hidden="true">202211291952648</figcaption>
 </figure>
-<h2 id="day05">Day05</h2>
+<h2 id="section-4">5</h2>
 <p>实现了左侧区域的全部表面功能，实现移出左侧区域时，左侧区域滚动条隐藏。</p>
 <p>突然发现右上角4个标好像怪怪的。。。。（瘫）</p>
 <figure>
@@ -268,7 +268,7 @@ src="https://gitee.com/renmale-sztu/image/raw/master/img/202212212117292.png"
 alt="202211291952439" />
 <figcaption aria-hidden="true">202211291952439</figcaption>
 </figure>
-<h2 id="day06">Day06</h2>
+<h2 id="section-5">6</h2>
 <p>实现了歌单界面的一些小的部分，对如何显示有一点迷茫，是要将各个歌单的内容都预先读入放到一个Tab
 weidget中还是选中再去读。</p>
 <figure>
@@ -278,6 +278,15 @@ alt="202212031246853" />
 <figcaption aria-hidden="true">202212031246853</figcaption>
 </figure>
 <p>仔细想了一下，应该是预先读入所有的内容的，选中再去打开选中其他的还要去隐藏现在的界面。。。</p>
+<h2 id="section-6">7</h2>
+<p>实现了读取本地文件夹下的音乐，参考网上大佬的代码实现对MP3文件的MP3IDV2格式解析，能够播放音乐，接来下实现进度条功能。</p>
+<figure>
+<img
+src="https://gitee.com/renmale-sztu/image/raw/master/img/202212262308868.png"
+alt="image-20221226230831768" />
+<figcaption aria-hidden="true">image-20221226230831768</figcaption>
+</figure>
+<p>不是MP3IDV2格式的没有获得正确的信息，明天再改改。</p>
 
     </div>
 
