@@ -6,6 +6,11 @@
     <content><![CDATA[]]></content>
   </entry>
   <entry>
+    <title>C++多线程</title>
+    <url>/2023/02/19/C++%E5%A4%9A%E7%BA%BF%E7%A8%8B/</url>
+    <content><![CDATA[]]></content>
+  </entry>
+  <entry>
     <title>Manacher</title>
     <url>/2022/11/29/Manacher/</url>
     <content><![CDATA[<meta name="referrer" content="no-referrer" />		
@@ -13,6 +18,8 @@
 <p>​	给定一个字符串$abbcbbbcbbbad$，求该字符串的最长回文子串的长度。</p>
 <h3 id="暴力匹配"><a href="#暴力匹配" class="headerlink" title="暴力匹配"></a>暴力匹配</h3><p>​		两个 $for$$ 循环遍历所有子串，再判断所有子串是否回文，再通过比较获取最长回文子串长度，算法复杂度为 $$O(N^3)$</p>
 <p><img src="https://gitee.com/renmale-sztu/image/raw/master/img/202212212100439.png" alt="image-20221221210004388"></p>
+<span id="more"></span>
+
 <h3 id="朴素算法"><a href="#朴素算法" class="headerlink" title="朴素算法"></a>朴素算法</h3><p>​		先遍历一遍字符串，对于每个 $i$，以它作为字符串的中心向字符串两边扩展，在遍历获得子串的同时完成对是否回文的判断，这样就将时间复杂度优化到了 $O(N^2)$，需要分别计算奇数串和偶数串</p>
 <p><img src="https://gitee.com/renmale-sztu/image/raw/master/img/202212212100576.png" alt="202211291956549"></p>
 <h4 id="代码实现："><a href="#代码实现：" class="headerlink" title="代码实现："></a>代码实现：</h4><figure class="highlight c++"><table><tr><td class="code"><pre><span class="line"><span class="type">int</span> mmax=<span class="number">0</span>;</span><br><span class="line"><span class="keyword">for</span>(<span class="type">int</span> i=<span class="number">0</span>;i&lt;len;++i)&#123;</span><br><span class="line">    <span class="type">int</span> d1=<span class="number">1</span>,d2=<span class="number">0</span>;</span><br><span class="line">    <span class="comment">//奇数串</span></span><br><span class="line">    <span class="keyword">for</span>(<span class="type">int</span> j=<span class="number">1</span>;j&lt;std::<span class="built_in">min</span>(i,len);++j)&#123;</span><br><span class="line">        <span class="keyword">if</span>(str[i-j]!=str[i+j]) <span class="keyword">return</span>;</span><br><span class="line">        d1+=<span class="number">2</span>;</span><br><span class="line">	&#125;  </span><br><span class="line">    <span class="comment">//偶数串</span></span><br><span class="line">    <span class="keyword">for</span>(<span class="type">int</span> j=<span class="number">0</span>;j&lt;std::<span class="built_in">min</span>(i,len-i<span class="number">-1</span>);++j)&#123;</span><br><span class="line">        <span class="keyword">if</span>(str[i-j]!=str[i+<span class="number">1</span>+j]) <span class="keyword">return</span>;</span><br><span class="line">        d2+=<span class="number">2</span>;</span><br><span class="line">    &#125;</span><br><span class="line">    mmax=std::<span class="built_in">max</span>(mmax,std::<span class="built_in">max</span>(d1,d2));</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
@@ -44,131 +51,6 @@
 <li><a href="https://www.luogu.com.cn/problem/P6216">P6216 回文匹配</a> </li>
 <li><a href="https://www.luogu.com.cn/problem/P4555">P4555[国家集训队]最长双回文串 </a> </li>
 <li><a href="https://www.luogu.com.cn/problem/P5446">P5446 [THUPC2018]绿绿和串串</a></li>
-</ul>
-]]></content>
-      <tags>
-        <tag>algorithm</tag>
-      </tags>
-  </entry>
-  <entry>
-    <title>Trie</title>
-    <url>/2022/11/29/Trie/</url>
-    <content><![CDATA[<meta name="referrer" content="no-referrer" />
-
-<h2 id="概念"><a href="#概念" class="headerlink" title="概念"></a>概念</h2><p>字典树也叫Trie树、前缀树，是一种针对字符串进行维护的<strong>数据结构</strong>，而不是算法。</p>
-<p>字典树是对字符串的一种存储的方式，这棵树的根节点到某一个目标节点的路径就是一个字符串（单词）。</p>
-<p>举个例子，下图的字典树：</p>
-<p><img src="https://gitee.com/renmale-sztu/image/raw/master/img/202212212057021.png" alt="202211291950874"></p>
-<p>该字典树存储的单词为：</p>
-<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">a</span><br><span class="line">abc</span><br><span class="line">ba</span><br><span class="line">bca</span><br><span class="line">bca</span><br><span class="line">ca</span><br><span class="line">ca</span><br></pre></td></tr></table></figure>
-
-<h2 id="性质"><a href="#性质" class="headerlink" title="性质"></a>性质</h2><ul>
-<li>根节点不包含字符，除根节点外的所有节点都包含一个字符</li>
-<li>从根节点到某一个节点，路径上经过的所有字符连接起来，为该节点对应的字符串</li>
-<li>每个节点的子节点包含的字符各不相同</li>
-</ul>
-<h2 id="应用"><a href="#应用" class="headerlink" title="应用"></a>应用</h2><ul>
-<li>计算热词：统计字符串在集合中出现的个数</li>
-<li>字典序排序</li>
-<li>最长公共前缀（LCP）</li>
-<li>…</li>
-</ul>
-<h2 id="实现"><a href="#实现" class="headerlink" title="实现"></a>实现</h2><p>字典树的实现主要有<strong>插入和查找</strong></p>
-<p>假设该字符串集合由26个小写字母组成，我们定义两个数组</p>
-<figure class="highlight c++"><table><tr><td class="code"><pre><span class="line"><span class="type">int</span> next[<span class="number">100000</span>][<span class="number">26</span>],cnt; <span class="comment">//存放该节点的子节点</span></span><br><span class="line"><span class="type">int</span> num[<span class="number">100000</span>]; <span class="comment">//表示该字符串一共出现多少次，为0表示不存在</span></span><br></pre></td></tr></table></figure>
-
-<h3 id="插入操作"><a href="#插入操作" class="headerlink" title="插入操作"></a>插入操作</h3><figure class="highlight c++"><table><tr><td class="code"><pre><span class="line"><span class="function"><span class="type">void</span> <span class="title">insert</span><span class="params">(std::string str)</span></span>&#123;</span><br><span class="line">    <span class="type">int</span> len=str.<span class="built_in">length</span>();</span><br><span class="line">	<span class="type">int</span> p=<span class="number">0</span>; <span class="comment">//记录当前节点位置</span></span><br><span class="line">    <span class="keyword">for</span>(<span class="type">int</span> i=<span class="number">0</span>;i&lt;len;++i)&#123;</span><br><span class="line">    	<span class="type">int</span> c=str[i]-<span class="string">&#x27;a&#x27;</span>;</span><br><span class="line">        <span class="keyword">if</span>(!next[p][c]) next[p][c]=++cnt;</span><br><span class="line">        p=next[p][c];</span><br><span class="line">    &#125;</span><br><span class="line">    ++num[p];</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-
-<h3 id="查找操作"><a href="#查找操作" class="headerlink" title="查找操作"></a>查找操作</h3><figure class="highlight c++"><table><tr><td class="code"><pre><span class="line"><span class="function"><span class="type">int</span> <span class="title">find</span><span class="params">(std::string str)</span></span>&#123;</span><br><span class="line">	<span class="type">int</span> len=str.<span class="built_in">length</span>();</span><br><span class="line">    <span class="type">int</span> p=<span class="number">0</span>;</span><br><span class="line">    <span class="keyword">for</span>(<span class="type">int</span> i=<span class="number">0</span>;i&lt;len;++i)&#123;</span><br><span class="line">		<span class="type">int</span> c=str[i]-<span class="string">&#x27;a&#x27;</span>;</span><br><span class="line">        <span class="keyword">if</span>(!next[p][c]) <span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">        p=next[p][c];</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">return</span> num[p];</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-
-<h2 id="题目"><a href="#题目" class="headerlink" title="题目"></a>题目</h2><ul>
-<li><a href="https://www.luogu.com.cn/problem/SP4033">SP4033 PHONELST - Phone List</a></li>
-<li><a href="https://www.luogu.com.cn/problem/UVA1401">UVA1401 Remember the Word</a></li>
-<li><a href="https://www.luogu.com.cn/problem/UVA11732">UVA11732 “strcmp()” Anyone?</a> </li>
-<li><a href="https://www.luogu.com.cn/problem/P7469">P7469 [NOI Online 2021 提高组] 积木小赛</a></li>
-</ul>
-]]></content>
-      <tags>
-        <tag>algorithm</tag>
-      </tags>
-  </entry>
-  <entry>
-    <title>Hello World</title>
-    <url>/2023/02/24/hello-world/</url>
-    <content><![CDATA[<p>Welcome to <a href="https://hexo.io/">Hexo</a>! This is your very first post. Check <a href="https://hexo.io/docs/">documentation</a> for more info. If you get any problems when using Hexo, you can find the answer in <a href="https://hexo.io/docs/troubleshooting.html">troubleshooting</a> or you can ask me on <a href="https://github.com/hexojs/hexo/issues">GitHub</a>.</p>
-<h2 id="Quick-Start"><a href="#Quick-Start" class="headerlink" title="Quick Start"></a>Quick Start</h2><h3 id="Create-a-new-post"><a href="#Create-a-new-post" class="headerlink" title="Create a new post"></a>Create a new post</h3><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">$ hexo new <span class="string">&quot;My New Post&quot;</span></span><br></pre></td></tr></table></figure>
-
-<p>More info: <a href="https://hexo.io/docs/writing.html">Writing</a></p>
-<h3 id="Run-server"><a href="#Run-server" class="headerlink" title="Run server"></a>Run server</h3><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">$ hexo server</span><br></pre></td></tr></table></figure>
-
-<p>More info: <a href="https://hexo.io/docs/server.html">Server</a></p>
-<h3 id="Generate-static-files"><a href="#Generate-static-files" class="headerlink" title="Generate static files"></a>Generate static files</h3><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">$ hexo generate</span><br></pre></td></tr></table></figure>
-
-<p>More info: <a href="https://hexo.io/docs/generating.html">Generating</a></p>
-<h3 id="Deploy-to-remote-sites"><a href="#Deploy-to-remote-sites" class="headerlink" title="Deploy to remote sites"></a>Deploy to remote sites</h3><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">$ hexo deploy</span><br></pre></td></tr></table></figure>
-
-<p>More info: <a href="https://hexo.io/docs/one-command-deployment.html">Deployment</a></p>
-]]></content>
-  </entry>
-  <entry>
-    <title>C++多线程</title>
-    <url>/2023/02/19/C++%E5%A4%9A%E7%BA%BF%E7%A8%8B/</url>
-    <content><![CDATA[]]></content>
-  </entry>
-  <entry>
-    <title>回文自动机(PAM)</title>
-    <url>/2022/12/02/%E5%9B%9E%E6%96%87%E8%87%AA%E5%8A%A8%E6%9C%BA-PAM/</url>
-    <content><![CDATA[<meta name="referrer" content="no-referrer" />
-
-<h2 id="引入"><a href="#引入" class="headerlink" title="引入"></a>引入</h2><p>​	给定一个字符串$s$，求字符串$s$有多少个不同的回文子串？</p>
-<p>​	如果使用$Manacher$算法来获得字符串中每个字符为中心的最长回文半径，再用$Hash$来查重所有的回文子串，时间复杂度为$O(N^2)$<del>（如果使用其他查重方式，时间复杂度可能更高）</del>，而<strong>回文自动机</strong>则能够以$O(N)$的时间复杂度来完成一些$Manacher$算法难以处理的回文串问题。</p>
-<h2 id="原理"><a href="#原理" class="headerlink" title="原理"></a>原理</h2><p>​	回文自动机，也叫回文树，是一种在2014年发明的数据结构。</p>
-<p>​	回文自动机，就是使用字典树来保存所有回文子串的回文半径，使用两棵树来分别保存偶数串和奇数串，<del>也可以像$Manacher$一样通过插入无意义的字符来只构建一棵树，但是这样处理起来比较麻烦</del>，在树上的一个节点代表一个回文子串，在最后使用节点数-2（减去两个根节点）就得到了不同回文子串的位置。</p>
-<p>​	对于一个已知的字符串$abbcbbbcbbbad$，假设我们已经遍历了$abbcbbbcbb$，当我们遍历下一个字符$b$时，会进行如下判断：</p>
-<p><img src="https://gitee.com/renmale-sztu/image/raw/master/img/202212212051013.png" alt="202212021838948"></p>
-<p>​	依次与包含前一个字符的回文子串从长到短进行匹配，匹配成功时则插入，都不匹配时，最后与自身匹配，为仅有一个字符的回文子串。</p>
-<h2 id="构建"><a href="#构建" class="headerlink" title="构建"></a>构建</h2><p>​	那么如何构建回文树呢？</p>
-<p>​	我们首先定义如下变量：</p>
-<figure class="highlight c++"><table><tr><td class="code"><pre><span class="line"><span class="type">int</span> len[];  <span class="comment">//len[u]表示回文树中u节点代表的回文串的长度</span></span><br><span class="line"><span class="type">int</span> trie[][]; <span class="comment">//trie[u][c]表示编号为u的节点代表的回文串在两头加上字符c后的回文串的编号</span></span><br><span class="line"><span class="type">int</span> fail[];  <span class="comment">//fail[u]表示节点u失配后跳转到不等于自身的最长后缀回文串的编号（如上图）</span></span><br><span class="line"><span class="type">int</span> cnt[];  <span class="comment">//cnt[u]表示节点u所代表的回文串在整个字符串中出现了多少次</span></span><br><span class="line"><span class="type">int</span> num[];  <span class="comment">//num[u]表示u节点所代表的回文串有多少个本质不同的后缀回文子串</span></span><br><span class="line"><span class="type">int</span> last;  <span class="comment">//表示上一次插入字符的节点的编号</span></span><br><span class="line"><span class="type">int</span> tot;   <span class="comment">//有多少个节点</span></span><br></pre></td></tr></table></figure>
-
-<p>​	首先我们定义两个节点，0号节点和1号节点，0号节点是偶树的根，1号节点则为奇树的根，初始化数据为：</p>
-<figure class="highlight c++"><table><tr><td class="code"><pre><span class="line">len[<span class="number">0</span>]=<span class="number">0</span>;<span class="comment">//偶树每添加一个节点长度+2</span></span><br><span class="line">len[<span class="number">1</span>]=<span class="number">-1</span>;<span class="comment">//奇树中间节点只算一次，所以是-1</span></span><br><span class="line">fail[<span class="number">0</span>]=fail[<span class="number">1</span>]=<span class="number">1</span>;<span class="comment">//新插入一个字符无论如何也能形成一个回文串（只有自身），所以fail[0]指向1号节点，而1号节点指向自身（无所谓）</span></span><br><span class="line">last=<span class="number">0</span>;</span><br></pre></td></tr></table></figure>
-
-<p>​	下面为字符串$str&#x3D;abbcbbb$的回文树构建过程：</p>
-<p>初始化：</p>
-<p><img src="https://gitee.com/renmale-sztu/image/raw/master/img/202212212052224.png" alt="image-20221202200101839"></p>
-<p>插入第一个字符$a$:</p>
-<p>首先last指向0，我们先获取$str[0-len[last]-1]&#x3D;str[-1]!&#x3D;a$，则将$last&#x3D;fail[last]&#x3D;1$，发现$str[0-len[last]-1]&#x3D;str[0]&#x3D;a$，则在1号节点下新建节点插入$a$。</p>
-<p><img src="https://gitee.com/renmale-sztu/image/raw/master/img/202212212053362.png" alt="202212022048948"></p>
-<p>插入第二个字符b：</p>
-<p><img src="https://gitee.com/renmale-sztu/image/raw/master/img/202212212053645.png" alt="202212022047647"></p>
-<p>插入第三个字符b：</p>
-<ul>
-<li>$str[2-len[last]-1]&#x3D;str[0]!&#x3D;b$</li>
-<li>$last&#x3D;fail[last]&#x3D;0$</li>
-<li>$str[2-len[last]-1]&#x3D;str[1]&#x3D;b$</li>
-<li>在0号节点下新建b节点</li>
-<li>接下来求$fail$</li>
-<li>令$last&#x3D;fail[last]&#x3D;1$（不能指向自身）</li>
-<li>判断$str[2-len[last]-1]&#x3D;str[2]$是否等于b</li>
-<li>再判断1节点下有没有为b的子节点，有就指向，没有则继续更新$last$</li>
-<li>节点1下有为$b$的节点（即存在$trie[1][‘b’]$），编号为3，则将$fail[2]$指向3</li>
-<li>最后将$last$指向4</li>
-</ul>
-<p><img src="https://gitee.com/renmale-sztu/image/raw/master/img/202212212054705.png" alt="202212022107319"></p>
-<p><img src="https://gitee.com/renmale-sztu/image/raw/master/img/202212212054443.png" alt="202212022111341"></p>
-<p><img src="https://gitee.com/renmale-sztu/image/raw/master/img/202212212055112.png" alt="202212022147852"></p>
-<p><img src="https://gitee.com/renmale-sztu/image/raw/master/img/202212212056858.png" alt="image-20221202215150351"></p>
-<p><img src="https://gitee.com/renmale-sztu/image/raw/master/img/202212212056070.png" alt="image-20221202220630334"></p>
-<p><img src="https://gitee.com/renmale-sztu/image/raw/master/img/202212212056276.png" alt="image-20221202220946755"></p>
-<h2 id="实现"><a href="#实现" class="headerlink" title="实现"></a>实现</h2><figure class="highlight c++"><table><tr><td class="code"><pre><span class="line"><span class="meta">#<span class="keyword">include</span><span class="string">&lt;iostream&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="keyword">include</span><span class="string">&lt;string&gt;</span></span></span><br><span class="line"></span><br><span class="line"><span class="type">const</span> <span class="type">int</span> MAXN=<span class="number">1e6</span>+<span class="number">7</span>;</span><br><span class="line"><span class="type">int</span> len[MAXN],num[MAXN],fail[MAXN],cnt[MAXN];</span><br><span class="line"><span class="type">int</span> trie[MAXN][<span class="number">26</span>],tot=<span class="number">1</span>,last;</span><br><span class="line">std::string str;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="type">int</span> <span class="title">getfail</span><span class="params">(<span class="type">int</span> x,<span class="type">int</span> u)</span></span>&#123;</span><br><span class="line">    <span class="keyword">while</span>(u-len[x]<span class="number">-1</span>&lt;<span class="number">0</span> || str[u-len[x]<span class="number">-1</span>]!=str[u]) x=fail[x];</span><br><span class="line">    <span class="keyword">return</span> x;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="type">int</span> <span class="title">main</span><span class="params">()</span></span>&#123;</span><br><span class="line">    std::cin&gt;&gt;str;</span><br><span class="line">    <span class="type">int</span> n=str.<span class="built_in">length</span>();</span><br><span class="line">    len[<span class="number">0</span>]=<span class="number">0</span>;len[<span class="number">1</span>]=<span class="number">-1</span>;</span><br><span class="line">    fail[<span class="number">0</span>]=fail[<span class="number">1</span>]=<span class="number">1</span>;</span><br><span class="line">    <span class="keyword">for</span>(<span class="type">int</span> i=<span class="number">0</span>;i&lt;n;++i)&#123;</span><br><span class="line">        <span class="type">int</span> u=last;</span><br><span class="line">        u=<span class="built_in">getfail</span>(u,i);</span><br><span class="line">        <span class="keyword">if</span>(!trie[u][str[i]-<span class="string">&#x27;a&#x27;</span>])&#123;</span><br><span class="line">			fail[++tot]=trie[<span class="built_in">getfail</span>(fail[u],i)][str[i]-<span class="string">&#x27;a&#x27;</span>];</span><br><span class="line">            trie[u][str[i]-<span class="string">&#x27;a&#x27;</span>]=tot;</span><br><span class="line">        	len[tot]=len[u]+<span class="number">2</span>;</span><br><span class="line">            num[tot]=num[fail[tot]]+<span class="number">1</span>;</span><br><span class="line">        &#125;</span><br><span class="line">        last=trie[u][str[i]-<span class="string">&#x27;a&#x27;</span>];</span><br><span class="line">        ++cnt[last];</span><br><span class="line">	&#125;</span><br><span class="line">    <span class="keyword">for</span>(<span class="type">int</span> i=tot;i&gt;=<span class="number">2</span>;--i)&#123;</span><br><span class="line">        cnt[fail[i]]+=cnt[i];</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-
-
-
-<h2 id="题目"><a href="#题目" class="headerlink" title="题目"></a>题目</h2><ul>
-<li><a href="https://www.luogu.com.cn/problem/P5496">洛谷P5496</a></li>
-<li><a href="https://www.luogu.com.cn/problem/P3649">洛谷P3649</a></li>
-<li><a href="https://www.luogu.com.cn/problem/P4287">洛谷P4287</a></li>
 </ul>
 ]]></content>
       <tags>
@@ -215,6 +97,8 @@
 <td align="center">可自由设计并搭配任何容器</td>
 </tr>
 </tbody></table>
+<span id="more"></span>
+
 <p><img src="https://gitee.com/renmale-sztu/image/raw/master/img/202212212036146.png" alt="image-20221221203640061"></p>
 <p><img src="https://gitee.com/renmale-sztu/image/raw/master/img/202212212036464.png" alt="image-20221221203648386"></p>
 <h2 id="二、new-amp-delete-expression"><a href="#二、new-amp-delete-expression" class="headerlink" title="二、new&amp;delete expression"></a>二、new&amp;delete expression</h2><h3 id="1、new-expression"><a href="#1、new-expression" class="headerlink" title="1、new expression"></a>1、new expression</h3><p>对于代码：</p>
@@ -325,6 +209,112 @@
 ]]></content>
       <tags>
         <tag>malloc</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>Trie</title>
+    <url>/2022/11/29/Trie/</url>
+    <content><![CDATA[<meta name="referrer" content="no-referrer" />
+
+<h2 id="概念"><a href="#概念" class="headerlink" title="概念"></a>概念</h2><p>字典树也叫Trie树、前缀树，是一种针对字符串进行维护的<strong>数据结构</strong>，而不是算法。</p>
+<p>字典树是对字符串的一种存储的方式，这棵树的根节点到某一个目标节点的路径就是一个字符串（单词）。</p>
+<p>举个例子，下图的字典树：</p>
+<p><img src="https://gitee.com/renmale-sztu/image/raw/master/img/202212212057021.png" alt="202211291950874"></p>
+<p>该字典树存储的单词为：</p>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">a</span><br><span class="line">abc</span><br><span class="line">ba</span><br><span class="line">bca</span><br><span class="line">bca</span><br><span class="line">ca</span><br><span class="line">ca</span><br></pre></td></tr></table></figure>
+
+<span id="more"></span>
+
+<h2 id="性质"><a href="#性质" class="headerlink" title="性质"></a>性质</h2><ul>
+<li>根节点不包含字符，除根节点外的所有节点都包含一个字符</li>
+<li>从根节点到某一个节点，路径上经过的所有字符连接起来，为该节点对应的字符串</li>
+<li>每个节点的子节点包含的字符各不相同</li>
+</ul>
+<h2 id="应用"><a href="#应用" class="headerlink" title="应用"></a>应用</h2><ul>
+<li>计算热词：统计字符串在集合中出现的个数</li>
+<li>字典序排序</li>
+<li>最长公共前缀（LCP）</li>
+<li>…</li>
+</ul>
+<h2 id="实现"><a href="#实现" class="headerlink" title="实现"></a>实现</h2><p>字典树的实现主要有<strong>插入和查找</strong></p>
+<p>假设该字符串集合由26个小写字母组成，我们定义两个数组</p>
+<figure class="highlight c++"><table><tr><td class="code"><pre><span class="line"><span class="type">int</span> next[<span class="number">100000</span>][<span class="number">26</span>],cnt; <span class="comment">//存放该节点的子节点</span></span><br><span class="line"><span class="type">int</span> num[<span class="number">100000</span>]; <span class="comment">//表示该字符串一共出现多少次，为0表示不存在</span></span><br></pre></td></tr></table></figure>
+
+<h3 id="插入操作"><a href="#插入操作" class="headerlink" title="插入操作"></a>插入操作</h3><figure class="highlight c++"><table><tr><td class="code"><pre><span class="line"><span class="function"><span class="type">void</span> <span class="title">insert</span><span class="params">(std::string str)</span></span>&#123;</span><br><span class="line">    <span class="type">int</span> len=str.<span class="built_in">length</span>();</span><br><span class="line">	<span class="type">int</span> p=<span class="number">0</span>; <span class="comment">//记录当前节点位置</span></span><br><span class="line">    <span class="keyword">for</span>(<span class="type">int</span> i=<span class="number">0</span>;i&lt;len;++i)&#123;</span><br><span class="line">    	<span class="type">int</span> c=str[i]-<span class="string">&#x27;a&#x27;</span>;</span><br><span class="line">        <span class="keyword">if</span>(!next[p][c]) next[p][c]=++cnt;</span><br><span class="line">        p=next[p][c];</span><br><span class="line">    &#125;</span><br><span class="line">    ++num[p];</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h3 id="查找操作"><a href="#查找操作" class="headerlink" title="查找操作"></a>查找操作</h3><figure class="highlight c++"><table><tr><td class="code"><pre><span class="line"><span class="function"><span class="type">int</span> <span class="title">find</span><span class="params">(std::string str)</span></span>&#123;</span><br><span class="line">	<span class="type">int</span> len=str.<span class="built_in">length</span>();</span><br><span class="line">    <span class="type">int</span> p=<span class="number">0</span>;</span><br><span class="line">    <span class="keyword">for</span>(<span class="type">int</span> i=<span class="number">0</span>;i&lt;len;++i)&#123;</span><br><span class="line">		<span class="type">int</span> c=str[i]-<span class="string">&#x27;a&#x27;</span>;</span><br><span class="line">        <span class="keyword">if</span>(!next[p][c]) <span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">        p=next[p][c];</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">return</span> num[p];</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h2 id="题目"><a href="#题目" class="headerlink" title="题目"></a>题目</h2><ul>
+<li><a href="https://www.luogu.com.cn/problem/SP4033">SP4033 PHONELST - Phone List</a></li>
+<li><a href="https://www.luogu.com.cn/problem/UVA1401">UVA1401 Remember the Word</a></li>
+<li><a href="https://www.luogu.com.cn/problem/UVA11732">UVA11732 “strcmp()” Anyone?</a> </li>
+<li><a href="https://www.luogu.com.cn/problem/P7469">P7469 [NOI Online 2021 提高组] 积木小赛</a></li>
+</ul>
+]]></content>
+      <tags>
+        <tag>algorithm</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>回文自动机(PAM)</title>
+    <url>/2022/12/02/%E5%9B%9E%E6%96%87%E8%87%AA%E5%8A%A8%E6%9C%BA-PAM/</url>
+    <content><![CDATA[<meta name="referrer" content="no-referrer" />
+
+<h2 id="引入"><a href="#引入" class="headerlink" title="引入"></a>引入</h2><p>​	给定一个字符串$s$，求字符串$s$有多少个不同的回文子串？</p>
+<p>​	如果使用$Manacher$算法来获得字符串中每个字符为中心的最长回文半径，再用$Hash$来查重所有的回文子串，时间复杂度为$O(N^2)$<del>（如果使用其他查重方式，时间复杂度可能更高）</del>，而<strong>回文自动机</strong>则能够以$O(N)$的时间复杂度来完成一些$Manacher$算法难以处理的回文串问题。</p>
+<h2 id="原理"><a href="#原理" class="headerlink" title="原理"></a>原理</h2><p>​	回文自动机，也叫回文树，是一种在2014年发明的数据结构。</p>
+<p>​	回文自动机，就是使用字典树来保存所有回文子串的回文半径，使用两棵树来分别保存偶数串和奇数串，<del>也可以像$Manacher$一样通过插入无意义的字符来只构建一棵树，但是这样处理起来比较麻烦</del>，在树上的一个节点代表一个回文子串，在最后使用节点数-2（减去两个根节点）就得到了不同回文子串的位置。</p>
+<p>​	对于一个已知的字符串$abbcbbbcbbbad$，假设我们已经遍历了$abbcbbbcbb$，当我们遍历下一个字符$b$时，会进行如下判断：</p>
+<span id="more"></span>
+
+<p><img src="https://gitee.com/renmale-sztu/image/raw/master/img/202212212051013.png" alt="202212021838948"></p>
+<p>​	依次与包含前一个字符的回文子串从长到短进行匹配，匹配成功时则插入，都不匹配时，最后与自身匹配，为仅有一个字符的回文子串。</p>
+<h2 id="构建"><a href="#构建" class="headerlink" title="构建"></a>构建</h2><p>​	那么如何构建回文树呢？</p>
+<p>​	我们首先定义如下变量：</p>
+<figure class="highlight c++"><table><tr><td class="code"><pre><span class="line"><span class="type">int</span> len[];  <span class="comment">//len[u]表示回文树中u节点代表的回文串的长度</span></span><br><span class="line"><span class="type">int</span> trie[][]; <span class="comment">//trie[u][c]表示编号为u的节点代表的回文串在两头加上字符c后的回文串的编号</span></span><br><span class="line"><span class="type">int</span> fail[];  <span class="comment">//fail[u]表示节点u失配后跳转到不等于自身的最长后缀回文串的编号（如上图）</span></span><br><span class="line"><span class="type">int</span> cnt[];  <span class="comment">//cnt[u]表示节点u所代表的回文串在整个字符串中出现了多少次</span></span><br><span class="line"><span class="type">int</span> num[];  <span class="comment">//num[u]表示u节点所代表的回文串有多少个本质不同的后缀回文子串</span></span><br><span class="line"><span class="type">int</span> last;  <span class="comment">//表示上一次插入字符的节点的编号</span></span><br><span class="line"><span class="type">int</span> tot;   <span class="comment">//有多少个节点</span></span><br></pre></td></tr></table></figure>
+
+<p>​	首先我们定义两个节点，0号节点和1号节点，0号节点是偶树的根，1号节点则为奇树的根，初始化数据为：</p>
+<figure class="highlight c++"><table><tr><td class="code"><pre><span class="line">len[<span class="number">0</span>]=<span class="number">0</span>;<span class="comment">//偶树每添加一个节点长度+2</span></span><br><span class="line">len[<span class="number">1</span>]=<span class="number">-1</span>;<span class="comment">//奇树中间节点只算一次，所以是-1</span></span><br><span class="line">fail[<span class="number">0</span>]=fail[<span class="number">1</span>]=<span class="number">1</span>;<span class="comment">//新插入一个字符无论如何也能形成一个回文串（只有自身），所以fail[0]指向1号节点，而1号节点指向自身（无所谓）</span></span><br><span class="line">last=<span class="number">0</span>;</span><br></pre></td></tr></table></figure>
+
+<p>​	下面为字符串$str&#x3D;abbcbbb$的回文树构建过程：</p>
+<p>初始化：</p>
+<p><img src="https://gitee.com/renmale-sztu/image/raw/master/img/202212212052224.png" alt="image-20221202200101839"></p>
+<p>插入第一个字符$a$:</p>
+<p>首先last指向0，我们先获取$str[0-len[last]-1]&#x3D;str[-1]!&#x3D;a$，则将$last&#x3D;fail[last]&#x3D;1$，发现$str[0-len[last]-1]&#x3D;str[0]&#x3D;a$，则在1号节点下新建节点插入$a$。</p>
+<p><img src="https://gitee.com/renmale-sztu/image/raw/master/img/202212212053362.png" alt="202212022048948"></p>
+<p>插入第二个字符b：</p>
+<p><img src="https://gitee.com/renmale-sztu/image/raw/master/img/202212212053645.png" alt="202212022047647"></p>
+<p>插入第三个字符b：</p>
+<ul>
+<li>$str[2-len[last]-1]&#x3D;str[0]!&#x3D;b$</li>
+<li>$last&#x3D;fail[last]&#x3D;0$</li>
+<li>$str[2-len[last]-1]&#x3D;str[1]&#x3D;b$</li>
+<li>在0号节点下新建b节点</li>
+<li>接下来求$fail$</li>
+<li>令$last&#x3D;fail[last]&#x3D;1$（不能指向自身）</li>
+<li>判断$str[2-len[last]-1]&#x3D;str[2]$是否等于b</li>
+<li>再判断1节点下有没有为b的子节点，有就指向，没有则继续更新$last$</li>
+<li>节点1下有为$b$的节点（即存在$trie[1][‘b’]$），编号为3，则将$fail[2]$指向3</li>
+<li>最后将$last$指向4</li>
+</ul>
+<p><img src="https://gitee.com/renmale-sztu/image/raw/master/img/202212212054705.png" alt="202212022107319"></p>
+<p><img src="https://gitee.com/renmale-sztu/image/raw/master/img/202212212054443.png" alt="202212022111341"></p>
+<p><img src="https://gitee.com/renmale-sztu/image/raw/master/img/202212212055112.png" alt="202212022147852"></p>
+<p><img src="https://gitee.com/renmale-sztu/image/raw/master/img/202212212056858.png" alt="image-20221202215150351"></p>
+<p><img src="https://gitee.com/renmale-sztu/image/raw/master/img/202212212056070.png" alt="image-20221202220630334"></p>
+<p><img src="https://gitee.com/renmale-sztu/image/raw/master/img/202212212056276.png" alt="image-20221202220946755"></p>
+<h2 id="实现"><a href="#实现" class="headerlink" title="实现"></a>实现</h2><figure class="highlight c++"><table><tr><td class="code"><pre><span class="line"><span class="meta">#<span class="keyword">include</span><span class="string">&lt;iostream&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="keyword">include</span><span class="string">&lt;string&gt;</span></span></span><br><span class="line"></span><br><span class="line"><span class="type">const</span> <span class="type">int</span> MAXN=<span class="number">1e6</span>+<span class="number">7</span>;</span><br><span class="line"><span class="type">int</span> len[MAXN],num[MAXN],fail[MAXN],cnt[MAXN];</span><br><span class="line"><span class="type">int</span> trie[MAXN][<span class="number">26</span>],tot=<span class="number">1</span>,last;</span><br><span class="line">std::string str;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="type">int</span> <span class="title">getfail</span><span class="params">(<span class="type">int</span> x,<span class="type">int</span> u)</span></span>&#123;</span><br><span class="line">    <span class="keyword">while</span>(u-len[x]<span class="number">-1</span>&lt;<span class="number">0</span> || str[u-len[x]<span class="number">-1</span>]!=str[u]) x=fail[x];</span><br><span class="line">    <span class="keyword">return</span> x;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="type">int</span> <span class="title">main</span><span class="params">()</span></span>&#123;</span><br><span class="line">    std::cin&gt;&gt;str;</span><br><span class="line">    <span class="type">int</span> n=str.<span class="built_in">length</span>();</span><br><span class="line">    len[<span class="number">0</span>]=<span class="number">0</span>;len[<span class="number">1</span>]=<span class="number">-1</span>;</span><br><span class="line">    fail[<span class="number">0</span>]=fail[<span class="number">1</span>]=<span class="number">1</span>;</span><br><span class="line">    <span class="keyword">for</span>(<span class="type">int</span> i=<span class="number">0</span>;i&lt;n;++i)&#123;</span><br><span class="line">        <span class="type">int</span> u=last;</span><br><span class="line">        u=<span class="built_in">getfail</span>(u,i);</span><br><span class="line">        <span class="keyword">if</span>(!trie[u][str[i]-<span class="string">&#x27;a&#x27;</span>])&#123;</span><br><span class="line">			fail[++tot]=trie[<span class="built_in">getfail</span>(fail[u],i)][str[i]-<span class="string">&#x27;a&#x27;</span>];</span><br><span class="line">            trie[u][str[i]-<span class="string">&#x27;a&#x27;</span>]=tot;</span><br><span class="line">        	len[tot]=len[u]+<span class="number">2</span>;</span><br><span class="line">            num[tot]=num[fail[tot]]+<span class="number">1</span>;</span><br><span class="line">        &#125;</span><br><span class="line">        last=trie[u][str[i]-<span class="string">&#x27;a&#x27;</span>];</span><br><span class="line">        ++cnt[last];</span><br><span class="line">	&#125;</span><br><span class="line">    <span class="keyword">for</span>(<span class="type">int</span> i=tot;i&gt;=<span class="number">2</span>;--i)&#123;</span><br><span class="line">        cnt[fail[i]]+=cnt[i];</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+
+
+<h2 id="题目"><a href="#题目" class="headerlink" title="题目"></a>题目</h2><ul>
+<li><a href="https://www.luogu.com.cn/problem/P5496">洛谷P5496</a></li>
+<li><a href="https://www.luogu.com.cn/problem/P3649">洛谷P3649</a></li>
+<li><a href="https://www.luogu.com.cn/problem/P4287">洛谷P4287</a></li>
+</ul>
+]]></content>
+      <tags>
+        <tag>algorithm</tag>
       </tags>
   </entry>
 </search>

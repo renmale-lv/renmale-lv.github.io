@@ -37,7 +37,7 @@
 <meta property="og:image" content="https://gitee.com/renmale-sztu/image/raw/master/img/202212212056070.png">
 <meta property="og:image" content="https://gitee.com/renmale-sztu/image/raw/master/img/202212212056276.png">
 <meta property="article:published_time" content="2022-12-02T06:49:02.000Z">
-<meta property="article:modified_time" content="2023-01-09T12:41:18.609Z">
+<meta property="article:modified_time" content="2023-02-24T15:33:50.360Z">
 <meta property="article:author" content="John Doe">
 <meta property="article:tag" content="algorithm">
 <meta name="twitter:card" content="summary">
@@ -165,7 +165,7 @@
   <nav class="site-state">
       <div class="site-state-item site-state-posts">
         <a href="/archives/">
-          <span class="site-state-item-count">7</span>
+          <span class="site-state-item-count">6</span>
           <span class="site-state-item-name">posts</span>
         </a>
       </div>
@@ -233,7 +233,7 @@
         <i class="far fa-calendar-check"></i>
       </span>
       <span class="post-meta-item-text">Edited on</span>
-      <time title="Modified: 2023-01-09 20:41:18" itemprop="dateModified" datetime="2023-01-09T20:41:18+08:00">2023-01-09</time>
+      <time title="Modified: 2023-02-24 23:33:50" itemprop="dateModified" datetime="2023-02-24T23:33:50+08:00">2023-02-24</time>
     </span>
 
   
@@ -253,6 +253,8 @@
 <h2 id="原理"><a href="#原理" class="headerlink" title="原理"></a>原理</h2><p>​	回文自动机，也叫回文树，是一种在2014年发明的数据结构。</p>
 <p>​	回文自动机，就是使用字典树来保存所有回文子串的回文半径，使用两棵树来分别保存偶数串和奇数串，<del>也可以像$Manacher$一样通过插入无意义的字符来只构建一棵树，但是这样处理起来比较麻烦</del>，在树上的一个节点代表一个回文子串，在最后使用节点数-2（减去两个根节点）就得到了不同回文子串的位置。</p>
 <p>​	对于一个已知的字符串$abbcbbbcbbbad$，假设我们已经遍历了$abbcbbbcbb$，当我们遍历下一个字符$b$时，会进行如下判断：</p>
+<span id="more"></span>
+
 <p><img src="https://gitee.com/renmale-sztu/image/raw/master/img/202212212051013.png" alt="202212021838948"></p>
 <p>​	依次与包含前一个字符的回文子串从长到短进行匹配，匹配成功时则插入，都不匹配时，最后与自身匹配，为仅有一个字符的回文子串。</p>
 <h2 id="构建"><a href="#构建" class="headerlink" title="构建"></a>构建</h2><p>​	那么如何构建回文树呢？</p>
