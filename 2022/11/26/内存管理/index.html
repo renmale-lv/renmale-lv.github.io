@@ -19,23 +19,60 @@
 
 <script class="next-config" data-name="main" type="application/json">{"hostname":"example.com","root":"/","images":"/images","scheme":"Gemini","darkmode":false,"version":"8.14.2","exturl":false,"sidebar":{"position":"left","display":"always","padding":18,"offset":12},"copycode":{"enable":true,"style":"mac"},"bookmark":{"enable":false,"color":"#222","save":"auto"},"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"stickytabs":false,"motion":{"enable":true,"async":false,"transition":{"menu_item":"fadeInDown","post_block":"fadeIn","post_header":"fadeInDown","post_body":"fadeInDown","coll_header":"fadeInLeft","sidebar":"fadeInUp"}},"prism":false,"i18n":{"placeholder":"Searching...","empty":"We didn't find any results for the search: ${query}","hits_time":"${hits} results found in ${time} ms","hits":"${hits} results found"},"path":"/search.xml","localsearch":{"enable":true,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false}}</script><script src="/js/config.js"></script>
 
-    <meta property="og:type" content="website">
-<meta property="og:title" content="Hexo">
-<meta property="og:url" content="http://example.com/index.html">
+    <meta name="description" content="一、四种内存的分配释放方法    分配 释放 类别 可否重载    malloc() free() C函数 不可   new delete C++表达式 不可   ::operator new() ::operator delete() C++函数 不可   allocator::allocate() allocator::deallocate() C++标准库 可自由设计并搭配任何容器">
+<meta property="og:type" content="article">
+<meta property="og:title" content="内存管理">
+<meta property="og:url" content="http://example.com/2022/11/26/%E5%86%85%E5%AD%98%E7%AE%A1%E7%90%86/index.html">
 <meta property="og:site_name" content="Hexo">
+<meta property="og:description" content="一、四种内存的分配释放方法    分配 释放 类别 可否重载    malloc() free() C函数 不可   new delete C++表达式 不可   ::operator new() ::operator delete() C++函数 不可   allocator::allocate() allocator::deallocate() C++标准库 可自由设计并搭配任何容器">
 <meta property="og:locale" content="en_US">
+<meta property="og:image" content="https://gitee.com/renmale-sztu/image/raw/master/img/202212212036111.png">
+<meta property="og:image" content="https://gitee.com/renmale-sztu/image/raw/master/img/202212212036146.png">
+<meta property="og:image" content="https://gitee.com/renmale-sztu/image/raw/master/img/202212212036464.png">
+<meta property="og:image" content="https://gitee.com/renmale-sztu/image/raw/master/img/202212212037311.png">
+<meta property="og:image" content="https://gitee.com/renmale-sztu/image/raw/master/img/202212212037941.png">
+<meta property="og:image" content="https://gitee.com/renmale-sztu/image/raw/master/img/202212212037805.png">
+<meta property="og:image" content="https://gitee.com/renmale-sztu/image/raw/master/img/202212212037526.png">
+<meta property="og:image" content="https://gitee.com/renmale-sztu/image/raw/master/img/202212212037845.png">
+<meta property="og:image" content="https://raw.githubusercontent.com/renmale-lv/BlogImage/main/202211291953839.jpg">
+<meta property="og:image" content="https://gitee.com/renmale-sztu/image/raw/master/img/202212212037674.png">
+<meta property="og:image" content="https://gitee.com/renmale-sztu/image/raw/master/img/202212212037559.png">
+<meta property="og:image" content="https://gitee.com/renmale-sztu/image/raw/master/img/202212212038347.png">
+<meta property="og:image" content="https://gitee.com/renmale-sztu/image/raw/master/img/202212212038836.jpeg">
+<meta property="og:image" content="https://gitee.com/renmale-sztu/image/raw/master/img/202212212038286.png">
+<meta property="og:image" content="https://gitee.com/renmale-sztu/image/raw/master/img/202212212038873.png">
+<meta property="og:image" content="https://gitee.com/renmale-sztu/image/raw/master/img/202212212038881.png">
+<meta property="og:image" content="https://gitee.com/renmale-sztu/image/raw/master/img/202212212038971.webp">
+<meta property="og:image" content="https://gitee.com/renmale-sztu/image/raw/master/img/202212212038448.png">
+<meta property="og:image" content="https://gitee.com/renmale-sztu/image/raw/master/img/202212212038059.webp">
+<meta property="og:image" content="https://gitee.com/renmale-sztu/image/raw/master/img/202212212039638.png">
+<meta property="og:image" content="https://gitee.com/renmale-sztu/image/raw/master/img/202212212039932.webp">
+<meta property="og:image" content="https://raw.githubusercontent.com/renmale-lv/BlogImage/main/202212071932350.webp">
+<meta property="og:image" content="https://gitee.com/renmale-sztu/image/raw/master/img/202212212047747.webp">
+<meta property="og:image" content="https://gitee.com/renmale-sztu/image/raw/master/img/202212212048190.webp">
+<meta property="og:image" content="https://gitee.com/renmale-sztu/image/raw/master/img/202212212048314.webp">
+<meta property="og:image" content="https://gitee.com/renmale-sztu/image/raw/master/img/202212212048212.png">
+<meta property="og:image" content="https://gitee.com/renmale-sztu/image/raw/master/img/202212212049944.png">
+<meta property="og:image" content="https://gitee.com/renmale-sztu/image/raw/master/img/202212212049278.jpeg">
+<meta property="og:image" content="https://gitee.com/renmale-sztu/image/raw/master/img/202212212050452.jpeg">
+<meta property="og:image" content="https://gitee.com/renmale-sztu/image/raw/master/img/202212212050723.png">
+<meta property="og:image" content="https://gitee.com/renmale-sztu/image/raw/master/img/202212212051463.png">
+<meta property="article:published_time" content="2022-11-25T17:20:48.000Z">
+<meta property="article:modified_time" content="2022-12-23T14:07:52.753Z">
 <meta property="article:author" content="John Doe">
+<meta property="article:tag" content="malloc">
 <meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://gitee.com/renmale-sztu/image/raw/master/img/202212212036111.png">
 
 
-<link rel="canonical" href="http://example.com/">
+<link rel="canonical" href="http://example.com/2022/11/26/%E5%86%85%E5%AD%98%E7%AE%A1%E7%90%86/">
 
 
 
-<script class="next-config" data-name="page" type="application/json">{"sidebar":"","isHome":true,"isPost":false,"lang":"en","comments":"","permalink":"","path":"index.html","title":""}</script>
+<script class="next-config" data-name="page" type="application/json">{"sidebar":"","isHome":false,"isPost":true,"lang":"en","comments":true,"permalink":"http://example.com/2022/11/26/%E5%86%85%E5%AD%98%E7%AE%A1%E7%90%86/","path":"2022/11/26/内存管理/","title":"内存管理"}</script>
 
 <script class="next-config" data-name="calendar" type="application/json">""</script>
-<title>Hexo</title>
+<title>内存管理 | Hexo</title>
   
 
 
@@ -68,7 +105,7 @@
 
     <a href="/" class="brand" rel="start">
       <i class="logo-line"></i>
-      <h1 class="site-title">Hexo</h1>
+      <p class="site-title">Hexo</p>
       <i class="logo-line"></i>
     </a>
   </div>
@@ -121,7 +158,7 @@
   
   <aside class="sidebar">
 
-    <div class="sidebar-inner sidebar-overview-active">
+    <div class="sidebar-inner sidebar-nav-active sidebar-toc-active">
       <ul class="sidebar-nav">
         <li class="sidebar-nav-toc">
           Table of Contents
@@ -134,6 +171,7 @@
       <div class="sidebar-panel-container">
         <!--noindex-->
         <div class="post-toc-wrap sidebar-panel">
+            <div class="post-toc animated"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E4%B8%80%E3%80%81%E5%9B%9B%E7%A7%8D%E5%86%85%E5%AD%98%E7%9A%84%E5%88%86%E9%85%8D%E9%87%8A%E6%94%BE%E6%96%B9%E6%B3%95"><span class="nav-number">1.</span> <span class="nav-text">一、四种内存的分配释放方法</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E4%BA%8C%E3%80%81new-amp-delete-expression"><span class="nav-number">2.</span> <span class="nav-text">二、new&amp;delete expression</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#1%E3%80%81new-expression"><span class="nav-number">2.1.</span> <span class="nav-text">1、new expression</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#2%E3%80%81delete-expression"><span class="nav-number">2.2.</span> <span class="nav-text">2、delete expression</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#3%E3%80%81Ctor-amp-Dtor-%E7%9B%B4%E6%8E%A5%E8%B0%83%E7%94%A8"><span class="nav-number">2.3.</span> <span class="nav-text">3、Ctor &amp; Dtor 直接调用</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E4%B8%89%E3%80%81Array-new"><span class="nav-number">3.</span> <span class="nav-text">三、Array new</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E6%95%B0%E7%BB%84%E5%AF%B9%E8%B1%A1%E5%88%9B%E5%BB%BA%E4%B8%8E%E6%9E%90%E6%9E%84%E8%BF%87%E7%A8%8B%EF%BC%9A"><span class="nav-number">3.1.</span> <span class="nav-text">数组对象创建与析构过程：</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#%E6%95%B0%E7%BB%84%E5%AF%B9%E8%B1%A1%E5%9C%A8%E5%86%85%E5%AD%98%E4%B8%AD%E7%9A%84%E5%88%86%E9%85%8D"><span class="nav-number">3.1.1.</span> <span class="nav-text">数组对象在内存中的分配</span></a></li></ol></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%9B%9B%E3%80%81placement-new"><span class="nav-number">4.</span> <span class="nav-text">四、placement new</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E4%BA%94%E3%80%81%E9%87%8D%E8%BD%BD"><span class="nav-number">5.</span> <span class="nav-text">五、重载</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#1%E3%80%81C-%E5%86%85%E5%AD%98%E5%88%86%E9%85%8D"><span class="nav-number">5.1.</span> <span class="nav-text">1、C++内存分配</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#2%E3%80%81%E9%87%8D%E8%BD%BD%E7%A4%BA%E4%BE%8B"><span class="nav-number">5.2.</span> <span class="nav-text">2、重载示例</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#%E6%B5%8B%E8%AF%95%E4%BB%A3%E7%A0%811%EF%BC%9A"><span class="nav-number">5.2.1.</span> <span class="nav-text">测试代码1：</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E6%B5%8B%E8%AF%95%E4%BB%A3%E7%A0%812%EF%BC%9A"><span class="nav-number">5.2.2.</span> <span class="nav-text">测试代码2：</span></a></li></ol></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%85%AD%E3%80%81pre-class-allocator"><span class="nav-number">6.</span> <span class="nav-text">六、pre-class allocator</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E7%A4%BA%E4%BE%8B1"><span class="nav-number">6.1.</span> <span class="nav-text">示例1</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#%E4%BB%A3%E7%A0%81%EF%BC%9A"><span class="nav-number">6.1.1.</span> <span class="nav-text">代码：</span></a></li></ol></li></ol></li></ol></div>
         </div>
         <!--/noindex-->
 
@@ -169,582 +207,17 @@
 
     </div>
 
-    <div class="main-inner index posts-expand">
+    <div class="main-inner post posts-expand">
 
-    
+
+  
 
 
 <div class="post-block">
   
   
 
-  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="">
-    <link itemprop="mainEntityOfPage" href="http://example.com/2023/02/24/hello-world/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/images/avatar.gif">
-      <meta itemprop="name" content="John Doe">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="Hexo">
-      <meta itemprop="description" content="">
-    </span>
-
-    <span hidden itemprop="post" itemscope itemtype="http://schema.org/CreativeWork">
-      <meta itemprop="name" content="undefined | Hexo">
-      <meta itemprop="description" content="">
-    </span>
-      <header class="post-header">
-        <h2 class="post-title" itemprop="name headline">
-          <a href="/2023/02/24/hello-world/" class="post-title-link" itemprop="url">Hello World</a>
-        </h2>
-
-        <div class="post-meta-container">
-          <div class="post-meta">
-    <span class="post-meta-item">
-      <span class="post-meta-item-icon">
-        <i class="far fa-calendar"></i>
-      </span>
-      <span class="post-meta-item-text">Posted on</span>
-
-      <time title="Created: 2023-02-24 21:45:07" itemprop="dateCreated datePublished" datetime="2023-02-24T21:45:07+08:00">2023-02-24</time>
-    </span>
-
-  
-</div>
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-          <p>Welcome to <a target="_blank" rel="noopener" href="https://hexo.io/">Hexo</a>! This is your very first post. Check <a target="_blank" rel="noopener" href="https://hexo.io/docs/">documentation</a> for more info. If you get any problems when using Hexo, you can find the answer in <a target="_blank" rel="noopener" href="https://hexo.io/docs/troubleshooting.html">troubleshooting</a> or you can ask me on <a target="_blank" rel="noopener" href="https://github.com/hexojs/hexo/issues">GitHub</a>.</p>
-<h2 id="Quick-Start"><a href="#Quick-Start" class="headerlink" title="Quick Start"></a>Quick Start</h2><h3 id="Create-a-new-post"><a href="#Create-a-new-post" class="headerlink" title="Create a new post"></a>Create a new post</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ hexo new <span class="string">&quot;My New Post&quot;</span></span><br></pre></td></tr></table></figure>
-
-<p>More info: <a target="_blank" rel="noopener" href="https://hexo.io/docs/writing.html">Writing</a></p>
-<h3 id="Run-server"><a href="#Run-server" class="headerlink" title="Run server"></a>Run server</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ hexo server</span><br></pre></td></tr></table></figure>
-
-<p>More info: <a target="_blank" rel="noopener" href="https://hexo.io/docs/server.html">Server</a></p>
-<h3 id="Generate-static-files"><a href="#Generate-static-files" class="headerlink" title="Generate static files"></a>Generate static files</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ hexo generate</span><br></pre></td></tr></table></figure>
-
-<p>More info: <a target="_blank" rel="noopener" href="https://hexo.io/docs/generating.html">Generating</a></p>
-<h3 id="Deploy-to-remote-sites"><a href="#Deploy-to-remote-sites" class="headerlink" title="Deploy to remote sites"></a>Deploy to remote sites</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ hexo deploy</span><br></pre></td></tr></table></figure>
-
-<p>More info: <a target="_blank" rel="noopener" href="https://hexo.io/docs/one-command-deployment.html">Deployment</a></p>
-
-      
-    </div>
-
-    
-    
-    
-
-    <footer class="post-footer">
-        <div class="post-eof"></div>
-      
-    </footer>
-  </article>
-</div>
-
-
-
-
-    
-
-
-<div class="post-block">
-  
-  
-
-  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="">
-    <link itemprop="mainEntityOfPage" href="http://example.com/2023/02/19/C++Socket%E7%BC%96%E7%A8%8B/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/images/avatar.gif">
-      <meta itemprop="name" content="John Doe">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="Hexo">
-      <meta itemprop="description" content="">
-    </span>
-
-    <span hidden itemprop="post" itemscope itemtype="http://schema.org/CreativeWork">
-      <meta itemprop="name" content="undefined | Hexo">
-      <meta itemprop="description" content="">
-    </span>
-      <header class="post-header">
-        <h2 class="post-title" itemprop="name headline">
-          <a href="/2023/02/19/C++Socket%E7%BC%96%E7%A8%8B/" class="post-title-link" itemprop="url">C++Socket编程</a>
-        </h2>
-
-        <div class="post-meta-container">
-          <div class="post-meta">
-    <span class="post-meta-item">
-      <span class="post-meta-item-icon">
-        <i class="far fa-calendar"></i>
-      </span>
-      <span class="post-meta-item-text">Posted on</span>
-
-      <time title="Created: 2023-02-19 17:57:43" itemprop="dateCreated datePublished" datetime="2023-02-19T17:57:43+08:00">2023-02-19</time>
-    </span>
-
-  
-</div>
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-          
-      
-    </div>
-
-    
-    
-    
-
-    <footer class="post-footer">
-        <div class="post-eof"></div>
-      
-    </footer>
-  </article>
-</div>
-
-
-
-
-    
-
-
-<div class="post-block">
-  
-  
-
-  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="">
-    <link itemprop="mainEntityOfPage" href="http://example.com/2023/02/19/C++%E5%A4%9A%E7%BA%BF%E7%A8%8B/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/images/avatar.gif">
-      <meta itemprop="name" content="John Doe">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="Hexo">
-      <meta itemprop="description" content="">
-    </span>
-
-    <span hidden itemprop="post" itemscope itemtype="http://schema.org/CreativeWork">
-      <meta itemprop="name" content="undefined | Hexo">
-      <meta itemprop="description" content="">
-    </span>
-      <header class="post-header">
-        <h2 class="post-title" itemprop="name headline">
-          <a href="/2023/02/19/C++%E5%A4%9A%E7%BA%BF%E7%A8%8B/" class="post-title-link" itemprop="url">C++多线程</a>
-        </h2>
-
-        <div class="post-meta-container">
-          <div class="post-meta">
-    <span class="post-meta-item">
-      <span class="post-meta-item-icon">
-        <i class="far fa-calendar"></i>
-      </span>
-      <span class="post-meta-item-text">Posted on</span>
-      
-
-      <time title="Created: 2023-02-19 17:57:15 / Modified: 17:57:16" itemprop="dateCreated datePublished" datetime="2023-02-19T17:57:15+08:00">2023-02-19</time>
-    </span>
-
-  
-</div>
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-          
-      
-    </div>
-
-    
-    
-    
-
-    <footer class="post-footer">
-        <div class="post-eof"></div>
-      
-    </footer>
-  </article>
-</div>
-
-
-
-
-    
-
-
-<div class="post-block">
-  
-  
-
-  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="">
-    <link itemprop="mainEntityOfPage" href="http://example.com/2022/12/02/%E5%9B%9E%E6%96%87%E8%87%AA%E5%8A%A8%E6%9C%BA-PAM/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/images/avatar.gif">
-      <meta itemprop="name" content="John Doe">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="Hexo">
-      <meta itemprop="description" content="">
-    </span>
-
-    <span hidden itemprop="post" itemscope itemtype="http://schema.org/CreativeWork">
-      <meta itemprop="name" content="undefined | Hexo">
-      <meta itemprop="description" content="">
-    </span>
-      <header class="post-header">
-        <h2 class="post-title" itemprop="name headline">
-          <a href="/2022/12/02/%E5%9B%9E%E6%96%87%E8%87%AA%E5%8A%A8%E6%9C%BA-PAM/" class="post-title-link" itemprop="url">回文自动机(PAM)</a>
-        </h2>
-
-        <div class="post-meta-container">
-          <div class="post-meta">
-    <span class="post-meta-item">
-      <span class="post-meta-item-icon">
-        <i class="far fa-calendar"></i>
-      </span>
-      <span class="post-meta-item-text">Posted on</span>
-
-      <time title="Created: 2022-12-02 14:49:02" itemprop="dateCreated datePublished" datetime="2022-12-02T14:49:02+08:00">2022-12-02</time>
-    </span>
-    <span class="post-meta-item">
-      <span class="post-meta-item-icon">
-        <i class="far fa-calendar-check"></i>
-      </span>
-      <span class="post-meta-item-text">Edited on</span>
-      <time title="Modified: 2023-01-09 20:41:18" itemprop="dateModified" datetime="2023-01-09T20:41:18+08:00">2023-01-09</time>
-    </span>
-
-  
-</div>
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-          <meta name="referrer" content="no-referrer" />
-
-<h2 id="引入"><a href="#引入" class="headerlink" title="引入"></a>引入</h2><p>​	给定一个字符串$s$，求字符串$s$有多少个不同的回文子串？</p>
-<p>​	如果使用$Manacher$算法来获得字符串中每个字符为中心的最长回文半径，再用$Hash$来查重所有的回文子串，时间复杂度为$O(N^2)$<del>（如果使用其他查重方式，时间复杂度可能更高）</del>，而<strong>回文自动机</strong>则能够以$O(N)$的时间复杂度来完成一些$Manacher$算法难以处理的回文串问题。</p>
-<h2 id="原理"><a href="#原理" class="headerlink" title="原理"></a>原理</h2><p>​	回文自动机，也叫回文树，是一种在2014年发明的数据结构。</p>
-<p>​	回文自动机，就是使用字典树来保存所有回文子串的回文半径，使用两棵树来分别保存偶数串和奇数串，<del>也可以像$Manacher$一样通过插入无意义的字符来只构建一棵树，但是这样处理起来比较麻烦</del>，在树上的一个节点代表一个回文子串，在最后使用节点数-2（减去两个根节点）就得到了不同回文子串的位置。</p>
-<p>​	对于一个已知的字符串$abbcbbbcbbbad$，假设我们已经遍历了$abbcbbbcbb$，当我们遍历下一个字符$b$时，会进行如下判断：</p>
-<p><img src="https://gitee.com/renmale-sztu/image/raw/master/img/202212212051013.png" alt="202212021838948"></p>
-<p>​	依次与包含前一个字符的回文子串从长到短进行匹配，匹配成功时则插入，都不匹配时，最后与自身匹配，为仅有一个字符的回文子串。</p>
-<h2 id="构建"><a href="#构建" class="headerlink" title="构建"></a>构建</h2><p>​	那么如何构建回文树呢？</p>
-<p>​	我们首先定义如下变量：</p>
-<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="type">int</span> len[];  <span class="comment">//len[u]表示回文树中u节点代表的回文串的长度</span></span><br><span class="line"><span class="type">int</span> trie[][]; <span class="comment">//trie[u][c]表示编号为u的节点代表的回文串在两头加上字符c后的回文串的编号</span></span><br><span class="line"><span class="type">int</span> fail[];  <span class="comment">//fail[u]表示节点u失配后跳转到不等于自身的最长后缀回文串的编号（如上图）</span></span><br><span class="line"><span class="type">int</span> cnt[];  <span class="comment">//cnt[u]表示节点u所代表的回文串在整个字符串中出现了多少次</span></span><br><span class="line"><span class="type">int</span> num[];  <span class="comment">//num[u]表示u节点所代表的回文串有多少个本质不同的后缀回文子串</span></span><br><span class="line"><span class="type">int</span> last;  <span class="comment">//表示上一次插入字符的节点的编号</span></span><br><span class="line"><span class="type">int</span> tot;   <span class="comment">//有多少个节点</span></span><br></pre></td></tr></table></figure>
-
-<p>​	首先我们定义两个节点，0号节点和1号节点，0号节点是偶树的根，1号节点则为奇树的根，初始化数据为：</p>
-<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">len[<span class="number">0</span>]=<span class="number">0</span>;<span class="comment">//偶树每添加一个节点长度+2</span></span><br><span class="line">len[<span class="number">1</span>]=<span class="number">-1</span>;<span class="comment">//奇树中间节点只算一次，所以是-1</span></span><br><span class="line">fail[<span class="number">0</span>]=fail[<span class="number">1</span>]=<span class="number">1</span>;<span class="comment">//新插入一个字符无论如何也能形成一个回文串（只有自身），所以fail[0]指向1号节点，而1号节点指向自身（无所谓）</span></span><br><span class="line">last=<span class="number">0</span>;</span><br></pre></td></tr></table></figure>
-
-<p>​	下面为字符串$str&#x3D;abbcbbb$的回文树构建过程：</p>
-<p>初始化：</p>
-<p><img src="https://gitee.com/renmale-sztu/image/raw/master/img/202212212052224.png" alt="image-20221202200101839"></p>
-<p>插入第一个字符$a$:</p>
-<p>首先last指向0，我们先获取$str[0-len[last]-1]&#x3D;str[-1]!&#x3D;a$，则将$last&#x3D;fail[last]&#x3D;1$，发现$str[0-len[last]-1]&#x3D;str[0]&#x3D;a$，则在1号节点下新建节点插入$a$。</p>
-<p><img src="https://gitee.com/renmale-sztu/image/raw/master/img/202212212053362.png" alt="202212022048948"></p>
-<p>插入第二个字符b：</p>
-<p><img src="https://gitee.com/renmale-sztu/image/raw/master/img/202212212053645.png" alt="202212022047647"></p>
-<p>插入第三个字符b：</p>
-<ul>
-<li>$str[2-len[last]-1]&#x3D;str[0]!&#x3D;b$</li>
-<li>$last&#x3D;fail[last]&#x3D;0$</li>
-<li>$str[2-len[last]-1]&#x3D;str[1]&#x3D;b$</li>
-<li>在0号节点下新建b节点</li>
-<li>接下来求$fail$</li>
-<li>令$last&#x3D;fail[last]&#x3D;1$（不能指向自身）</li>
-<li>判断$str[2-len[last]-1]&#x3D;str[2]$是否等于b</li>
-<li>再判断1节点下有没有为b的子节点，有就指向，没有则继续更新$last$</li>
-<li>节点1下有为$b$的节点（即存在$trie[1][‘b’]$），编号为3，则将$fail[2]$指向3</li>
-<li>最后将$last$指向4</li>
-</ul>
-<p><img src="https://gitee.com/renmale-sztu/image/raw/master/img/202212212054705.png" alt="202212022107319"></p>
-<p><img src="https://gitee.com/renmale-sztu/image/raw/master/img/202212212054443.png" alt="202212022111341"></p>
-<p><img src="https://gitee.com/renmale-sztu/image/raw/master/img/202212212055112.png" alt="202212022147852"></p>
-<p><img src="https://gitee.com/renmale-sztu/image/raw/master/img/202212212056858.png" alt="image-20221202215150351"></p>
-<p><img src="https://gitee.com/renmale-sztu/image/raw/master/img/202212212056070.png" alt="image-20221202220630334"></p>
-<p><img src="https://gitee.com/renmale-sztu/image/raw/master/img/202212212056276.png" alt="image-20221202220946755"></p>
-<h2 id="实现"><a href="#实现" class="headerlink" title="实现"></a>实现</h2><figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#<span class="keyword">include</span><span class="string">&lt;iostream&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="keyword">include</span><span class="string">&lt;string&gt;</span></span></span><br><span class="line"></span><br><span class="line"><span class="type">const</span> <span class="type">int</span> MAXN=<span class="number">1e6</span>+<span class="number">7</span>;</span><br><span class="line"><span class="type">int</span> len[MAXN],num[MAXN],fail[MAXN],cnt[MAXN];</span><br><span class="line"><span class="type">int</span> trie[MAXN][<span class="number">26</span>],tot=<span class="number">1</span>,last;</span><br><span class="line">std::string str;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="type">int</span> <span class="title">getfail</span><span class="params">(<span class="type">int</span> x,<span class="type">int</span> u)</span></span>&#123;</span><br><span class="line">    <span class="keyword">while</span>(u-len[x]<span class="number">-1</span>&lt;<span class="number">0</span> || str[u-len[x]<span class="number">-1</span>]!=str[u]) x=fail[x];</span><br><span class="line">    <span class="keyword">return</span> x;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="type">int</span> <span class="title">main</span><span class="params">()</span></span>&#123;</span><br><span class="line">    std::cin&gt;&gt;str;</span><br><span class="line">    <span class="type">int</span> n=str.<span class="built_in">length</span>();</span><br><span class="line">    len[<span class="number">0</span>]=<span class="number">0</span>;len[<span class="number">1</span>]=<span class="number">-1</span>;</span><br><span class="line">    fail[<span class="number">0</span>]=fail[<span class="number">1</span>]=<span class="number">1</span>;</span><br><span class="line">    <span class="keyword">for</span>(<span class="type">int</span> i=<span class="number">0</span>;i&lt;n;++i)&#123;</span><br><span class="line">        <span class="type">int</span> u=last;</span><br><span class="line">        u=<span class="built_in">getfail</span>(u,i);</span><br><span class="line">        <span class="keyword">if</span>(!trie[u][str[i]-<span class="string">&#x27;a&#x27;</span>])&#123;</span><br><span class="line">			fail[++tot]=trie[<span class="built_in">getfail</span>(fail[u],i)][str[i]-<span class="string">&#x27;a&#x27;</span>];</span><br><span class="line">            trie[u][str[i]-<span class="string">&#x27;a&#x27;</span>]=tot;</span><br><span class="line">        	len[tot]=len[u]+<span class="number">2</span>;</span><br><span class="line">            num[tot]=num[fail[tot]]+<span class="number">1</span>;</span><br><span class="line">        &#125;</span><br><span class="line">        last=trie[u][str[i]-<span class="string">&#x27;a&#x27;</span>];</span><br><span class="line">        ++cnt[last];</span><br><span class="line">	&#125;</span><br><span class="line">    <span class="keyword">for</span>(<span class="type">int</span> i=tot;i&gt;=<span class="number">2</span>;--i)&#123;</span><br><span class="line">        cnt[fail[i]]+=cnt[i];</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-
-
-
-<h2 id="题目"><a href="#题目" class="headerlink" title="题目"></a>题目</h2><ul>
-<li><a target="_blank" rel="noopener" href="https://www.luogu.com.cn/problem/P5496">洛谷P5496</a></li>
-<li><a target="_blank" rel="noopener" href="https://www.luogu.com.cn/problem/P3649">洛谷P3649</a></li>
-<li><a target="_blank" rel="noopener" href="https://www.luogu.com.cn/problem/P4287">洛谷P4287</a></li>
-</ul>
-
-      
-    </div>
-
-    
-    
-    
-
-    <footer class="post-footer">
-        <div class="post-eof"></div>
-      
-    </footer>
-  </article>
-</div>
-
-
-
-
-    
-
-
-<div class="post-block">
-  
-  
-
-  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="">
-    <link itemprop="mainEntityOfPage" href="http://example.com/2022/11/29/Trie/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/images/avatar.gif">
-      <meta itemprop="name" content="John Doe">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="Hexo">
-      <meta itemprop="description" content="">
-    </span>
-
-    <span hidden itemprop="post" itemscope itemtype="http://schema.org/CreativeWork">
-      <meta itemprop="name" content="undefined | Hexo">
-      <meta itemprop="description" content="">
-    </span>
-      <header class="post-header">
-        <h2 class="post-title" itemprop="name headline">
-          <a href="/2022/11/29/Trie/" class="post-title-link" itemprop="url">Trie</a>
-        </h2>
-
-        <div class="post-meta-container">
-          <div class="post-meta">
-    <span class="post-meta-item">
-      <span class="post-meta-item-icon">
-        <i class="far fa-calendar"></i>
-      </span>
-      <span class="post-meta-item-text">Posted on</span>
-
-      <time title="Created: 2022-11-29 12:27:13" itemprop="dateCreated datePublished" datetime="2022-11-29T12:27:13+08:00">2022-11-29</time>
-    </span>
-    <span class="post-meta-item">
-      <span class="post-meta-item-icon">
-        <i class="far fa-calendar-check"></i>
-      </span>
-      <span class="post-meta-item-text">Edited on</span>
-      <time title="Modified: 2022-12-23 22:08:02" itemprop="dateModified" datetime="2022-12-23T22:08:02+08:00">2022-12-23</time>
-    </span>
-
-  
-</div>
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-          <meta name="referrer" content="no-referrer" />
-
-<h2 id="概念"><a href="#概念" class="headerlink" title="概念"></a>概念</h2><p>字典树也叫Trie树、前缀树，是一种针对字符串进行维护的<strong>数据结构</strong>，而不是算法。</p>
-<p>字典树是对字符串的一种存储的方式，这棵树的根节点到某一个目标节点的路径就是一个字符串（单词）。</p>
-<p>举个例子，下图的字典树：</p>
-<p><img src="https://gitee.com/renmale-sztu/image/raw/master/img/202212212057021.png" alt="202211291950874"></p>
-<p>该字典树存储的单词为：</p>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">a</span><br><span class="line">abc</span><br><span class="line">ba</span><br><span class="line">bca</span><br><span class="line">bca</span><br><span class="line">ca</span><br><span class="line">ca</span><br></pre></td></tr></table></figure>
-
-<h2 id="性质"><a href="#性质" class="headerlink" title="性质"></a>性质</h2><ul>
-<li>根节点不包含字符，除根节点外的所有节点都包含一个字符</li>
-<li>从根节点到某一个节点，路径上经过的所有字符连接起来，为该节点对应的字符串</li>
-<li>每个节点的子节点包含的字符各不相同</li>
-</ul>
-<h2 id="应用"><a href="#应用" class="headerlink" title="应用"></a>应用</h2><ul>
-<li>计算热词：统计字符串在集合中出现的个数</li>
-<li>字典序排序</li>
-<li>最长公共前缀（LCP）</li>
-<li>…</li>
-</ul>
-<h2 id="实现"><a href="#实现" class="headerlink" title="实现"></a>实现</h2><p>字典树的实现主要有<strong>插入和查找</strong></p>
-<p>假设该字符串集合由26个小写字母组成，我们定义两个数组</p>
-<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="type">int</span> next[<span class="number">100000</span>][<span class="number">26</span>],cnt; <span class="comment">//存放该节点的子节点</span></span><br><span class="line"><span class="type">int</span> num[<span class="number">100000</span>]; <span class="comment">//表示该字符串一共出现多少次，为0表示不存在</span></span><br></pre></td></tr></table></figure>
-
-<h3 id="插入操作"><a href="#插入操作" class="headerlink" title="插入操作"></a>插入操作</h3><figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="type">void</span> <span class="title">insert</span><span class="params">(std::string str)</span></span>&#123;</span><br><span class="line">    <span class="type">int</span> len=str.<span class="built_in">length</span>();</span><br><span class="line">	<span class="type">int</span> p=<span class="number">0</span>; <span class="comment">//记录当前节点位置</span></span><br><span class="line">    <span class="keyword">for</span>(<span class="type">int</span> i=<span class="number">0</span>;i&lt;len;++i)&#123;</span><br><span class="line">    	<span class="type">int</span> c=str[i]-<span class="string">&#x27;a&#x27;</span>;</span><br><span class="line">        <span class="keyword">if</span>(!next[p][c]) next[p][c]=++cnt;</span><br><span class="line">        p=next[p][c];</span><br><span class="line">    &#125;</span><br><span class="line">    ++num[p];</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-
-<h3 id="查找操作"><a href="#查找操作" class="headerlink" title="查找操作"></a>查找操作</h3><figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="type">int</span> <span class="title">find</span><span class="params">(std::string str)</span></span>&#123;</span><br><span class="line">	<span class="type">int</span> len=str.<span class="built_in">length</span>();</span><br><span class="line">    <span class="type">int</span> p=<span class="number">0</span>;</span><br><span class="line">    <span class="keyword">for</span>(<span class="type">int</span> i=<span class="number">0</span>;i&lt;len;++i)&#123;</span><br><span class="line">		<span class="type">int</span> c=str[i]-<span class="string">&#x27;a&#x27;</span>;</span><br><span class="line">        <span class="keyword">if</span>(!next[p][c]) <span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">        p=next[p][c];</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">return</span> num[p];</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-
-<h2 id="题目"><a href="#题目" class="headerlink" title="题目"></a>题目</h2><ul>
-<li><a target="_blank" rel="noopener" href="https://www.luogu.com.cn/problem/SP4033">SP4033 PHONELST - Phone List</a></li>
-<li><a target="_blank" rel="noopener" href="https://www.luogu.com.cn/problem/UVA1401">UVA1401 Remember the Word</a></li>
-<li><a target="_blank" rel="noopener" href="https://www.luogu.com.cn/problem/UVA11732">UVA11732 “strcmp()” Anyone?</a> </li>
-<li><a target="_blank" rel="noopener" href="https://www.luogu.com.cn/problem/P7469">P7469 [NOI Online 2021 提高组] 积木小赛</a></li>
-</ul>
-
-      
-    </div>
-
-    
-    
-    
-
-    <footer class="post-footer">
-        <div class="post-eof"></div>
-      
-    </footer>
-  </article>
-</div>
-
-
-
-
-    
-
-
-<div class="post-block">
-  
-  
-
-  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="">
-    <link itemprop="mainEntityOfPage" href="http://example.com/2022/11/29/Manacher/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/images/avatar.gif">
-      <meta itemprop="name" content="John Doe">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="Hexo">
-      <meta itemprop="description" content="">
-    </span>
-
-    <span hidden itemprop="post" itemscope itemtype="http://schema.org/CreativeWork">
-      <meta itemprop="name" content="undefined | Hexo">
-      <meta itemprop="description" content="">
-    </span>
-      <header class="post-header">
-        <h2 class="post-title" itemprop="name headline">
-          <a href="/2022/11/29/Manacher/" class="post-title-link" itemprop="url">Manacher</a>
-        </h2>
-
-        <div class="post-meta-container">
-          <div class="post-meta">
-    <span class="post-meta-item">
-      <span class="post-meta-item-icon">
-        <i class="far fa-calendar"></i>
-      </span>
-      <span class="post-meta-item-text">Posted on</span>
-
-      <time title="Created: 2022-11-29 01:36:05" itemprop="dateCreated datePublished" datetime="2022-11-29T01:36:05+08:00">2022-11-29</time>
-    </span>
-    <span class="post-meta-item">
-      <span class="post-meta-item-icon">
-        <i class="far fa-calendar-check"></i>
-      </span>
-      <span class="post-meta-item-text">Edited on</span>
-      <time title="Modified: 2022-12-23 22:07:39" itemprop="dateModified" datetime="2022-12-23T22:07:39+08:00">2022-12-23</time>
-    </span>
-
-  
-</div>
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-          <meta name="referrer" content="no-referrer" />		
-
-<p>​	给定一个字符串$abbcbbbcbbbad$，求该字符串的最长回文子串的长度。</p>
-<h3 id="暴力匹配"><a href="#暴力匹配" class="headerlink" title="暴力匹配"></a>暴力匹配</h3><p>​		两个 $for$$ 循环遍历所有子串，再判断所有子串是否回文，再通过比较获取最长回文子串长度，算法复杂度为 $$O(N^3)$</p>
-<p><img src="https://gitee.com/renmale-sztu/image/raw/master/img/202212212100439.png" alt="image-20221221210004388"></p>
-<h3 id="朴素算法"><a href="#朴素算法" class="headerlink" title="朴素算法"></a>朴素算法</h3><p>​		先遍历一遍字符串，对于每个 $i$，以它作为字符串的中心向字符串两边扩展，在遍历获得子串的同时完成对是否回文的判断，这样就将时间复杂度优化到了 $O(N^2)$，需要分别计算奇数串和偶数串</p>
-<p><img src="https://gitee.com/renmale-sztu/image/raw/master/img/202212212100576.png" alt="202211291956549"></p>
-<h4 id="代码实现："><a href="#代码实现：" class="headerlink" title="代码实现："></a>代码实现：</h4><figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line"><span class="type">int</span> mmax=<span class="number">0</span>;</span><br><span class="line"><span class="keyword">for</span>(<span class="type">int</span> i=<span class="number">0</span>;i&lt;len;++i)&#123;</span><br><span class="line">    <span class="type">int</span> d1=<span class="number">1</span>,d2=<span class="number">0</span>;</span><br><span class="line">    <span class="comment">//奇数串</span></span><br><span class="line">    <span class="keyword">for</span>(<span class="type">int</span> j=<span class="number">1</span>;j&lt;std::<span class="built_in">min</span>(i,len);++j)&#123;</span><br><span class="line">        <span class="keyword">if</span>(str[i-j]!=str[i+j]) <span class="keyword">return</span>;</span><br><span class="line">        d1+=<span class="number">2</span>;</span><br><span class="line">	&#125;  </span><br><span class="line">    <span class="comment">//偶数串</span></span><br><span class="line">    <span class="keyword">for</span>(<span class="type">int</span> j=<span class="number">0</span>;j&lt;std::<span class="built_in">min</span>(i,len-i<span class="number">-1</span>);++j)&#123;</span><br><span class="line">        <span class="keyword">if</span>(str[i-j]!=str[i+<span class="number">1</span>+j]) <span class="keyword">return</span>;</span><br><span class="line">        d2+=<span class="number">2</span>;</span><br><span class="line">    &#125;</span><br><span class="line">    mmax=std::<span class="built_in">max</span>(mmax,std::<span class="built_in">max</span>(d1,d2));</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-
-<h3 id="Manacher算法"><a href="#Manacher算法" class="headerlink" title="Manacher算法"></a>Manacher算法</h3><h4 id="奇数串"><a href="#奇数串" class="headerlink" title="奇数串"></a>奇数串</h4><p>我们先定义：</p>
-<p>$d[i]$：表示以 $i$ 为中心的最长回文子串的长度</p>
-<p>$mx,id$：$mx$ 就是以 $id$ 为中心的最右回文边界，即 $mx&#x3D;max(i+d[i]&#x2F;2)$，$id&#x3D;i$</p>
-<p><img src="https://gitee.com/renmale-sztu/image/raw/master/img/202212212101292.png" alt="202211291950905"></p>
-<p>我们继续遍历字符串，当 $i \lt mx$ 时，我们可以发现一个 $j$ 与 $i$ 关于 $id$ 对称</p>
-<p><img src="https://gitee.com/renmale-sztu/image/raw/master/img/202212212105286.png" alt="202211291950954"></p>
-<p>此时，我们可以发现，<strong>在 $d[id]$ 的范围内</strong>，任何以 $j$ 为中心的子串，都可以找到一个以 $i$ 为中心的子串与它相反（<del>因为 $i$ 和 $j$ 关于 $id$ 对称，且 $d[id]$ 是回文串</del>），而又因为回文串是以中心对称的，即：</p>
-<p><strong>任何以 $j$ 为中心的回文子串，都可以找到一个以 $i$ 为中心的子串与它相等</strong></p>
-<p><img src="https://gitee.com/renmale-sztu/image/raw/master/img/202212212106854.png" alt="202211291951492"></p>
-<p>所以，以 $i$ 为中心的最长回文子串的长度至少为 $min(d[j],2*(mx-i)+1)$，接下来再利用朴素算法来对超过 $mx$ 的部分进行判断</p>
-<p><img src="https://gitee.com/renmale-sztu/image/raw/master/img/202212212106297.png" alt="202211291951801"></p>
-<p>最后，再更新 $id$ 和 $mx$</p>
-<p><img src="https://gitee.com/renmale-sztu/image/raw/master/img/202212212106908.png" alt="202211291951303"></p>
-<h5 id="代码实现：-1"><a href="#代码实现：-1" class="headerlink" title="代码实现："></a>代码实现：</h5><figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line">std::vector&lt;<span class="type">int</span>&gt; odd;</span><br><span class="line"><span class="type">int</span> id=<span class="number">0</span>,mx=<span class="number">0</span>,mmax=<span class="number">0</span>;</span><br><span class="line"><span class="keyword">for</span>(<span class="type">int</span> i=<span class="number">0</span>;i&lt;len;++i)&#123;</span><br><span class="line">    <span class="comment">//回文半径</span></span><br><span class="line">	<span class="type">int</span> k=(i&gt;mx) ? <span class="number">1</span> : std::<span class="built_in">min</span>(odd[<span class="number">2</span>*id-i]/<span class="number">2</span>,mx-i);</span><br><span class="line">    <span class="keyword">while</span>(<span class="number">0</span>&lt;=i-k &amp;&amp; i+k&lt;len &amp;&amp; str[i-k]==str[i+k]) ++k;</span><br><span class="line">    --k;</span><br><span class="line">    odd[i]=<span class="number">2</span>*k+<span class="number">1</span>;</span><br><span class="line">    mmax=std::<span class="built_in">max</span>(mmax,odd[i]);</span><br><span class="line">    <span class="keyword">if</span>(i+k&gt;mx)&#123;</span><br><span class="line">		id=i;</span><br><span class="line">        mx=i+k;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-
-<h4 id="偶数串"><a href="#偶数串" class="headerlink" title="偶数串"></a>偶数串</h4><p>偶数部分只需要对奇数的代码做一点修改即可</p>
-<h5 id="代码实现：-2"><a href="#代码实现：-2" class="headerlink" title="代码实现："></a>代码实现：</h5><figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line">std::vector&lt;<span class="type">int</span>&gt; even;</span><br><span class="line"><span class="type">int</span> id=<span class="number">0</span>,mx=<span class="number">0</span>,mmax=<span class="number">0</span>;</span><br><span class="line"><span class="keyword">for</span>(<span class="type">int</span> i=<span class="number">0</span>;i&lt;len;++i)&#123;</span><br><span class="line">    <span class="comment">//回文半径</span></span><br><span class="line">	<span class="type">int</span> k=(i&gt;mx) ? <span class="number">0</span> : std::<span class="built_in">min</span>(even[<span class="number">2</span>*id-i+<span class="number">1</span>]/<span class="number">2</span>,mx-i);</span><br><span class="line">    <span class="keyword">while</span>(<span class="number">0</span>&lt;=i-k &amp;&amp; i+<span class="number">1</span>+k&lt;len &amp;&amp; str[i-k]==str[i+<span class="number">1</span>+k]) ++k;</span><br><span class="line">    even[i]=<span class="number">2</span>*k;</span><br><span class="line">    mmax=std::<span class="built_in">max</span>(mmax,even[i]);</span><br><span class="line">    <span class="keyword">if</span>(i+k&gt;mx)&#123;</span><br><span class="line">		id=i;</span><br><span class="line">        mx=i+k;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-
-<h4 id="改进"><a href="#改进" class="headerlink" title="改进"></a>改进</h4><p>在前面我们都是将奇数串和偶数串分开来算，实际上我们可以通过插入无意义的符号来使二者都统一为奇数串。</p>
-<p>对于前面给定的字符串 $abbcbbbcbbbad$ ，我们插入 $len+1$ 个分隔符 $#$，使字符串变成 $#a#b#b#c#b#b#b#c#b#b#b#a#d#$，这样所有的子串的长度都为奇数了，最后除以2就是真正子串的长度了。</p>
-<h3 id="题目"><a href="#题目" class="headerlink" title="题目"></a>题目</h3><ul>
-<li><a target="_blank" rel="noopener" href="https://www.luogu.com.cn/problem/P1659">P1659 [国家集训队]拉拉队排练</a> </li>
-<li><a target="_blank" rel="noopener" href="https://www.luogu.com.cn/problem/P3501">P3501[POI2010]ANT-Antisymmetry</a> </li>
-<li><a target="_blank" rel="noopener" href="https://www.luogu.com.cn/problem/UVA11475">UVA11475 Extend to Palindrome</a> </li>
-<li><a target="_blank" rel="noopener" href="https://www.luogu.com.cn/problem/P6216">P6216 回文匹配</a> </li>
-<li><a target="_blank" rel="noopener" href="https://www.luogu.com.cn/problem/P4555">P4555[国家集训队]最长双回文串 </a> </li>
-<li><a target="_blank" rel="noopener" href="https://www.luogu.com.cn/problem/P5446">P5446 [THUPC2018]绿绿和串串</a></li>
-</ul>
-
-      
-    </div>
-
-    
-    
-    
-
-    <footer class="post-footer">
-        <div class="post-eof"></div>
-      
-    </footer>
-  </article>
-</div>
-
-
-
-
-    
-
-
-<div class="post-block">
-  
-  
-
-  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="">
+  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="en">
     <link itemprop="mainEntityOfPage" href="http://example.com/2022/11/26/%E5%86%85%E5%AD%98%E7%AE%A1%E7%90%86/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
@@ -758,13 +231,13 @@
     </span>
 
     <span hidden itemprop="post" itemscope itemtype="http://schema.org/CreativeWork">
-      <meta itemprop="name" content="undefined | Hexo">
+      <meta itemprop="name" content="内存管理 | Hexo">
       <meta itemprop="description" content="">
     </span>
       <header class="post-header">
-        <h2 class="post-title" itemprop="name headline">
-          <a href="/2022/11/26/%E5%86%85%E5%AD%98%E7%AE%A1%E7%90%86/" class="post-title-link" itemprop="url">内存管理</a>
-        </h2>
+        <h1 class="post-title" itemprop="name headline">
+          内存管理
+        </h1>
 
         <div class="post-meta-container">
           <div class="post-meta">
@@ -794,7 +267,7 @@
     
     
     <div class="post-body" itemprop="articleBody">
-          <meta name="referrer" content="no-referrer" />
+        <meta name="referrer" content="no-referrer" />
 
 <h2 id="一、四种内存的分配释放方法"><a href="#一、四种内存的分配释放方法" class="headerlink" title="一、四种内存的分配释放方法"></a>一、四种内存的分配释放方法</h2><p><img src="https://gitee.com/renmale-sztu/image/raw/master/img/202212212036111.png" alt="image-20221221203603054"></p>
 <table>
@@ -939,7 +412,6 @@
 <p><img src="https://gitee.com/renmale-sztu/image/raw/master/img/202212212051463.png" alt="202212090129060"></p>
 <p>奇怪，在visual studio中能够正确输出，而在vscode中却间隔16个字节</p>
 
-      
     </div>
 
     
@@ -947,11 +419,25 @@
     
 
     <footer class="post-footer">
-        <div class="post-eof"></div>
-      
+          <div class="post-tags">
+              <a href="/tags/malloc/" rel="tag"># malloc</a>
+          </div>
+
+        
+
+          <div class="post-nav">
+            <div class="post-nav-item">
+            </div>
+            <div class="post-nav-item">
+                <a href="/2022/11/29/Manacher/" rel="next" title="Manacher">
+                  Manacher <i class="fa fa-chevron-right"></i>
+                </a>
+            </div>
+          </div>
     </footer>
   </article>
 </div>
+
 
 
 

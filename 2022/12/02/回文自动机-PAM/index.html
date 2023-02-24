@@ -1,0 +1,387 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width">
+<meta name="theme-color" content="#222"><meta name="generator" content="Hexo 6.3.0">
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+
+<link rel="stylesheet" href="/css/main.css">
+
+
+
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.2.1/css/all.min.css" integrity="sha256-Z1K5uhUaJXA7Ll0XrZ/0JhX4lAtZFpT6jkKrEDT0drU=" crossorigin="anonymous">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/3.1.1/animate.min.css" integrity="sha256-PR7ttpcvz8qrF57fur/yAx1qXMFJeJFiA6pSzWi0OIE=" crossorigin="anonymous">
+
+<script class="next-config" data-name="main" type="application/json">{"hostname":"example.com","root":"/","images":"/images","scheme":"Gemini","darkmode":false,"version":"8.14.2","exturl":false,"sidebar":{"position":"left","display":"always","padding":18,"offset":12},"copycode":{"enable":true,"style":"mac"},"bookmark":{"enable":false,"color":"#222","save":"auto"},"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"stickytabs":false,"motion":{"enable":true,"async":false,"transition":{"menu_item":"fadeInDown","post_block":"fadeIn","post_header":"fadeInDown","post_body":"fadeInDown","coll_header":"fadeInLeft","sidebar":"fadeInUp"}},"prism":false,"i18n":{"placeholder":"Searching...","empty":"We didn't find any results for the search: ${query}","hits_time":"${hits} results found in ${time} ms","hits":"${hits} results found"},"path":"/search.xml","localsearch":{"enable":true,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false}}</script><script src="/js/config.js"></script>
+
+    <meta name="description" content="引入​	给定一个字符串$s$，求字符串$s$有多少个不同的回文子串？ ​	如果使用$Manacher$算法来获得字符串中每个字符为中心的最长回文半径，再用$Hash$来查重所有的回文子串，时间复杂度为$O(N^2)$（如果使用其他查重方式，时间复杂度可能更高），而回文自动机则能够以$O(N)$的时间复杂度来完成一些$Manacher$算法难以处理的回文串问题。 原理​	回文自动机，也叫回文树，">
+<meta property="og:type" content="article">
+<meta property="og:title" content="回文自动机(PAM)">
+<meta property="og:url" content="http://example.com/2022/12/02/%E5%9B%9E%E6%96%87%E8%87%AA%E5%8A%A8%E6%9C%BA-PAM/index.html">
+<meta property="og:site_name" content="Hexo">
+<meta property="og:description" content="引入​	给定一个字符串$s$，求字符串$s$有多少个不同的回文子串？ ​	如果使用$Manacher$算法来获得字符串中每个字符为中心的最长回文半径，再用$Hash$来查重所有的回文子串，时间复杂度为$O(N^2)$（如果使用其他查重方式，时间复杂度可能更高），而回文自动机则能够以$O(N)$的时间复杂度来完成一些$Manacher$算法难以处理的回文串问题。 原理​	回文自动机，也叫回文树，">
+<meta property="og:locale" content="en_US">
+<meta property="og:image" content="https://gitee.com/renmale-sztu/image/raw/master/img/202212212051013.png">
+<meta property="og:image" content="https://gitee.com/renmale-sztu/image/raw/master/img/202212212052224.png">
+<meta property="og:image" content="https://gitee.com/renmale-sztu/image/raw/master/img/202212212053362.png">
+<meta property="og:image" content="https://gitee.com/renmale-sztu/image/raw/master/img/202212212053645.png">
+<meta property="og:image" content="https://gitee.com/renmale-sztu/image/raw/master/img/202212212054705.png">
+<meta property="og:image" content="https://gitee.com/renmale-sztu/image/raw/master/img/202212212054443.png">
+<meta property="og:image" content="https://gitee.com/renmale-sztu/image/raw/master/img/202212212055112.png">
+<meta property="og:image" content="https://gitee.com/renmale-sztu/image/raw/master/img/202212212056858.png">
+<meta property="og:image" content="https://gitee.com/renmale-sztu/image/raw/master/img/202212212056070.png">
+<meta property="og:image" content="https://gitee.com/renmale-sztu/image/raw/master/img/202212212056276.png">
+<meta property="article:published_time" content="2022-12-02T06:49:02.000Z">
+<meta property="article:modified_time" content="2023-01-09T12:41:18.609Z">
+<meta property="article:author" content="John Doe">
+<meta property="article:tag" content="algorithm">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://gitee.com/renmale-sztu/image/raw/master/img/202212212051013.png">
+
+
+<link rel="canonical" href="http://example.com/2022/12/02/%E5%9B%9E%E6%96%87%E8%87%AA%E5%8A%A8%E6%9C%BA-PAM/">
+
+
+
+<script class="next-config" data-name="page" type="application/json">{"sidebar":"","isHome":false,"isPost":true,"lang":"en","comments":true,"permalink":"http://example.com/2022/12/02/%E5%9B%9E%E6%96%87%E8%87%AA%E5%8A%A8%E6%9C%BA-PAM/","path":"2022/12/02/回文自动机-PAM/","title":"回文自动机(PAM)"}</script>
+
+<script class="next-config" data-name="calendar" type="application/json">""</script>
+<title>回文自动机(PAM) | Hexo</title>
+  
+
+
+
+
+
+
+
+
+  <noscript>
+    <link rel="stylesheet" href="/css/noscript.css">
+  </noscript>
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" class="use-motion">
+  <div class="headband"></div>
+
+  <main class="main">
+    <div class="column">
+      <header class="header" itemscope itemtype="http://schema.org/WPHeader"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="Toggle navigation bar" role="button">
+        <span class="toggle-line"></span>
+        <span class="toggle-line"></span>
+        <span class="toggle-line"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <i class="logo-line"></i>
+      <p class="site-title">Hexo</p>
+      <i class="logo-line"></i>
+    </a>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger" aria-label="Search" role="button">
+        <i class="fa fa-search fa-fw fa-lg"></i>
+    </div>
+  </div>
+</div>
+
+
+
+<nav class="site-nav">
+  <ul class="main-menu menu"><li class="menu-item menu-item-home"><a href="/" rel="section"><i class="fa fa-home fa-fw"></i>Home</a></li><li class="menu-item menu-item-about"><a href="/about/" rel="section"><i class="fa fa-user fa-fw"></i>About</a></li><li class="menu-item menu-item-tags"><a href="/tags/" rel="section"><i class="fa fa-tags fa-fw"></i>Tags</a></li><li class="menu-item menu-item-categories"><a href="/categories/" rel="section"><i class="fa fa-th fa-fw"></i>Categories</a></li><li class="menu-item menu-item-archives"><a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>Archives</a></li>
+      <li class="menu-item menu-item-search">
+        <a role="button" class="popup-trigger"><i class="fa fa-search fa-fw"></i>Search
+        </a>
+      </li>
+  </ul>
+</nav>
+
+
+
+  <div class="search-pop-overlay">
+    <div class="popup search-popup"><div class="search-header">
+  <span class="search-icon">
+    <i class="fa fa-search"></i>
+  </span>
+  <div class="search-input-container">
+    <input autocomplete="off" autocapitalize="off" maxlength="80"
+           placeholder="Searching..." spellcheck="false"
+           type="search" class="search-input">
+  </div>
+  <span class="popup-btn-close" role="button">
+    <i class="fa fa-times-circle"></i>
+  </span>
+</div>
+<div class="search-result-container no-result">
+  <div class="search-result-icon">
+    <i class="fa fa-spinner fa-pulse fa-5x"></i>
+  </div>
+</div>
+
+    </div>
+  </div>
+
+</header>
+        
+  
+  <aside class="sidebar">
+
+    <div class="sidebar-inner sidebar-nav-active sidebar-toc-active">
+      <ul class="sidebar-nav">
+        <li class="sidebar-nav-toc">
+          Table of Contents
+        </li>
+        <li class="sidebar-nav-overview">
+          Overview
+        </li>
+      </ul>
+
+      <div class="sidebar-panel-container">
+        <!--noindex-->
+        <div class="post-toc-wrap sidebar-panel">
+            <div class="post-toc animated"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%BC%95%E5%85%A5"><span class="nav-number">1.</span> <span class="nav-text">引入</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%8E%9F%E7%90%86"><span class="nav-number">2.</span> <span class="nav-text">原理</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E6%9E%84%E5%BB%BA"><span class="nav-number">3.</span> <span class="nav-text">构建</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%AE%9E%E7%8E%B0"><span class="nav-number">4.</span> <span class="nav-text">实现</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E9%A2%98%E7%9B%AE"><span class="nav-number">5.</span> <span class="nav-text">题目</span></a></li></ol></div>
+        </div>
+        <!--/noindex-->
+
+        <div class="site-overview-wrap sidebar-panel">
+          <div class="site-author animated" itemprop="author" itemscope itemtype="http://schema.org/Person">
+    <img class="site-author-image" itemprop="image" alt="John Doe"
+      src="/images/avatar.gif">
+  <p class="site-author-name" itemprop="name">John Doe</p>
+  <div class="site-description" itemprop="description"></div>
+</div>
+<div class="site-state-wrap animated">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+        <a href="/archives/">
+          <span class="site-state-item-count">7</span>
+          <span class="site-state-item-name">posts</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-tags">
+        <span class="site-state-item-count">2</span>
+        <span class="site-state-item-name">tags</span>
+      </div>
+  </nav>
+</div>
+
+        </div>
+      </div>
+    </div>
+
+    
+  </aside>
+
+
+    </div>
+
+    <div class="main-inner post posts-expand">
+
+
+  
+
+
+<div class="post-block">
+  
+  
+
+  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="en">
+    <link itemprop="mainEntityOfPage" href="http://example.com/2022/12/02/%E5%9B%9E%E6%96%87%E8%87%AA%E5%8A%A8%E6%9C%BA-PAM/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="John Doe">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Hexo">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="post" itemscope itemtype="http://schema.org/CreativeWork">
+      <meta itemprop="name" content="回文自动机(PAM) | Hexo">
+      <meta itemprop="description" content="">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          回文自动机(PAM)
+        </h1>
+
+        <div class="post-meta-container">
+          <div class="post-meta">
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar"></i>
+      </span>
+      <span class="post-meta-item-text">Posted on</span>
+
+      <time title="Created: 2022-12-02 14:49:02" itemprop="dateCreated datePublished" datetime="2022-12-02T14:49:02+08:00">2022-12-02</time>
+    </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar-check"></i>
+      </span>
+      <span class="post-meta-item-text">Edited on</span>
+      <time title="Modified: 2023-01-09 20:41:18" itemprop="dateModified" datetime="2023-01-09T20:41:18+08:00">2023-01-09</time>
+    </span>
+
+  
+</div>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+        <meta name="referrer" content="no-referrer" />
+
+<h2 id="引入"><a href="#引入" class="headerlink" title="引入"></a>引入</h2><p>​	给定一个字符串$s$，求字符串$s$有多少个不同的回文子串？</p>
+<p>​	如果使用$Manacher$算法来获得字符串中每个字符为中心的最长回文半径，再用$Hash$来查重所有的回文子串，时间复杂度为$O(N^2)$<del>（如果使用其他查重方式，时间复杂度可能更高）</del>，而<strong>回文自动机</strong>则能够以$O(N)$的时间复杂度来完成一些$Manacher$算法难以处理的回文串问题。</p>
+<h2 id="原理"><a href="#原理" class="headerlink" title="原理"></a>原理</h2><p>​	回文自动机，也叫回文树，是一种在2014年发明的数据结构。</p>
+<p>​	回文自动机，就是使用字典树来保存所有回文子串的回文半径，使用两棵树来分别保存偶数串和奇数串，<del>也可以像$Manacher$一样通过插入无意义的字符来只构建一棵树，但是这样处理起来比较麻烦</del>，在树上的一个节点代表一个回文子串，在最后使用节点数-2（减去两个根节点）就得到了不同回文子串的位置。</p>
+<p>​	对于一个已知的字符串$abbcbbbcbbbad$，假设我们已经遍历了$abbcbbbcbb$，当我们遍历下一个字符$b$时，会进行如下判断：</p>
+<p><img src="https://gitee.com/renmale-sztu/image/raw/master/img/202212212051013.png" alt="202212021838948"></p>
+<p>​	依次与包含前一个字符的回文子串从长到短进行匹配，匹配成功时则插入，都不匹配时，最后与自身匹配，为仅有一个字符的回文子串。</p>
+<h2 id="构建"><a href="#构建" class="headerlink" title="构建"></a>构建</h2><p>​	那么如何构建回文树呢？</p>
+<p>​	我们首先定义如下变量：</p>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="type">int</span> len[];  <span class="comment">//len[u]表示回文树中u节点代表的回文串的长度</span></span><br><span class="line"><span class="type">int</span> trie[][]; <span class="comment">//trie[u][c]表示编号为u的节点代表的回文串在两头加上字符c后的回文串的编号</span></span><br><span class="line"><span class="type">int</span> fail[];  <span class="comment">//fail[u]表示节点u失配后跳转到不等于自身的最长后缀回文串的编号（如上图）</span></span><br><span class="line"><span class="type">int</span> cnt[];  <span class="comment">//cnt[u]表示节点u所代表的回文串在整个字符串中出现了多少次</span></span><br><span class="line"><span class="type">int</span> num[];  <span class="comment">//num[u]表示u节点所代表的回文串有多少个本质不同的后缀回文子串</span></span><br><span class="line"><span class="type">int</span> last;  <span class="comment">//表示上一次插入字符的节点的编号</span></span><br><span class="line"><span class="type">int</span> tot;   <span class="comment">//有多少个节点</span></span><br></pre></td></tr></table></figure>
+
+<p>​	首先我们定义两个节点，0号节点和1号节点，0号节点是偶树的根，1号节点则为奇树的根，初始化数据为：</p>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">len[<span class="number">0</span>]=<span class="number">0</span>;<span class="comment">//偶树每添加一个节点长度+2</span></span><br><span class="line">len[<span class="number">1</span>]=<span class="number">-1</span>;<span class="comment">//奇树中间节点只算一次，所以是-1</span></span><br><span class="line">fail[<span class="number">0</span>]=fail[<span class="number">1</span>]=<span class="number">1</span>;<span class="comment">//新插入一个字符无论如何也能形成一个回文串（只有自身），所以fail[0]指向1号节点，而1号节点指向自身（无所谓）</span></span><br><span class="line">last=<span class="number">0</span>;</span><br></pre></td></tr></table></figure>
+
+<p>​	下面为字符串$str&#x3D;abbcbbb$的回文树构建过程：</p>
+<p>初始化：</p>
+<p><img src="https://gitee.com/renmale-sztu/image/raw/master/img/202212212052224.png" alt="image-20221202200101839"></p>
+<p>插入第一个字符$a$:</p>
+<p>首先last指向0，我们先获取$str[0-len[last]-1]&#x3D;str[-1]!&#x3D;a$，则将$last&#x3D;fail[last]&#x3D;1$，发现$str[0-len[last]-1]&#x3D;str[0]&#x3D;a$，则在1号节点下新建节点插入$a$。</p>
+<p><img src="https://gitee.com/renmale-sztu/image/raw/master/img/202212212053362.png" alt="202212022048948"></p>
+<p>插入第二个字符b：</p>
+<p><img src="https://gitee.com/renmale-sztu/image/raw/master/img/202212212053645.png" alt="202212022047647"></p>
+<p>插入第三个字符b：</p>
+<ul>
+<li>$str[2-len[last]-1]&#x3D;str[0]!&#x3D;b$</li>
+<li>$last&#x3D;fail[last]&#x3D;0$</li>
+<li>$str[2-len[last]-1]&#x3D;str[1]&#x3D;b$</li>
+<li>在0号节点下新建b节点</li>
+<li>接下来求$fail$</li>
+<li>令$last&#x3D;fail[last]&#x3D;1$（不能指向自身）</li>
+<li>判断$str[2-len[last]-1]&#x3D;str[2]$是否等于b</li>
+<li>再判断1节点下有没有为b的子节点，有就指向，没有则继续更新$last$</li>
+<li>节点1下有为$b$的节点（即存在$trie[1][‘b’]$），编号为3，则将$fail[2]$指向3</li>
+<li>最后将$last$指向4</li>
+</ul>
+<p><img src="https://gitee.com/renmale-sztu/image/raw/master/img/202212212054705.png" alt="202212022107319"></p>
+<p><img src="https://gitee.com/renmale-sztu/image/raw/master/img/202212212054443.png" alt="202212022111341"></p>
+<p><img src="https://gitee.com/renmale-sztu/image/raw/master/img/202212212055112.png" alt="202212022147852"></p>
+<p><img src="https://gitee.com/renmale-sztu/image/raw/master/img/202212212056858.png" alt="image-20221202215150351"></p>
+<p><img src="https://gitee.com/renmale-sztu/image/raw/master/img/202212212056070.png" alt="image-20221202220630334"></p>
+<p><img src="https://gitee.com/renmale-sztu/image/raw/master/img/202212212056276.png" alt="image-20221202220946755"></p>
+<h2 id="实现"><a href="#实现" class="headerlink" title="实现"></a>实现</h2><figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#<span class="keyword">include</span><span class="string">&lt;iostream&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="keyword">include</span><span class="string">&lt;string&gt;</span></span></span><br><span class="line"></span><br><span class="line"><span class="type">const</span> <span class="type">int</span> MAXN=<span class="number">1e6</span>+<span class="number">7</span>;</span><br><span class="line"><span class="type">int</span> len[MAXN],num[MAXN],fail[MAXN],cnt[MAXN];</span><br><span class="line"><span class="type">int</span> trie[MAXN][<span class="number">26</span>],tot=<span class="number">1</span>,last;</span><br><span class="line">std::string str;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="type">int</span> <span class="title">getfail</span><span class="params">(<span class="type">int</span> x,<span class="type">int</span> u)</span></span>&#123;</span><br><span class="line">    <span class="keyword">while</span>(u-len[x]<span class="number">-1</span>&lt;<span class="number">0</span> || str[u-len[x]<span class="number">-1</span>]!=str[u]) x=fail[x];</span><br><span class="line">    <span class="keyword">return</span> x;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="type">int</span> <span class="title">main</span><span class="params">()</span></span>&#123;</span><br><span class="line">    std::cin&gt;&gt;str;</span><br><span class="line">    <span class="type">int</span> n=str.<span class="built_in">length</span>();</span><br><span class="line">    len[<span class="number">0</span>]=<span class="number">0</span>;len[<span class="number">1</span>]=<span class="number">-1</span>;</span><br><span class="line">    fail[<span class="number">0</span>]=fail[<span class="number">1</span>]=<span class="number">1</span>;</span><br><span class="line">    <span class="keyword">for</span>(<span class="type">int</span> i=<span class="number">0</span>;i&lt;n;++i)&#123;</span><br><span class="line">        <span class="type">int</span> u=last;</span><br><span class="line">        u=<span class="built_in">getfail</span>(u,i);</span><br><span class="line">        <span class="keyword">if</span>(!trie[u][str[i]-<span class="string">&#x27;a&#x27;</span>])&#123;</span><br><span class="line">			fail[++tot]=trie[<span class="built_in">getfail</span>(fail[u],i)][str[i]-<span class="string">&#x27;a&#x27;</span>];</span><br><span class="line">            trie[u][str[i]-<span class="string">&#x27;a&#x27;</span>]=tot;</span><br><span class="line">        	len[tot]=len[u]+<span class="number">2</span>;</span><br><span class="line">            num[tot]=num[fail[tot]]+<span class="number">1</span>;</span><br><span class="line">        &#125;</span><br><span class="line">        last=trie[u][str[i]-<span class="string">&#x27;a&#x27;</span>];</span><br><span class="line">        ++cnt[last];</span><br><span class="line">	&#125;</span><br><span class="line">    <span class="keyword">for</span>(<span class="type">int</span> i=tot;i&gt;=<span class="number">2</span>;--i)&#123;</span><br><span class="line">        cnt[fail[i]]+=cnt[i];</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+
+
+<h2 id="题目"><a href="#题目" class="headerlink" title="题目"></a>题目</h2><ul>
+<li><a target="_blank" rel="noopener" href="https://www.luogu.com.cn/problem/P5496">洛谷P5496</a></li>
+<li><a target="_blank" rel="noopener" href="https://www.luogu.com.cn/problem/P3649">洛谷P3649</a></li>
+<li><a target="_blank" rel="noopener" href="https://www.luogu.com.cn/problem/P4287">洛谷P4287</a></li>
+</ul>
+
+    </div>
+
+    
+    
+    
+
+    <footer class="post-footer">
+          <div class="post-tags">
+              <a href="/tags/algorithm/" rel="tag"># algorithm</a>
+          </div>
+
+        
+
+          <div class="post-nav">
+            <div class="post-nav-item">
+                <a href="/2022/11/29/Trie/" rel="prev" title="Trie">
+                  <i class="fa fa-chevron-left"></i> Trie
+                </a>
+            </div>
+            <div class="post-nav-item">
+                <a href="/2023/02/19/C++%E5%A4%9A%E7%BA%BF%E7%A8%8B/" rel="next" title="C++多线程">
+                  C++多线程 <i class="fa fa-chevron-right"></i>
+                </a>
+            </div>
+          </div>
+    </footer>
+  </article>
+</div>
+
+
+
+
+
+
+</div>
+  </main>
+
+  <footer class="footer">
+    <div class="footer-inner">
+
+
+<div class="copyright">
+  &copy; 
+  <span itemprop="copyrightYear">2023</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">John Doe</span>
+</div>
+  <div class="powered-by">Powered by <a href="https://hexo.io/" rel="noopener" target="_blank">Hexo</a> & <a href="https://theme-next.js.org/" rel="noopener" target="_blank">NexT.Gemini</a>
+  </div>
+
+    </div>
+  </footer>
+
+  
+  <div class="back-to-top" role="button" aria-label="Back to top">
+    <i class="fa fa-arrow-up fa-lg"></i>
+    <span>0%</span>
+  </div>
+
+<noscript>
+  <div class="noscript-warning">Theme NexT works best with JavaScript enabled</div>
+</noscript>
+
+
+  
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/animejs/3.2.1/anime.min.js" integrity="sha256-XL2inqUJaslATFnHdJOi9GfQ60on8Wx1C2H8DYiN1xY=" crossorigin="anonymous"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/next-theme-pjax/0.6.0/pjax.min.js" integrity="sha256-vxLn1tSKWD4dqbMRyv940UYw4sXgMtYcK6reefzZrao=" crossorigin="anonymous"></script>
+<script src="/js/comments.js"></script><script src="/js/utils.js"></script><script src="/js/motion.js"></script><script src="/js/next-boot.js"></script><script src="/js/pjax.js"></script>
+
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/hexo-generator-searchdb/1.4.1/search.js" integrity="sha256-1kfA5uHPf65M5cphT2dvymhkuyHPQp5A53EGZOnOLmc=" crossorigin="anonymous"></script>
+<script src="/js/third-party/search/local-search.js"></script>
+
+
+
+
+
+  
+
+
+
+
+
+</body>
+</html>
