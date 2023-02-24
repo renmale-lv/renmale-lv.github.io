@@ -6,11 +6,6 @@
     <content><![CDATA[]]></content>
   </entry>
   <entry>
-    <title>C++多线程</title>
-    <url>/2023/02/19/C++%E5%A4%9A%E7%BA%BF%E7%A8%8B/</url>
-    <content><![CDATA[]]></content>
-  </entry>
-  <entry>
     <title>Manacher</title>
     <url>/2022/11/29/Manacher/</url>
     <content><![CDATA[<meta name="referrer" content="no-referrer" />		
@@ -51,6 +46,50 @@
 <li><a href="https://www.luogu.com.cn/problem/P6216">P6216 回文匹配</a> </li>
 <li><a href="https://www.luogu.com.cn/problem/P4555">P4555[国家集训队]最长双回文串 </a> </li>
 <li><a href="https://www.luogu.com.cn/problem/P5446">P5446 [THUPC2018]绿绿和串串</a></li>
+</ul>
+]]></content>
+      <tags>
+        <tag>algorithm</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>Trie</title>
+    <url>/2022/11/29/Trie/</url>
+    <content><![CDATA[<meta name="referrer" content="no-referrer" />
+
+<h2 id="概念"><a href="#概念" class="headerlink" title="概念"></a>概念</h2><p>字典树也叫Trie树、前缀树，是一种针对字符串进行维护的<strong>数据结构</strong>，而不是算法。</p>
+<p>字典树是对字符串的一种存储的方式，这棵树的根节点到某一个目标节点的路径就是一个字符串（单词）。</p>
+<p>举个例子，下图的字典树：</p>
+<p><img src="https://gitee.com/renmale-sztu/image/raw/master/img/202212212057021.png" alt="202211291950874"></p>
+<p>该字典树存储的单词为：</p>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">a</span><br><span class="line">abc</span><br><span class="line">ba</span><br><span class="line">bca</span><br><span class="line">bca</span><br><span class="line">ca</span><br><span class="line">ca</span><br></pre></td></tr></table></figure>
+
+<span id="more"></span>
+
+<h2 id="性质"><a href="#性质" class="headerlink" title="性质"></a>性质</h2><ul>
+<li>根节点不包含字符，除根节点外的所有节点都包含一个字符</li>
+<li>从根节点到某一个节点，路径上经过的所有字符连接起来，为该节点对应的字符串</li>
+<li>每个节点的子节点包含的字符各不相同</li>
+</ul>
+<h2 id="应用"><a href="#应用" class="headerlink" title="应用"></a>应用</h2><ul>
+<li>计算热词：统计字符串在集合中出现的个数</li>
+<li>字典序排序</li>
+<li>最长公共前缀（LCP）</li>
+<li>…</li>
+</ul>
+<h2 id="实现"><a href="#实现" class="headerlink" title="实现"></a>实现</h2><p>字典树的实现主要有<strong>插入和查找</strong></p>
+<p>假设该字符串集合由26个小写字母组成，我们定义两个数组</p>
+<figure class="highlight c++"><table><tr><td class="code"><pre><span class="line"><span class="type">int</span> next[<span class="number">100000</span>][<span class="number">26</span>],cnt; <span class="comment">//存放该节点的子节点</span></span><br><span class="line"><span class="type">int</span> num[<span class="number">100000</span>]; <span class="comment">//表示该字符串一共出现多少次，为0表示不存在</span></span><br></pre></td></tr></table></figure>
+
+<h3 id="插入操作"><a href="#插入操作" class="headerlink" title="插入操作"></a>插入操作</h3><figure class="highlight c++"><table><tr><td class="code"><pre><span class="line"><span class="function"><span class="type">void</span> <span class="title">insert</span><span class="params">(std::string str)</span></span>&#123;</span><br><span class="line">    <span class="type">int</span> len=str.<span class="built_in">length</span>();</span><br><span class="line">	<span class="type">int</span> p=<span class="number">0</span>; <span class="comment">//记录当前节点位置</span></span><br><span class="line">    <span class="keyword">for</span>(<span class="type">int</span> i=<span class="number">0</span>;i&lt;len;++i)&#123;</span><br><span class="line">    	<span class="type">int</span> c=str[i]-<span class="string">&#x27;a&#x27;</span>;</span><br><span class="line">        <span class="keyword">if</span>(!next[p][c]) next[p][c]=++cnt;</span><br><span class="line">        p=next[p][c];</span><br><span class="line">    &#125;</span><br><span class="line">    ++num[p];</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h3 id="查找操作"><a href="#查找操作" class="headerlink" title="查找操作"></a>查找操作</h3><figure class="highlight c++"><table><tr><td class="code"><pre><span class="line"><span class="function"><span class="type">int</span> <span class="title">find</span><span class="params">(std::string str)</span></span>&#123;</span><br><span class="line">	<span class="type">int</span> len=str.<span class="built_in">length</span>();</span><br><span class="line">    <span class="type">int</span> p=<span class="number">0</span>;</span><br><span class="line">    <span class="keyword">for</span>(<span class="type">int</span> i=<span class="number">0</span>;i&lt;len;++i)&#123;</span><br><span class="line">		<span class="type">int</span> c=str[i]-<span class="string">&#x27;a&#x27;</span>;</span><br><span class="line">        <span class="keyword">if</span>(!next[p][c]) <span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">        p=next[p][c];</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">return</span> num[p];</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h2 id="题目"><a href="#题目" class="headerlink" title="题目"></a>题目</h2><ul>
+<li><a href="https://www.luogu.com.cn/problem/SP4033">SP4033 PHONELST - Phone List</a></li>
+<li><a href="https://www.luogu.com.cn/problem/UVA1401">UVA1401 Remember the Word</a></li>
+<li><a href="https://www.luogu.com.cn/problem/UVA11732">UVA11732 “strcmp()” Anyone?</a> </li>
+<li><a href="https://www.luogu.com.cn/problem/P7469">P7469 [NOI Online 2021 提高组] 积木小赛</a></li>
 </ul>
 ]]></content>
       <tags>
@@ -212,48 +251,9 @@
       </tags>
   </entry>
   <entry>
-    <title>Trie</title>
-    <url>/2022/11/29/Trie/</url>
-    <content><![CDATA[<meta name="referrer" content="no-referrer" />
-
-<h2 id="概念"><a href="#概念" class="headerlink" title="概念"></a>概念</h2><p>字典树也叫Trie树、前缀树，是一种针对字符串进行维护的<strong>数据结构</strong>，而不是算法。</p>
-<p>字典树是对字符串的一种存储的方式，这棵树的根节点到某一个目标节点的路径就是一个字符串（单词）。</p>
-<p>举个例子，下图的字典树：</p>
-<p><img src="https://gitee.com/renmale-sztu/image/raw/master/img/202212212057021.png" alt="202211291950874"></p>
-<p>该字典树存储的单词为：</p>
-<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">a</span><br><span class="line">abc</span><br><span class="line">ba</span><br><span class="line">bca</span><br><span class="line">bca</span><br><span class="line">ca</span><br><span class="line">ca</span><br></pre></td></tr></table></figure>
-
-<span id="more"></span>
-
-<h2 id="性质"><a href="#性质" class="headerlink" title="性质"></a>性质</h2><ul>
-<li>根节点不包含字符，除根节点外的所有节点都包含一个字符</li>
-<li>从根节点到某一个节点，路径上经过的所有字符连接起来，为该节点对应的字符串</li>
-<li>每个节点的子节点包含的字符各不相同</li>
-</ul>
-<h2 id="应用"><a href="#应用" class="headerlink" title="应用"></a>应用</h2><ul>
-<li>计算热词：统计字符串在集合中出现的个数</li>
-<li>字典序排序</li>
-<li>最长公共前缀（LCP）</li>
-<li>…</li>
-</ul>
-<h2 id="实现"><a href="#实现" class="headerlink" title="实现"></a>实现</h2><p>字典树的实现主要有<strong>插入和查找</strong></p>
-<p>假设该字符串集合由26个小写字母组成，我们定义两个数组</p>
-<figure class="highlight c++"><table><tr><td class="code"><pre><span class="line"><span class="type">int</span> next[<span class="number">100000</span>][<span class="number">26</span>],cnt; <span class="comment">//存放该节点的子节点</span></span><br><span class="line"><span class="type">int</span> num[<span class="number">100000</span>]; <span class="comment">//表示该字符串一共出现多少次，为0表示不存在</span></span><br></pre></td></tr></table></figure>
-
-<h3 id="插入操作"><a href="#插入操作" class="headerlink" title="插入操作"></a>插入操作</h3><figure class="highlight c++"><table><tr><td class="code"><pre><span class="line"><span class="function"><span class="type">void</span> <span class="title">insert</span><span class="params">(std::string str)</span></span>&#123;</span><br><span class="line">    <span class="type">int</span> len=str.<span class="built_in">length</span>();</span><br><span class="line">	<span class="type">int</span> p=<span class="number">0</span>; <span class="comment">//记录当前节点位置</span></span><br><span class="line">    <span class="keyword">for</span>(<span class="type">int</span> i=<span class="number">0</span>;i&lt;len;++i)&#123;</span><br><span class="line">    	<span class="type">int</span> c=str[i]-<span class="string">&#x27;a&#x27;</span>;</span><br><span class="line">        <span class="keyword">if</span>(!next[p][c]) next[p][c]=++cnt;</span><br><span class="line">        p=next[p][c];</span><br><span class="line">    &#125;</span><br><span class="line">    ++num[p];</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-
-<h3 id="查找操作"><a href="#查找操作" class="headerlink" title="查找操作"></a>查找操作</h3><figure class="highlight c++"><table><tr><td class="code"><pre><span class="line"><span class="function"><span class="type">int</span> <span class="title">find</span><span class="params">(std::string str)</span></span>&#123;</span><br><span class="line">	<span class="type">int</span> len=str.<span class="built_in">length</span>();</span><br><span class="line">    <span class="type">int</span> p=<span class="number">0</span>;</span><br><span class="line">    <span class="keyword">for</span>(<span class="type">int</span> i=<span class="number">0</span>;i&lt;len;++i)&#123;</span><br><span class="line">		<span class="type">int</span> c=str[i]-<span class="string">&#x27;a&#x27;</span>;</span><br><span class="line">        <span class="keyword">if</span>(!next[p][c]) <span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">        p=next[p][c];</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">return</span> num[p];</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-
-<h2 id="题目"><a href="#题目" class="headerlink" title="题目"></a>题目</h2><ul>
-<li><a href="https://www.luogu.com.cn/problem/SP4033">SP4033 PHONELST - Phone List</a></li>
-<li><a href="https://www.luogu.com.cn/problem/UVA1401">UVA1401 Remember the Word</a></li>
-<li><a href="https://www.luogu.com.cn/problem/UVA11732">UVA11732 “strcmp()” Anyone?</a> </li>
-<li><a href="https://www.luogu.com.cn/problem/P7469">P7469 [NOI Online 2021 提高组] 积木小赛</a></li>
-</ul>
-]]></content>
-      <tags>
-        <tag>algorithm</tag>
-      </tags>
+    <title>C++多线程</title>
+    <url>/2023/02/19/C++%E5%A4%9A%E7%BA%BF%E7%A8%8B/</url>
+    <content><![CDATA[]]></content>
   </entry>
   <entry>
     <title>回文自动机(PAM)</title>
