@@ -6,50 +6,6 @@
     <content><![CDATA[]]></content>
   </entry>
   <entry>
-    <title>C++多线程</title>
-    <url>/2023/02/19/C++%E5%A4%9A%E7%BA%BF%E7%A8%8B/</url>
-    <content><![CDATA[]]></content>
-  </entry>
-  <entry>
-    <title>Trie</title>
-    <url>/2022/11/29/Trie/</url>
-    <content><![CDATA[<meta name="referrer" content="no-referrer">
-
-<h2 id="概念"><a href="#概念" class="headerlink" title="概念"></a>概念</h2><p>字典树也叫Trie树、前缀树，是一种针对字符串进行维护的<strong>数据结构</strong>，而不是算法。</p>
-<p>字典树是对字符串的一种存储的方式，这棵树的根节点到某一个目标节点的路径就是一个字符串（单词）。</p>
-<p>举个例子，下图的字典树：</p>
-<p><img src="https://gitee.com/renmale-sztu/image/raw/master/img/202212212057021.png" alt="202211291950874"></p>
-<p>该字典树存储的单词为：</p>
-<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">a</span><br><span class="line">abc</span><br><span class="line">ba</span><br><span class="line">bca</span><br><span class="line">bca</span><br><span class="line">ca</span><br><span class="line">ca</span><br></pre></td></tr></table></figure>
-<span id="more"></span>
-<h2 id="性质"><a href="#性质" class="headerlink" title="性质"></a>性质</h2><ul>
-<li>根节点不包含字符，除根节点外的所有节点都包含一个字符</li>
-<li>从根节点到某一个节点，路径上经过的所有字符连接起来，为该节点对应的字符串</li>
-<li>每个节点的子节点包含的字符各不相同</li>
-</ul>
-<h2 id="应用"><a href="#应用" class="headerlink" title="应用"></a>应用</h2><ul>
-<li>计算热词：统计字符串在集合中出现的个数</li>
-<li>字典序排序</li>
-<li>最长公共前缀（LCP）</li>
-<li>…</li>
-</ul>
-<h2 id="实现"><a href="#实现" class="headerlink" title="实现"></a>实现</h2><p>字典树的实现主要有<strong>插入和查找</strong></p>
-<p>假设该字符串集合由26个小写字母组成，我们定义两个数组</p>
-<figure class="highlight c++"><table><tr><td class="code"><pre><span class="line"><span class="type">int</span> next[<span class="number">100000</span>][<span class="number">26</span>],cnt; <span class="comment">//存放该节点的子节点</span></span><br><span class="line"><span class="type">int</span> num[<span class="number">100000</span>]; <span class="comment">//表示该字符串一共出现多少次，为0表示不存在</span></span><br></pre></td></tr></table></figure>
-<h3 id="插入操作"><a href="#插入操作" class="headerlink" title="插入操作"></a>插入操作</h3><figure class="highlight c++"><table><tr><td class="code"><pre><span class="line"><span class="function"><span class="type">void</span> <span class="title">insert</span><span class="params">(std::string str)</span></span>{</span><br><span class="line">    <span class="type">int</span> len=str.<span class="built_in">length</span>();</span><br><span class="line">	<span class="type">int</span> p=<span class="number">0</span>; <span class="comment">//记录当前节点位置</span></span><br><span class="line">    <span class="keyword">for</span>(<span class="type">int</span> i=<span class="number">0</span>;i&lt;len;++i){</span><br><span class="line">    	<span class="type">int</span> c=str[i]-<span class="string">'a'</span>;</span><br><span class="line">        <span class="keyword">if</span>(!next[p][c]) next[p][c]=++cnt;</span><br><span class="line">        p=next[p][c];</span><br><span class="line">    }</span><br><span class="line">    ++num[p];</span><br><span class="line">}</span><br></pre></td></tr></table></figure>
-<h3 id="查找操作"><a href="#查找操作" class="headerlink" title="查找操作"></a>查找操作</h3><figure class="highlight c++"><table><tr><td class="code"><pre><span class="line"><span class="function"><span class="type">int</span> <span class="title">find</span><span class="params">(std::string str)</span></span>{</span><br><span class="line">	<span class="type">int</span> len=str.<span class="built_in">length</span>();</span><br><span class="line">    <span class="type">int</span> p=<span class="number">0</span>;</span><br><span class="line">    <span class="keyword">for</span>(<span class="type">int</span> i=<span class="number">0</span>;i&lt;len;++i){</span><br><span class="line">		<span class="type">int</span> c=str[i]-<span class="string">'a'</span>;</span><br><span class="line">        <span class="keyword">if</span>(!next[p][c]) <span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">        p=next[p][c];</span><br><span class="line">    }</span><br><span class="line">    <span class="keyword">return</span> num[p];</span><br><span class="line">}</span><br></pre></td></tr></table></figure>
-<h2 id="题目"><a href="#题目" class="headerlink" title="题目"></a>题目</h2><ul>
-<li><a href="https://www.luogu.com.cn/problem/SP4033">SP4033 PHONELST - Phone List</a></li>
-<li><a href="https://www.luogu.com.cn/problem/UVA1401">UVA1401 Remember the Word</a></li>
-<li><a href="https://www.luogu.com.cn/problem/UVA11732">UVA11732 “strcmp()” Anyone?</a> </li>
-<li><a href="https://www.luogu.com.cn/problem/P7469">P7469 [NOI Online 2021 提高组] 积木小赛</a> </li>
-</ul>
-]]></content>
-      <tags>
-        <tag>algorithm</tag>
-      </tags>
-  </entry>
-  <entry>
     <title>Manacher</title>
     <url>/2022/11/29/Manacher/</url>
     <content><![CDATA[<meta name="referrer" content="no-referrer">        
@@ -86,6 +42,76 @@
 <li><a href="https://www.luogu.com.cn/problem/P6216">P6216 回文匹配</a> </li>
 <li><a href="https://www.luogu.com.cn/problem/P4555">P4555[国家集训队]最长双回文串 </a> </li>
 <li><a href="https://www.luogu.com.cn/problem/P5446">P5446 [THUPC2018]绿绿和串串</a> </li>
+</ul>
+]]></content>
+      <tags>
+        <tag>algorithm</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>C++多线程</title>
+    <url>/2023/02/19/C++%E5%A4%9A%E7%BA%BF%E7%A8%8B/</url>
+    <content><![CDATA[<h1 id="一、并发、进程、线程"><a href="#一、并发、进程、线程" class="headerlink" title="一、并发、进程、线程"></a>一、并发、进程、线程</h1><h2 id="1、概念"><a href="#1、概念" class="headerlink" title="1、概念"></a>1、概念</h2><p><strong>并发</strong>：两个或者更多的任务<del>同时发生</del>（实际上是多个任务轮流占有处理器），某一时刻只能执行一个任务：由于操作系统调度，每秒钟进行多次所谓的“任务切换”，这种切换（上下文切换）死有时间开销的。  </p>
+<p><img src="https://gitee.com/renmale-sztu/image/raw/master/img/202302272053004.png" alt="img"></p>
+<figure class="highlight txt"><table><tr><td class="code"><pre><span class="line">并发是指一个处理器同时处理多个任务</span><br><span class="line">并行是指多个处理器或者是多核的处理器同时处理多个不同的任务</span><br><span class="line">并发是逻辑上的同时发生，而并行是物理上的同时发生</span><br><span class="line">并发是一个人同时吃三个馒头，而并行的3个人同时吃三个馒头</span><br></pre></td></tr></table></figure>
+<hr>
+<p><strong>进程</strong>：正在运行的程序</p>
+<p><strong>线程</strong>：线程是执行应用程序种的某个具体任务，比如一段程序、一个函数等</p>
+<p><strong>进程和线程的关系</strong></p>
+<p>进程和线程之间的关系类似于工厂和工人之间的关系，进程好比是工厂，线程就如同工厂中的工人，一个工厂可以容纳多个工人，工厂负责为所有工人提供必要的资源，所有工人==<strong>共享这些资源</strong>==，每个工人负责完成一项具体的任务，他们相互配合，共同保证整个工厂的平稳运行</p>
+<p><strong>一个进程至少包含 1 个线程（主线程），可以包含多个线程，所有线程共享进程的资源，各个线程也可以拥有属于自己的私有资源</strong></p>
+<p><strong>进程仅负责为各个线程提供所需的资源，真正执行任务的是线程，而不是进程</strong></p>
+<p>线程并不是越多越好，每个线程，都需要一个独立的堆栈空间（1M），线程之间的切换要保存很多中间状态，会耗费本该属于程序运行的时间</p>
+<hr>
+<h2 id="2、并发的实现"><a href="#2、并发的实现" class="headerlink" title="2、并发的实现"></a>2、并发的实现</h2><p>实现方法：</p>
+<ol>
+<li>通过多个进程来实现并发</li>
+<li>在单独的进程中，通过代码来创建除了主线程之外的其他线程来实现并发</li>
+</ol>
+<h3 id="2-1多进程并发"><a href="#2-1多进程并发" class="headerlink" title="2.1多进程并发"></a>2.1多进程并发</h3><p><strong>进程之间通信：</strong></p>
+<p>同一台电脑上：管道，文件，消息队列，共享内存</p>
+<p>不同的电脑上：socket通信技术</p>
+<h3 id="2-2多线程并发"><a href="#2-2多线程并发" class="headerlink" title="2.2多线程并发"></a>2.2多线程并发</h3><p>线程：像是轻量级的进程，每个线程都有自己独立的运行路径，但是每一个进程中的所有线程共享地址空间（共享内存）</p>
+<p>多线程之间的通信可以使用全局变量，指针，引用等，因此使用多线程的开销远远小于多进程</p>
+<p>但是共享内存也带来了两个线程间数据一致性的问题</p>
+]]></content>
+      <tags>
+        <tag>C++</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>Trie</title>
+    <url>/2022/11/29/Trie/</url>
+    <content><![CDATA[<meta name="referrer" content="no-referrer">
+
+<h2 id="概念"><a href="#概念" class="headerlink" title="概念"></a>概念</h2><p>字典树也叫Trie树、前缀树，是一种针对字符串进行维护的<strong>数据结构</strong>，而不是算法。</p>
+<p>字典树是对字符串的一种存储的方式，这棵树的根节点到某一个目标节点的路径就是一个字符串（单词）。</p>
+<p>举个例子，下图的字典树：</p>
+<p><img src="https://gitee.com/renmale-sztu/image/raw/master/img/202212212057021.png" alt="202211291950874"></p>
+<p>该字典树存储的单词为：</p>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">a</span><br><span class="line">abc</span><br><span class="line">ba</span><br><span class="line">bca</span><br><span class="line">bca</span><br><span class="line">ca</span><br><span class="line">ca</span><br></pre></td></tr></table></figure>
+<span id="more"></span>
+<h2 id="性质"><a href="#性质" class="headerlink" title="性质"></a>性质</h2><ul>
+<li>根节点不包含字符，除根节点外的所有节点都包含一个字符</li>
+<li>从根节点到某一个节点，路径上经过的所有字符连接起来，为该节点对应的字符串</li>
+<li>每个节点的子节点包含的字符各不相同</li>
+</ul>
+<h2 id="应用"><a href="#应用" class="headerlink" title="应用"></a>应用</h2><ul>
+<li>计算热词：统计字符串在集合中出现的个数</li>
+<li>字典序排序</li>
+<li>最长公共前缀（LCP）</li>
+<li>…</li>
+</ul>
+<h2 id="实现"><a href="#实现" class="headerlink" title="实现"></a>实现</h2><p>字典树的实现主要有<strong>插入和查找</strong></p>
+<p>假设该字符串集合由26个小写字母组成，我们定义两个数组</p>
+<figure class="highlight c++"><table><tr><td class="code"><pre><span class="line"><span class="type">int</span> next[<span class="number">100000</span>][<span class="number">26</span>],cnt; <span class="comment">//存放该节点的子节点</span></span><br><span class="line"><span class="type">int</span> num[<span class="number">100000</span>]; <span class="comment">//表示该字符串一共出现多少次，为0表示不存在</span></span><br></pre></td></tr></table></figure>
+<h3 id="插入操作"><a href="#插入操作" class="headerlink" title="插入操作"></a>插入操作</h3><figure class="highlight c++"><table><tr><td class="code"><pre><span class="line"><span class="function"><span class="type">void</span> <span class="title">insert</span><span class="params">(std::string str)</span></span>{</span><br><span class="line">    <span class="type">int</span> len=str.<span class="built_in">length</span>();</span><br><span class="line">	<span class="type">int</span> p=<span class="number">0</span>; <span class="comment">//记录当前节点位置</span></span><br><span class="line">    <span class="keyword">for</span>(<span class="type">int</span> i=<span class="number">0</span>;i&lt;len;++i){</span><br><span class="line">    	<span class="type">int</span> c=str[i]-<span class="string">'a'</span>;</span><br><span class="line">        <span class="keyword">if</span>(!next[p][c]) next[p][c]=++cnt;</span><br><span class="line">        p=next[p][c];</span><br><span class="line">    }</span><br><span class="line">    ++num[p];</span><br><span class="line">}</span><br></pre></td></tr></table></figure>
+<h3 id="查找操作"><a href="#查找操作" class="headerlink" title="查找操作"></a>查找操作</h3><figure class="highlight c++"><table><tr><td class="code"><pre><span class="line"><span class="function"><span class="type">int</span> <span class="title">find</span><span class="params">(std::string str)</span></span>{</span><br><span class="line">	<span class="type">int</span> len=str.<span class="built_in">length</span>();</span><br><span class="line">    <span class="type">int</span> p=<span class="number">0</span>;</span><br><span class="line">    <span class="keyword">for</span>(<span class="type">int</span> i=<span class="number">0</span>;i&lt;len;++i){</span><br><span class="line">		<span class="type">int</span> c=str[i]-<span class="string">'a'</span>;</span><br><span class="line">        <span class="keyword">if</span>(!next[p][c]) <span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">        p=next[p][c];</span><br><span class="line">    }</span><br><span class="line">    <span class="keyword">return</span> num[p];</span><br><span class="line">}</span><br></pre></td></tr></table></figure>
+<h2 id="题目"><a href="#题目" class="headerlink" title="题目"></a>题目</h2><ul>
+<li><a href="https://www.luogu.com.cn/problem/SP4033">SP4033 PHONELST - Phone List</a></li>
+<li><a href="https://www.luogu.com.cn/problem/UVA1401">UVA1401 Remember the Word</a></li>
+<li><a href="https://www.luogu.com.cn/problem/UVA11732">UVA11732 “strcmp()” Anyone?</a> </li>
+<li><a href="https://www.luogu.com.cn/problem/P7469">P7469 [NOI Online 2021 提高组] 积木小赛</a> </li>
 </ul>
 ]]></content>
       <tags>

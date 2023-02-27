@@ -267,7 +267,7 @@ mjx-container[display="true"] + br {
       </div>
       <div class="site-state-item site-state-tags">
           <a href="/tags/">
-        <span class="site-state-item-count">2</span>
+        <span class="site-state-item-count">3</span>
         <span class="site-state-item-name">tags</span></a>
       </div>
   </nav>
@@ -404,9 +404,15 @@ mjx-container[display="true"] + br {
         <i class="far fa-calendar"></i>
       </span>
       <span class="post-meta-item-text">Posted on</span>
-      
 
-      <time title="Created: 2023-02-19 17:57:15 / Modified: 17:57:16" itemprop="dateCreated datePublished" datetime="2023-02-19T17:57:15+08:00">2023-02-19</time>
+      <time title="Created: 2023-02-19 17:57:15" itemprop="dateCreated datePublished" datetime="2023-02-19T17:57:15+08:00">2023-02-19</time>
+    </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar-check"></i>
+      </span>
+      <span class="post-meta-item-text">Edited on</span>
+      <time title="Modified: 2023-02-27 21:59:51" itemprop="dateModified" datetime="2023-02-27T21:59:51+08:00">2023-02-27</time>
     </span>
 
   
@@ -416,7 +422,7 @@ mjx-container[display="true"] + br {
         <i class="far fa-file-word"></i>
       </span>
       <span class="post-meta-item-text">Word count in article: </span>
-      <span>0</span>
+      <span>772</span>
     </span>
     <span class="post-meta-item" title="Reading time">
       <span class="post-meta-item-icon">
@@ -434,7 +440,30 @@ mjx-container[display="true"] + br {
     
     
     <div class="post-body" itemprop="articleBody">
-          
+          <h1 id="一、并发、进程、线程"><a href="#一、并发、进程、线程" class="headerlink" title="一、并发、进程、线程"></a>一、并发、进程、线程</h1><h2 id="1、概念"><a href="#1、概念" class="headerlink" title="1、概念"></a>1、概念</h2><p><strong>并发</strong>：两个或者更多的任务<del>同时发生</del>（实际上是多个任务轮流占有处理器），某一时刻只能执行一个任务：由于操作系统调度，每秒钟进行多次所谓的“任务切换”，这种切换（上下文切换）死有时间开销的。  </p>
+<p><img src="https://gitee.com/renmale-sztu/image/raw/master/img/202302272053004.png" alt="img"></p>
+<figure class="highlight txt"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">并发是指一个处理器同时处理多个任务</span><br><span class="line">并行是指多个处理器或者是多核的处理器同时处理多个不同的任务</span><br><span class="line">并发是逻辑上的同时发生，而并行是物理上的同时发生</span><br><span class="line">并发是一个人同时吃三个馒头，而并行的3个人同时吃三个馒头</span><br></pre></td></tr></table></figure>
+<hr>
+<p><strong>进程</strong>：正在运行的程序</p>
+<p><strong>线程</strong>：线程是执行应用程序种的某个具体任务，比如一段程序、一个函数等</p>
+<p><strong>进程和线程的关系</strong></p>
+<p>进程和线程之间的关系类似于工厂和工人之间的关系，进程好比是工厂，线程就如同工厂中的工人，一个工厂可以容纳多个工人，工厂负责为所有工人提供必要的资源，所有工人==<strong>共享这些资源</strong>==，每个工人负责完成一项具体的任务，他们相互配合，共同保证整个工厂的平稳运行</p>
+<p><strong>一个进程至少包含 1 个线程（主线程），可以包含多个线程，所有线程共享进程的资源，各个线程也可以拥有属于自己的私有资源</strong></p>
+<p><strong>进程仅负责为各个线程提供所需的资源，真正执行任务的是线程，而不是进程</strong></p>
+<p>线程并不是越多越好，每个线程，都需要一个独立的堆栈空间（1M），线程之间的切换要保存很多中间状态，会耗费本该属于程序运行的时间</p>
+<hr>
+<h2 id="2、并发的实现"><a href="#2、并发的实现" class="headerlink" title="2、并发的实现"></a>2、并发的实现</h2><p>实现方法：</p>
+<ol>
+<li>通过多个进程来实现并发</li>
+<li>在单独的进程中，通过代码来创建除了主线程之外的其他线程来实现并发</li>
+</ol>
+<h3 id="2-1多进程并发"><a href="#2-1多进程并发" class="headerlink" title="2.1多进程并发"></a>2.1多进程并发</h3><p><strong>进程之间通信：</strong></p>
+<p>同一台电脑上：管道，文件，消息队列，共享内存</p>
+<p>不同的电脑上：socket通信技术</p>
+<h3 id="2-2多线程并发"><a href="#2-2多线程并发" class="headerlink" title="2.2多线程并发"></a>2.2多线程并发</h3><p>线程：像是轻量级的进程，每个线程都有自己独立的运行路径，但是每一个进程中的所有线程共享地址空间（共享内存）</p>
+<p>多线程之间的通信可以使用全局变量，指针，引用等，因此使用多线程的开销远远小于多进程</p>
+<p>但是共享内存也带来了两个线程间数据一致性的问题</p>
+
       
     </div>
 
@@ -923,14 +952,14 @@ mjx-container[display="true"] + br {
       <i class="fa fa-chart-line"></i>
     </span>
       <span>Word count total: </span>
-    <span title="Word count total">20k</span>
+    <span title="Word count total">21k</span>
   </span>
   <span class="post-meta-item">
     <span class="post-meta-item-icon">
       <i class="fa fa-coffee"></i>
     </span>
       <span>Reading time total &asymp;</span>
-    <span title="Reading time total">18 mins.</span>
+    <span title="Reading time total">19 mins.</span>
   </span>
 </div>
   <div class="powered-by">Powered by <a href="https://hexo.io/" rel="noopener" target="_blank">Hexo</a> & <a href="https://theme-next.js.org/" rel="noopener" target="_blank">NexT.Gemini</a>
