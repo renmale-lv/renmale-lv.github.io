@@ -27,8 +27,10 @@
 <meta property="og:description" content="一、并发、进程、线程1、概念并发：两个或者更多的任务同时发生（实际上是多个任务轮流占有处理器），某一时刻只能执行一个任务：由于操作系统调度，每秒钟进行多次所谓的“任务切换”，这种切换（上下文切换）死有时间开销的。    1234并发是指一个处理器同时处理多个任务并行是指多个处理器或者是多核的处理器同时处理多个不同的任务并发是逻辑上的同时发生，而并行是物理上的同时发生并发是一个人同时吃三个馒头，">
 <meta property="og:locale" content="en_US">
 <meta property="og:image" content="https://gitee.com/renmale-sztu/image/raw/master/img/202302272053004.png">
+<meta property="og:image" content="https://gitee.com/renmale-sztu/image/raw/master/img/202302282054227.png">
+<meta property="og:image" content="https://gitee.com/renmale-sztu/image/raw/master/img/202303022218967.png">
 <meta property="article:published_time" content="2023-02-19T09:57:15.000Z">
-<meta property="article:modified_time" content="2023-02-28T03:00:55.758Z">
+<meta property="article:modified_time" content="2023-03-02T14:24:35.654Z">
 <meta property="article:author" content="renmale-lv">
 <meta property="article:tag" content="C++">
 <meta name="twitter:card" content="summary">
@@ -142,7 +144,7 @@
       <div class="sidebar-panel-container">
         <!--noindex-->
         <div class="post-toc-wrap sidebar-panel">
-            <div class="post-toc animated"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#%E4%B8%80%E3%80%81%E5%B9%B6%E5%8F%91%E3%80%81%E8%BF%9B%E7%A8%8B%E3%80%81%E7%BA%BF%E7%A8%8B"><span class="nav-number">1.</span> <span class="nav-text">一、并发、进程、线程</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#1%E3%80%81%E6%A6%82%E5%BF%B5"><span class="nav-number">1.1.</span> <span class="nav-text">1、概念</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#2%E3%80%81%E5%B9%B6%E5%8F%91%E7%9A%84%E5%AE%9E%E7%8E%B0"><span class="nav-number">1.2.</span> <span class="nav-text">2、并发的实现</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#2-1%E5%A4%9A%E8%BF%9B%E7%A8%8B%E5%B9%B6%E5%8F%91"><span class="nav-number">1.2.1.</span> <span class="nav-text">2.1多进程并发</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#2-2%E5%A4%9A%E7%BA%BF%E7%A8%8B%E5%B9%B6%E5%8F%91"><span class="nav-number">1.2.2.</span> <span class="nav-text">2.2多线程并发</span></a></li></ol></li></ol></li></ol></div>
+            <div class="post-toc animated"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#%E4%B8%80%E3%80%81%E5%B9%B6%E5%8F%91%E3%80%81%E8%BF%9B%E7%A8%8B%E3%80%81%E7%BA%BF%E7%A8%8B"><span class="nav-number">1.</span> <span class="nav-text">一、并发、进程、线程</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#1%E3%80%81%E6%A6%82%E5%BF%B5"><span class="nav-number">1.1.</span> <span class="nav-text">1、概念</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#2%E3%80%81%E5%B9%B6%E5%8F%91%E7%9A%84%E5%AE%9E%E7%8E%B0"><span class="nav-number">1.2.</span> <span class="nav-text">2、并发的实现</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#2-1%E5%A4%9A%E8%BF%9B%E7%A8%8B%E5%B9%B6%E5%8F%91"><span class="nav-number">1.2.1.</span> <span class="nav-text">2.1多进程并发</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#2-2%E5%A4%9A%E7%BA%BF%E7%A8%8B%E5%B9%B6%E5%8F%91"><span class="nav-number">1.2.2.</span> <span class="nav-text">2.2多线程并发</span></a></li></ol></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#%E4%BA%8C%E3%80%81%E7%BA%BF%E7%A8%8B%E7%9A%84%E5%90%AF%E5%8A%A8%E5%92%8C%E7%BB%93%E6%9D%9F"><span class="nav-number">2.</span> <span class="nav-text">二、线程的启动和结束</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#thread-amp-join"><span class="nav-number">2.1.</span> <span class="nav-text">thread &amp; join</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#detach"><span class="nav-number">2.2.</span> <span class="nav-text">detach</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#joinable"><span class="nav-number">2.3.</span> <span class="nav-text">joinable</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#thread%E4%BC%A0%E5%85%A5%E5%87%BD%E6%95%B0%E5%8F%82%E6%95%B0"><span class="nav-number">2.4.</span> <span class="nav-text">thread传入函数参数</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E4%BD%BF%E7%94%A8%E7%B1%BB%E6%9D%A5%E5%88%9B%E5%BB%BA%E7%BA%BF%E7%A8%8B"><span class="nav-number">2.5.</span> <span class="nav-text">使用类来创建线程</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E4%BD%BF%E7%94%A8lambda%E8%A1%A8%E8%BE%BE%E5%BC%8F"><span class="nav-number">2.6.</span> <span class="nav-text">使用lambda表达式</span></a></li></ol></li></ol></div>
         </div>
         <!--/noindex-->
 
@@ -168,6 +170,9 @@
       </div>
   </nav>
 </div>
+  <div class="cc-license animated" itemprop="license">
+    <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/" class="cc-opacity" rel="noopener" target="_blank"><img src="https://cdnjs.cloudflare.com/ajax/libs/creativecommons-vocabulary/2020.11.3/assets/license_badges/small/by_nc_sa.svg" alt="Creative Commons"></a>
+  </div>
 
         </div>
       </div>
@@ -226,7 +231,7 @@
         <i class="far fa-calendar-check"></i>
       </span>
       <span class="post-meta-item-text">Edited on</span>
-      <time title="Modified: 2023-02-28 11:00:55" itemprop="dateModified" datetime="2023-02-28T11:00:55+08:00">2023-02-28</time>
+      <time title="Modified: 2023-03-02 22:24:35" itemprop="dateModified" datetime="2023-03-02T22:24:35+08:00">2023-03-02</time>
     </span>
 
   
@@ -236,14 +241,14 @@
         <i class="far fa-file-word"></i>
       </span>
       <span class="post-meta-item-text">Word count in article: </span>
-      <span>772</span>
+      <span>3.3k</span>
     </span>
     <span class="post-meta-item" title="Reading time">
       <span class="post-meta-item-icon">
         <i class="far fa-clock"></i>
       </span>
       <span class="post-meta-item-text">Reading time &asymp;</span>
-      <span>1 mins.</span>
+      <span>3 mins.</span>
     </span>
 </div>
 
@@ -280,6 +285,26 @@
 <h3 id="2-2多线程并发"><a href="#2-2多线程并发" class="headerlink" title="2.2多线程并发"></a>2.2多线程并发</h3><p>线程：像是轻量级的进程，每个线程都有自己独立的运行路径，但是每一个进程中的所有线程共享地址空间（共享内存）</p>
 <p>多线程之间的通信可以使用全局变量，指针，引用等，因此使用多线程的开销远远小于多进程</p>
 <p>但是共享内存也带来了两个线程间数据一致性的问题</p>
+<h1 id="二、线程的启动和结束"><a href="#二、线程的启动和结束" class="headerlink" title="二、线程的启动和结束"></a>二、线程的启动和结束</h1><p>主线程从main()开始执行，我们自己创建的线程，也需要<strong>从一个函数开始运行</strong>（初始函数），一旦这个函数运行完毕，就代表这个线程也运行结束了</p>
+<p>整个进程是否执行完毕的标志是<strong>主线程是否执行完毕</strong>，如果主线程执行完毕了，就代表整个进程执行完毕了，此时，如果其他子线程还没有执行完毕，那么这些子线程会被系统<strong>强行终止</strong>，<strong>一般情况下</strong>，如果要保持子线程的运行状态的话，要让主线程保持运行</p>
+<h2 id="thread-amp-join"><a href="#thread-amp-join" class="headerlink" title="thread &amp; join"></a>thread &amp; join</h2><figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line"><span class="meta">#<span class="keyword">include</span><span class="string">&lt;iostream&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="keyword">include</span><span class="string">&lt;thread&gt;</span> <span class="comment">//C++标准线程库</span></span></span><br><span class="line"></span><br><span class="line"><span class="function"><span class="type">void</span> <span class="title">myprint</span><span class="params">()</span></span>&#123;</span><br><span class="line">	std::cout&lt;&lt;<span class="string">&quot;Hello &quot;</span>;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="type">int</span> <span class="title">main</span><span class="params">()</span></span>&#123;</span><br><span class="line">	<span class="function">std::thread <span class="title">mythread</span><span class="params">(myprint)</span></span>; <span class="comment">//初始化一个线程，并开始运行</span></span><br><span class="line">	<span class="comment">//阻塞子线程并等待myprint子线程执行完</span></span><br><span class="line">	<span class="comment">//当子线程执行完毕，join就执行完毕，主线程向下继续运行</span></span><br><span class="line">	mythread.<span class="built_in">join</span>();</span><br><span class="line">	std::cout&lt;&lt;<span class="string">&quot;World!&quot;</span>&lt;&lt;std::endl;</span><br><span class="line">	<span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">&#125;</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+<p>注：线程初始化即运行，如果不如用join函数使主线程等待子线程，主线程可能比子线程先结束，导致异常</p>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line"><span class="meta">#<span class="keyword">include</span><span class="string">&lt;iostream&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="keyword">include</span><span class="string">&lt;thread&gt;</span></span></span><br><span class="line"></span><br><span class="line"><span class="function"><span class="type">void</span> <span class="title">doit</span><span class="params">()</span></span>&#123;</span><br><span class="line">    std::cout&lt;&lt;<span class="string">&quot;World!&quot;</span>&lt;&lt;std::endl;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="type">int</span> <span class="title">main</span><span class="params">()</span></span>&#123;</span><br><span class="line">    <span class="function">std::thread <span class="title">a</span><span class="params">([]&#123;</span></span></span><br><span class="line"><span class="params"><span class="function">        std::cout&lt;&lt;<span class="string">&quot;Hello, &quot;</span>;</span></span></span><br><span class="line"><span class="params"><span class="function">    &#125;)</span>,<span class="title">b</span><span class="params">(doit)</span></span>;</span><br><span class="line">    a.<span class="built_in">join</span>();</span><br><span class="line">    b.<span class="built_in">join</span>();</span><br><span class="line">    <span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment">//输出结果为</span></span><br><span class="line">Hello, World!</span><br><span class="line">或者</span><br><span class="line">World！</span><br><span class="line">Hello</span><br></pre></td></tr></table></figure>
+<h2 id="detach"><a href="#detach" class="headerlink" title="detach"></a>detach</h2><p>在传统的多线程程序中，主线程要等待子线程执行完毕，然后自己再退出，而在C++11新标准下，引入了detach（分离）函数，使得主线程不必再等待子线程结束，此时，子线程与主线程失去关联，子线程会驻留在后台运行</p>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line"><span class="meta">#<span class="keyword">include</span><span class="string">&lt;iostream&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="keyword">include</span><span class="string">&lt;thread&gt;</span></span></span><br><span class="line"></span><br><span class="line"><span class="function"><span class="type">void</span> <span class="title">myprint</span><span class="params">()</span></span>&#123;</span><br><span class="line">	std::cout&lt;&lt;<span class="string">&quot;Hello &quot;</span>;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="type">int</span> <span class="title">main</span><span class="params">()</span></span>&#123;</span><br><span class="line">	<span class="function">std::thread <span class="title">mythread</span><span class="params">(myprint)</span></span>;</span><br><span class="line">	mythread.<span class="built_in">detach</span>();</span><br><span class="line">	std::cout&lt;&lt;<span class="string">&quot;World!&quot;</span>&lt;&lt;std::endl;</span><br><span class="line">	<span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">&#125;</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+<p><img src="https://gitee.com/renmale-sztu/image/raw/master/img/202302282054227.png" alt="image-20230228205410147"></p>
+<h2 id="joinable"><a href="#joinable" class="headerlink" title="joinable"></a>joinable</h2><p>joinable()函数：<strong>判断是否可以成功使用join()或detach()函数</strong>，返回<strong><em>true</em></strong>则可以使用join()和detach()函数，返回<strong><em>false</em></strong>则不行</p>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">	<span class="function">std::thread <span class="title">mythread</span><span class="params">(myprint)</span></span>;</span><br><span class="line">	<span class="keyword">if</span>(mythread.<span class="built_in">joinable</span>())&#123;</span><br><span class="line">		mythread.<span class="built_in">detach</span>();</span><br><span class="line">	&#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h2 id="thread传入函数参数"><a href="#thread传入函数参数" class="headerlink" title="thread传入函数参数"></a>thread传入函数参数</h2><figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#<span class="keyword">include</span><span class="string">&lt;iostream&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="keyword">include</span><span class="string">&lt;thread&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="keyword">include</span><span class="string">&lt;string&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="keyword">include</span><span class="string">&lt;Windows.h&gt;</span></span></span><br><span class="line"></span><br><span class="line"><span class="keyword">class</span> <span class="title class_">A</span> &#123;</span><br><span class="line"><span class="keyword">public</span>:</span><br><span class="line">	<span class="comment">//构造</span></span><br><span class="line">	<span class="built_in">A</span>() &#123; std::cout &lt;&lt; <span class="string">&quot;CREATE\n&quot;</span>; &#125;</span><br><span class="line">	<span class="comment">//拷贝构造</span></span><br><span class="line">	<span class="built_in">A</span>(<span class="type">const</span> A&amp; a) &#123; name = a.name; std::cout &lt;&lt; <span class="string">&quot;COPY\n&quot;</span>; &#125;</span><br><span class="line">	<span class="comment">//析构</span></span><br><span class="line">	~<span class="built_in">A</span>() &#123; std::cout &lt;&lt; <span class="string">&quot;DELETE\n&quot;</span>; &#125;</span><br><span class="line">	std::string name;</span><br><span class="line">&#125;;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="type">void</span> <span class="title">ThreadMain</span><span class="params">(A a)</span> </span>&#123;</span><br><span class="line">	<span class="built_in">Sleep</span>(<span class="number">100</span>);</span><br><span class="line">	std::cout &lt;&lt; a.name &lt;&lt; std::endl;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="type">int</span> <span class="title">main</span><span class="params">()</span> </span>&#123;</span><br><span class="line">	std::thread th;</span><br><span class="line">	&#123;</span><br><span class="line">		A a;</span><br><span class="line">		a.name = <span class="string">&quot;test&quot;</span>;</span><br><span class="line">		th = std::<span class="built_in">thread</span>(ThreadMain, a);</span><br><span class="line">	&#125;</span><br><span class="line">	th.<span class="built_in">join</span>();</span><br><span class="line">	<span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p><img src="https://gitee.com/renmale-sztu/image/raw/master/img/202303022218967.png" alt="image-20230302221754883"></p>
+<p>可以发现发生了一次构造函数，两次拷贝构造函数，三次析构函数，总共生成了3次对象</p>
+<p>第一次是在25行，第二次是将对象传入thread中时，第三次则是在子线程中传入ThreadMain函数时</p>
+<h2 id="使用类来创建线程"><a href="#使用类来创建线程" class="headerlink" title="使用类来创建线程"></a>使用类来创建线程</h2><p>类需要重载()运算符，且重载函数不能包含参数</p>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line"><span class="keyword">class</span> <span class="title class_">T</span>&#123;</span><br><span class="line"><span class="keyword">public</span>:</span><br><span class="line">	<span class="function"><span class="type">void</span> <span class="title">opeartor</span><span class="params">()</span><span class="params">()</span></span>&#123;</span><br><span class="line">		std::cout&lt;&lt;<span class="string">&quot;Hello, World!&quot;</span>&lt;&lt;std::endl;</span><br><span class="line">	&#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="type">int</span> <span class="title">main</span><span class="params">()</span></span>&#123;</span><br><span class="line">	T tt;</span><br><span class="line">	<span class="function">std::thread <span class="title">mythread</span><span class="params">(tt)</span></span>;</span><br><span class="line">	mythread.<span class="built_in">join</span>();</span><br><span class="line">	std::cout&lt;&lt;<span class="string">&quot;111&quot;</span>&lt;&lt;std::endl;</span><br><span class="line">	<span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">&#125;</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+<blockquote id="fn_注">
+<sup>注</sup>. 类内不要引用外部的值，当使用detach时，主线程结束会回收变量。而引用外部的值也会出现错误，而在上面代码中，tt对象在主线程结束后也会被销毁，但由于拷贝函数的默默付出，所以并不会发生错误<a href="#reffn_注" title="Jump back to footnote [注] in the text."> &#8617;</a>
+</blockquote>
+<h2 id="使用lambda表达式"><a href="#使用lambda表达式" class="headerlink" title="使用lambda表达式"></a>使用lambda表达式</h2><p>……</p>
 
     </div>
 
@@ -288,6 +313,23 @@
     
 
     <footer class="post-footer">
+          
+
+<div class="post-copyright">
+<ul>
+  <li class="post-copyright-author">
+      <strong>Post author:  </strong>renmale-lv
+  </li>
+  <li class="post-copyright-link">
+      <strong>Post link: </strong>
+      <a href="http://example.com/2023/02/19/C++%E5%A4%9A%E7%BA%BF%E7%A8%8B/" title="C++多线程">http://example.com/2023/02/19/C++多线程/</a>
+  </li>
+  <li class="post-copyright-license">
+    <strong>Copyright Notice:  </strong>All articles in this blog are licensed under <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/" rel="noopener" target="_blank"><i class="fab fa-fw fa-creative-commons"></i>BY-NC-SA</a> unless stating additionally.
+  </li>
+</ul>
+</div>
+
           <div class="post-tags">
               <a href="/tags/C/" rel="tag"># C++</a>
           </div>
@@ -337,14 +379,14 @@
       <i class="fa fa-chart-line"></i>
     </span>
       <span>Word count total: </span>
-    <span title="Word count total">21k</span>
+    <span title="Word count total">23k</span>
   </span>
   <span class="post-meta-item">
     <span class="post-meta-item-icon">
       <i class="fa fa-coffee"></i>
     </span>
       <span>Reading time total &asymp;</span>
-    <span title="Reading time total">19 mins.</span>
+    <span title="Reading time total">21 mins.</span>
   </span>
 </div>
   <div class="powered-by">Powered by <a href="https://hexo.io/" rel="noopener" target="_blank">Hexo</a> & <a href="https://theme-next.js.org/" rel="noopener" target="_blank">NexT.Gemini</a>
