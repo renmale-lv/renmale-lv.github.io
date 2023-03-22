@@ -19,12 +19,12 @@
 
 <script class="next-config" data-name="main" type="application/json">{"hostname":"example.com","root":"/","images":"/images","scheme":"Gemini","darkmode":false,"version":"8.14.2","exturl":false,"sidebar":{"position":"left","display":"always","padding":18,"offset":12},"copycode":{"enable":true,"style":"mac"},"bookmark":{"enable":false,"color":"#222","save":"auto"},"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":"gitalk","storage":true,"lazyload":false,"nav":{"gitalk":{"order":-1}},"activeClass":"gitalk"},"stickytabs":false,"motion":{"enable":true,"async":false,"transition":{"menu_item":"fadeInDown","post_block":"fadeIn","post_header":"fadeInDown","post_body":"fadeInDown","coll_header":"fadeInLeft","sidebar":"fadeInUp"}},"prism":false,"i18n":{"placeholder":"Searching...","empty":"We didn't find any results for the search: ${query}","hits_time":"${hits} results found in ${time} ms","hits":"${hits} results found"},"path":"/search.xml","localsearch":{"enable":true,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false}}</script><script src="/js/config.js"></script>
 
-    <meta name="description" content="&#x3D;&#x3D;记笔记时翻阅了一些其他大佬的资料，如有侵权，联系我删除&#x3D;&#x3D; 一、并发、进程、线程1 概念并发：两个或者更多的任务同时发生（实际上是多个任务轮流占有处理器），某一时刻只能执行一个任务：由于操作系统调度，每秒钟进行多次所谓的“任务切换”，这种切换（上下文切换）死有时间开销的。    并发是指一个处理器同时处理多个任务 并行是指多个处理器或者是多核的处理器同时处理多个不同的任务 并发是逻辑上的同">
+    <meta name="description" content="记笔记时翻阅了一些其他大佬的资料，如有侵权，联系我删除  一、并发、进程、线程1 概念并发：两个或者更多的任务同时发生（实际上是多个任务轮流占有处理器），某一时刻只能执行一个任务：由于操作系统调度，每秒钟进行多次所谓的“任务切换”，这种切换（上下文切换）死有时间开销的。    并发是指一个处理器同时处理多个任务 并行是指多个处理器或者是多核的处理器同时处理多个不同的任务 并发是逻辑上的同时发生">
 <meta property="og:type" content="article">
 <meta property="og:title" content="C++多线程">
 <meta property="og:url" content="http://example.com/2023/02/19/C++%E5%A4%9A%E7%BA%BF%E7%A8%8B/index.html">
 <meta property="og:site_name" content="renmale-lv blog">
-<meta property="og:description" content="&#x3D;&#x3D;记笔记时翻阅了一些其他大佬的资料，如有侵权，联系我删除&#x3D;&#x3D; 一、并发、进程、线程1 概念并发：两个或者更多的任务同时发生（实际上是多个任务轮流占有处理器），某一时刻只能执行一个任务：由于操作系统调度，每秒钟进行多次所谓的“任务切换”，这种切换（上下文切换）死有时间开销的。    并发是指一个处理器同时处理多个任务 并行是指多个处理器或者是多核的处理器同时处理多个不同的任务 并发是逻辑上的同">
+<meta property="og:description" content="记笔记时翻阅了一些其他大佬的资料，如有侵权，联系我删除  一、并发、进程、线程1 概念并发：两个或者更多的任务同时发生（实际上是多个任务轮流占有处理器），某一时刻只能执行一个任务：由于操作系统调度，每秒钟进行多次所谓的“任务切换”，这种切换（上下文切换）死有时间开销的。    并发是指一个处理器同时处理多个任务 并行是指多个处理器或者是多核的处理器同时处理多个不同的任务 并发是逻辑上的同时发生">
 <meta property="og:locale" content="en_US">
 <meta property="og:image" content="https://gitee.com/renmale-sztu/image/raw/master/img/202302272053004.png">
 <meta property="og:image" content="https://gitee.com/renmale-sztu/image/raw/master/img/202302282054227.png">
@@ -39,7 +39,7 @@
 <meta property="og:image" content="https://gitee.com/renmale-sztu/image/raw/master/img/202303101203317.png">
 <meta property="og:image" content="https://gitee.com/renmale-sztu/image/raw/master/img/202303091013309.png">
 <meta property="article:published_time" content="2023-02-19T09:57:15.000Z">
-<meta property="article:modified_time" content="2023-03-21T15:13:49.380Z">
+<meta property="article:modified_time" content="2023-03-22T01:56:24.060Z">
 <meta property="article:author" content="renmale-lv">
 <meta property="article:tag" content="C++">
 <meta name="twitter:card" content="summary">
@@ -66,6 +66,7 @@
   <noscript>
     <link rel="stylesheet" href="/css/noscript.css">
   </noscript>
+<link rel="alternate" href="/atom.xml" title="renmale-lv blog" type="application/atom+xml">
 <style>mjx-container[jax="SVG"] {
   direction: ltr;
 }
@@ -178,8 +179,7 @@ mjx-container[display="true"] {
 mjx-container[display="true"] + br {
   display: none;
 }
-</style><link rel="alternate" href="/atom.xml" title="renmale-lv blog" type="application/atom+xml">
-</head>
+</style></head>
 
 <body itemscope itemtype="http://schema.org/WebPage" class="use-motion">
   <div class="headband"></div>
@@ -353,7 +353,7 @@ mjx-container[display="true"] + br {
         <i class="far fa-calendar-check"></i>
       </span>
       <span class="post-meta-item-text">Edited on</span>
-      <time title="Modified: 2023-03-21 23:13:49" itemprop="dateModified" datetime="2023-03-21T23:13:49+08:00">2023-03-21</time>
+      <time title="Modified: 2023-03-22 09:56:24" itemprop="dateModified" datetime="2023-03-22T09:56:24+08:00">2023-03-22</time>
     </span>
 
   
@@ -383,7 +383,8 @@ mjx-container[display="true"] + br {
     <div class="post-body" itemprop="articleBody">
         <meta name="referrer" content="no-referrer">
 
-<p>==记笔记时翻阅了一些其他大佬的资料，如有侵权，联系我删除==</p>
+<label style="color:yellow">记笔记时翻阅了一些其他大佬的资料，如有侵权，联系我删除</label>
+
 <h1 id="一、并发、进程、线程"><a href="#一、并发、进程、线程" class="headerlink" title="一、并发、进程、线程"></a>一、并发、进程、线程</h1><h2 id="1-概念"><a href="#1-概念" class="headerlink" title="1 概念"></a>1 概念</h2><p><strong>并发</strong>：两个或者更多的任务<del>同时发生</del>（实际上是多个任务轮流占有处理器），某一时刻只能执行一个任务：由于操作系统调度，每秒钟进行多次所谓的“任务切换”，这种切换（上下文切换）死有时间开销的。  </p>
 <p><img src="https://gitee.com/renmale-sztu/image/raw/master/img/202302272053004.png" alt="img"></p>
 <pre class="line-numbers language-txt" data-language="txt"><code class="language-txt">并发是指一个处理器同时处理多个任务
@@ -395,7 +396,7 @@ mjx-container[display="true"] + br {
 <p><strong>进程</strong>：正在运行的程序</p>
 <p><strong>线程</strong>：线程是执行应用程序种的某个具体任务，比如一段程序、一个函数等</p>
 <p><strong>进程和线程的关系</strong></p>
-<p>进程和线程之间的关系类似于工厂和工人之间的关系，进程好比是工厂，线程就如同工厂中的工人，一个工厂可以容纳多个工人，工厂负责为所有工人提供必要的资源，所有工人==<strong>共享这些资源</strong>==，每个工人负责完成一项具体的任务，他们相互配合，共同保证整个工厂的平稳运行</p>
+<p>进程和线程之间的关系类似于工厂和工人之间的关系，进程好比是工厂，线程就如同工厂中的工人，一个工厂可以容纳多个工人，工厂负责为所有工人提供必要的资源，所有工人<strong><em>共享这些资源</em></strong>，每个工人负责完成一项具体的任务，他们相互配合，共同保证整个工厂的平稳运行</p>
 <p><strong>一个进程至少包含 1 个线程（主线程），可以包含多个线程，所有线程共享进程的资源，各个线程也可以拥有属于自己的私有资源</strong></p>
 <p><strong>进程仅负责为各个线程提供所需的资源，真正执行任务的是线程，而不是进程</strong></p>
 <p>线程并不是越多越好，每个线程，都需要一个独立的堆栈空间（1M），线程之间的切换要保存很多中间状态，会耗费本该属于程序运行的时间</p>
@@ -542,11 +543,11 @@ int main() {
 	return 0;
 }<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
 <p><img src="https://gitee.com/renmale-sztu/image/raw/master/img/202303032034746.png" alt="image-20230303203407693"></p>
-<p>当使用指针来进行参数传递时，可以发现只进行了一次对象的构造以及析构，说明使用指针传递参数时，在子线程内访问的对象==仍为外部主线程里构造的对象==</p>
-<p>因此，使用指针传递参数时，应该注意让指针的生命周期==大于==子线程的生命周期，不然当指针过早被析构时，子线程访问不到指针所指向的空间</p>
+<p>当使用指针来进行参数传递时，可以发现只进行了一次对象的构造以及析构，说明使用指针传递参数时，在子线程内访问的对象<strong><em>仍为外部主线程里构造的对象</em></strong></p>
+<p>因此，使用指针传递参数时，应该注意让指针的生命周期<strong><em>大于</em></strong>子线程的生命周期，不然当指针过早被析构时，子线程访问不到指针所指向的空间</p>
 <hr>
-<p>使用==引用==的情况下，与使用指针的情况一样，如果引用的空间被过早释放，程序同样会出错</p>
-<p>thread()函数是一个模板函数，因此在使用引用时，应该使用==std::ref()==特别注明该参数是一个引用</p>
+<p>使用<strong><em>引用</em></strong>的情况下，与使用指针的情况一样，如果引用的空间被过早释放，程序同样会出错</p>
+<p>thread()函数是一个模板函数，因此在使用引用时，应该使用<strong><em>std::ref()</em></strong>特别注明该参数是一个引用</p>
 <pre class="line-numbers language-c++" data-language="c++"><code class="language-c++">Class A{...};
 
 void ThreadMain(A &amp;a){...}
@@ -610,7 +611,7 @@ private:
 	virtual void Main()=0;
 };<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
 <p>通过自己封装一个简易的线程类，以后只需写一个类继承该类，重写Main方法，调用start方法就可以启动一个子线程</p>
-<p>有需要的话，也可以在该类中添加==等待==、==停止==函数等</p>
+<p>有需要的话，也可以在该类中添加<strong><em>等待</em></strong>、<strong><em>停止</em></strong>函数等</p>
 <h2 id="使用lambda表达式"><a href="#使用lambda表达式" class="headerlink" title="使用lambda表达式"></a>使用lambda表达式</h2><p><strong><em>示例</em></strong></p>
 <pre class="line-numbers language-c++" data-language="c++"><code class="language-c++">std::thread th([](int i){
     std::cout&lt;&lt;i&lt;&lt;std::endl;},
@@ -670,7 +671,7 @@ void ThreadMain(){
 <p><img src="https://gitee.com/renmale-sztu/image/raw/master/img/202303072134323.png" alt="image-20230307213457279"></p>
 <h4 id="try-lock"><a href="#try-lock" class="headerlink" title="try_lock"></a>try_lock</h4><ul>
 <li>如果互斥锁当前未被任何线程锁定，则调用线程将其锁定并返回true</li>
-<li>如果互斥锁当前被另一个线程锁定，则该函数将失败并返回false，==而不会阻塞==</li>
+<li>如果互斥锁当前被另一个线程锁定，则该函数将失败并返回false，<strong><em>而不会阻塞</em></strong></li>
 <li>如果互斥锁当前被调用此函数的同一线程锁定，则会产生死锁</li>
 <li>在使用try_lock的时候，一定要判断其返回的值是否为true，只有在true的时候才能够执行unlock操作</li>
 </ul>
@@ -734,7 +735,7 @@ int main(){
 }<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
 <p><img src="https://gitee.com/renmale-sztu/image/raw/master/img/202303072339137.png" alt="image-20230307233916090"></p>
 <h3 id="2-3-超时锁-timed-mutex"><a href="#2-3-超时锁-timed-mutex" class="headerlink" title="2.3 超时锁 timed_mutex"></a>2.3 超时锁 timed_mutex</h3><p>可以记录锁获取情况，多次超时，可以记录日志，获取错误情况</p>
-<p>timed_mutex增加了带时限的try_lock，即==try_lock_for==和==try_lock_until==</p>
+<p>timed_mutex增加了带时限的try_lock，即<strong><em>try_lock_for</em></strong>和<strong><em>try_lock_until</em></strong></p>
 <h4 id="try-lock-for"><a href="#try-lock-for" class="headerlink" title="try_lock_for"></a>try_lock_for</h4><p>尝试上锁，如果在规定时间内没能够上锁，则返回false，否则返回true</p>
 <pre class="line-numbers language-c++" data-language="c++"><code class="language-c++">#include &lt;iostream&gt;
 #include &lt;thread&gt;
@@ -850,7 +851,7 @@ int main() {
 <h4 id="读锁（共享锁定）"><a href="#读锁（共享锁定）" class="headerlink" title="读锁（共享锁定）"></a>读锁（共享锁定）</h4><pre class="line-numbers language-none"><code class="language-none">1、lock_shared
 2、try_lock_shared
 3、unlock_shared<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span></span></code></pre>
-<h3 id="2-6-std-call-once"><a href="#2-6-std-call-once" class="headerlink" title="2.6 std::call_once"></a>2.6 std::call_once</h3><p>在多线程编程中，有时某个函数只需要被执行一次，某些变量只需要初始化一次，此时可以考虑添加锁来控制，而在C++11中，提供了==std::call_once==函数来解决该问题，==std::call_once==函数需要配合==std::once_flag==来实现，也可以解决多线程安全的单例模式</p>
+<h3 id="2-6-std-call-once"><a href="#2-6-std-call-once" class="headerlink" title="2.6 std::call_once"></a>2.6 std::call_once</h3><p>在多线程编程中，有时某个函数只需要被执行一次，某些变量只需要初始化一次，此时可以考虑添加锁来控制，而在C++11中，提供了<strong><em>std::call_once</em></strong>函数来解决该问题，<strong><em>std::call_once</em></strong>函数需要配合<strong><em>std::once_flag</em></strong>来实现，也可以解决多线程安全的单例模式</p>
 <pre class="line-numbers language-c++" data-language="c++"><code class="language-c++">#include&lt;iostream&gt;
 #include&lt;mutex&gt;
 #include&lt;thread&gt;
@@ -997,7 +998,7 @@ std::unique_lock&lt;std::mutex&gt; lock1(){
 	return lock2;
 }<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span></span></code></pre>
 <h4 id="粒度"><a href="#粒度" class="headerlink" title="粒度"></a>粒度</h4><p>为什么我们使用了锁管理器后还要有unlock方法</p>
-<p>对于一个程序来所，你lock()锁住的代码越少，执行越快，整个程序的效率就会越高，一般把锁住代码的多少称为==锁的粒度==，用粗细来描述</p>
+<p>对于一个程序来所，你lock()锁住的代码越少，执行越快，整个程序的效率就会越高，一般把锁住代码的多少称为<strong><em>锁的粒度</em></strong>，用粗细来描述</p>
 <ul>
 <li>锁住的代码少，这个粒度叫细，执行效率高</li>
 <li>锁住的代码多，这个粒度叫粗，执行效率低</li>
