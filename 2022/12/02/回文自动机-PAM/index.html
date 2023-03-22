@@ -361,7 +361,7 @@ mjx-container[display="true"] + br {
         <i class="far fa-file-word"></i>
       </span>
       <span class="post-meta-item-text">Word count in article: </span>
-      <span>2.2k</span>
+      <span>2.3k</span>
     </span>
     <span class="post-meta-item" title="Reading time">
       <span class="post-meta-item-icon">
@@ -391,9 +391,18 @@ mjx-container[display="true"] + br {
 <p>​    依次与包含前一个字符的回文子串从长到短进行匹配，匹配成功时则插入，都不匹配时，最后与自身匹配，为仅有一个字符的回文子串。</p>
 <h2 id="构建"><a href="#构建" class="headerlink" title="构建"></a>构建</h2><p>​    那么如何构建回文树呢？</p>
 <p>​    我们首先定义如下变量：</p>
-<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="type">int</span> len[];  <span class="comment">//len[u]表示回文树中u节点代表的回文串的长度</span></span><br><span class="line"><span class="type">int</span> trie[][]; <span class="comment">//trie[u][c]表示编号为u的节点代表的回文串在两头加上字符c后的回文串的编号</span></span><br><span class="line"><span class="type">int</span> fail[];  <span class="comment">//fail[u]表示节点u失配后跳转到不等于自身的最长后缀回文串的编号（如上图）</span></span><br><span class="line"><span class="type">int</span> cnt[];  <span class="comment">//cnt[u]表示节点u所代表的回文串在整个字符串中出现了多少次</span></span><br><span class="line"><span class="type">int</span> num[];  <span class="comment">//num[u]表示u节点所代表的回文串有多少个本质不同的后缀回文子串</span></span><br><span class="line"><span class="type">int</span> last;  <span class="comment">//表示上一次插入字符的节点的编号</span></span><br><span class="line"><span class="type">int</span> tot;   <span class="comment">//有多少个节点</span></span><br></pre></td></tr></table></figure>
+<pre class="line-numbers language-c++" data-language="c++"><code class="language-c++">int len[];  //len[u]表示回文树中u节点代表的回文串的长度
+int trie[][]; //trie[u][c]表示编号为u的节点代表的回文串在两头加上字符c后的回文串的编号
+int fail[];  //fail[u]表示节点u失配后跳转到不等于自身的最长后缀回文串的编号（如上图）
+int cnt[];  //cnt[u]表示节点u所代表的回文串在整个字符串中出现了多少次
+int num[];  //num[u]表示u节点所代表的回文串有多少个本质不同的后缀回文子串
+int last;  //表示上一次插入字符的节点的编号
+int tot;   //有多少个节点<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
 <p>​    首先我们定义两个节点，0号节点和1号节点，0号节点是偶树的根，1号节点则为奇树的根，初始化数据为：</p>
-<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">len[<span class="number">0</span>]=<span class="number">0</span>;<span class="comment">//偶树每添加一个节点长度+2</span></span><br><span class="line">len[<span class="number">1</span>]=<span class="number">-1</span>;<span class="comment">//奇树中间节点只算一次，所以是-1</span></span><br><span class="line">fail[<span class="number">0</span>]=fail[<span class="number">1</span>]=<span class="number">1</span>;<span class="comment">//新插入一个字符无论如何也能形成一个回文串（只有自身），所以fail[0]指向1号节点，而1号节点指向自身（无所谓）</span></span><br><span class="line">last=<span class="number">0</span>;</span><br></pre></td></tr></table></figure>
+<pre class="line-numbers language-c++" data-language="c++"><code class="language-c++">len[0]=0;//偶树每添加一个节点长度+2
+len[1]=-1;//奇树中间节点只算一次，所以是-1
+fail[0]=fail[1]=1;//新插入一个字符无论如何也能形成一个回文串（只有自身），所以fail[0]指向1号节点，而1号节点指向自身（无所谓）
+last=0;<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span></span></code></pre>
 <p>​    下面为字符串<mjx-container class="MathJax" jax="SVG"><svg style="vertical-align: -0.186ex;" xmlns="http://www.w3.org/2000/svg" width="12.945ex" height="1.756ex" role="img" focusable="false" viewBox="0 -694 5721.6 776"><g stroke="currentColor" fill="currentColor" stroke-width="0" transform="scale(1,-1)"><g data-mml-node="math"><g data-mml-node="mi"><path data-c="1D460" d="M131 289Q131 321 147 354T203 415T300 442Q362 442 390 415T419 355Q419 323 402 308T364 292Q351 292 340 300T328 326Q328 342 337 354T354 372T367 378Q368 378 368 379Q368 382 361 388T336 399T297 405Q249 405 227 379T204 326Q204 301 223 291T278 274T330 259Q396 230 396 163Q396 135 385 107T352 51T289 7T195 -10Q118 -10 86 19T53 87Q53 126 74 143T118 160Q133 160 146 151T160 120Q160 94 142 76T111 58Q109 57 108 57T107 55Q108 52 115 47T146 34T201 27Q237 27 263 38T301 66T318 97T323 122Q323 150 302 164T254 181T195 196T148 231Q131 256 131 289Z"></path></g><g data-mml-node="mi" transform="translate(469,0)"><path data-c="1D461" d="M26 385Q19 392 19 395Q19 399 22 411T27 425Q29 430 36 430T87 431H140L159 511Q162 522 166 540T173 566T179 586T187 603T197 615T211 624T229 626Q247 625 254 615T261 596Q261 589 252 549T232 470L222 433Q222 431 272 431H323Q330 424 330 420Q330 398 317 385H210L174 240Q135 80 135 68Q135 26 162 26Q197 26 230 60T283 144Q285 150 288 151T303 153H307Q322 153 322 145Q322 142 319 133Q314 117 301 95T267 48T216 6T155 -11Q125 -11 98 4T59 56Q57 64 57 83V101L92 241Q127 382 128 383Q128 385 77 385H26Z"></path></g><g data-mml-node="mi" transform="translate(830,0)"><path data-c="1D45F" d="M21 287Q22 290 23 295T28 317T38 348T53 381T73 411T99 433T132 442Q161 442 183 430T214 408T225 388Q227 382 228 382T236 389Q284 441 347 441H350Q398 441 422 400Q430 381 430 363Q430 333 417 315T391 292T366 288Q346 288 334 299T322 328Q322 376 378 392Q356 405 342 405Q286 405 239 331Q229 315 224 298T190 165Q156 25 151 16Q138 -11 108 -11Q95 -11 87 -5T76 7T74 17Q74 30 114 189T154 366Q154 405 128 405Q107 405 92 377T68 316T57 280Q55 278 41 278H27Q21 284 21 287Z"></path></g><g data-mml-node="mo" transform="translate(1558.8,0)"><path data-c="3D" d="M56 347Q56 360 70 367H707Q722 359 722 347Q722 336 708 328L390 327H72Q56 332 56 347ZM56 153Q56 168 72 173H708Q722 163 722 153Q722 140 707 133H70Q56 140 56 153Z"></path></g><g data-mml-node="mi" transform="translate(2614.6,0)"><path data-c="1D44E" d="M33 157Q33 258 109 349T280 441Q331 441 370 392Q386 422 416 422Q429 422 439 414T449 394Q449 381 412 234T374 68Q374 43 381 35T402 26Q411 27 422 35Q443 55 463 131Q469 151 473 152Q475 153 483 153H487Q506 153 506 144Q506 138 501 117T481 63T449 13Q436 0 417 -8Q409 -10 393 -10Q359 -10 336 5T306 36L300 51Q299 52 296 50Q294 48 292 46Q233 -10 172 -10Q117 -10 75 30T33 157ZM351 328Q351 334 346 350T323 385T277 405Q242 405 210 374T160 293Q131 214 119 129Q119 126 119 118T118 106Q118 61 136 44T179 26Q217 26 254 59T298 110Q300 114 325 217T351 328Z"></path></g><g data-mml-node="mi" transform="translate(3143.6,0)"><path data-c="1D44F" d="M73 647Q73 657 77 670T89 683Q90 683 161 688T234 694Q246 694 246 685T212 542Q204 508 195 472T180 418L176 399Q176 396 182 402Q231 442 283 442Q345 442 383 396T422 280Q422 169 343 79T173 -11Q123 -11 82 27T40 150V159Q40 180 48 217T97 414Q147 611 147 623T109 637Q104 637 101 637H96Q86 637 83 637T76 640T73 647ZM336 325V331Q336 405 275 405Q258 405 240 397T207 376T181 352T163 330L157 322L136 236Q114 150 114 114Q114 66 138 42Q154 26 178 26Q211 26 245 58Q270 81 285 114T318 219Q336 291 336 325Z"></path></g><g data-mml-node="mi" transform="translate(3572.6,0)"><path data-c="1D44F" d="M73 647Q73 657 77 670T89 683Q90 683 161 688T234 694Q246 694 246 685T212 542Q204 508 195 472T180 418L176 399Q176 396 182 402Q231 442 283 442Q345 442 383 396T422 280Q422 169 343 79T173 -11Q123 -11 82 27T40 150V159Q40 180 48 217T97 414Q147 611 147 623T109 637Q104 637 101 637H96Q86 637 83 637T76 640T73 647ZM336 325V331Q336 405 275 405Q258 405 240 397T207 376T181 352T163 330L157 322L136 236Q114 150 114 114Q114 66 138 42Q154 26 178 26Q211 26 245 58Q270 81 285 114T318 219Q336 291 336 325Z"></path></g><g data-mml-node="mi" transform="translate(4001.6,0)"><path data-c="1D450" d="M34 159Q34 268 120 355T306 442Q362 442 394 418T427 355Q427 326 408 306T360 285Q341 285 330 295T319 325T330 359T352 380T366 386H367Q367 388 361 392T340 400T306 404Q276 404 249 390Q228 381 206 359Q162 315 142 235T121 119Q121 73 147 50Q169 26 205 26H209Q321 26 394 111Q403 121 406 121Q410 121 419 112T429 98T420 83T391 55T346 25T282 0T202 -11Q127 -11 81 37T34 159Z"></path></g><g data-mml-node="mi" transform="translate(4434.6,0)"><path data-c="1D44F" d="M73 647Q73 657 77 670T89 683Q90 683 161 688T234 694Q246 694 246 685T212 542Q204 508 195 472T180 418L176 399Q176 396 182 402Q231 442 283 442Q345 442 383 396T422 280Q422 169 343 79T173 -11Q123 -11 82 27T40 150V159Q40 180 48 217T97 414Q147 611 147 623T109 637Q104 637 101 637H96Q86 637 83 637T76 640T73 647ZM336 325V331Q336 405 275 405Q258 405 240 397T207 376T181 352T163 330L157 322L136 236Q114 150 114 114Q114 66 138 42Q154 26 178 26Q211 26 245 58Q270 81 285 114T318 219Q336 291 336 325Z"></path></g><g data-mml-node="mi" transform="translate(4863.6,0)"><path data-c="1D44F" d="M73 647Q73 657 77 670T89 683Q90 683 161 688T234 694Q246 694 246 685T212 542Q204 508 195 472T180 418L176 399Q176 396 182 402Q231 442 283 442Q345 442 383 396T422 280Q422 169 343 79T173 -11Q123 -11 82 27T40 150V159Q40 180 48 217T97 414Q147 611 147 623T109 637Q104 637 101 637H96Q86 637 83 637T76 640T73 647ZM336 325V331Q336 405 275 405Q258 405 240 397T207 376T181 352T163 330L157 322L136 236Q114 150 114 114Q114 66 138 42Q154 26 178 26Q211 26 245 58Q270 81 285 114T318 219Q336 291 336 325Z"></path></g><g data-mml-node="mi" transform="translate(5292.6,0)"><path data-c="1D44F" d="M73 647Q73 657 77 670T89 683Q90 683 161 688T234 694Q246 694 246 685T212 542Q204 508 195 472T180 418L176 399Q176 396 182 402Q231 442 283 442Q345 442 383 396T422 280Q422 169 343 79T173 -11Q123 -11 82 27T40 150V159Q40 180 48 217T97 414Q147 611 147 623T109 637Q104 637 101 637H96Q86 637 83 637T76 640T73 647ZM336 325V331Q336 405 275 405Q258 405 240 397T207 376T181 352T163 330L157 322L136 236Q114 150 114 114Q114 66 138 42Q154 26 178 26Q211 26 245 58Q270 81 285 114T318 219Q336 291 336 325Z"></path></g></g></g></svg></mjx-container>的回文树构建过程：</p>
 <p>初始化：</p>
 <p><img src="https://gitee.com/renmale-sztu/image/raw/master/img/202212212052224.png" alt="image-20221202200101839"></p>
@@ -421,7 +430,41 @@ mjx-container[display="true"] + br {
 <p><img src="https://gitee.com/renmale-sztu/image/raw/master/img/202212212056858.png" alt="image-20221202215150351"></p>
 <p><img src="https://gitee.com/renmale-sztu/image/raw/master/img/202212212056070.png" alt="image-20221202220630334"></p>
 <p><img src="https://gitee.com/renmale-sztu/image/raw/master/img/202212212056276.png" alt="image-20221202220946755"></p>
-<h2 id="实现"><a href="#实现" class="headerlink" title="实现"></a>实现</h2><figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#<span class="keyword">include</span><span class="string">&lt;iostream&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="keyword">include</span><span class="string">&lt;string&gt;</span></span></span><br><span class="line"></span><br><span class="line"><span class="type">const</span> <span class="type">int</span> MAXN=<span class="number">1e6</span>+<span class="number">7</span>;</span><br><span class="line"><span class="type">int</span> len[MAXN],num[MAXN],fail[MAXN],cnt[MAXN];</span><br><span class="line"><span class="type">int</span> trie[MAXN][<span class="number">26</span>],tot=<span class="number">1</span>,last;</span><br><span class="line">std::string str;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="type">int</span> <span class="title">getfail</span><span class="params">(<span class="type">int</span> x,<span class="type">int</span> u)</span></span>{</span><br><span class="line">    <span class="keyword">while</span>(u-len[x]<span class="number">-1</span>&lt;<span class="number">0</span> || str[u-len[x]<span class="number">-1</span>]!=str[u]) x=fail[x];</span><br><span class="line">    <span class="keyword">return</span> x;</span><br><span class="line">}</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="type">int</span> <span class="title">main</span><span class="params">()</span></span>{</span><br><span class="line">    std::cin&gt;&gt;str;</span><br><span class="line">    <span class="type">int</span> n=str.<span class="built_in">length</span>();</span><br><span class="line">    len[<span class="number">0</span>]=<span class="number">0</span>;len[<span class="number">1</span>]=<span class="number">-1</span>;</span><br><span class="line">    fail[<span class="number">0</span>]=fail[<span class="number">1</span>]=<span class="number">1</span>;</span><br><span class="line">    <span class="keyword">for</span>(<span class="type">int</span> i=<span class="number">0</span>;i&lt;n;++i){</span><br><span class="line">        <span class="type">int</span> u=last;</span><br><span class="line">        u=<span class="built_in">getfail</span>(u,i);</span><br><span class="line">        <span class="keyword">if</span>(!trie[u][str[i]-<span class="string">'a'</span>]){</span><br><span class="line">			fail[++tot]=trie[<span class="built_in">getfail</span>(fail[u],i)][str[i]-<span class="string">'a'</span>];</span><br><span class="line">            trie[u][str[i]-<span class="string">'a'</span>]=tot;</span><br><span class="line">        	len[tot]=len[u]+<span class="number">2</span>;</span><br><span class="line">            num[tot]=num[fail[tot]]+<span class="number">1</span>;</span><br><span class="line">        }</span><br><span class="line">        last=trie[u][str[i]-<span class="string">'a'</span>];</span><br><span class="line">        ++cnt[last];</span><br><span class="line">	}</span><br><span class="line">    <span class="keyword">for</span>(<span class="type">int</span> i=tot;i&gt;=<span class="number">2</span>;--i){</span><br><span class="line">        cnt[fail[i]]+=cnt[i];</span><br><span class="line">    }</span><br><span class="line">    <span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">}</span><br></pre></td></tr></table></figure>
+<h2 id="实现"><a href="#实现" class="headerlink" title="实现"></a>实现</h2><pre class="line-numbers language-c++" data-language="c++"><code class="language-c++">#include&lt;iostream&gt;
+#include&lt;string&gt;
+
+const int MAXN=1e6+7;
+int len[MAXN],num[MAXN],fail[MAXN],cnt[MAXN];
+int trie[MAXN][26],tot=1,last;
+std::string str;
+
+int getfail(int x,int u){
+    while(u-len[x]-1&lt;0 || str[u-len[x]-1]!=str[u]) x=fail[x];
+    return x;
+}
+
+int main(){
+    std::cin&gt;&gt;str;
+    int n=str.length();
+    len[0]=0;len[1]=-1;
+    fail[0]=fail[1]=1;
+    for(int i=0;i&lt;n;++i){
+        int u=last;
+        u=getfail(u,i);
+        if(!trie[u][str[i]-'a']){
+			fail[++tot]=trie[getfail(fail[u],i)][str[i]-'a'];
+            trie[u][str[i]-'a']=tot;
+        	len[tot]=len[u]+2;
+            num[tot]=num[fail[tot]]+1;
+        }
+        last=trie[u][str[i]-'a'];
+        ++cnt[last];
+	}
+    for(int i=tot;i&gt;=2;--i){
+        cnt[fail[i]]+=cnt[i];
+    }
+    return 0;
+}<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
 <h2 id="题目"><a href="#题目" class="headerlink" title="题目"></a>题目</h2><ul>
 <li><a target="_blank" rel="noopener" href="https://www.luogu.com.cn/problem/P5496">洛谷P5496</a></li>
 <li><a target="_blank" rel="noopener" href="https://www.luogu.com.cn/problem/P3649">洛谷P3649</a></li>
@@ -501,14 +544,14 @@ mjx-container[display="true"] + br {
       <i class="fa fa-chart-line"></i>
     </span>
       <span>Word count total: </span>
-    <span title="Word count total">39k</span>
+    <span title="Word count total">40k</span>
   </span>
   <span class="post-meta-item">
     <span class="post-meta-item-icon">
       <i class="fa fa-coffee"></i>
     </span>
       <span>Reading time total &asymp;</span>
-    <span title="Reading time total">35 mins.</span>
+    <span title="Reading time total">36 mins.</span>
   </span>
 </div>
   <div class="powered-by">Powered by <a href="https://hexo.io/" rel="noopener" target="_blank">Hexo</a> & <a href="https://theme-next.js.org/" rel="noopener" target="_blank">NexT.Gemini</a>
