@@ -92,14 +92,14 @@
 
   
   <url>
-    <loc>http://example.com/tags/C/</loc>
+    <loc>http://example.com/tags/algorithm/</loc>
     <lastmod>2023-03-22</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.2</priority>
   </url>
   
   <url>
-    <loc>http://example.com/tags/algorithm/</loc>
+    <loc>http://example.com/tags/C/</loc>
     <lastmod>2023-03-22</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.2</priority>
