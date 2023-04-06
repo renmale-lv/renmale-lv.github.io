@@ -38,8 +38,11 @@
 <meta property="og:image" content="https://gitee.com/renmale-sztu/image/raw/master/img/202303072339137.png">
 <meta property="og:image" content="https://gitee.com/renmale-sztu/image/raw/master/img/202303101203317.png">
 <meta property="og:image" content="https://gitee.com/renmale-sztu/image/raw/master/img/202303091013309.png">
+<meta property="og:image" content="https://gitee.com/renmale-sztu/image/raw/master/image-20230402220515173.png">
+<meta property="og:image" content="c:\Users\lvxr\AppData\Roaming\Typora\typora-user-images\image-20230406170429481.png">
+<meta property="og:image" content="https://gitee.com/renmale-sztu/image/raw/master/image-20230406171909775.png">
 <meta property="article:published_time" content="2023-02-19T09:57:15.000Z">
-<meta property="article:modified_time" content="2023-03-22T01:56:24.060Z">
+<meta property="article:modified_time" content="2023-04-06T09:26:38.603Z">
 <meta property="article:author" content="renmale-lv">
 <meta property="article:tag" content="C++">
 <meta name="twitter:card" content="summary">
@@ -66,7 +69,6 @@
   <noscript>
     <link rel="stylesheet" href="/css/noscript.css">
   </noscript>
-<link rel="alternate" href="/atom.xml" title="renmale-lv blog" type="application/atom+xml">
 <style>mjx-container[jax="SVG"] {
   direction: ltr;
 }
@@ -179,7 +181,8 @@ mjx-container[display="true"] {
 mjx-container[display="true"] + br {
   display: none;
 }
-</style></head>
+</style><link rel="alternate" href="/atom.xml" title="renmale-lv blog" type="application/atom+xml">
+</head>
 
 <body itemscope itemtype="http://schema.org/WebPage" class="use-motion">
   <div class="headband"></div>
@@ -266,7 +269,7 @@ mjx-container[display="true"] + br {
       <div class="sidebar-panel-container">
         <!--noindex-->
         <div class="post-toc-wrap sidebar-panel">
-            <div class="post-toc animated"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#%E4%B8%80%E3%80%81%E5%B9%B6%E5%8F%91%E3%80%81%E8%BF%9B%E7%A8%8B%E3%80%81%E7%BA%BF%E7%A8%8B"><span class="nav-number">1.</span> <span class="nav-text">一、并发、进程、线程</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#1-%E6%A6%82%E5%BF%B5"><span class="nav-number">1.1.</span> <span class="nav-text">1 概念</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#2-%E5%B9%B6%E5%8F%91%E7%9A%84%E5%AE%9E%E7%8E%B0"><span class="nav-number">1.2.</span> <span class="nav-text">2 并发的实现</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#2-1%E5%A4%9A%E8%BF%9B%E7%A8%8B%E5%B9%B6%E5%8F%91"><span class="nav-number">1.2.1.</span> <span class="nav-text">2.1多进程并发</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#2-2%E5%A4%9A%E7%BA%BF%E7%A8%8B%E5%B9%B6%E5%8F%91"><span class="nav-number">1.2.2.</span> <span class="nav-text">2.2多线程并发</span></a></li></ol></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#%E4%BA%8C%E3%80%81%E7%BA%BF%E7%A8%8B%E7%9A%84%E5%90%AF%E5%8A%A8%E5%92%8C%E7%BB%93%E6%9D%9F"><span class="nav-number">2.</span> <span class="nav-text">二、线程的启动和结束</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#thread-amp-join"><span class="nav-number">2.1.</span> <span class="nav-text">thread &amp; join</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#detach"><span class="nav-number">2.2.</span> <span class="nav-text">detach</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#joinable"><span class="nav-number">2.3.</span> <span class="nav-text">joinable</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#thread%E4%BC%A0%E5%85%A5%E5%87%BD%E6%95%B0%E5%8F%82%E6%95%B0"><span class="nav-number">2.4.</span> <span class="nav-text">thread传入函数参数</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E4%BD%BF%E7%94%A8%E6%8C%87%E9%92%88-%E5%BC%95%E7%94%A8%E6%9D%A5%E8%BF%9B%E8%A1%8C%E5%8F%82%E6%95%B0%E4%BC%A0%E9%80%92"><span class="nav-number">2.5.</span> <span class="nav-text">使用指针&#x2F;引用来进行参数传递</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E4%BD%BF%E7%94%A8%E7%B1%BB%E6%9D%A5%E5%88%9B%E5%BB%BA%E7%BA%BF%E7%A8%8B"><span class="nav-number">2.6.</span> <span class="nav-text">使用类来创建线程</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E4%BD%BF%E7%94%A8%E6%88%90%E5%91%98%E5%87%BD%E6%95%B0%E4%BD%9C%E4%B8%BA%E7%BA%BF%E7%A8%8B%E5%85%A5%E5%8F%A3%E5%87%BD%E6%95%B0"><span class="nav-number">2.7.</span> <span class="nav-text">使用成员函数作为线程入口函数</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%B0%81%E8%A3%85%E4%B8%80%E4%B8%AA%E7%AE%80%E6%98%93%E7%BA%BF%E7%A8%8B%E7%B1%BB"><span class="nav-number">2.8.</span> <span class="nav-text">封装一个简易线程类</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E4%BD%BF%E7%94%A8lambda%E8%A1%A8%E8%BE%BE%E5%BC%8F"><span class="nav-number">2.9.</span> <span class="nav-text">使用lambda表达式</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#%E4%B8%89%E3%80%81%E5%A4%9A%E7%BA%BF%E7%A8%8B%E9%80%9A%E4%BF%A1%E5%92%8C%E5%90%8C%E6%AD%A5"><span class="nav-number">3.</span> <span class="nav-text">三、多线程通信和同步</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#1-%E5%A4%9A%E7%BA%BF%E7%A8%8B%E7%8A%B6%E6%80%81"><span class="nav-number">3.1.</span> <span class="nav-text">1 多线程状态</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#1-1-%E7%BA%BF%E7%A8%8B%E7%8A%B6%E6%80%81%E8%AF%B4%E6%98%8E"><span class="nav-number">3.1.1.</span> <span class="nav-text">1.1 线程状态说明</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#1-2-%E7%AB%9E%E4%BA%89%E7%8A%B6%E6%80%81%E5%92%8C%E4%B8%B4%E7%95%8C%E5%8C%BA"><span class="nav-number">3.1.2.</span> <span class="nav-text">1.2 竞争状态和临界区</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#2-%E4%BA%92%E6%96%A5%E4%BD%93%E5%92%8C%E9%94%81mutex"><span class="nav-number">3.2.</span> <span class="nav-text">2 互斥体和锁mutex</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#2-1-%E4%BA%92%E6%96%A5%E9%94%81-mutex"><span class="nav-number">3.2.1.</span> <span class="nav-text">2.1 互斥锁 mutex</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#%E4%B8%8D%E4%BD%BF%E7%94%A8%E9%94%81%E7%9A%84%E6%83%85%E5%86%B5"><span class="nav-number">3.2.1.1.</span> <span class="nav-text">不使用锁的情况</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E4%BD%BF%E7%94%A8%E9%94%81"><span class="nav-number">3.2.1.2.</span> <span class="nav-text">使用锁</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#try-lock"><span class="nav-number">3.2.1.3.</span> <span class="nav-text">try_lock</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#2-2-%E4%BA%92%E6%96%A5%E9%94%81%E7%9A%84%E5%9D%91-%E7%BA%BF%E7%A8%8B%E6%8A%A2%E5%8D%A0%E4%B8%8D%E5%88%B0%E8%B5%84%E6%BA%90"><span class="nav-number">3.2.2.</span> <span class="nav-text">2.2 互斥锁的坑_线程抢占不到资源</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#2-3-%E8%B6%85%E6%97%B6%E9%94%81-timed-mutex"><span class="nav-number">3.2.3.</span> <span class="nav-text">2.3 超时锁 timed_mutex</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#try-lock-for"><span class="nav-number">3.2.3.1.</span> <span class="nav-text">try_lock_for</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#try-lock-until"><span class="nav-number">3.2.3.2.</span> <span class="nav-text">try_lock_until</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#2-4-%E9%80%92%E5%BD%92%E9%94%81-%E5%8F%AF%E9%87%8D%E5%85%A5-recursive-mutex-%E5%92%8C-recursive-timed-mutex"><span class="nav-number">3.2.4.</span> <span class="nav-text">2.4 递归锁(可重入) recursive_mutex 和 recursive_timed_mutex</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#recursive-mutex"><span class="nav-number">3.2.4.1.</span> <span class="nav-text">recursive_mutex</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#recursive-timed-mutex"><span class="nav-number">3.2.4.2.</span> <span class="nav-text">recursive_timed_mutex</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#2-5-%E5%85%B1%E4%BA%AB%E9%94%81-shared-mutex"><span class="nav-number">3.2.5.</span> <span class="nav-text">2.5 共享锁 shared_mutex</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#%E5%86%99%E9%94%81-%E6%8E%92%E4%BB%96%E6%80%A7%E9%94%81%E5%AE%9A"><span class="nav-number">3.2.5.1.</span> <span class="nav-text">写锁(排他性锁定)</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E8%AF%BB%E9%94%81%EF%BC%88%E5%85%B1%E4%BA%AB%E9%94%81%E5%AE%9A%EF%BC%89"><span class="nav-number">3.2.5.2.</span> <span class="nav-text">读锁（共享锁定）</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#2-6-std-call-once"><span class="nav-number">3.2.6.</span> <span class="nav-text">2.6 std::call_once</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#3-%E5%88%A9%E7%94%A8%E6%A0%88%E7%89%B9%E6%80%A7%E8%87%AA%E5%8A%A8%E9%87%8A%E6%94%BE%E9%94%81-RAII"><span class="nav-number">3.3.</span> <span class="nav-text">3 利用栈特性自动释放锁 RAII</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#3-1-RAII"><span class="nav-number">3.3.1.</span> <span class="nav-text">3.1 RAII</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#%E4%BB%A3%E7%A0%81%E5%AE%9E%E7%8E%B0"><span class="nav-number">3.3.1.1.</span> <span class="nav-text">代码实现</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#3-2-C-11-lock-guard"><span class="nav-number">3.3.2.</span> <span class="nav-text">3.2 C++11 lock_guard</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#std-adopt-lock"><span class="nav-number">3.3.2.1.</span> <span class="nav-text">std::adopt_lock</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#3-3-C-11-unique-lock"><span class="nav-number">3.3.3.</span> <span class="nav-text">3.3 C++11 unique_lock</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#std-adopt-lock-1"><span class="nav-number">3.3.3.1.</span> <span class="nav-text">std::adopt_lock</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#std-try-to-lock"><span class="nav-number">3.3.3.2.</span> <span class="nav-text">std::try_to_lock</span></a><ol class="nav-child"><li class="nav-item nav-level-5"><a class="nav-link" href="#owns-lock"><span class="nav-number">3.3.3.2.1.</span> <span class="nav-text">owns_lock</span></a></li></ol></li><li class="nav-item nav-level-4"><a class="nav-link" href="#std-defer-lock"><span class="nav-number">3.3.3.3.</span> <span class="nav-text">std::defer_lock</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E5%85%B6%E4%BB%96%E5%8F%82%E6%95%B0"><span class="nav-number">3.3.3.4.</span> <span class="nav-text">其他参数</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#lock"><span class="nav-number">3.3.3.5.</span> <span class="nav-text">lock()</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#unlock"><span class="nav-number">3.3.3.6.</span> <span class="nav-text">unlock()</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#try-lock-1"><span class="nav-number">3.3.3.7.</span> <span class="nav-text">try_lock()</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#release"><span class="nav-number">3.3.3.8.</span> <span class="nav-text">release()</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E6%89%80%E6%9C%89%E6%9D%83%E7%9A%84%E4%BC%A0%E9%80%92"><span class="nav-number">3.3.3.9.</span> <span class="nav-text">所有权的传递</span></a><ol class="nav-child"><li class="nav-item nav-level-5"><a class="nav-link" href="#move"><span class="nav-number">3.3.3.9.1.</span> <span class="nav-text">move</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#return"><span class="nav-number">3.3.3.9.2.</span> <span class="nav-text">return</span></a></li></ol></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E7%B2%92%E5%BA%A6"><span class="nav-number">3.3.3.10.</span> <span class="nav-text">粒度</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#3-4-C-14-shared-lock"><span class="nav-number">3.3.4.</span> <span class="nav-text">3.4 C++14 shared_lock</span></a><ol class="nav-child"><li class="nav-item nav-level-5"><a class="nav-link" href="#%E5%B8%B8%E7%94%A8%E6%88%90%E5%91%98%E5%87%BD%E6%95%B0"><span class="nav-number">3.3.4.0.1.</span> <span class="nav-text">常用成员函数</span></a></li></ol></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#3-5-C-17-scoped-lock"><span class="nav-number">3.3.5.</span> <span class="nav-text">3.5 C++17 scoped_lock</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#3-6-condition-variable-%E6%9D%A1%E4%BB%B6%E5%8F%98%E9%87%8F"><span class="nav-number">3.3.6.</span> <span class="nav-text">3.6 condition_variable 条件变量</span></a></li></ol></li></ol></li></ol></div>
+            <div class="post-toc animated"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#%E4%B8%80%E3%80%81%E5%B9%B6%E5%8F%91%E3%80%81%E8%BF%9B%E7%A8%8B%E3%80%81%E7%BA%BF%E7%A8%8B"><span class="nav-number">1.</span> <span class="nav-text">一、并发、进程、线程</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#1-%E6%A6%82%E5%BF%B5"><span class="nav-number">1.1.</span> <span class="nav-text">1 概念</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#2-%E5%B9%B6%E5%8F%91%E7%9A%84%E5%AE%9E%E7%8E%B0"><span class="nav-number">1.2.</span> <span class="nav-text">2 并发的实现</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#2-1%E5%A4%9A%E8%BF%9B%E7%A8%8B%E5%B9%B6%E5%8F%91"><span class="nav-number">1.2.1.</span> <span class="nav-text">2.1多进程并发</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#2-2%E5%A4%9A%E7%BA%BF%E7%A8%8B%E5%B9%B6%E5%8F%91"><span class="nav-number">1.2.2.</span> <span class="nav-text">2.2多线程并发</span></a></li></ol></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#%E4%BA%8C%E3%80%81%E7%BA%BF%E7%A8%8B%E7%9A%84%E5%90%AF%E5%8A%A8%E5%92%8C%E7%BB%93%E6%9D%9F"><span class="nav-number">2.</span> <span class="nav-text">二、线程的启动和结束</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#thread-amp-join"><span class="nav-number">2.1.</span> <span class="nav-text">thread &amp; join</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#detach"><span class="nav-number">2.2.</span> <span class="nav-text">detach</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#joinable"><span class="nav-number">2.3.</span> <span class="nav-text">joinable</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#thread%E4%BC%A0%E5%85%A5%E5%87%BD%E6%95%B0%E5%8F%82%E6%95%B0"><span class="nav-number">2.4.</span> <span class="nav-text">thread传入函数参数</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E4%BD%BF%E7%94%A8%E6%8C%87%E9%92%88-%E5%BC%95%E7%94%A8%E6%9D%A5%E8%BF%9B%E8%A1%8C%E5%8F%82%E6%95%B0%E4%BC%A0%E9%80%92"><span class="nav-number">2.5.</span> <span class="nav-text">使用指针&#x2F;引用来进行参数传递</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E4%BD%BF%E7%94%A8%E7%B1%BB%E6%9D%A5%E5%88%9B%E5%BB%BA%E7%BA%BF%E7%A8%8B"><span class="nav-number">2.6.</span> <span class="nav-text">使用类来创建线程</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E4%BD%BF%E7%94%A8%E6%88%90%E5%91%98%E5%87%BD%E6%95%B0%E4%BD%9C%E4%B8%BA%E7%BA%BF%E7%A8%8B%E5%85%A5%E5%8F%A3%E5%87%BD%E6%95%B0"><span class="nav-number">2.7.</span> <span class="nav-text">使用成员函数作为线程入口函数</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%B0%81%E8%A3%85%E4%B8%80%E4%B8%AA%E7%AE%80%E6%98%93%E7%BA%BF%E7%A8%8B%E7%B1%BB"><span class="nav-number">2.8.</span> <span class="nav-text">封装一个简易线程类</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E4%BD%BF%E7%94%A8lambda%E8%A1%A8%E8%BE%BE%E5%BC%8F"><span class="nav-number">2.9.</span> <span class="nav-text">使用lambda表达式</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#%E4%B8%89%E3%80%81%E5%A4%9A%E7%BA%BF%E7%A8%8B%E9%80%9A%E4%BF%A1%E5%92%8C%E5%90%8C%E6%AD%A5"><span class="nav-number">3.</span> <span class="nav-text">三、多线程通信和同步</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#1-%E5%A4%9A%E7%BA%BF%E7%A8%8B%E7%8A%B6%E6%80%81"><span class="nav-number">3.1.</span> <span class="nav-text">1 多线程状态</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#1-1-%E7%BA%BF%E7%A8%8B%E7%8A%B6%E6%80%81%E8%AF%B4%E6%98%8E"><span class="nav-number">3.1.1.</span> <span class="nav-text">1.1 线程状态说明</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#1-2-%E7%AB%9E%E4%BA%89%E7%8A%B6%E6%80%81%E5%92%8C%E4%B8%B4%E7%95%8C%E5%8C%BA"><span class="nav-number">3.1.2.</span> <span class="nav-text">1.2 竞争状态和临界区</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#2-%E4%BA%92%E6%96%A5%E4%BD%93%E5%92%8C%E9%94%81mutex"><span class="nav-number">3.2.</span> <span class="nav-text">2 互斥体和锁mutex</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#2-1-%E4%BA%92%E6%96%A5%E9%94%81-mutex"><span class="nav-number">3.2.1.</span> <span class="nav-text">2.1 互斥锁 mutex</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#%E4%B8%8D%E4%BD%BF%E7%94%A8%E9%94%81%E7%9A%84%E6%83%85%E5%86%B5"><span class="nav-number">3.2.1.1.</span> <span class="nav-text">不使用锁的情况</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E4%BD%BF%E7%94%A8%E9%94%81"><span class="nav-number">3.2.1.2.</span> <span class="nav-text">使用锁</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#try-lock"><span class="nav-number">3.2.1.3.</span> <span class="nav-text">try_lock</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#2-2-%E4%BA%92%E6%96%A5%E9%94%81%E7%9A%84%E5%9D%91-%E7%BA%BF%E7%A8%8B%E6%8A%A2%E5%8D%A0%E4%B8%8D%E5%88%B0%E8%B5%84%E6%BA%90"><span class="nav-number">3.2.2.</span> <span class="nav-text">2.2 互斥锁的坑_线程抢占不到资源</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#2-3-%E8%B6%85%E6%97%B6%E9%94%81-timed-mutex"><span class="nav-number">3.2.3.</span> <span class="nav-text">2.3 超时锁 timed_mutex</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#try-lock-for"><span class="nav-number">3.2.3.1.</span> <span class="nav-text">try_lock_for</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#try-lock-until"><span class="nav-number">3.2.3.2.</span> <span class="nav-text">try_lock_until</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#2-4-%E9%80%92%E5%BD%92%E9%94%81-%E5%8F%AF%E9%87%8D%E5%85%A5-recursive-mutex-%E5%92%8C-recursive-timed-mutex"><span class="nav-number">3.2.4.</span> <span class="nav-text">2.4 递归锁(可重入) recursive_mutex 和 recursive_timed_mutex</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#recursive-mutex"><span class="nav-number">3.2.4.1.</span> <span class="nav-text">recursive_mutex</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#recursive-timed-mutex"><span class="nav-number">3.2.4.2.</span> <span class="nav-text">recursive_timed_mutex</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#2-5-%E5%85%B1%E4%BA%AB%E9%94%81-shared-mutex"><span class="nav-number">3.2.5.</span> <span class="nav-text">2.5 共享锁 shared_mutex</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#%E5%86%99%E9%94%81-%E6%8E%92%E4%BB%96%E6%80%A7%E9%94%81%E5%AE%9A"><span class="nav-number">3.2.5.1.</span> <span class="nav-text">写锁(排他性锁定)</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E8%AF%BB%E9%94%81%EF%BC%88%E5%85%B1%E4%BA%AB%E9%94%81%E5%AE%9A%EF%BC%89"><span class="nav-number">3.2.5.2.</span> <span class="nav-text">读锁（共享锁定）</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#2-6-std-call-once"><span class="nav-number">3.2.6.</span> <span class="nav-text">2.6 std::call_once</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#3-%E5%88%A9%E7%94%A8%E6%A0%88%E7%89%B9%E6%80%A7%E8%87%AA%E5%8A%A8%E9%87%8A%E6%94%BE%E9%94%81-RAII"><span class="nav-number">3.3.</span> <span class="nav-text">3 利用栈特性自动释放锁 RAII</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#3-1-RAII"><span class="nav-number">3.3.1.</span> <span class="nav-text">3.1 RAII</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#%E4%BB%A3%E7%A0%81%E5%AE%9E%E7%8E%B0"><span class="nav-number">3.3.1.1.</span> <span class="nav-text">代码实现</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#3-2-C-11-lock-guard"><span class="nav-number">3.3.2.</span> <span class="nav-text">3.2 C++11 lock_guard</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#std-adopt-lock"><span class="nav-number">3.3.2.1.</span> <span class="nav-text">std::adopt_lock</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#3-3-C-11-unique-lock"><span class="nav-number">3.3.3.</span> <span class="nav-text">3.3 C++11 unique_lock</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#std-adopt-lock-1"><span class="nav-number">3.3.3.1.</span> <span class="nav-text">std::adopt_lock</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#std-try-to-lock"><span class="nav-number">3.3.3.2.</span> <span class="nav-text">std::try_to_lock</span></a><ol class="nav-child"><li class="nav-item nav-level-5"><a class="nav-link" href="#owns-lock"><span class="nav-number">3.3.3.2.1.</span> <span class="nav-text">owns_lock</span></a></li></ol></li><li class="nav-item nav-level-4"><a class="nav-link" href="#std-defer-lock"><span class="nav-number">3.3.3.3.</span> <span class="nav-text">std::defer_lock</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E5%85%B6%E4%BB%96%E5%8F%82%E6%95%B0"><span class="nav-number">3.3.3.4.</span> <span class="nav-text">其他参数</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#lock"><span class="nav-number">3.3.3.5.</span> <span class="nav-text">lock()</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#unlock"><span class="nav-number">3.3.3.6.</span> <span class="nav-text">unlock()</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#try-lock-1"><span class="nav-number">3.3.3.7.</span> <span class="nav-text">try_lock()</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#release"><span class="nav-number">3.3.3.8.</span> <span class="nav-text">release()</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E6%89%80%E6%9C%89%E6%9D%83%E7%9A%84%E4%BC%A0%E9%80%92"><span class="nav-number">3.3.3.9.</span> <span class="nav-text">所有权的传递</span></a><ol class="nav-child"><li class="nav-item nav-level-5"><a class="nav-link" href="#move"><span class="nav-number">3.3.3.9.1.</span> <span class="nav-text">move</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#return"><span class="nav-number">3.3.3.9.2.</span> <span class="nav-text">return</span></a></li></ol></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E7%B2%92%E5%BA%A6"><span class="nav-number">3.3.3.10.</span> <span class="nav-text">粒度</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#3-4-C-14-shared-lock"><span class="nav-number">3.3.4.</span> <span class="nav-text">3.4 C++14 shared_lock</span></a><ol class="nav-child"><li class="nav-item nav-level-5"><a class="nav-link" href="#%E5%B8%B8%E7%94%A8%E6%88%90%E5%91%98%E5%87%BD%E6%95%B0"><span class="nav-number">3.3.4.0.1.</span> <span class="nav-text">常用成员函数</span></a></li></ol></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#3-5-C-17-scoped-lock"><span class="nav-number">3.3.5.</span> <span class="nav-text">3.5 C++17 scoped_lock</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#3-6-condition-variable-%E6%9D%A1%E4%BB%B6%E5%8F%98%E9%87%8F"><span class="nav-number">3.3.6.</span> <span class="nav-text">3.6 condition_variable 条件变量</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#wait"><span class="nav-number">3.3.6.1.</span> <span class="nav-text">wait</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#notify"><span class="nav-number">3.3.6.2.</span> <span class="nav-text">notify</span></a><ol class="nav-child"><li class="nav-item nav-level-5"><a class="nav-link" href="#notify-one"><span class="nav-number">3.3.6.2.1.</span> <span class="nav-text">notify_one</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#notify-all"><span class="nav-number">3.3.6.2.2.</span> <span class="nav-text">notify_all</span></a></li></ol></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E7%A4%BA%E4%BE%8B-%E7%94%9F%E4%BA%A7%E8%80%85%E6%B6%88%E8%B4%B9%E8%80%85"><span class="nav-number">3.3.6.3.</span> <span class="nav-text">示例-生产者消费者</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E8%99%9A%E5%81%87%E5%94%A4%E9%86%92"><span class="nav-number">3.3.6.4.</span> <span class="nav-text">虚假唤醒</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#3-7-C-11-%E5%8E%9F%E5%AD%90%E5%8F%98%E9%87%8F"><span class="nav-number">3.3.7.</span> <span class="nav-text">3.7 C++11 原子变量</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#4-%E7%BA%BF%E7%A8%8B%E7%9A%84%E5%BC%82%E6%AD%A5%E5%92%8C%E9%80%9A%E4%BF%A1"><span class="nav-number">3.4.</span> <span class="nav-text">4 线程的异步和通信</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#4-1-promise-%E5%92%8C-future"><span class="nav-number">3.4.1.</span> <span class="nav-text">4.1 promise 和 future</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#4-2-packaged-task%E5%BC%82%E6%AD%A5%E8%B0%83%E7%94%A8%E5%87%BD%E6%95%B0%E6%89%93%E5%8C%85"><span class="nav-number">3.4.2.</span> <span class="nav-text">4.2 packaged_task异步调用函数打包</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#4-3-async"><span class="nav-number">3.4.3.</span> <span class="nav-text">4.3 async</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#5-C-17-%E5%A4%9A%E6%A0%B8%E5%B9%B6%E8%A1%8C%E8%BF%90%E7%AE%97"><span class="nav-number">3.5.</span> <span class="nav-text">5 C++17 多核并行运算</span></a></li></ol></li></ol></div>
         </div>
         <!--/noindex-->
 
@@ -287,7 +290,7 @@ mjx-container[display="true"] + br {
       </div>
       <div class="site-state-item site-state-tags">
           <a href="/tags/">
-        <span class="site-state-item-count">3</span>
+        <span class="site-state-item-count">4</span>
         <span class="site-state-item-name">tags</span></a>
       </div>
   </nav>
@@ -353,7 +356,7 @@ mjx-container[display="true"] + br {
         <i class="far fa-calendar-check"></i>
       </span>
       <span class="post-meta-item-text">Edited on</span>
-      <time title="Modified: 2023-03-22 09:56:24" itemprop="dateModified" datetime="2023-03-22T09:56:24+08:00">2023-03-22</time>
+      <time title="Modified: 2023-04-06 17:26:38" itemprop="dateModified" datetime="2023-04-06T17:26:38+08:00">2023-04-06</time>
     </span>
 
   
@@ -363,14 +366,14 @@ mjx-container[display="true"] + br {
         <i class="far fa-file-word"></i>
       </span>
       <span class="post-meta-item-text">Word count in article: </span>
-      <span>19k</span>
+      <span>24k</span>
     </span>
     <span class="post-meta-item" title="Reading time">
       <span class="post-meta-item-icon">
         <i class="far fa-clock"></i>
       </span>
       <span class="post-meta-item-text">Reading time &asymp;</span>
-      <span>17 mins.</span>
+      <span>22 mins.</span>
     </span>
 </div>
 
@@ -1075,7 +1078,199 @@ public:
     scoped_lock&amp; operator=(const scoped_lock&amp;) = delete;
 };
 #endif // _HAS_CXX17<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
-<h3 id="3-6-condition-variable-条件变量"><a href="#3-6-condition-variable-条件变量" class="headerlink" title="3.6 condition_variable 条件变量"></a>3.6 condition_variable 条件变量</h3>
+<h3 id="3-6-condition-variable-条件变量"><a href="#3-6-condition-variable-条件变量" class="headerlink" title="3.6 condition_variable 条件变量"></a>3.6 condition_variable 条件变量</h3><p>互斥量是多线程间同时访问某一个共享变量时候，保证变量可以被<strong><em>安全访问</em></strong>的手段，但是，单靠互斥量是无法保证多个线程间的同步</p>
+<p>在生产者消费者模型中，生产者线程将 “消息” 写入到公共队列中，消费者线程则从公共队列中取出 “消息” ，如果只使用互斥量mutex， 我们最容易想到的就是设置一个时间间隔，让消费者线程每过一段时间就去判断公共队列中是否有 “消息” ，如果有就读取，没有就sleep一个时间间隔</p>
+<p>而上述方法有一个很大的缺点，你无法来设置一个合适的时间间隔，如果时间间隔太短，就会进行多次无效的查询，减低程序的性能；如果时间间隔太长，就会使用户无法及时收到消息，降低用户的体验</p>
+<p>C++11提供了条件变量来解决这种情况，条件变量位于头文件 condition_variable 下</p>
+<hr>
+<h4 id="wait"><a href="#wait" class="headerlink" title="wait"></a>wait</h4><p>函数原型</p>
+<pre class="line-numbers language-C++" data-language="C++"><code class="language-C++">void wait(unique_lock&lt;mutex&gt;&amp; _Lck) { // wait for signal
+    // Nothing to do to comply with LWG-2135 because std::mutex lock/unlock are nothrow
+    _Cnd_wait(_Mycnd(), _Lck.mutex()-&gt;_Mymtx());
+}
+template &lt;class _Predicate&gt;
+void wait(unique_lock&lt;mutex&gt;&amp; _Lck, _Predicate _Pred) { // wait for signal and test predicate
+    while (!_Pred()) {
+        wait(_Lck);
+    }
+}<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<p><strong><em>condition_variable</em></strong>提供了两种wait函数，当前线程调用了<strong><em>wait</em></strong>函数后会被阻塞（<strong>在此之前当前线程应该已经获得锁</strong>），直到另一个线程调用<strong><em>notify</em></strong>函数来唤醒该线程</p>
+<p>值得注意的是，在调用完wait函数后，当前线程会先释放锁，使得其他线程得以执行，再将该线程挂起，而在该线程被唤醒时，会尝试重新去获得锁</p>
+<p>第二个<strong><em>wait</em></strong>函数，多了一个条件<strong>_pred</strong>（lambda表达式），只有当<strong>_pred</strong>条件为false时，调用<strong>wait</strong>才会挂起当前线程，在被通知唤醒时，只有<strong>_pred</strong>条件为<strong>true</strong>时才会解除阻塞，可以用来解决一些 <strong><em>虚假唤醒</em></strong> 的问题</p>
+<pre class="line-numbers language-c++" data-language="c++"><code class="language-c++">//以下两种表达等价
+
+wait(lck,_pred);
+//==============
+while(_pred){wait(lck);}<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<p>另外，<strong><em>condition_variable</em></strong>还提供了 <strong>wait_for</strong> 和 <strong>wait_until</strong> 函数</p>
+<pre class="line-numbers language-c++" data-language="c++"><code class="language-c++">template &lt;class _Rep, class _Period&gt;
+    cv_status wait_for(unique_lock&lt;mutex&gt;&amp; _Lck, const chrono::duration&lt;_Rep, _Period&gt;&amp; _Rel_time);
+
+template &lt;class _Rep, class _Period, class _Predicate&gt;
+    bool wait_for(unique_lock&lt;mutex&gt;&amp; _Lck, const chrono::duration&lt;_Rep, _Period&gt;&amp; _Rel_time, _Predicate _Pred);
+    
+template &lt;class _Clock, class _Duration&gt;
+    cv_status wait_until(unique_lock&lt;mutex&gt;&amp; _Lck, const chrono::time_point&lt;_Clock, _Duration&gt;&amp; _Abs_time);
+
+template &lt;class _Clock, class _Duration, class _Predicate&gt;
+bool wait_until(unique_lock&lt;mutex&gt;&amp; _Lck, const chrono::time_point&lt;_Clock, _Duration&gt;&amp; _Abs_time, _Predicate _Pred);<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<h4 id="notify"><a href="#notify" class="headerlink" title="notify"></a>notify</h4><h5 id="notify-one"><a href="#notify-one" class="headerlink" title="notify_one"></a>notify_one</h5><p>唤醒当前正在等待的某一个线程，如果当前没有线程在等待，则该函数什么都不做</p>
+<p><strong>而如果同时存在多个等待线程，则唤醒某一个线程是不确定的</strong></p>
+<h5 id="notify-all"><a href="#notify-all" class="headerlink" title="notify_all"></a>notify_all</h5><p>唤醒正在等待的<strong>所有</strong>线程</p>
+<h4 id="示例-生产者消费者"><a href="#示例-生产者消费者" class="headerlink" title="示例-生产者消费者"></a>示例-生产者消费者</h4><pre class="line-numbers language-c++" data-language="c++"><code class="language-c++">#include&lt;condition_variable&gt;
+#include&lt;mutex&gt;
+#include&lt;iostream&gt;
+#include&lt;thread&gt;
+#include&lt;deque&gt;
+#include&lt;string&gt;
+
+std::condition_variable cv; //条件变量
+std::mutex mux; //全局互斥锁
+std::deque&lt;int&gt; dq; //消息队列
+
+//生产者
+void producer() {
+	int i = 0;
+	while (true) {
+		std::unique_lock&lt;std::mutex&gt;lock(mux); 
+		dq.push_back(i);
+		cv.notify_one();//唤醒消费者线程
+		++i;
+	}
+}
+
+//消费者
+void consumer() {
+	int data;
+	while (true) {
+		std::unique_lock&lt;std::mutex&gt;lock(mux);
+		if (dq.empty()) cv.wait(lock); //进入等待
+		data = dq.front();
+		dq.pop_front();
+		//打印消息
+		std::cout &lt;&lt; "Get Value: " &lt;&lt; data &lt;&lt; std::endl;
+	}
+}
+
+int main() {
+	std::thread th1(consumer);
+	std::thread th2(producer);
+
+	th1.join();
+	th2.join();
+
+	return 0;
+}<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<p><img src="https://gitee.com/renmale-sztu/image/raw/master/image-20230402220515173.png" alt="image-20230402220515173"></p>
+<h4 id="虚假唤醒"><a href="#虚假唤醒" class="headerlink" title="虚假唤醒"></a>虚假唤醒</h4><p>对于生产者-消费者模型来说，如果我们有两个消费者来接收生产者的消息，如下程序所示</p>
+<pre class="line-numbers language-C++" data-language="C++"><code class="language-C++">#include&lt;condition_variable&gt;
+#include&lt;mutex&gt;
+#include&lt;iostream&gt;
+#include&lt;thread&gt;
+#include&lt;deque&gt;
+#include&lt;string&gt;
+
+std::condition_variable cv; //条件变量
+std::mutex mux; //全局互斥锁
+std::deque&lt;int&gt; dq; //消息队列
+
+//生产者
+void producer() {
+	int i = 0;
+	while (true) {
+		std::unique_lock&lt;std::mutex&gt;lock(mux); 
+		dq.push_back(i);
+		cv.notify_one();//唤醒消费者线程
+		++i;
+	}
+}
+
+//消费者
+void consumer(int index) {
+	int data;
+	while (true) {
+		std::unique_lock&lt;std::mutex&gt;lock(mux);
+		if (dq.empty()) cv.wait(lock); //进入等待
+		data = dq.front();
+		dq.pop_front();
+		//打印消息
+		std::cout &lt;&lt; "Consumer " &lt;&lt; index &lt;&lt; " Get Value: " &lt;&lt; data &lt;&lt; std::endl;
+	}
+}
+
+int main() {
+	std::thread th1(consumer,1);//消费者1
+	std::thread th2(consumer,2);//消费者2
+	std::thread th3(producer);//生产者
+
+	th1.join();
+	th2.join();
+	th3.join();
+
+	return 0;
+}<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<p><img src="C:\Users\lvxr\AppData\Roaming\Typora\typora-user-images\image-20230406170429481.png" alt="image-20230406170429481"></p>
+<p>为什么会出现这种原因？可以注意到提示是从一个空的deque中去取值</p>
+<p>分析可得，</p>
+<ul>
+<li>生产者生产一条消息</li>
+<li>生产者唤醒消费者1</li>
+<li>消费者1尝试获得锁失败，生产者再次获得锁</li>
+<li>生产者再提供一条消息</li>
+<li>生产者唤醒消费者2</li>
+<li>消费者1连续获得两次锁，打印两条消息</li>
+<li>消费者2获得锁，此时队列中没有消息，程序错误</li>
+</ul>
+<p>这就是利用<strong>if包裹的wait函数</strong>产生的虚假唤醒问题，改用<strong>while包裹或者使用第二种wait函数</strong>可以有效解决该问题</p>
+<pre class="line-numbers language-none"><code class="language-none">#include&lt;condition_variable&gt;
+#include&lt;mutex&gt;
+#include&lt;iostream&gt;
+#include&lt;thread&gt;
+#include&lt;deque&gt;
+#include&lt;string&gt;
+
+std::condition_variable cv; //条件变量
+std::mutex mux; //全局互斥锁
+std::deque&lt;int&gt; dq; //消息队列
+
+//生产者
+void producer() {
+	int i = 0;
+	while (true) {
+		std::unique_lock&lt;std::mutex&gt;lock(mux); 
+		dq.push_back(i);
+		cv.notify_all();//唤醒消费者线程
+		++i;
+	}
+}
+
+//消费者
+void consumer(int index) {
+	int data;
+	while (true) {
+		std::unique_lock&lt;std::mutex&gt;lock(mux);
+		cv.wait(lock, [=]() {return !dq.empty(); });//进入等待
+		data = dq.front();
+		dq.pop_front();
+		//打印消息
+		std::cout &lt;&lt; "Consumer " &lt;&lt; index &lt;&lt; " Get Value: " &lt;&lt; data &lt;&lt; std::endl;
+	}
+}
+
+int main() {
+	std::thread th1(consumer,1);//消费者1
+	std::thread th2(consumer,2);//消费者2
+	std::thread th3(producer);//生产者
+
+	th1.join();
+	th2.join();
+	th3.join();
+
+	return 0;
+}<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<p><img src="https://gitee.com/renmale-sztu/image/raw/master/image-20230406171909775.png" alt="image-20230406171909775"></p>
+<p>如果是一次性的生产，即生产者只通知一次，需保证消费者先执行，否则可能生产者通知了，消费者还未执行到wait语句</p>
+<h3 id="3-7-C-11-原子变量"><a href="#3-7-C-11-原子变量" class="headerlink" title="3.7 C++11 原子变量"></a>3.7 C++11 原子变量</h3><h2 id="4-线程的异步和通信"><a href="#4-线程的异步和通信" class="headerlink" title="4 线程的异步和通信"></a>4 线程的异步和通信</h2><h3 id="4-1-promise-和-future"><a href="#4-1-promise-和-future" class="headerlink" title="4.1 promise 和 future"></a>4.1 promise 和 future</h3><h3 id="4-2-packaged-task异步调用函数打包"><a href="#4-2-packaged-task异步调用函数打包" class="headerlink" title="4.2 packaged_task异步调用函数打包"></a>4.2 packaged_task异步调用函数打包</h3><h3 id="4-3-async"><a href="#4-3-async" class="headerlink" title="4.3 async"></a>4.3 async</h3><h2 id="5-C-17-多核并行运算"><a href="#5-C-17-多核并行运算" class="headerlink" title="5 C++17 多核并行运算"></a>5 C++17 多核并行运算</h2>
     </div>
 
     
@@ -1113,8 +1308,8 @@ public:
                 </a>
             </div>
             <div class="post-nav-item">
-                <a href="/2023/02/19/C++Socket%E7%BC%96%E7%A8%8B/" rel="next" title="C++Socket编程">
-                  C++Socket编程 <i class="fa fa-chevron-right"></i>
+                <a href="/2023/03/22/Day-Plan/" rel="next" title="Day_Plan">
+                  Day_Plan <i class="fa fa-chevron-right"></i>
                 </a>
             </div>
           </div>
@@ -1149,14 +1344,14 @@ public:
       <i class="fa fa-chart-line"></i>
     </span>
       <span>Word count total: </span>
-    <span title="Word count total">40k</span>
+    <span title="Word count total">45k</span>
   </span>
   <span class="post-meta-item">
     <span class="post-meta-item-icon">
       <i class="fa fa-coffee"></i>
     </span>
       <span>Reading time total &asymp;</span>
-    <span title="Reading time total">36 mins.</span>
+    <span title="Reading time total">41 mins.</span>
   </span>
 </div>
   <div class="powered-by">Powered by <a href="https://hexo.io/" rel="noopener" target="_blank">Hexo</a> & <a href="https://theme-next.js.org/" rel="noopener" target="_blank">NexT.Gemini</a>

@@ -4,6 +4,15 @@
   <url>
     <loc>http://example.com/2023/02/19/C++%E5%A4%9A%E7%BA%BF%E7%A8%8B/</loc>
     
+    <lastmod>2023-04-06</lastmod>
+    
+    <changefreq>monthly</changefreq>
+    <priority>0.6</priority>
+  </url>
+  
+  <url>
+    <loc>http://example.com/2023/03/22/Day-Plan/</loc>
+    
     <lastmod>2023-03-22</lastmod>
     
     <changefreq>monthly</changefreq>
@@ -73,41 +82,39 @@
     <priority>0.6</priority>
   </url>
   
-  <url>
-    <loc>http://example.com/2023/02/19/C++Socket%E7%BC%96%E7%A8%8B/</loc>
-    
-    <lastmod>2023-02-19</lastmod>
-    
-    <changefreq>monthly</changefreq>
-    <priority>0.6</priority>
-  </url>
-  
 
   <url>
     <loc>http://example.com/</loc>
-    <lastmod>2023-03-22</lastmod>
+    <lastmod>2023-04-06</lastmod>
     <changefreq>daily</changefreq>
     <priority>1.0</priority>
   </url>
 
   
   <url>
-    <loc>http://example.com/tags/C/</loc>
-    <lastmod>2023-03-22</lastmod>
+    <loc>http://example.com/tags/algorithm/</loc>
+    <lastmod>2023-04-06</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.2</priority>
   </url>
   
   <url>
-    <loc>http://example.com/tags/algorithm/</loc>
-    <lastmod>2023-03-22</lastmod>
+    <loc>http://example.com/tags/C/</loc>
+    <lastmod>2023-04-06</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.2</priority>
   </url>
   
   <url>
     <loc>http://example.com/tags/malloc/</loc>
-    <lastmod>2023-03-22</lastmod>
+    <lastmod>2023-04-06</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.2</priority>
+  </url>
+  
+  <url>
+    <loc>http://example.com/tags/QT/</loc>
+    <lastmod>2023-04-06</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.2</priority>
   </url>
