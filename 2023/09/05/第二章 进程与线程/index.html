@@ -1,0 +1,1745 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width">
+<meta name="theme-color" content="#222"><meta name="generator" content="Hexo 6.3.0">
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+
+<link rel="stylesheet" href="/css/main.css">
+
+
+
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.2.1/css/all.min.css" integrity="sha256-Z1K5uhUaJXA7Ll0XrZ/0JhX4lAtZFpT6jkKrEDT0drU=" crossorigin="anonymous">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/3.1.1/animate.min.css" integrity="sha256-PR7ttpcvz8qrF57fur/yAx1qXMFJeJFiA6pSzWi0OIE=" crossorigin="anonymous">
+
+<script class="next-config" data-name="main" type="application/json">{"hostname":"example.com","root":"/","images":"/images","scheme":"Gemini","darkmode":false,"version":"8.14.2","exturl":false,"sidebar":{"position":"left","display":"always","padding":18,"offset":12},"copycode":{"enable":true,"style":"mac"},"bookmark":{"enable":false,"color":"#222","save":"auto"},"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":"gitalk","storage":true,"lazyload":false,"nav":{"gitalk":{"order":-1}},"activeClass":"gitalk"},"stickytabs":false,"motion":{"enable":true,"async":false,"transition":{"menu_item":"fadeInDown","post_block":"fadeIn","post_header":"fadeInDown","post_body":"fadeInDown","coll_header":"fadeInLeft","sidebar":"fadeInUp"}},"prism":false,"i18n":{"placeholder":"Searching...","empty":"We didn't find any results for the search: ${query}","hits_time":"${hits} results found in ${time} ms","hits":"${hits} results found"},"path":"/search.xml","localsearch":{"enable":true,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false}}</script><script src="/js/config.js"></script>
+
+    <meta name="description" content="2.1进程和线程进程的概念和特征 概念 进程是程序的一次执行过程 进程是一个程序及其数据在处理机上顺序执行时所发生的活动 进程时具有独立功能的程序在一个数据集合上运行的过程，它是系统进行资源分配和调度的一个独立单位   特征  动态性 动态性是进程最基本的特征   并发性 并发性事进程的重要特征，也是操作系统的重要特征   独立性 进程实体是一个能独立运行、独立获得资源和独立接受调度的基本单位">
+<meta property="og:type" content="article">
+<meta property="og:title" content="第二章 进程和线程">
+<meta property="og:url" content="http://example.com/2023/09/05/%E7%AC%AC%E4%BA%8C%E7%AB%A0%20%E8%BF%9B%E7%A8%8B%E4%B8%8E%E7%BA%BF%E7%A8%8B/index.html">
+<meta property="og:site_name" content="renmale-lv blog">
+<meta property="og:description" content="2.1进程和线程进程的概念和特征 概念 进程是程序的一次执行过程 进程是一个程序及其数据在处理机上顺序执行时所发生的活动 进程时具有独立功能的程序在一个数据集合上运行的过程，它是系统进行资源分配和调度的一个独立单位   特征  动态性 动态性是进程最基本的特征   并发性 并发性事进程的重要特征，也是操作系统的重要特征   独立性 进程实体是一个能独立运行、独立获得资源和独立接受调度的基本单位">
+<meta property="og:locale" content="en_US">
+<meta property="og:image" content="https://th.bing.com/th/id/Rac88fec7ff0914ae100f5e5e16e8dcfe?rik=7YelQuouaD%2bGjA&amp;riu=http%3a%2f%2fbbs.yanzhishi.cn%2fimage%2fshow%2fattachments-2020-06-xiLvreQp5eddd748e949a.jpg&amp;ehk=ltevwD1oUrnv7VDTg627MgfwonKq5e28Z%2bNCcgsA8E8%3d&amp;risl=&amp;pid=ImgRaw">
+<meta property="og:image" content="https://gitee.com/renmale-sztu/image/raw/master/202308262144282.png">
+<meta property="og:image" content="https://gitee.com/renmale-sztu/image/raw/master/202308301513927.png">
+<meta property="og:image" content="https://gitee.com/renmale-sztu/image/raw/master/202308301518606.png">
+<meta property="og:image" content="https://gitee.com/renmale-sztu/image/raw/master/202308301807183.png">
+<meta property="og:image" content="https://gitee.com/renmale-sztu/image/raw/master/202308311526189.png">
+<meta property="og:image" content="https://gitee.com/renmale-sztu/image/raw/master/202308311523426.png">
+<meta property="og:image" content="https://gitee.com/renmale-sztu/image/raw/master/202308311700037.png">
+<meta property="og:image" content="https://gitee.com/renmale-sztu/image/raw/master/202308311711985.png">
+<meta property="og:image" content="https://gitee.com/renmale-sztu/image/raw/master/202308311717270.png">
+<meta property="og:image" content="https://gitee.com/renmale-sztu/image/raw/master/202308311734452.png">
+<meta property="og:image" content="https://gitee.com/renmale-sztu/image/raw/master/202309011915547.png">
+<meta property="og:image" content="https://gitee.com/renmale-sztu/image/raw/master/202309011915093.png">
+<meta property="og:image" content="https://gitee.com/renmale-sztu/image/raw/master/202309021437402.png">
+<meta property="og:image" content="https://gitee.com/renmale-sztu/image/raw/master/202309021525964.png">
+<meta property="og:image" content="https://gitee.com/renmale-sztu/image/raw/master/202309021531843.png">
+<meta property="article:published_time" content="2023-09-05T04:27:13.000Z">
+<meta property="article:modified_time" content="2023-09-05T13:02:22.767Z">
+<meta property="article:author" content="renmale-lv">
+<meta property="article:tag" content="操作系统">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://th.bing.com/th/id/Rac88fec7ff0914ae100f5e5e16e8dcfe?rik=7YelQuouaD%2bGjA&amp;riu=http%3a%2f%2fbbs.yanzhishi.cn%2fimage%2fshow%2fattachments-2020-06-xiLvreQp5eddd748e949a.jpg&amp;ehk=ltevwD1oUrnv7VDTg627MgfwonKq5e28Z%2bNCcgsA8E8%3d&amp;risl=&amp;pid=ImgRaw">
+
+
+<link rel="canonical" href="http://example.com/2023/09/05/%E7%AC%AC%E4%BA%8C%E7%AB%A0%20%E8%BF%9B%E7%A8%8B%E4%B8%8E%E7%BA%BF%E7%A8%8B/">
+
+
+
+<script class="next-config" data-name="page" type="application/json">{"sidebar":"","isHome":false,"isPost":true,"lang":"en","comments":true,"permalink":"http://example.com/2023/09/05/%E7%AC%AC%E4%BA%8C%E7%AB%A0%20%E8%BF%9B%E7%A8%8B%E4%B8%8E%E7%BA%BF%E7%A8%8B/","path":"2023/09/05/第二章 进程与线程/","title":"第二章 进程和线程"}</script>
+
+<script class="next-config" data-name="calendar" type="application/json">""</script>
+<title>第二章 进程和线程 | renmale-lv blog</title>
+  
+
+
+
+
+
+
+
+
+  <noscript>
+    <link rel="stylesheet" href="/css/noscript.css">
+  </noscript>
+<style>mjx-container[jax="SVG"] {
+  direction: ltr;
+}
+
+mjx-container[jax="SVG"] > svg {
+  overflow: visible;
+}
+
+mjx-container[jax="SVG"][display="true"] {
+  display: block;
+  text-align: center;
+  margin: 1em 0;
+}
+
+mjx-container[jax="SVG"][justify="left"] {
+  text-align: left;
+}
+
+mjx-container[jax="SVG"][justify="right"] {
+  text-align: right;
+}
+
+g[data-mml-node="merror"] > g {
+  fill: red;
+  stroke: red;
+}
+
+g[data-mml-node="merror"] > rect[data-background] {
+  fill: yellow;
+  stroke: none;
+}
+
+g[data-mml-node="mtable"] > line[data-line] {
+  stroke-width: 70px;
+  fill: none;
+}
+
+g[data-mml-node="mtable"] > rect[data-frame] {
+  stroke-width: 70px;
+  fill: none;
+}
+
+g[data-mml-node="mtable"] > .mjx-dashed {
+  stroke-dasharray: 140;
+}
+
+g[data-mml-node="mtable"] > .mjx-dotted {
+  stroke-linecap: round;
+  stroke-dasharray: 0,140;
+}
+
+g[data-mml-node="mtable"] > svg {
+  overflow: visible;
+}
+
+[jax="SVG"] mjx-tool {
+  display: inline-block;
+  position: relative;
+  width: 0;
+  height: 0;
+}
+
+[jax="SVG"] mjx-tool > mjx-tip {
+  position: absolute;
+  top: 0;
+  left: 0;
+}
+
+mjx-tool > mjx-tip {
+  display: inline-block;
+  padding: .2em;
+  border: 1px solid #888;
+  font-size: 70%;
+  background-color: #F8F8F8;
+  color: black;
+  box-shadow: 2px 2px 5px #AAAAAA;
+}
+
+g[data-mml-node="maction"][data-toggle] {
+  cursor: pointer;
+}
+
+mjx-status {
+  display: block;
+  position: fixed;
+  left: 1em;
+  bottom: 1em;
+  min-width: 25%;
+  padding: .2em .4em;
+  border: 1px solid #888;
+  font-size: 90%;
+  background-color: #F8F8F8;
+  color: black;
+}
+
+foreignObject[data-mjx-xml] {
+  font-family: initial;
+  line-height: normal;
+  overflow: visible;
+}
+
+.MathJax path {
+  stroke-width: 3;
+}
+
+mjx-container[display="true"] {
+  overflow: auto hidden;
+}
+
+mjx-container[display="true"] + br {
+  display: none;
+}
+</style><link rel="alternate" href="/atom.xml" title="renmale-lv blog" type="application/atom+xml">
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" class="use-motion">
+  <div class="headband"></div>
+
+  <main class="main">
+    <div class="column">
+      <header class="header" itemscope itemtype="http://schema.org/WPHeader"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="Toggle navigation bar" role="button">
+        <span class="toggle-line"></span>
+        <span class="toggle-line"></span>
+        <span class="toggle-line"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <i class="logo-line"></i>
+      <p class="site-title">renmale-lv blog</p>
+      <i class="logo-line"></i>
+    </a>
+      <p class="site-subtitle" itemprop="description">记录学习点滴</p>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger" aria-label="Search" role="button">
+        <i class="fa fa-search fa-fw fa-lg"></i>
+    </div>
+  </div>
+</div>
+
+
+
+<nav class="site-nav">
+  <ul class="main-menu menu"><li class="menu-item menu-item-home"><a href="/" rel="section"><i class="fa fa-home fa-fw"></i>Home</a></li><li class="menu-item menu-item-about"><a href="/about/" rel="section"><i class="fa fa-user fa-fw"></i>About</a></li><li class="menu-item menu-item-tags"><a href="/tags/" rel="section"><i class="fa fa-tags fa-fw"></i>Tags</a></li><li class="menu-item menu-item-categories"><a href="/categories/" rel="section"><i class="fa fa-th fa-fw"></i>Categories</a></li><li class="menu-item menu-item-archives"><a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>Archives</a></li>
+      <li class="menu-item menu-item-search">
+        <a role="button" class="popup-trigger"><i class="fa fa-search fa-fw"></i>Search
+        </a>
+      </li>
+  </ul>
+</nav>
+
+
+
+  <div class="search-pop-overlay">
+    <div class="popup search-popup"><div class="search-header">
+  <span class="search-icon">
+    <i class="fa fa-search"></i>
+  </span>
+  <div class="search-input-container">
+    <input autocomplete="off" autocapitalize="off" maxlength="80"
+           placeholder="Searching..." spellcheck="false"
+           type="search" class="search-input">
+  </div>
+  <span class="popup-btn-close" role="button">
+    <i class="fa fa-times-circle"></i>
+  </span>
+</div>
+<div class="search-result-container no-result">
+  <div class="search-result-icon">
+    <i class="fa fa-spinner fa-pulse fa-5x"></i>
+  </div>
+</div>
+
+    </div>
+  </div>
+
+</header>
+        
+  
+  <aside class="sidebar">
+
+    <div class="sidebar-inner sidebar-nav-active sidebar-toc-active">
+      <ul class="sidebar-nav">
+        <li class="sidebar-nav-toc">
+          Table of Contents
+        </li>
+        <li class="sidebar-nav-overview">
+          Overview
+        </li>
+      </ul>
+
+      <div class="sidebar-panel-container">
+        <!--noindex-->
+        <div class="post-toc-wrap sidebar-panel">
+            <div class="post-toc animated"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#2-1%E8%BF%9B%E7%A8%8B%E5%92%8C%E7%BA%BF%E7%A8%8B"><span class="nav-number">1.</span> <span class="nav-text">2.1进程和线程</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E8%BF%9B%E7%A8%8B%E7%9A%84%E6%A6%82%E5%BF%B5%E5%92%8C%E7%89%B9%E5%BE%81"><span class="nav-number">1.1.</span> <span class="nav-text">进程的概念和特征</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E8%BF%9B%E7%A8%8B%E7%9A%84%E7%8A%B6%E6%80%81%E4%B8%8E%E8%BD%AC%E6%8D%A2"><span class="nav-number">1.2.</span> <span class="nav-text">进程的状态与转换</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E8%BF%9B%E7%A8%8B%E7%9A%84%E7%BB%84%E6%88%90"><span class="nav-number">1.3.</span> <span class="nav-text">进程的组成</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E8%BF%9B%E7%A8%8B%E6%8E%A7%E5%88%B6"><span class="nav-number">1.4.</span> <span class="nav-text">进程控制</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E8%BF%9B%E7%A8%8B%E7%9A%84%E9%80%9A%E4%BF%A1"><span class="nav-number">1.5.</span> <span class="nav-text">进程的通信</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E7%BA%BF%E7%A8%8B%E6%A6%82%E5%BF%B5%E5%92%8C%E5%A4%9A%E7%BA%BF%E7%A8%8B%E6%A8%A1%E5%9E%8B"><span class="nav-number">1.6.</span> <span class="nav-text">线程概念和多线程模型</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#2-2-%E5%A4%84%E7%90%86%E6%9C%BA%E7%9A%84%E8%B0%83%E5%BA%A6"><span class="nav-number">2.</span> <span class="nav-text">2.2 处理机的调度</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E8%B0%83%E5%BA%A6%E7%9A%84%E6%A6%82%E5%BF%B5"><span class="nav-number">2.1.</span> <span class="nav-text">调度的概念</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E8%B0%83%E5%BA%A6%E7%9A%84%E7%9B%AE%E6%A0%87"><span class="nav-number">2.2.</span> <span class="nav-text">调度的目标</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E8%B0%83%E5%BA%A6%E7%9A%84%E5%AE%9E%E7%8E%B0"><span class="nav-number">2.3.</span> <span class="nav-text">调度的实现</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%85%B8%E5%9E%8B%E7%9A%84%E8%B0%83%E5%BA%A6%E7%AE%97%E6%B3%95"><span class="nav-number">2.4.</span> <span class="nav-text">典型的调度算法</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E8%BF%9B%E7%A8%8B%E5%88%87%E6%8D%A2"><span class="nav-number">2.5.</span> <span class="nav-text">进程切换</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#2-3%E5%90%8C%E6%AD%A5%E4%B8%8E%E4%BA%92%E6%96%A5"><span class="nav-number">3.</span> <span class="nav-text">2.3同步与互斥</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%90%8C%E6%AD%A5%E4%B8%8E%E4%BA%92%E6%96%A5%E7%9A%84%E5%9F%BA%E6%9C%AC%E6%A6%82%E5%BF%B5"><span class="nav-number">3.1.</span> <span class="nav-text">同步与互斥的基本概念</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%AE%9E%E7%8E%B0%E4%B8%B4%E7%95%8C%E5%8C%BA%E4%BA%92%E6%96%A5%E7%9A%84%E5%9F%BA%E6%9C%AC%E6%96%B9%E6%B3%95"><span class="nav-number">3.2.</span> <span class="nav-text">实现临界区互斥的基本方法</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#2-4%E6%AD%BB%E9%94%81"><span class="nav-number">4.</span> <span class="nav-text">2.4死锁</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E6%AD%BB%E9%94%81%E7%9A%84%E6%A6%82%E5%BF%B5"><span class="nav-number">4.1.</span> <span class="nav-text">死锁的概念</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E9%A2%84%E9%98%B2%E6%AD%BB%E9%94%81"><span class="nav-number">4.2.</span> <span class="nav-text">预防死锁</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E6%AD%BB%E9%94%81%E9%81%BF%E5%85%8D"><span class="nav-number">4.3.</span> <span class="nav-text">死锁避免</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E6%AD%BB%E9%94%81%E6%A3%80%E6%B5%8B%E5%92%8C%E8%A7%A3%E9%99%A4"><span class="nav-number">4.4.</span> <span class="nav-text">死锁检测和解除</span></a></li></ol></li></ol></div>
+        </div>
+        <!--/noindex-->
+
+        <div class="site-overview-wrap sidebar-panel">
+          <div class="site-author animated" itemprop="author" itemscope itemtype="http://schema.org/Person">
+    <img class="site-author-image" itemprop="image" alt="renmale-lv"
+      src="/images/avatar.gif">
+  <p class="site-author-name" itemprop="name">renmale-lv</p>
+  <div class="site-description" itemprop="description"></div>
+</div>
+<div class="site-state-wrap animated">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+        <a href="/archives/">
+          <span class="site-state-item-count">11</span>
+          <span class="site-state-item-name">posts</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-tags">
+          <a href="/tags/">
+        <span class="site-state-item-count">6</span>
+        <span class="site-state-item-name">tags</span></a>
+      </div>
+  </nav>
+</div>
+  <div class="cc-license animated" itemprop="license">
+    <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/" class="cc-opacity" rel="noopener" target="_blank"><img src="https://cdnjs.cloudflare.com/ajax/libs/creativecommons-vocabulary/2020.11.3/assets/license_badges/small/by_nc_sa.svg" alt="Creative Commons"></a>
+  </div>
+
+        </div>
+      </div>
+    </div>
+
+    
+  </aside>
+
+
+    </div>
+
+    <div class="main-inner post posts-expand">
+
+
+  
+
+
+<div class="post-block">
+  
+  
+
+  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="en">
+    <link itemprop="mainEntityOfPage" href="http://example.com/2023/09/05/%E7%AC%AC%E4%BA%8C%E7%AB%A0%20%E8%BF%9B%E7%A8%8B%E4%B8%8E%E7%BA%BF%E7%A8%8B/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="renmale-lv">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="renmale-lv blog">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="post" itemscope itemtype="http://schema.org/CreativeWork">
+      <meta itemprop="name" content="第二章 进程和线程 | renmale-lv blog">
+      <meta itemprop="description" content="">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          第二章 进程和线程
+        </h1>
+
+        <div class="post-meta-container">
+          <div class="post-meta">
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar"></i>
+      </span>
+      <span class="post-meta-item-text">Posted on</span>
+      
+
+      <time title="Created: 2023-09-05 12:27:13 / Modified: 21:02:22" itemprop="dateCreated datePublished" datetime="2023-09-05T12:27:13+08:00">2023-09-05</time>
+    </span>
+
+  
+    <span class="post-meta-break"></span>
+    <span class="post-meta-item" title="Word count in article">
+      <span class="post-meta-item-icon">
+        <i class="far fa-file-word"></i>
+      </span>
+      <span class="post-meta-item-text">Word count in article: </span>
+      <span>15k</span>
+    </span>
+    <span class="post-meta-item" title="Reading time">
+      <span class="post-meta-item-icon">
+        <i class="far fa-clock"></i>
+      </span>
+      <span class="post-meta-item-text">Reading time &asymp;</span>
+      <span>14 mins.</span>
+    </span>
+</div>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+        <meta name="referrer" content="no-referrer">
+
+<h2 id="2-1进程和线程"><a href="#2-1进程和线程" class="headerlink" title="2.1进程和线程"></a>2.1进程和线程</h2><h3 id="进程的概念和特征"><a href="#进程的概念和特征" class="headerlink" title="进程的概念和特征"></a>进程的概念和特征</h3><ul>
+<li>概念<ul>
+<li>进程是程序的一次执行过程</li>
+<li>进程是一个程序及其数据在处理机上顺序执行时所发生的活动</li>
+<li>进程时具有独立功能的程序在一个数据集合上运行的过程，它是系统进行资源分配和调度的一个独立单位</li>
+</ul>
+</li>
+<li><p>特征</p>
+<ul>
+<li>动态性<ul>
+<li>动态性是进程最基本的特征</li>
+</ul>
+</li>
+<li>并发性<ul>
+<li>并发性事进程的重要特征，也是操作系统的重要特征</li>
+</ul>
+</li>
+<li>独立性<ul>
+<li>进程实体是一个能独立运行、独立获得资源和独立接受调度的基本单位</li>
+</ul>
+</li>
+<li>异步性<ul>
+<li>各并发的进程以各自独立的、不可预知的速度向前推进<h3 id="进程的状态与转换"><a href="#进程的状态与转换" class="headerlink" title="进程的状态与转换"></a>进程的状态与转换</h3></li>
+</ul>
+</li>
+</ul>
+</li>
+<li><p>5种状态</p>
+<ul>
+<li>运行态</li>
+<li>就绪态</li>
+<li>阻塞态</li>
+<li>创建态</li>
+<li>结束态</li>
+</ul>
+</li>
+<li><p>前3种是基本状态</p>
+</li>
+<li>状态的转换<ul>
+<li>就绪态→运行态</li>
+<li>运行态→就绪态</li>
+<li>运行态→阻塞态</li>
+<li>阻塞态→就绪态</li>
+<li><img src="https://th.bing.com/th/id/Rac88fec7ff0914ae100f5e5e16e8dcfe?rik=7YelQuouaD%2bGjA&amp;riu=http%3a%2f%2fbbs.yanzhishi.cn%2fimage%2fshow%2fattachments-2020-06-xiLvreQp5eddd748e949a.jpg&amp;ehk=ltevwD1oUrnv7VDTg627MgfwonKq5e28Z%2bNCcgsA8E8%3d&amp;risl=&amp;pid=ImgRaw" alt=""></li>
+<li>一个进程从运行态变成阻塞态是主动行为</li>
+<li>从阻塞态变成就绪态是被动行为，需要其他相关进程的协助</li>
+</ul>
+</li>
+<li>进程的组织方式<ul>
+<li>链接方式<ul>
+<li>按照进程状态将PCB分为多个队列</li>
+<li>操作系统持有指向各个队列的指针</li>
+</ul>
+</li>
+<li>索引方式<ul>
+<li>根据进程状态的不同，建立几张索引表</li>
+<li>操作系统持有指向各个索引表的指针</li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+<h3 id="进程的组成"><a href="#进程的组成" class="headerlink" title="进程的组成"></a>进程的组成</h3><ul>
+<li>进程控制块（PCB）<ul>
+<li>系统利用PCB来描述进场的基本情况和运行状态，进而控制和管理进程</li>
+<li>PCB是进程存在的唯一标志</li>
+<li><img src="https://gitee.com/renmale-sztu/image/raw/master/202308262144282.png" alt="image-20230826214434112"></li>
+</ul>
+</li>
+<li>相关数据段<ul>
+<li>可以是进程对应的程序加工处理的原始数据，也可以是程序执行时产生的中间或最终结果</li>
+</ul>
+</li>
+<li>程序段<ul>
+<li>能被进程调度程序调度到CPU执行的程序代码段</li>
+</ul>
+</li>
+</ul>
+<h3 id="进程控制"><a href="#进程控制" class="headerlink" title="进程控制"></a>进程控制</h3><ul>
+<li>概念<ul>
+<li>进程控制的主要功能是对系统中的所有进程实施有效的管理，它具有创建新进程、撤销已有进程、实现进程状态转换等功能</li>
+</ul>
+</li>
+<li><p>原语</p>
+<ul>
+<li>一般把进程控制用的程序称为原语</li>
+<li>执行期间不允许中断</li>
+<li>不可分割的基本单位</li>
+<li>开中断/关中断</li>
+</ul>
+</li>
+<li><p>进程的创建：创建原语</p>
+<ul>
+<li>过程<ul>
+<li>为新进程分配一个唯一的进程标识号，并申请一个空白PCB</li>
+<li>为进程分配其运行所需的资源</li>
+<li>初始化PCB</li>
+<li>将新进程插入就绪队列</li>
+</ul>
+</li>
+<li>引起进程创建的事件<ul>
+<li>用户登陆</li>
+<li>作业调度</li>
+<li>提供服务</li>
+<li>应用请求</li>
+</ul>
+</li>
+</ul>
+</li>
+<li>进程的终止：撤销原语<ul>
+<li>过程<ul>
+<li>从PCB集合中超导终止终止进程的PCB</li>
+<li>若进程正在运行，立即剥夺CPU，将CPU分配给其他进程</li>
+<li>终止其所有子进程</li>
+<li>将该进程拥有的所有资源归还给父进程或操作系统</li>
+<li>删除PCB</li>
+</ul>
+</li>
+<li>引起进程终止的事件主要 <ul>
+<li>正常结束</li>
+<li>异常结束</li>
+<li>外界干预</li>
+</ul>
+</li>
+</ul>
+</li>
+<li>进程的阻塞和唤醒：阻塞原语（Block）、唤醒原语（Wakeup）<ul>
+<li>阻塞原语<ul>
+<li>过程<ul>
+<li>找到要阻塞的进程对应的PCB</li>
+<li>保护进程运行现场，将PCB状态信息设置为“阻塞态“，暂时停止进程运行</li>
+<li>将PCB插入相应事件的等待队列</li>
+</ul>
+</li>
+<li>引起事件<ul>
+<li>需要等待系统分配某种资源</li>
+<li>需要等待相互合作的其他进程完成工作</li>
+</ul>
+</li>
+</ul>
+</li>
+<li>唤醒原语<ul>
+<li>过程<ul>
+<li>在事件等待中找到PCB</li>
+<li>将PCB从等待队列移除，设置进程为就绪态</li>
+<li>将PCB插入就绪队列，等待被调度</li>
+</ul>
+</li>
+<li>引起事件<ul>
+<li>等待的事件发生</li>
+</ul>
+</li>
+</ul>
+</li>
+<li>阻塞原语和唤醒原语作用相反，必须成对使用</li>
+</ul>
+</li>
+<li>进程切换：切换原语<ul>
+<li>引起事件<ul>
+<li>当前进程时间片到</li>
+<li>有更高优先级的进程到达</li>
+<li>当前进程主动阻塞</li>
+<li>当前进程终止</li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+<h3 id="进程的通信"><a href="#进程的通信" class="headerlink" title="进程的通信"></a>进程的通信</h3><ul>
+<li>低级通信方式―PV操作</li>
+<li>高级通信方法 ↓ <ul>
+<li>共享存储<ul>
+<li>在通信的进程之间存在一块可直接访问的共享空间，通过对共享空间进行写/读操作实现进程之间的信息交换</li>
+<li>在对共享空间进行读/写操作时，需要使用同步互斥工具</li>
+<li>分类<ul>
+<li>基于数据结构的共享——低级</li>
+<li>基于存储区的共享——高级</li>
+</ul>
+</li>
+<li>操作系统只负责为通信进程提供可共享使用的存储空间和同步互斥工具，数据交换由用户自己安排读/写指令</li>
+</ul>
+</li>
+<li>消息传递：<ul>
+<li>在消息传递系统中，进程间的数据交换以格式化的消息为单位</li>
+<li>通过操作系统提供的发送消息和接受消息两个原语来进行数据交换</li>
+<li>微内核与服务器之间的通信就采用了消息传递</li>
+<li>分类<ul>
+<li>直接通信方式<ul>
+<li>发送进程直接把消息发送给接收进程</li>
+</ul>
+</li>
+<li>间接通信方式<ul>
+<li>发送进程把消息发送到某个中间实体，接收进程从中间实体取得消息</li>
+<li>中间实体一般称为信箱</li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+</li>
+<li>管道通信―是消息传递的一种特殊方式<ul>
+<li>pipe文件</li>
+<li>允许进程按生产者-消费者方式进行通信</li>
+<li>数据在管道中先进先出</li>
+<li>克服文件进行通信<ul>
+<li>限制管道大小</li>
+<li>读进程也可能工作得比写进程快</li>
+</ul>
+</li>
+<li>从管道读数据时一次性操作，数据一旦被读取，就被管道抛弃<ul>
+<li>一个管道允许多个写进程，一个读进程（2014年408真题高教社官方答案）</li>
+<li>多个写进程，多个读进程（Linux）</li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+<h3 id="线程概念和多线程模型"><a href="#线程概念和多线程模型" class="headerlink" title="线程概念和多线程模型"></a>线程概念和多线程模型</h3><p><strong>线程的基本概念</strong></p>
+<ul>
+<li><p>概念</p>
+<ul>
+<li>线程最直接的理解就是“轻量级进程”，他是一个基本的CPU执行单元</li>
+</ul>
+</li>
+<li><p>组成</p>
+<ul>
+<li>线程ID</li>
+<li>程序计数器</li>
+<li>寄存器集合</li>
+<li>堆栈</li>
+</ul>
+</li>
+<li>进程与线程的比较<ul>
+<li>调度<ul>
+<li>线程是独立调度的基本单位，进程是拥有资源的基本单位</li>
+<li>同一进程的线程切换不会引起进程切换</li>
+<li>不同进程的线程切换会引起进程切换</li>
+</ul>
+</li>
+<li>拥有资源<ul>
+<li>进程是拥有资源的基本单位，而线程不拥有系统资源（除了一点点必不可少的资源）</li>
+</ul>
+</li>
+<li>并发性<ul>
+<li>一个进程中的多个线程之间可以并发执行，甚至不同进程中的线程也能并发执行</li>
+<li>提高了系统资源的利用率和系统的吞吐量</li>
+</ul>
+</li>
+<li>独立性<ul>
+<li>每个进程都拥有独立的地址空间和资源，除了共享全局变量，不允许其他进程访问</li>
+<li>某进程中的线程对其他进程不可见</li>
+<li>同一进程的线程共享进程的地址空间和资源</li>
+</ul>
+</li>
+<li>系统开销<ul>
+<li>线程的创建和切换易于进程</li>
+<li>线程之间的同步与通信非常容易实现，无须操作系统的干预</li>
+<li>进程间通信（IPC）需要进程同步和互斥手段的辅助，以保证数据的一致性</li>
+</ul>
+</li>
+<li>支持多处理机系统<ul>
+<li>各个线程可以占用不同的CPU</li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+<p><strong>线程的属性</strong> </p>
+<ul>
+<li>线程是一个轻型实体，它不拥有系统资源，但每个线程都应有一个唯一的标识符和一个线程控制块，线程控制块记录线程执行的寄存器和栈等现场状态</li>
+<li>不同线程可以执行相同的程序，即同一个服务程序被不同的用户调用时，操作系统把它们创建成不同的线程</li>
+<li>同一进程的各个线程共享该进程所拥有的资源</li>
+<li>线程是处理机的独立调度单位，多个线程是可以并发执行的；在多CPU的计算机系统中，各线程可同时占用不同的CPU</li>
+<li>一个线程被创建后，便开始了它的生命周期，直至终止。线程在生命周期内会经历阻塞态、就绪态和运行态等各种状态变化、</li>
+</ul>
+<p><strong>线程的状态和转移</strong></p>
+<ul>
+<li>执行状态：线程已获得处理机而正在运行</li>
+<li>就绪状态：线程已具备各种执行条件，只需再获得CPU便可立即执行</li>
+<li>阻塞状态：线程在执行中因某事件受阻而处于暂停状态</li>
+<li>线程着三种基本状态之间的转换和进程基本状态之间的转换是一样的</li>
+</ul>
+<p><strong>线程的组织和控制</strong></p>
+<ul>
+<li>线程控制块TCB<ul>
+<li>线程标识符，TID（与PID类似）</li>
+<li>一组寄存器，包括程序计数器，状态寄存器和通用寄存器</li>
+<li>线程运行状态，用于描述线程正处于何种状态</li>
+<li>优先级</li>
+<li>线程专有存储区，线程切换时用于保存现场</li>
+<li>堆栈指针，由于过程调用时保存局部变量和返回地址</li>
+</ul>
+</li>
+<li>同一进程中的所有线程都完全共享进程的地址空间和全局变量，一个线程可以读、写、甚至清楚另一个线程的堆栈、</li>
+<li>”初始化线程“——用于创建新线程</li>
+<li>通常，线程被终止后并不立即释放它所占有的资源，只有当进程中的其他线程执行了分离函数后，被终止线程才与资源分离，此时的资源才能被其他线程利用</li>
+<li>被终止但尚未释放资源的线程仍可被其他线程调用，以使被终止线程重新恢复运行</li>
+</ul>
+<p><strong>线程的实现方式</strong></p>
+<ul>
+<li>用户级线程 ULT<ul>
+<li>有关线程管理（创建、撤销和切换等）的所有工作都由应用程序在用户空间（应用程序）中完成，内核意识不到线程的存在</li>
+<li>优点：<ul>
+<li>进程切换不需要转换到内核空间，节省了模式切换的开销</li>
+<li>调度算法可以是进程专用的，不同的进程可根据自身的需要，对自己的线程选择不同的调度算法</li>
+<li>用户及线程的实现和操作系统平台无关，对线程管理的代码时属于用户程序的一部分</li>
+</ul>
+</li>
+<li>缺点<ul>
+<li>系统调用的阻塞问题，当线程执行一个系统调用时，不仅该线程会被阻塞，而且进程内的所有线程都会被阻塞</li>
+<li>不能发挥多处理机的优势，内核每次分配给一个进程的仅有一个CPU，因此进程中仅有一个线程能执行</li>
+</ul>
+</li>
+</ul>
+</li>
+<li>内核级线程 KLT（内核支持的线程）<ul>
+<li>线程管理的所有工作由操作系统内核完成</li>
+<li>优点<ul>
+<li>能发挥多处理机的优势，内核能同时调度同一进程中的多个线程并行执行</li>
+<li>如果进程中的一个线程被阻塞，内核可以调度该进程中的其他线程占用处理机，也可以运行其他进程中的线程</li>
+<li>内核支持线程具有很小的数据结构和堆栈，线程切换比较快、开销小</li>
+<li>内核本身与可采用多线程技术，可以提高系统的执行速度和效率</li>
+</ul>
+</li>
+<li>缺点<ul>
+<li>同一进程中的线程切换，需要从用户态转到核心态进行，系统开销较大，这是因为用户进程的线程在用户态运行，而线程调度和管理是在内核实现的</li>
+</ul>
+</li>
+</ul>
+</li>
+<li>组合方式<ul>
+<li>结合上述两种方式</li>
+</ul>
+</li>
+<li><img src="https://gitee.com/renmale-sztu/image/raw/master/202308301513927.png" alt="image-20230830151304967"></li>
+</ul>
+<p><strong>多线程模型</strong></p>
+<ul>
+<li>有些系统同时支持用户线程和内核线程，由此产生了不同的多线程模型  </li>
+<li>多对一模型<ul>
+<li>将多个用户级线程映射到一个内核级线程</li>
+<li>优点——线程管理是在用户空间进行的，因而效率比较高</li>
+<li>缺点——如果一个线程在访问内核时发送阻塞，则整个进程都会被阻塞；在任何时刻，只有一个线程能够访问内核，多个线程不能同时在多个处理机上运行</li>
+</ul>
+</li>
+<li>一对一模型<ul>
+<li>将每个用户及线程映射到一个内核级线程</li>
+<li>优点——当一个线程被阻塞后，允许调度另一个线程运行，所以并发能力较强</li>
+<li>缺点——没创建一个用户线程，相应地就需要创建以一个内核线程，开销较大</li>
+</ul>
+</li>
+<li>多对多模型<ul>
+<li>将N个用户及线程映射到M个内核级线程上（N ≥ M）</li>
+<li>既克服了多对一模型并发度不高的缺点，又克服了一对一模型的一个用户进程占用太多内核级线程而开销太大的缺点；此外，还拥有上述两种模型各自的优点</li>
+<li><img src="https://gitee.com/renmale-sztu/image/raw/master/202308301518606.png" alt="image-20230830151836929"></li>
+</ul>
+</li>
+</ul>
+<h2 id="2-2-处理机的调度"><a href="#2-2-处理机的调度" class="headerlink" title="2.2 处理机的调度"></a>2.2 处理机的调度</h2><h3 id="调度的概念"><a href="#调度的概念" class="headerlink" title="调度的概念"></a>调度的概念</h3><ul>
+<li>调度的基本概念<ul>
+<li>处理机调度是对处理机进行分配，即从就绪队列按照一定的算法（公平、高效）选择一个进程并将处理机分配给他运行，以实现进程并发地执行</li>
+<li>处理机调度是多道程序操作系统的基础，是操作系统设计的核心问题</li>
+</ul>
+</li>
+<li>调度层次<ul>
+<li>作业调度/高级调度<ul>
+<li>按照某种规则，从后备队列中选择合适的作业将其调入内存，并为其创建进程</li>
+<li>每个作业只调入一次，调出一次</li>
+<li>内存与辅存之间的调度</li>
+<li>多道批处理系统大多配有作业调度，而其他系统中通常不需要配置作业调度</li>
+<li>外存→内存（面向作业）</li>
+</ul>
+</li>
+<li>中继调度/内存调度<ul>
+<li>按照某种规则，从挂起队列中选择合适的进程将其数据调回内存</li>
+<li>作用：提高内存利用率和系统吞吐量</li>
+<li>为此将哪些暂时不能运行的进程调至外存等待，把此时的进程状态称为<strong>挂起态</strong> ，当它们已具备运行条件且内存稍有空闲时，则重新调入内存，并修改其状态为就绪态，挂在就绪队列上等待</li>
+<li>外存→内存（面向进程）</li>
+</ul>
+</li>
+<li>进程调度/低级调度<ul>
+<li>按照某种规则，从就绪队列中选择一个进程为其分配处理机</li>
+<li>是操作系统中最基本的一种调度，进程调度的频率很高，一般十几毫秒一次</li>
+<li>内存→CPU</li>
+</ul>
+</li>
+</ul>
+</li>
+<li>三级调度的联系<ul>
+<li>作业调度为进程活动做准备，进程调度使进程正常活动起来</li>
+<li>中级调度将暂时不能运行的进程挂起，中级调度处于作业调度和进程调度之间</li>
+<li>作业调度次数少，中级调度次数略多，进程调度频率最高</li>
+<li>进程调度是最基本的，不可或缺</li>
+</ul>
+</li>
+</ul>
+<h3 id="调度的目标"><a href="#调度的目标" class="headerlink" title="调度的目标"></a>调度的目标</h3><ul>
+<li>CPU利用率<ul>
+<li>利用率 = CPU有效工作时间 / ( CPU有效工作时间 + CPU空闲等待时间)</li>
+</ul>
+</li>
+<li>系统吞吐量<ul>
+<li>单位时间内CPU完成作业的数量</li>
+</ul>
+</li>
+<li>周转时间<ul>
+<li>作业提交到完成所经历的时间</li>
+<li>周转时间 = 作业完成时间 - 作业提交时间</li>
+<li>平均周转时间 = （作业1周转时间 + … + 作业n周转时间）/ n</li>
+<li>带权周转时间 = 作业周转时间  / 作业实际运行时间</li>
+<li>平均带权周转时间 = （作业1带权周转时间 + … + 作业n带权周转时间）/ n</li>
+</ul>
+</li>
+<li>等待时间<ul>
+<li>进程处于等处理机的时间之和</li>
+</ul>
+</li>
+<li>响应时间<ul>
+<li>用户提交请求到系统首次产生响应所用的时间</li>
+</ul>
+</li>
+</ul>
+<h3 id="调度的实现"><a href="#调度的实现" class="headerlink" title="调度的实现"></a>调度的实现</h3><p><strong>调度程序（调度器）</strong></p>
+<ul>
+<li><p>用于调度和分派CPU的组件</p>
+</li>
+<li><p><img src="https://gitee.com/renmale-sztu/image/raw/master/202308301807183.png" alt="image-20230830173250356"></p>
+</li>
+<li>组成<ul>
+<li>排队器<ul>
+<li>将进程插入到相应的就绪队列中</li>
+</ul>
+</li>
+<li>分派器<ul>
+<li>将CPU分配给新进程</li>
+</ul>
+</li>
+<li>上下文切换器<ul>
+<li>将当前进程的上下文保存到其PCB中，再装入分派程序的上下文</li>
+<li>移出分派程序的上下文，将新选进程的CPU现场信息装入处理机的各个相应寄存器</li>
+</ul>
+</li>
+</ul>
+</li>
+<li>调度时机<ul>
+<li>创建新进程</li>
+<li>进程退出</li>
+<li>运行进程阻塞</li>
+<li>I/O中断发生</li>
+</ul>
+</li>
+</ul>
+<p><strong>调度的时机、切换与过程</strong></p>
+<ul>
+<li>不能进行进程的调度与切换的情况<ul>
+<li>在处理中断的过程中</li>
+<li>进程在操作系统<strong>内核程序临界区</strong>中</li>
+<li>其他需要完全屏蔽中断的原子操作过程中。如加锁、解锁、中断保护现场、恢复等原子操作</li>
+</ul>
+</li>
+<li>应该进行进程调度与切换的情况<ul>
+<li>发生引起调度条件且当前进程无法继续运行下去时，可以马上进行调度与切换</li>
+<li>中断处理结束或自陷处理解除后，返回被中断进程的用户态程序执行现场前，若置上请求调度标志，即可马上进行进程调度与切换</li>
+</ul>
+</li>
+<li>进程切换<ul>
+<li>保存原进程当前断点的现场信息</li>
+<li>恢复被调度进程的现场信息</li>
+<li>进程调度、切换是有代价的</li>
+</ul>
+</li>
+</ul>
+<p><strong>进程调度方式</strong></p>
+<ul>
+<li>非剥夺调度方式（非抢占方式）<ul>
+<li>只能由当前运行的进程主动放弃CPU</li>
+<li>实现简单，系统开销小，适用于大多数的批处理系统，但它不能用于分时操作系统和大多数的实时系统</li>
+</ul>
+</li>
+<li>剥夺调度方式（抢占方式）<ul>
+<li>可由操作系统剥夺当前进程的CPU使用权</li>
+<li>对提高系统吞吐率和响应效率都有明显的好处</li>
+</ul>
+</li>
+</ul>
+<p><strong>闲逛进程</strong></p>
+<ul>
+<li>如果系统中没有就绪进程，就会调度闲逛进程（idle）运行，如果没有其他进程就绪，该进程就一直运行，并在执行过程中测试中断</li>
+<li>优先级最低，只要有进程就绪，就会立即让出处理机</li>
+<li>不需要CPU之外的资源，不会被阻塞</li>
+</ul>
+<p><strong>两种线程的调度</strong></p>
+<ul>
+<li>用户级线程调度</li>
+<li>内核级线程调度</li>
+</ul>
+<h3 id="典型的调度算法"><a href="#典型的调度算法" class="headerlink" title="典型的调度算法"></a>典型的调度算法</h3><p><strong>先来先服务调度算法 FCFS</strong></p>
+<ul>
+<li>属于不可剥夺算法</li>
+<li>作业/进程调度</li>
+<li>优缺点<ul>
+<li>算法简单，效率低</li>
+<li>对长作业有利，对短作业不利</li>
+<li>有利于CPU繁忙型作业，不利于I/O繁忙型作业</li>
+</ul>
+</li>
+</ul>
+<p><strong>短作业优先算法 SJF</strong></p>
+<ul>
+<li>默认为非抢占式</li>
+<li>抢占式-最短剩余时间优先算法</li>
+<li>作业（SJF）/进程调度（SPF）</li>
+<li>优点<ul>
+<li>SJF调度算法的平均等待时间、平均周转时间”最少“</li>
+</ul>
+</li>
+<li>缺点<ul>
+<li>长作业周转时间增加</li>
+<li>不能保证紧迫性作业被及时处理</li>
+<li>长作业「饥饿」现象</li>
+</ul>
+</li>
+</ul>
+<p><strong>优先级调度算法</strong></p>
+<ul>
+<li><p>作业/进程调度</p>
+</li>
+<li><p>是否能抢占</p>
+<ul>
+<li><p>非剥夺式优先级调度算法</p>
+</li>
+<li><p>剥夺式优先级调度算法</p>
+</li>
+</ul>
+</li>
+<li><p>优先级能否改变</p>
+<ul>
+<li><p>静态优先级</p>
+<ul>
+<li>优先级再创建进程时确认，运行期间保持不变</li>
+</ul>
+</li>
+<li><p>动态优先级</p>
+<ul>
+<li>在进程运行过程中，根据进程情况的变化动态调整优先级</li>
+</ul>
+</li>
+</ul>
+</li>
+<li><p>进程优先级设置</p>
+<ul>
+<li>系统进程 &gt; 用户进程</li>
+<li>交互型进程 &gt; 非交互型进程（或者前台进程 &gt; 后台进程）</li>
+<li>I/O型进程 &gt; 计算型进程</li>
+</ul>
+</li>
+<li>优点<ul>
+<li>用优先级区分紧急程度、重要程度，适用于实时操作系统，可灵活地调整对各种作业/进程的偏好程度</li>
+</ul>
+</li>
+<li>缺点<ul>
+<li>若源源不断地有高优先级进程到来，则可能导致饥饿</li>
+</ul>
+</li>
+</ul>
+<p><strong>高响应比优先调度算法</strong></p>
+<ul>
+<li>非抢占式的调度算法</li>
+<li></li>
+<li>作业/进程调度</li>
+<li><script type="math/tex; mode=display">响应比 = \frac{等待时间 + 要求服务时间}{要求服务时间}</script></li>
+<li>优缺点<ul>
+<li>等待时间相同时，要求服务时间短的优先（SJF的优点）</li>
+<li>要求服务时间相同时，等待时间长的优点（FCFS的优点）</li>
+<li>对于长作业来说，随着等待时间越来越久，其响应比也会越来越大，从而避免了长作业饥饿的问题</li>
+</ul>
+</li>
+</ul>
+<p><strong>时间片轮转调度算法 RR</strong></p>
+<ul>
+<li><p>剥夺式调度算法</p>
+</li>
+<li><p>适用于分时系统</p>
+</li>
+<li>进程调度</li>
+<li>时间片过大退化为FCFS，过小切换频繁，开销增大</li>
+<li>时间片的长短通常由下列因素确定<ul>
+<li>系统响应时间</li>
+<li>就绪队列中的进程数目</li>
+<li>系统的处理能力</li>
+</ul>
+</li>
+<li>优点<ul>
+<li>公平，响应快，适用于分时操作系统</li>
+</ul>
+</li>
+<li>缺点<ul>
+<li>高频率的进程切换会有一定的开销</li>
+<li>不区分任务紧急程度</li>
+</ul>
+</li>
+</ul>
+<p><strong>多级队列调度算法</strong></p>
+<ul>
+<li>该算法在系统中设置多个就绪队列，将不同类型或性质的进程固定分配到不同的就绪队列</li>
+<li>每个队列可实施不同的调度算法</li>
+<li>同一队列中的进程可以设置不同的优先级，不同的队列本身也可以设置不同的优先级</li>
+<li><img src="https://gitee.com/renmale-sztu/image/raw/master/202308311526189.png" alt="image-20230831152636226"></li>
+</ul>
+<p><strong>多级反馈队列调度算法</strong></p>
+<ul>
+<li><p>抢占式</p>
+</li>
+<li><p>进程调度</p>
+</li>
+<li><p>是时间片轮转调度算法和优先级调度算法的综合和发展</p>
+</li>
+<li><img src="https://gitee.com/renmale-sztu/image/raw/master/202308311523426.png" alt="image-20230831152308190"></li>
+<li>优点<ul>
+<li>课本<ul>
+<li>终端型作业用户：短作业优先</li>
+<li>短批处理作业用户：周转时间较短</li>
+<li>长批处理作业用户：经过前面几个队列得到部分执行，不会长期得不到处理</li>
+</ul>
+</li>
+<li>课件<ul>
+<li>对各类型进程相对公平（FCFS的优点）</li>
+<li>每个新到达的进程都可以很快就得到响应（RR的优点）</li>
+<li>短进程只用较少的时间就可以完成（SPF的优点）</li>
+<li>不必实现估计进程的运行时间（避免用户造假）</li>
+<li>可灵活地调整对各类进程的偏好程度，比如CPU密集型进程、I/O密集型进程</li>
+</ul>
+</li>
+</ul>
+</li>
+<li>会导致饥饿</li>
+</ul>
+<h3 id="进程切换"><a href="#进程切换" class="headerlink" title="进程切换"></a>进程切换</h3><ul>
+<li>上下文切换<ul>
+<li>上下文是指某一时刻CPU寄存器和程序计数器的内容</li>
+<li>过程<ul>
+<li>挂起一个进程，保存CPU上下文，包括程序计数器和其他寄存器</li>
+<li>更新PCB信息</li>
+<li>把进程的PCB移入相应的队列，如就绪、在某事件阻塞等队列</li>
+<li>选择另一个进程执行，并更新其PCB</li>
+<li>跳转到新进程PCB中的程序计数器所指向的位置执行</li>
+<li>恢复处理机上下文</li>
+</ul>
+</li>
+</ul>
+</li>
+<li>上下文的切换（即进程切换）是需要耗费资源的</li>
+<li>与模式切换的区别<ul>
+<li>用户态和内核态之间的切换称为模式切换</li>
+<li>模式切换时，CPU逻辑上可能还在执行同一进程</li>
+<li>上下文切换只能发生在内核态，他是多任务操作系统的一个必需的特性</li>
+</ul>
+</li>
+</ul>
+<h2 id="2-3同步与互斥"><a href="#2-3同步与互斥" class="headerlink" title="2.3同步与互斥"></a>2.3同步与互斥</h2><h3 id="同步与互斥的基本概念"><a href="#同步与互斥的基本概念" class="headerlink" title="同步与互斥的基本概念"></a>同步与互斥的基本概念</h3><p><strong>临界资源</strong></p>
+<ul>
+<li>概念：一次仅允许一个进程使用的资源称为临界资源</li>
+<li><p>临界资源的访问过程</p>
+<ul>
+<li>进入区——负责检查是否可以进入临界区，若可以，设置正在访问临界区资源的标志（上锁）</li>
+<li>临界区——访问临界资源的那段代码</li>
+<li>退出区——将正在访问临界区的标志清除</li>
+<li>剩余区</li>
+</ul>
+</li>
+<li><p>```cpp<br>do{<br>entry section; // 进入区<br>critical section; // 临界区<br>exit section; // 退出区<br>remainder section; // 剩余区<br>} while(true)</p>
+</li>
+</ul>
+<p><strong>同步―直接制约关系</strong></p>
+<p><strong>互斥―间接制约关系</strong></p>
+<ul>
+<li>为了防止两个进程同时进入临界区，同步机制应该遵循以下原则<ul>
+<li>空闲让进</li>
+<li>忙则等待</li>
+<li>有限等待——对请求访问的进程，应保证能在有限时间内进入临界区</li>
+<li>让权等待——当进程不能进入临界区时，应立即释放处理器，防止进程忙等待 ~不一定非得实现~</li>
+</ul>
+</li>
+</ul>
+<h3 id="实现临界区互斥的基本方法"><a href="#实现临界区互斥的基本方法" class="headerlink" title="实现临界区互斥的基本方法"></a>实现临界区互斥的基本方法</h3><p><strong>软件实现方法</strong></p>
+<ul>
+<li>单标志法<ul>
+<li>思想：两个进程在访问完临界区后会把使用临界区的权限转交给另一个进程。也就是每个进程进入临界区的权限只能被另一个进程赋予</li>
+<li><img src="https://gitee.com/renmale-sztu/image/raw/master/202308311700037.png" alt="image-20230831170041925"></li>
+<li>违背“空闲让进”——两个进程必须交替进入临界区，若某个进程不再进入临界区，则另一个进程也将无法进入临界区，造成资源利用不充分</li>
+</ul>
+</li>
+<li>双标志法先检查<ul>
+<li>思想——在每个进程访问临界区资源之前，先查看临界资源是否正在被访问，若正被访问，该进程需等待；否则，进程才进入自己的临界区。</li>
+<li><img src="https://gitee.com/renmale-sztu/image/raw/master/202308311711985.png" alt="image-20230831171112985"></li>
+<li>违背“忙则等待”——按照①⑤②⑥③⑦…的顺序执行，P0和P1会同时访问临界区——进入区的“检查”和”上锁“两个处理不是一气呵成的</li>
+<li>优点——不用交替进入，可连续使用</li>
+</ul>
+</li>
+<li>双标志法后检查<ul>
+<li>思想——先将自己的标志设置为TRUE，再检查对方的状态标志，若对方标志为TRUE，则进程等待，否则进入临界区</li>
+<li><img src="https://gitee.com/renmale-sztu/image/raw/master/202308311717270.png" alt="image-20230831171722602"></li>
+<li>违背了”空闲让进“和”有限等待“——产生”饥饿“现象——按照①⑤②⑥…的顺序执行，P0和P1都将无法进入临界区——两个进程几乎同时都想进入临界区时，他们分别将自己的标志置为TRUE，并且同时检查对方的状态，发现对方也要进入临界区，双方互相谦让，结果谁也进不了临界区</li>
+</ul>
+</li>
+<li>Peterson’s Algorithm<ul>
+<li>结合双标志法、单标志法的思想</li>
+<li><img src="https://gitee.com/renmale-sztu/image/raw/master/202308311734452.png" alt="image-20230831173447377"></li>
+<li>遵循了空闲让进、忙则等待、有限等待三个原则，但是未遵循让权等待的原则——进入区会一直卡在while循环，没有及时释放资源</li>
+</ul>
+</li>
+</ul>
+<p><strong>硬件实现方法（低级方法，元方法）</strong></p>
+<ul>
+<li><p>中断屏蔽方法（屏蔽中断，关中断）</p>
+<ul>
+<li>```<br>…<br>关中断;<br>临界区;<br>开中断;<br>…<br>// 关中断后即不允许当前进程被中断，也必然不会发生进程切换<pre class="line-numbers language-none"><code class="language-none">
+  - 优点：简单、高效（很方便）
+
+  - 缺点：
+
+    - 限制了处理机交替执行的能力，执行的效率会明显降低
+    - 不适用于多处理机
+    - 只适用于操作系统内核进程（开/关中断指令只能运行在内核态，让用户随意使用会很危险）
+
+- 硬件指令方法
+
+  - 硬件实现—原子操作—不允许中断
+  - TestAndSet指令
+    - ![image-20230831184916916](https://gitee.com/renmale-sztu/image/raw/master/202308311849954.png)
+  - Swap指令
+    - ![image-20230831184956966](https://gitee.com/renmale-sztu/image/raw/master/202308311849272.png)
+  - 优点： 
+    - 适用于任意数目的进程，而不管是单处理机还是多处理机
+    - 简单容易检验正确性 
+    - 可以支持进程内有多个临界区
+  - 缺点
+    - 进程等待进入临界区时要耗费处理机时间，不能实现让权等待，导致”饥饿“现象
+
+### 互斥锁
+
+- 解决临界区最简单的工具就是互斥锁
+- 进入临界区获得锁，退出临界区释放锁
+- 函数acquire()获得锁，release()释放锁——原子操作
+- 需要连续循环忙等的互斥锁，都可称为自旋锁，如TSL指令、swap指令、单标志法
+- 缺点
+  - 需忙等，进程时间片用完才下处理机，违反”让权等待“
+  - 不太适用于单处理机系统，忙等的过程中不可能解锁
+
+- 优点：
+  - 等待期间不用切换进程上下文，多处理器系统中，若上锁的时间短，则等待代价很低
+  - 常用于多处理器系统，一个核忙等，其他核照常工作，并快速释放临界区、
+
+### 信号量
+
+**信号量**
+
+- 概念：只能被两个标准的原语 wait(S) 和 signal(S) 访问，也可以记作 P操作和V操作
+- PV操作——低级进程通信原语
+- 原语——完成某种功能且不被分割、不被中断执行的操作序列——屏蔽中断方式
+
+**整型信号量**
+
+- 一个用于表示资源数目的整型量S
+
+- ```cpp
+  int S = 1; 		//初始化整形信号量S，表示当前系统中可用的打印机资源数
+  
+  void wait(int S){	//wait原语，相当于“进入区”
+  	while(S &lt;= 0);	//如果资源数不够，就一直循环等待
+  	S--;			//如果资源数够，就占用一个资源
+  }	
+  
+  void signal(int S){	//signal原语，相当于“退出区”
+  	S++;			//使用完资源后，在退出区释放资源
+  }
+
+- 只要信号量$S\le0$，就会不断测试。违背“让权等待”
+
+**记录型信号量**
+
+- 一种不存在“忙等”现象的进程同步机制
+- ```cpp
+  // 记录型信号量的定义
+  typedef struct{
+  	int value;				//剩余资源数
+  	struct process *L;		//等待队列
+  }semaphore;
+  
+  // 某进程需要使用资源时，通过wait原语申请
+  void wait(semaphore S){
+  	S.value--;
+  	if(S.value &lt; 0){
+  		block(S.L);		//block原语，进程自我阻塞，并插入到该资源的等待队列
+  	}
+  }
+  
+  void signal(semaphore S){ // 相当于释放资源
+  	S.value++;
+  	if(S.value &lt;= 0){
+  		wakeup(P);		//wakeup原语，将该资源等待队列中的第一个进程唤醒
+  	}
+  }
+
+**利用信号量实现同步**
+
+- 初值为0
+- 前V后P
+  - 在“前操作”之后执行V(S)
+  - 在“后操作”之前执行P(S)
+
+  - ```cpp
+  semaphore S = 0; // 初始化信号量，初始值位0
+  P1(){
+  	x;		// x语句
+  	V(S);   // 告诉进程2，语句x已经完成
+  }
+  
+  P2(){
+  	P(S);   // 检查语句x是否运行完成
+  	y;		// 检查无误，运行y语句
+  }
+
+**利用信号量实现进程互斥**
+
+- 初值为1
+- 对不同的临界资源需要设置不同的互斥信号量
+
+ - ```cpp
+    semaphore S = 1; // 初始化信号量，初始值位1
+    P1(){
+      ...
+      P(S)				//加锁
+
+  	进程1的临界区;
+  	V(S);				//解锁
+  	  ...
+  }
+
+  P2(){
+  	...
+      P(S)		
+  	进程2的临界区;
+  	V(S);
+      ...
+  }
+
+**利用信号量实现前驱关系**
+
+- ![image-20230901162736897](https://gitee.com/renmale-sztu/image/raw/master/202309011627623.png)
+
+### 管程
+
+- 概念
+  - 统一管理共享资源的所有访问，实现进程互斥，这个代表共享资源的数据结构，以及由对该共享数据结构实施操作的一组过程所组成的资源管理程序，称为管程
+  - 一种语法范围，无法创建和撤销
+- 组成
+  - 管程的名称
+  - 局部于管程内部的共享结构数据说明
+  - 对该数据结构进行操作的一组过程（或函数）
+  - 对局部于管程内部的共享数据设置初始值的语句
+- 特征
+  - 局部于管程的数据只能被局部于管程的过程所访问
+  - 一个进程只有通过调用管城内的过程才能进入管程访问共享数据
+  - 每次仅允许一个进程在管程内执行某个内部过程（★）
+
+- 条件变量 condition
+  - 表示阻塞原因，可以有多个
+  - x.wait
+    - 当x对应的条件不满足时，正在调用管程的进程调用x.wait将自己插入x条件的等待队列，并释放管程。此时其他进程可以使用该管程
+
+  - x.signal
+    - x对应的条件发生了变化，则调用x.signal，唤醒一个因x条件而阻塞的进程
+
+- ![image-20230901184035807](https://gitee.com/renmale-sztu/image/raw/master/202309011840437.png)
+
+- V操作一定改变信号量的值，signal不一定
+
+### 经典同步问题  
+
+**生产者-消费者问题**
+
+- 问题描述
+  - 系统中有一组生产者进程和一组消费者进程，生产者进程每次生产一个产品放入缓冲区，消费者进程每次从缓冲区中取出一个产品并使用。（注：这里的“产品”理解为某种数据）
+  - 生产者、消费者共享一个初始为空、大小为n的缓冲区。
+  - 只有缓冲区没满时，生产者才能把产品放入缓冲区，否则必须等待。
+  - 只有缓冲区不空时，消费者才能从中取出产品，否则必须等待。
+  - 缓冲区是临界资源，各进程必须互斥地访问。
+- ![image-20230901165651086](https://gitee.com/renmale-sztu/image/raw/master/202309011656115.png)
+- 交换两个P操作的顺序——导致死锁——实现互斥的P操作一定要在实现同步的P操作之后
+- 两个V操作的顺序可以交换
+
+**多生产者-多消费者问题**
+
+- 问题描述
+  - 桌子上有一只盘子，每次只能向其中放入一个水果。爸爸专向盘子中放苹果，妈妈专向盘子中放橘子，儿子专等着吃盘子中的橘子，女儿专等着吃盘子中的苹果。只有盘子空时，爸爸或妈妈才可向盘子中放一个水果。仅当盘子中有自己需要的水果时，儿子或女儿可以从盘子中取出水果。用PV操作实现上述过程。
+  - 互斥关系
+    - 对缓冲区（盘子）的访问要互斥进行
+  - 同步关系
+    - 父亲将苹果放入盘子后，女儿才能取苹果
+    - 母亲将橘子放入盘子后，儿子才能取橘子
+    - 只有盘子为空时，父亲/母亲才能放入水果
+- ![image-20230901190031019](https://gitee.com/renmale-sztu/image/raw/master/202309011900105.png)
+- 上诉代码中可以取消互斥信号量吗
+  - 可以，当缓冲区大小为1时可以不使用互斥信号量，程序也可以正常运行
+
+**读者-写者问题**
+
+- 问题描述
+  - 允许多个读者可以同时对文件执行读操作
+    - 与消费者进程不同，读者进程在读数据后并不会将数据清空，不会改变数据
+  - 只允许一个写者往文件中写信息
+  - 任一写者在完成写操作之前不允许其他读者或写者工作
+  - 写者执行写操作前，应让已有的读者和写者全部退出。
+- 互斥关系
+  - 读进程—读进程
+  - 写进程—写进程
+- ![image-20230901193650356](https://gitee.com/renmale-sztu/image/raw/master/202309011936331.png)
+  - 如果没有mutex互斥量
+    - 如果没有mutex互斥量，可能存在两个进程同时访问rw互斥量，count变量的修改和rw互斥量的上锁/解锁不是一气呵成的
+  - 如果没有w互斥量——写进程饿死
+    - 源源不断的读者进程
+    - 只有最后一个读者进程会释放rw互斥量
+
+**哲学家进餐问题**
+
+- 问题描述
+
+  - 一张圆桌上坐着5名哲学家，每两个哲学家之间的桌上摆一根筷子，桌子的中间是一碗米饭。哲学家们倾注毕生的精力用于思考和进餐，哲学家在思考时，并不影响他人。只有当哲学家饥饿时，才试图拿起左、右两根筷子（一根一根地拿起）。如果筷子已在他人手上，则需等待。饥饿的哲学家只有同时拿起两根筷子才可以开始进餐，当进餐完毕后，放下筷子继续思考。
+  - ![image-20230901200247747](https://gitee.com/renmale-sztu/image/raw/master/202309012002779.png)
+
+- 死锁——五个哲学家一人一只筷子
+
+- 解决
+
+  - 各哲学家互斥地拿筷子
+  - 最多允许四个哲学家同时进餐
+  - 奇数号哲学家先拿左边筷子，偶数号相反
+  - ......
+
+- ```c++
+  semaphore chopstick[5]={1, 1, 1, 1, 1};
+  semaphore mutex = 1;			// 互斥地取筷子
+  Pi(){
+  	while(1){
+  		P(mutex);
+  		P(chopstick[i]);		// 拿左
+  		P(chopstick[i+1]%5);	// 拿右
+  		V(mutex);
+  		吃饭...
+  		P(chopstick[i]);		// 放左
+  		P(chopstick[i+1]%5);	// 放右
+  		思考...
+  	}
+  }<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+</li>
+</ul>
+</li>
+</ul>
+<p><strong>吸烟者问题</strong></p>
+<ul>
+<li>问题描述<ul>
+<li>假设一个系统有<strong>三个抽烟者进程</strong>和<strong>一个供应者进程</strong>。每个抽烟者不停地卷烟并抽掉它，但是要卷起并抽掉一支烟，抽烟者需要有三种材料：烟草、纸和胶水。三个抽烟者中，第一个拥有烟草、第二个拥有纸、第三个拥有胶水。供应者进程无限地提供三种材料，供应者每次将两种材料放桌子上，拥有剩下那种材料的抽烟者卷一根烟并抽掉它，并给供应者进程一个信号告诉完成了，供应者就会放另外两种材料再桌上，这个过程一直重复（让三个抽烟者<strong>轮流</strong>地抽烟）</li>
+<li>“可生产多种产品的单生产者-多消费者”问题</li>
+<li><img src="https://gitee.com/renmale-sztu/image/raw/master/202309011915547.png" alt="image-20230901191506660"></li>
+</ul>
+</li>
+<li><img src="https://gitee.com/renmale-sztu/image/raw/master/202309011915093.png" alt="image-20230901191526884"></li>
+</ul>
+<h2 id="2-4死锁"><a href="#2-4死锁" class="headerlink" title="2.4死锁"></a>2.4死锁</h2><h3 id="死锁的概念"><a href="#死锁的概念" class="headerlink" title="死锁的概念"></a>死锁的概念</h3><p><strong>死锁的定义</strong></p>
+<ul>
+<li>概念<ul>
+<li>各进程互相等待对方手里的资源，导致各进程都阻塞，无法向前推进的现象</li>
+</ul>
+</li>
+<li>死锁、饥饿、死循环<ul>
+<li>死锁<ul>
+<li>至少有两个或两个以上的进程同时发生死锁</li>
+</ul>
+</li>
+<li>饥饿<ul>
+<li>概念——由于长期得不到想要的资源，某进程无法向前推进的现象</li>
+<li>可能只有一个进程发生饥饿</li>
+</ul>
+</li>
+<li>死循环<ul>
+<li>概念——某进程执行过程中一直跳不出某个循环的现象</li>
+<li>死锁和饥饿时管理者（操作系统）的问题，死循环是被管理者的问题</li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+<p><strong>死锁产生的原因</strong></p>
+<ul>
+<li>系统资源的竞争<ul>
+<li>通常系统中拥有的不可剥夺资源，其数量不足以满足多个进程运行的需要</li>
+<li>只有对不可剥夺资源的竞争会产生死锁</li>
+</ul>
+</li>
+<li>进程推进顺序非法<ul>
+<li>进程在运行过程中，请求和释放资源的顺序不当</li>
+</ul>
+</li>
+<li>信号量使用不当<ul>
+<li>进程间彼此等待对方发来的消息</li>
+</ul>
+</li>
+</ul>
+<p><strong>死锁产生的必要条件</strong>（必要而非充分条件）</p>
+<ul>
+<li>互斥条件<ul>
+<li>一段时间内某资源仅为一个进程所占有</li>
+</ul>
+</li>
+<li>不剥夺条件<ul>
+<li>进程所获得的资源在未使用完之前，不能被其他进程强行夺走，即只能由获得该资源的进程自己来释放</li>
+</ul>
+</li>
+<li>请求并保持条件<ul>
+<li>进程已经保持了至少一个资源，但又提出了新的资源请求，而该资源又被其他进程占有，此时请求进程被阻塞，但又对自己已有的资源保持不放</li>
+</ul>
+</li>
+<li>循环等待条件<ul>
+<li>存在一种进程资源的循环等待链，链中的每一个进程已获得的资源同时被下一个进程所请求</li>
+</ul>
+</li>
+</ul>
+<p><strong>死锁的处理策略</strong></p>
+<ul>
+<li><p>设法破坏死锁的4个必要条件之一，或允许死锁产生，但当死锁发生时能检测出死锁，并有能力恢复</p>
+<ul>
+<li><p>死锁预防</p>
+<ul>
+<li>破坏死锁产生的四个必要条件中的一个或几个</li>
+</ul>
+</li>
+<li><p>避免死锁</p>
+<ul>
+<li>用某种方法防止系统进入不安全状态，从而避免死锁（银行家算法）</li>
+</ul>
+</li>
+<li><p>死锁的检测及解除</p>
+<ul>
+<li>允许死锁的发生，不过操作系统会负责检测出死锁的发生，然后采取某种措施解除死锁</li>
+</ul>
+</li>
+</ul>
+</li>
+<li><p>事先预防策略</p>
+<ul>
+<li>死锁预防</li>
+<li>死锁避免</li>
+</ul>
+</li>
+<li><p><img src="https://gitee.com/renmale-sztu/image/raw/master/202309021437402.png" alt="image-20230902143700140"></p>
+</li>
+</ul>
+<h3 id="预防死锁"><a href="#预防死锁" class="headerlink" title="预防死锁"></a>预防死锁</h3><ul>
+<li><p>静态策略</p>
+</li>
+<li><p>破坏互斥条件</p>
+<ul>
+<li>若允许系统资源都能共享使用，则系统不会进入死锁状态</li>
+<li>缺点<ul>
+<li>为了系统安全，很多地方还需要保护这种互斥性，因此，很多时候都无法破坏互斥条件</li>
+</ul>
+</li>
+</ul>
+</li>
+<li>破坏不剥夺条件<ul>
+<li>当一个已保持了某些不可剥夺资源的进程请求新的资源而得不到满足时，它必须释放已经保持的所有资源</li>
+<li>缺点<ul>
+<li>实现复杂</li>
+<li>释放已获得的资源可能造成前一阶段工作的失效，只适用于易保存和恢复状态的资源，如CPU</li>
+<li>反复地申请和释放资源会增加系统开销，降低系统吞吐量</li>
+<li>可能导致饥饿</li>
+</ul>
+</li>
+</ul>
+</li>
+<li>破坏请求并保持条件<ul>
+<li>静态分配方法<ul>
+<li>一次申请所有资源，资源未满足前，不让它投入运行，一旦投入，资源一直归它所有</li>
+</ul>
+</li>
+<li>实现简单</li>
+<li>缺点<ul>
+<li>系统资源被严重浪费</li>
+<li>可能导致饥饿</li>
+</ul>
+</li>
+</ul>
+</li>
+<li>破坏循环等待条件<ul>
+<li>顺序资源分配法<ul>
+<li>可采用顺序资源分配法。首先给系统中的资源编号，规定每个进程须按编号递增的顺序请求资源，同类资源（即编号相同的资源）一次申请完</li>
+<li>只要进程提出申请<mjx-container class="MathJax" jax="SVG"><svg style="vertical-align: -0.357ex;" xmlns="http://www.w3.org/2000/svg" width="2.457ex" height="1.902ex" role="img" focusable="false" viewBox="0 -683 1086 840.8"><g stroke="currentColor" fill="currentColor" stroke-width="0" transform="scale(1,-1)"><g data-mml-node="math"><g data-mml-node="msub"><g data-mml-node="mi"><path data-c="1D445" d="M230 637Q203 637 198 638T193 649Q193 676 204 682Q206 683 378 683Q550 682 564 680Q620 672 658 652T712 606T733 563T739 529Q739 484 710 445T643 385T576 351T538 338L545 333Q612 295 612 223Q612 212 607 162T602 80V71Q602 53 603 43T614 25T640 16Q668 16 686 38T712 85Q717 99 720 102T735 105Q755 105 755 93Q755 75 731 36Q693 -21 641 -21H632Q571 -21 531 4T487 82Q487 109 502 166T517 239Q517 290 474 313Q459 320 449 321T378 323H309L277 193Q244 61 244 59Q244 55 245 54T252 50T269 48T302 46H333Q339 38 339 37T336 19Q332 6 326 0H311Q275 2 180 2Q146 2 117 2T71 2T50 1Q33 1 33 10Q33 12 36 24Q41 43 46 45Q50 46 61 46H67Q94 46 127 49Q141 52 146 61Q149 65 218 339T287 628Q287 635 230 637ZM630 554Q630 586 609 608T523 636Q521 636 500 636T462 637H440Q393 637 386 627Q385 624 352 494T319 361Q319 360 388 360Q466 361 492 367Q556 377 592 426Q608 449 619 486T630 554Z"></path></g><g data-mml-node="mi" transform="translate(792,-150) scale(0.707)"><path data-c="1D456" d="M184 600Q184 624 203 642T247 661Q265 661 277 649T290 619Q290 596 270 577T226 557Q211 557 198 567T184 600ZM21 287Q21 295 30 318T54 369T98 420T158 442Q197 442 223 419T250 357Q250 340 236 301T196 196T154 83Q149 61 149 51Q149 26 166 26Q175 26 185 29T208 43T235 78T260 137Q263 149 265 151T282 153Q302 153 302 143Q302 135 293 112T268 61T223 11T161 -11Q129 -11 102 10T74 74Q74 91 79 106T122 220Q160 321 166 341T173 380Q173 404 156 404H154Q124 404 99 371T61 287Q60 286 59 284T58 281T56 279T53 278T49 278T41 278H27Q21 284 21 287Z"></path></g></g></g></g></svg></mjx-container>资源，以后只能申请编号大于<mjx-container class="MathJax" jax="SVG"><svg style="vertical-align: -0.357ex;" xmlns="http://www.w3.org/2000/svg" width="2.457ex" height="1.902ex" role="img" focusable="false" viewBox="0 -683 1086 840.8"><g stroke="currentColor" fill="currentColor" stroke-width="0" transform="scale(1,-1)"><g data-mml-node="math"><g data-mml-node="msub"><g data-mml-node="mi"><path data-c="1D445" d="M230 637Q203 637 198 638T193 649Q193 676 204 682Q206 683 378 683Q550 682 564 680Q620 672 658 652T712 606T733 563T739 529Q739 484 710 445T643 385T576 351T538 338L545 333Q612 295 612 223Q612 212 607 162T602 80V71Q602 53 603 43T614 25T640 16Q668 16 686 38T712 85Q717 99 720 102T735 105Q755 105 755 93Q755 75 731 36Q693 -21 641 -21H632Q571 -21 531 4T487 82Q487 109 502 166T517 239Q517 290 474 313Q459 320 449 321T378 323H309L277 193Q244 61 244 59Q244 55 245 54T252 50T269 48T302 46H333Q339 38 339 37T336 19Q332 6 326 0H311Q275 2 180 2Q146 2 117 2T71 2T50 1Q33 1 33 10Q33 12 36 24Q41 43 46 45Q50 46 61 46H67Q94 46 127 49Q141 52 146 61Q149 65 218 339T287 628Q287 635 230 637ZM630 554Q630 586 609 608T523 636Q521 636 500 636T462 637H440Q393 637 386 627Q385 624 352 494T319 361Q319 360 388 360Q466 361 492 367Q556 377 592 426Q608 449 619 486T630 554Z"></path></g><g data-mml-node="mi" transform="translate(792,-150) scale(0.707)"><path data-c="1D456" d="M184 600Q184 624 203 642T247 661Q265 661 277 649T290 619Q290 596 270 577T226 557Q211 557 198 567T184 600ZM21 287Q21 295 30 318T54 369T98 420T158 442Q197 442 223 419T250 357Q250 340 236 301T196 196T154 83Q149 61 149 51Q149 26 166 26Q175 26 185 29T208 43T235 78T260 137Q263 149 265 151T282 153Q302 153 302 143Q302 135 293 112T268 61T223 11T161 -11Q129 -11 102 10T74 74Q74 91 79 106T122 220Q160 321 166 341T173 380Q173 404 156 404H154Q124 404 99 371T61 287Q60 286 59 284T58 281T56 279T53 278T49 278T41 278H27Q21 284 21 287Z"></path></g></g></g></g></svg></mjx-container>的资源</li>
+</ul>
+</li>
+<li>缺点<ul>
+<li>不方便增加新的设备，因为可能需要重新分配所有的编号</li>
+<li>进程实际使用资源的顺序可能和编号递增顺序不一致，会导致资源浪费</li>
+<li>必须按规定次序申请资源，用户编程麻烦</li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+<h3 id="死锁避免"><a href="#死锁避免" class="headerlink" title="死锁避免"></a>死锁避免</h3><ul>
+<li>动态策略</li>
+</ul>
+<p><strong>系统安全状态</strong></p>
+<ul>
+<li>安全状态<ul>
+<li>所谓安全状态，是指系统能按某种进程推进的顺序（<mjx-container class="MathJax" jax="SVG"><svg style="vertical-align: -0.439ex;" xmlns="http://www.w3.org/2000/svg" width="13.527ex" height="1.984ex" role="img" focusable="false" viewBox="0 -683 5979 877"><g stroke="currentColor" fill="currentColor" stroke-width="0" transform="scale(1,-1)"><g data-mml-node="math"><g data-mml-node="msub"><g data-mml-node="mi"><path data-c="1D443" d="M287 628Q287 635 230 637Q206 637 199 638T192 648Q192 649 194 659Q200 679 203 681T397 683Q587 682 600 680Q664 669 707 631T751 530Q751 453 685 389Q616 321 507 303Q500 302 402 301H307L277 182Q247 66 247 59Q247 55 248 54T255 50T272 48T305 46H336Q342 37 342 35Q342 19 335 5Q330 0 319 0Q316 0 282 1T182 2Q120 2 87 2T51 1Q33 1 33 11Q33 13 36 25Q40 41 44 43T67 46Q94 46 127 49Q141 52 146 61Q149 65 218 339T287 628ZM645 554Q645 567 643 575T634 597T609 619T560 635Q553 636 480 637Q463 637 445 637T416 636T404 636Q391 635 386 627Q384 621 367 550T332 412T314 344Q314 342 395 342H407H430Q542 342 590 392Q617 419 631 471T645 554Z"></path></g><g data-mml-node="mn" transform="translate(675,-150) scale(0.707)"><path data-c="31" d="M213 578L200 573Q186 568 160 563T102 556H83V602H102Q149 604 189 617T245 641T273 663Q275 666 285 666Q294 666 302 660V361L303 61Q310 54 315 52T339 48T401 46H427V0H416Q395 3 257 3Q121 3 100 0H88V46H114Q136 46 152 46T177 47T193 50T201 52T207 57T213 61V578Z"></path></g></g><g data-mml-node="mo" transform="translate(1078.6,0)"><path data-c="2C" d="M78 35T78 60T94 103T137 121Q165 121 187 96T210 8Q210 -27 201 -60T180 -117T154 -158T130 -185T117 -194Q113 -194 104 -185T95 -172Q95 -168 106 -156T131 -126T157 -76T173 -3V9L172 8Q170 7 167 6T161 3T152 1T140 0Q113 0 96 17Z"></path></g><g data-mml-node="msub" transform="translate(1523.2,0)"><g data-mml-node="mi"><path data-c="1D443" d="M287 628Q287 635 230 637Q206 637 199 638T192 648Q192 649 194 659Q200 679 203 681T397 683Q587 682 600 680Q664 669 707 631T751 530Q751 453 685 389Q616 321 507 303Q500 302 402 301H307L277 182Q247 66 247 59Q247 55 248 54T255 50T272 48T305 46H336Q342 37 342 35Q342 19 335 5Q330 0 319 0Q316 0 282 1T182 2Q120 2 87 2T51 1Q33 1 33 11Q33 13 36 25Q40 41 44 43T67 46Q94 46 127 49Q141 52 146 61Q149 65 218 339T287 628ZM645 554Q645 567 643 575T634 597T609 619T560 635Q553 636 480 637Q463 637 445 637T416 636T404 636Q391 635 386 627Q384 621 367 550T332 412T314 344Q314 342 395 342H407H430Q542 342 590 392Q617 419 631 471T645 554Z"></path></g><g data-mml-node="mn" transform="translate(675,-150) scale(0.707)"><path data-c="32" d="M109 429Q82 429 66 447T50 491Q50 562 103 614T235 666Q326 666 387 610T449 465Q449 422 429 383T381 315T301 241Q265 210 201 149L142 93L218 92Q375 92 385 97Q392 99 409 186V189H449V186Q448 183 436 95T421 3V0H50V19V31Q50 38 56 46T86 81Q115 113 136 137Q145 147 170 174T204 211T233 244T261 278T284 308T305 340T320 369T333 401T340 431T343 464Q343 527 309 573T212 619Q179 619 154 602T119 569T109 550Q109 549 114 549Q132 549 151 535T170 489Q170 464 154 447T109 429Z"></path></g></g><g data-mml-node="mo" transform="translate(2601.8,0)"><path data-c="2C" d="M78 35T78 60T94 103T137 121Q165 121 187 96T210 8Q210 -27 201 -60T180 -117T154 -158T130 -185T117 -194Q113 -194 104 -185T95 -172Q95 -168 106 -156T131 -126T157 -76T173 -3V9L172 8Q170 7 167 6T161 3T152 1T140 0Q113 0 96 17Z"></path></g><g data-mml-node="mo" transform="translate(3046.4,0)"><path data-c="2026" d="M78 60Q78 84 95 102T138 120Q162 120 180 104T199 61Q199 36 182 18T139 0T96 17T78 60ZM525 60Q525 84 542 102T585 120Q609 120 627 104T646 61Q646 36 629 18T586 0T543 17T525 60ZM972 60Q972 84 989 102T1032 120Q1056 120 1074 104T1093 61Q1093 36 1076 18T1033 0T990 17T972 60Z"></path></g><g data-mml-node="mo" transform="translate(4385.1,0)"><path data-c="2C" d="M78 35T78 60T94 103T137 121Q165 121 187 96T210 8Q210 -27 201 -60T180 -117T154 -158T130 -185T117 -194Q113 -194 104 -185T95 -172Q95 -168 106 -156T131 -126T157 -76T173 -3V9L172 8Q170 7 167 6T161 3T152 1T140 0Q113 0 96 17Z"></path></g><g data-mml-node="msub" transform="translate(4829.8,0)"><g data-mml-node="mi"><path data-c="1D443" d="M287 628Q287 635 230 637Q206 637 199 638T192 648Q192 649 194 659Q200 679 203 681T397 683Q587 682 600 680Q664 669 707 631T751 530Q751 453 685 389Q616 321 507 303Q500 302 402 301H307L277 182Q247 66 247 59Q247 55 248 54T255 50T272 48T305 46H336Q342 37 342 35Q342 19 335 5Q330 0 319 0Q316 0 282 1T182 2Q120 2 87 2T51 1Q33 1 33 11Q33 13 36 25Q40 41 44 43T67 46Q94 46 127 49Q141 52 146 61Q149 65 218 339T287 628ZM645 554Q645 567 643 575T634 597T609 619T560 635Q553 636 480 637Q463 637 445 637T416 636T404 636Q391 635 386 627Q384 621 367 550T332 412T314 344Q314 342 395 342H407H430Q542 342 590 392Q617 419 631 471T645 554Z"></path></g><g data-mml-node="mi" transform="translate(675,-150) scale(0.707)"><path data-c="1D45B" d="M21 287Q22 293 24 303T36 341T56 388T89 425T135 442Q171 442 195 424T225 390T231 369Q231 367 232 367L243 378Q304 442 382 442Q436 442 469 415T503 336T465 179T427 52Q427 26 444 26Q450 26 453 27Q482 32 505 65T540 145Q542 153 560 153Q580 153 580 145Q580 144 576 130Q568 101 554 73T508 17T439 -10Q392 -10 371 17T350 73Q350 92 386 193T423 345Q423 404 379 404H374Q288 404 229 303L222 291L189 157Q156 26 151 16Q138 -11 108 -11Q95 -11 87 -5T76 7T74 17Q74 30 112 180T152 343Q153 348 153 366Q153 405 129 405Q91 405 66 305Q60 285 60 284Q58 278 41 278H27Q21 284 21 287Z"></path></g></g></g></g></svg></mjx-container>）为每个进<mjx-container class="MathJax" jax="SVG"><svg style="vertical-align: -0.357ex;" xmlns="http://www.w3.org/2000/svg" width="2.192ex" height="1.902ex" role="img" focusable="false" viewBox="0 -683 969 840.8"><g stroke="currentColor" fill="currentColor" stroke-width="0" transform="scale(1,-1)"><g data-mml-node="math"><g data-mml-node="msub"><g data-mml-node="mi"><path data-c="1D443" d="M287 628Q287 635 230 637Q206 637 199 638T192 648Q192 649 194 659Q200 679 203 681T397 683Q587 682 600 680Q664 669 707 631T751 530Q751 453 685 389Q616 321 507 303Q500 302 402 301H307L277 182Q247 66 247 59Q247 55 248 54T255 50T272 48T305 46H336Q342 37 342 35Q342 19 335 5Q330 0 319 0Q316 0 282 1T182 2Q120 2 87 2T51 1Q33 1 33 11Q33 13 36 25Q40 41 44 43T67 46Q94 46 127 49Q141 52 146 61Q149 65 218 339T287 628ZM645 554Q645 567 643 575T634 597T609 619T560 635Q553 636 480 637Q463 637 445 637T416 636T404 636Q391 635 386 627Q384 621 367 550T332 412T314 344Q314 342 395 342H407H430Q542 342 590 392Q617 419 631 471T645 554Z"></path></g><g data-mml-node="mi" transform="translate(675,-150) scale(0.707)"><path data-c="1D456" d="M184 600Q184 624 203 642T247 661Q265 661 277 649T290 619Q290 596 270 577T226 557Q211 557 198 567T184 600ZM21 287Q21 295 30 318T54 369T98 420T158 442Q197 442 223 419T250 357Q250 340 236 301T196 196T154 83Q149 61 149 51Q149 26 166 26Q175 26 185 29T208 43T235 78T260 137Q263 149 265 151T282 153Q302 153 302 143Q302 135 293 112T268 61T223 11T161 -11Q129 -11 102 10T74 74Q74 91 79 106T122 220Q160 321 166 341T173 380Q173 404 156 404H154Q124 404 99 371T61 287Q60 286 59 284T58 281T56 279T53 278T49 278T41 278H27Q21 284 21 287Z"></path></g></g></g></g></svg></mjx-container>分配其所需的资源，直至满足每个进程对资源的最大需求，使每个进程都可顺序完成，此时称<mjx-container class="MathJax" jax="SVG"><svg style="vertical-align: -0.439ex;" xmlns="http://www.w3.org/2000/svg" width="13.527ex" height="1.984ex" role="img" focusable="false" viewBox="0 -683 5979 877"><g stroke="currentColor" fill="currentColor" stroke-width="0" transform="scale(1,-1)"><g data-mml-node="math"><g data-mml-node="msub"><g data-mml-node="mi"><path data-c="1D443" d="M287 628Q287 635 230 637Q206 637 199 638T192 648Q192 649 194 659Q200 679 203 681T397 683Q587 682 600 680Q664 669 707 631T751 530Q751 453 685 389Q616 321 507 303Q500 302 402 301H307L277 182Q247 66 247 59Q247 55 248 54T255 50T272 48T305 46H336Q342 37 342 35Q342 19 335 5Q330 0 319 0Q316 0 282 1T182 2Q120 2 87 2T51 1Q33 1 33 11Q33 13 36 25Q40 41 44 43T67 46Q94 46 127 49Q141 52 146 61Q149 65 218 339T287 628ZM645 554Q645 567 643 575T634 597T609 619T560 635Q553 636 480 637Q463 637 445 637T416 636T404 636Q391 635 386 627Q384 621 367 550T332 412T314 344Q314 342 395 342H407H430Q542 342 590 392Q617 419 631 471T645 554Z"></path></g><g data-mml-node="mn" transform="translate(675,-150) scale(0.707)"><path data-c="31" d="M213 578L200 573Q186 568 160 563T102 556H83V602H102Q149 604 189 617T245 641T273 663Q275 666 285 666Q294 666 302 660V361L303 61Q310 54 315 52T339 48T401 46H427V0H416Q395 3 257 3Q121 3 100 0H88V46H114Q136 46 152 46T177 47T193 50T201 52T207 57T213 61V578Z"></path></g></g><g data-mml-node="mo" transform="translate(1078.6,0)"><path data-c="2C" d="M78 35T78 60T94 103T137 121Q165 121 187 96T210 8Q210 -27 201 -60T180 -117T154 -158T130 -185T117 -194Q113 -194 104 -185T95 -172Q95 -168 106 -156T131 -126T157 -76T173 -3V9L172 8Q170 7 167 6T161 3T152 1T140 0Q113 0 96 17Z"></path></g><g data-mml-node="msub" transform="translate(1523.2,0)"><g data-mml-node="mi"><path data-c="1D443" d="M287 628Q287 635 230 637Q206 637 199 638T192 648Q192 649 194 659Q200 679 203 681T397 683Q587 682 600 680Q664 669 707 631T751 530Q751 453 685 389Q616 321 507 303Q500 302 402 301H307L277 182Q247 66 247 59Q247 55 248 54T255 50T272 48T305 46H336Q342 37 342 35Q342 19 335 5Q330 0 319 0Q316 0 282 1T182 2Q120 2 87 2T51 1Q33 1 33 11Q33 13 36 25Q40 41 44 43T67 46Q94 46 127 49Q141 52 146 61Q149 65 218 339T287 628ZM645 554Q645 567 643 575T634 597T609 619T560 635Q553 636 480 637Q463 637 445 637T416 636T404 636Q391 635 386 627Q384 621 367 550T332 412T314 344Q314 342 395 342H407H430Q542 342 590 392Q617 419 631 471T645 554Z"></path></g><g data-mml-node="mn" transform="translate(675,-150) scale(0.707)"><path data-c="32" d="M109 429Q82 429 66 447T50 491Q50 562 103 614T235 666Q326 666 387 610T449 465Q449 422 429 383T381 315T301 241Q265 210 201 149L142 93L218 92Q375 92 385 97Q392 99 409 186V189H449V186Q448 183 436 95T421 3V0H50V19V31Q50 38 56 46T86 81Q115 113 136 137Q145 147 170 174T204 211T233 244T261 278T284 308T305 340T320 369T333 401T340 431T343 464Q343 527 309 573T212 619Q179 619 154 602T119 569T109 550Q109 549 114 549Q132 549 151 535T170 489Q170 464 154 447T109 429Z"></path></g></g><g data-mml-node="mo" transform="translate(2601.8,0)"><path data-c="2C" d="M78 35T78 60T94 103T137 121Q165 121 187 96T210 8Q210 -27 201 -60T180 -117T154 -158T130 -185T117 -194Q113 -194 104 -185T95 -172Q95 -168 106 -156T131 -126T157 -76T173 -3V9L172 8Q170 7 167 6T161 3T152 1T140 0Q113 0 96 17Z"></path></g><g data-mml-node="mo" transform="translate(3046.4,0)"><path data-c="2026" d="M78 60Q78 84 95 102T138 120Q162 120 180 104T199 61Q199 36 182 18T139 0T96 17T78 60ZM525 60Q525 84 542 102T585 120Q609 120 627 104T646 61Q646 36 629 18T586 0T543 17T525 60ZM972 60Q972 84 989 102T1032 120Q1056 120 1074 104T1093 61Q1093 36 1076 18T1033 0T990 17T972 60Z"></path></g><g data-mml-node="mo" transform="translate(4385.1,0)"><path data-c="2C" d="M78 35T78 60T94 103T137 121Q165 121 187 96T210 8Q210 -27 201 -60T180 -117T154 -158T130 -185T117 -194Q113 -194 104 -185T95 -172Q95 -168 106 -156T131 -126T157 -76T173 -3V9L172 8Q170 7 167 6T161 3T152 1T140 0Q113 0 96 17Z"></path></g><g data-mml-node="msub" transform="translate(4829.8,0)"><g data-mml-node="mi"><path data-c="1D443" d="M287 628Q287 635 230 637Q206 637 199 638T192 648Q192 649 194 659Q200 679 203 681T397 683Q587 682 600 680Q664 669 707 631T751 530Q751 453 685 389Q616 321 507 303Q500 302 402 301H307L277 182Q247 66 247 59Q247 55 248 54T255 50T272 48T305 46H336Q342 37 342 35Q342 19 335 5Q330 0 319 0Q316 0 282 1T182 2Q120 2 87 2T51 1Q33 1 33 11Q33 13 36 25Q40 41 44 43T67 46Q94 46 127 49Q141 52 146 61Q149 65 218 339T287 628ZM645 554Q645 567 643 575T634 597T609 619T560 635Q553 636 480 637Q463 637 445 637T416 636T404 636Q391 635 386 627Q384 621 367 550T332 412T314 344Q314 342 395 342H407H430Q542 342 590 392Q617 419 631 471T645 554Z"></path></g><g data-mml-node="mi" transform="translate(675,-150) scale(0.707)"><path data-c="1D45B" d="M21 287Q22 293 24 303T36 341T56 388T89 425T135 442Q171 442 195 424T225 390T231 369Q231 367 232 367L243 378Q304 442 382 442Q436 442 469 415T503 336T465 179T427 52Q427 26 444 26Q450 26 453 27Q482 32 505 65T540 145Q542 153 560 153Q580 153 580 145Q580 144 576 130Q568 101 554 73T508 17T439 -10Q392 -10 371 17T350 73Q350 92 386 193T423 345Q423 404 379 404H374Q288 404 229 303L222 291L189 157Q156 26 151 16Q138 -11 108 -11Q95 -11 87 -5T76 7T74 17Q74 30 112 180T152 343Q153 348 153 366Q153 405 129 405Q91 405 66 305Q60 285 60 284Q58 278 41 278H27Q21 284 21 287Z"></path></g></g></g></g></svg></mjx-container>为安全序列，</li>
+<li>若系统无法找到一个安全序列，则称系统处于不安全状态</li>
+</ul>
+</li>
+<li>并非所有的不安全状态都是死锁状态<ul>
+<li>系统进入不安全状态，有可能死锁</li>
+<li>系统处于安全状态，一定不可能死锁</li>
+</ul>
+</li>
+</ul>
+<p><strong>银行家算法</strong></p>
+<ul>
+<li><p>思想</p>
+<ul>
+<li>在进程提出资源申请时，先预判此次分配是否会导致系统进入不安全态，如果会进入不安全状态，就暂时不答应这次请求，让该进程先阻塞等待</li>
+</ul>
+</li>
+<li><p>数据结构描述</p>
+<ul>
+<li>最大需求矩阵Max<ul>
+<li>各进程对资源的最大需求数</li>
+</ul>
+</li>
+<li>分配矩阵Alocation<ul>
+<li>已经给各进程分配了多少资源</li>
+</ul>
+</li>
+<li>需求矩阵Need<ul>
+<li>各进程最多还需要多少资源</li>
+<li>Need = Max - Allocation</li>
+</ul>
+</li>
+<li>一维数组 Available<ul>
+<li>表示还有多少可用资源</li>
+</ul>
+</li>
+</ul>
+</li>
+<li><p>银行家算法描述</p>
+<ul>
+<li>用长度为m的一维数组 Request表示进程此次申请的各种资源数</li>
+</ul>
+<ol>
+<li>如果 Requesti[j]≤Need[i, j] (0<mjx-container class="MathJax" jax="SVG"><svg style="vertical-align: -0.312ex;" xmlns="http://www.w3.org/2000/svg" width="1.76ex" height="1.751ex" role="img" focusable="false" viewBox="0 -636 778 774"><g stroke="currentColor" fill="currentColor" stroke-width="0" transform="scale(1,-1)"><g data-mml-node="math"><g data-mml-node="mo"><path data-c="2264" d="M674 636Q682 636 688 630T694 615T687 601Q686 600 417 472L151 346L399 228Q687 92 691 87Q694 81 694 76Q694 58 676 56H670L382 192Q92 329 90 331Q83 336 83 348Q84 359 96 365Q104 369 382 500T665 634Q669 636 674 636ZM84 -118Q84 -108 99 -98H678Q694 -104 694 -118Q694 -130 679 -138H98Q84 -131 84 -118Z"></path></g></g></g></svg></mjx-container>j<mjx-container class="MathJax" jax="SVG"><svg style="vertical-align: -0.312ex;" xmlns="http://www.w3.org/2000/svg" width="1.76ex" height="1.751ex" role="img" focusable="false" viewBox="0 -636 778 774"><g stroke="currentColor" fill="currentColor" stroke-width="0" transform="scale(1,-1)"><g data-mml-node="math"><g data-mml-node="mo"><path data-c="2264" d="M674 636Q682 636 688 630T694 615T687 601Q686 600 417 472L151 346L399 228Q687 92 691 87Q694 81 694 76Q694 58 676 56H670L382 192Q92 329 90 331Q83 336 83 348Q84 359 96 365Q104 369 382 500T665 634Q669 636 674 636ZM84 -118Q84 -108 99 -98H678Q694 -104 694 -118Q694 -130 679 -138H98Q84 -131 84 -118Z"></path></g></g></g></svg></mjx-container>m)便转向②；否则认为出错，因为它所需要的资源数已超过它所宣布的最大值。</li>
+<li>如果 Requesti[j]≤Available[j] (0<mjx-container class="MathJax" jax="SVG"><svg style="vertical-align: -0.312ex;" xmlns="http://www.w3.org/2000/svg" width="1.76ex" height="1.751ex" role="img" focusable="false" viewBox="0 -636 778 774"><g stroke="currentColor" fill="currentColor" stroke-width="0" transform="scale(1,-1)"><g data-mml-node="math"><g data-mml-node="mo"><path data-c="2264" d="M674 636Q682 636 688 630T694 615T687 601Q686 600 417 472L151 346L399 228Q687 92 691 87Q694 81 694 76Q694 58 676 56H670L382 192Q92 329 90 331Q83 336 83 348Q84 359 96 365Q104 369 382 500T665 634Q669 636 674 636ZM84 -118Q84 -108 99 -98H678Q694 -104 694 -118Q694 -130 679 -138H98Q84 -131 84 -118Z"></path></g></g></g></svg></mjx-container>j<mjx-container class="MathJax" jax="SVG"><svg style="vertical-align: -0.312ex;" xmlns="http://www.w3.org/2000/svg" width="1.76ex" height="1.751ex" role="img" focusable="false" viewBox="0 -636 778 774"><g stroke="currentColor" fill="currentColor" stroke-width="0" transform="scale(1,-1)"><g data-mml-node="math"><g data-mml-node="mo"><path data-c="2264" d="M674 636Q682 636 688 630T694 615T687 601Q686 600 417 472L151 346L399 228Q687 92 691 87Q694 81 694 76Q694 58 676 56H670L382 192Q92 329 90 331Q83 336 83 348Q84 359 96 365Q104 369 382 500T665 634Q669 636 674 636ZM84 -118Q84 -108 99 -98H678Q694 -104 694 -118Q694 -130 679 -138H98Q84 -131 84 -118Z"></path></g></g></g></svg></mjx-container>m)，便转向③ ；否则表示尚无足够资源，Pi必须等待</li>
+<li>系统试探着把资源分配给进程Pi，并修改相应的数据（并非真的分配，修改数值只是为了做预判）：<ul>
+<li>Available = Available - Requesti;</li>
+<li>Allocation[i, j] = Allocation[i, j] + Requesti[j];</li>
+<li>Need[i, j] = Need[i, j] – Requesti[j]</li>
+</ul>
+</li>
+<li>操作系统执行安全性算法，检查此次资源分配后，系统是否处于安全状态。若安全，才正式分配；否则，恢复相应数据，让进程阻塞等待</li>
+</ol>
+</li>
+<li><p>安全性算法</p>
+<ul>
+<li>检查当前的剩余可用资源是否能满足某个进程的最大需求，如果可以，就把该进程加入安全序列，并把该进程持有的资源全部回收</li>
+<li>不断重复上述过程，看最终是否能让所有进程都加入安全序列</li>
+</ul>
+</li>
+</ul>
+<h3 id="死锁检测和解除"><a href="#死锁检测和解除" class="headerlink" title="死锁检测和解除"></a>死锁检测和解除</h3><p><strong>资源分配图</strong></p>
+<ul>
+<li><img src="https://gitee.com/renmale-sztu/image/raw/master/202309021525964.png" alt="image-20230902152540879" style="zoom: 67%;"></li>
+<li>圆圈代表一个进程</li>
+<li>框代表一类资源，框中的一个圆表示该类的一个资源</li>
+<li>从进程到资源的有向边称为请求边，表示该进程申请一个单位的该类资源</li>
+<li>从资源到进程的边称为分配边，表示该类资源已有一个资源分配给了该进程</li>
+</ul>
+<p><strong>死锁定理</strong></p>
+<ul>
+<li>在资源分配图中，找出既不阻塞又不是孤点的进程 Pi（即找出一条有向边与它相连，且该有向边对应资源的申请数量小于等于系统中已有空闲资源数量。如上图中，R1没有空闲资源，R2有一个空闲资源。若所有的连接该进程的边均满足上述条件，则这个进程能继续运行直至完成，然后释放它所占有的所有资源）。消去它所有的请求边和分配变，使之称为孤立的结点。在下图中，P1 是满足这一条件的进程结点，于是将P1的所有边消去</li>
+<li>进程 Pi 所释放的资源，可以唤醒某些因等待这些资源而阻塞的进程，原来的阻塞进程可能变为非阻塞进程。在上图中，P2 就满足这样的条件。根据（1）中的方法进行一系列简化后，若能消去途中所有的边，则称该图是可完全简化的。</li>
+<li><img src="https://gitee.com/renmale-sztu/image/raw/master/202309021531843.png" alt="image-20230902153140746"></li>
+<li>死锁定理<ul>
+<li>如果某时刻系统的资源分配图是不可完全简化的，那么此时系统死锁</li>
+</ul>
+</li>
+</ul>
+<p><strong>死锁解除</strong></p>
+<ul>
+<li>资源剥夺法<ul>
+<li>挂起（暂时放到外存上）某些死锁进程，并抢占它的资源，将这些资源分配给其他的死锁进程。但是应防止被挂起的进程长时间得不到资源而饥饿</li>
+</ul>
+</li>
+<li>撤销进程法<ul>
+<li>强制撤销部分、甚至全部死锁进程，并剥夺这些进程的资源。这种方式的优点是实现简单，但所付出的代价可能会很大。因为有些进程可能已经运行了很长时间，已经接近结束了，一旦被终止可谓功亏一篑，以后还得从头再来</li>
+</ul>
+</li>
+<li>进程回退法<ul>
+<li>让一个或多个死锁进程回退到足以避免死锁的地步。这就要求系统要记录进程的历史信息，设置还原点</li>
+</ul>
+</li>
+</ul>
+
+    </div>
+
+    
+    
+    
+
+    <footer class="post-footer">
+          
+
+<div class="post-copyright">
+<ul>
+  <li class="post-copyright-author">
+      <strong>Post author:  </strong>renmale-lv
+  </li>
+  <li class="post-copyright-link">
+      <strong>Post link: </strong>
+      <a href="http://example.com/2023/09/05/%E7%AC%AC%E4%BA%8C%E7%AB%A0%20%E8%BF%9B%E7%A8%8B%E4%B8%8E%E7%BA%BF%E7%A8%8B/" title="第二章 进程和线程">http://example.com/2023/09/05/第二章 进程与线程/</a>
+  </li>
+  <li class="post-copyright-license">
+    <strong>Copyright Notice:  </strong>All articles in this blog are licensed under <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/" rel="noopener" target="_blank"><i class="fab fa-fw fa-creative-commons"></i>BY-NC-SA</a> unless stating additionally.
+  </li>
+</ul>
+</div>
+
+          <div class="post-tags">
+              <a href="/tags/%E6%93%8D%E4%BD%9C%E7%B3%BB%E7%BB%9F/" rel="tag"># 操作系统</a>
+          </div>
+
+        
+
+          <div class="post-nav">
+            <div class="post-nav-item">
+                <a href="/2023/02/28/CMAKE%E4%BA%86%E8%A7%A3/" rel="prev" title="CMAKE了解">
+                  <i class="fa fa-chevron-left"></i> CMAKE了解
+                </a>
+            </div>
+            <div class="post-nav-item">
+                <a href="/2023/09/05/%E7%AC%AC%E4%B8%89%E7%AB%A0%20%E5%86%85%E5%AD%98%E7%AE%A1%E7%90%86/" rel="next" title="第三章 内存管理">
+                  第三章 内存管理 <i class="fa fa-chevron-right"></i>
+                </a>
+            </div>
+          </div>
+    </footer>
+  </article>
+</div>
+
+
+
+
+
+
+    <div class="comments gitalk-container"></div>
+</div>
+  </main>
+
+  <footer class="footer">
+    <div class="footer-inner">
+
+
+<div class="copyright">
+  &copy; 
+  <span itemprop="copyrightYear">2023</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">renmale-lv</span>
+</div>
+<div class="wordcount">
+  <span class="post-meta-item">
+    <span class="post-meta-item-icon">
+      <i class="fa fa-chart-line"></i>
+    </span>
+      <span>Word count total: </span>
+    <span title="Word count total">88k</span>
+  </span>
+  <span class="post-meta-item">
+    <span class="post-meta-item-icon">
+      <i class="fa fa-coffee"></i>
+    </span>
+      <span>Reading time total &asymp;</span>
+    <span title="Reading time total">1:20</span>
+  </span>
+</div>
+  <div class="powered-by">Powered by <a href="https://hexo.io/" rel="noopener" target="_blank">Hexo</a> & <a href="https://theme-next.js.org/" rel="noopener" target="_blank">NexT.Gemini</a>
+  </div>
+<!-- 网站运行时间的设置 -->
+<span id="timeDate">载入天数...</span>
+<span id="times">载入时分秒...</span>  Sometimes your whole life boils down to one insame move.
+<script>
+    var now = new Date();
+    function createtime() {
+        var grt= new Date("11/05/2022 00:00:00");//此处修改你的建站时间或者网站上线时间
+        now.setTime(now.getTime()+250);
+        days = (now - grt ) / 1000 / 60 / 60 / 24; dnum = Math.floor(days);
+        hours = (now - grt ) / 1000 / 60 / 60 - (24 * dnum); hnum = Math.floor(hours);
+        if(String(hnum).length ==1 ){hnum = "0" + hnum;} minutes = (now - grt ) / 1000 /60 - (24 * 60 * dnum) - (60 * hnum);
+        mnum = Math.floor(minutes); if(String(mnum).length ==1 ){mnum = "0" + mnum;}
+        seconds = (now - grt ) / 1000 - (24 * 60 * 60 * dnum) - (60 * 60 * hnum) - (60 * mnum);
+        snum = Math.round(seconds); if(String(snum).length ==1 ){snum = "0" + snum;}
+        document.getElementById("timeDate").innerHTML = "本站已安全运行 "+dnum+" 天 ";
+        document.getElementById("times").innerHTML = hnum + " 小时 " + mnum + " 分 " + snum + " 秒";
+}
+setInterval("createtime()",250);
+</script>
+    </div>
+  </footer>
+
+  
+  <div class="back-to-top" role="button" aria-label="Back to top">
+    <i class="fa fa-arrow-up fa-lg"></i>
+    <span>0%</span>
+  </div>
+
+<noscript>
+  <div class="noscript-warning">Theme NexT works best with JavaScript enabled</div>
+</noscript>
+
+
+  
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/animejs/3.2.1/anime.min.js" integrity="sha256-XL2inqUJaslATFnHdJOi9GfQ60on8Wx1C2H8DYiN1xY=" crossorigin="anonymous"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/next-theme-pjax/0.6.0/pjax.min.js" integrity="sha256-vxLn1tSKWD4dqbMRyv940UYw4sXgMtYcK6reefzZrao=" crossorigin="anonymous"></script>
+<script src="/js/comments.js"></script><script src="/js/utils.js"></script><script src="/js/motion.js"></script><script src="/js/next-boot.js"></script><script src="/js/pjax.js"></script>
+
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/hexo-generator-searchdb/1.4.1/search.js" integrity="sha256-1kfA5uHPf65M5cphT2dvymhkuyHPQp5A53EGZOnOLmc=" crossorigin="anonymous"></script>
+<script src="/js/third-party/search/local-search.js"></script>
+
+
+
+
+
+  
+
+
+
+
+  
+
+  <script class="next-config" data-name="enableMath" type="application/json">true</script><script class="next-config" data-name="mathjax" type="application/json">{"enable":true,"tags":"none","js":{"url":"https://cdnjs.cloudflare.com/ajax/libs/mathjax/3.2.2/es5/tex-mml-chtml.js","integrity":"sha256-MASABpB4tYktI2Oitl4t+78w/lyA+D7b/s9GEP0JOGI="}}</script>
+<script src="/js/third-party/math/mathjax.js"></script>
+
+
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/gitalk/1.8.0/gitalk.css" integrity="sha256-AJnUHL7dBv6PGaeyPQJcgQPDjt/Hn/PvYZde1iqfp8U=" crossorigin="anonymous">
+
+<script class="next-config" data-name="gitalk" type="application/json">{"enable":true,"github_id":"renmale-lv","repo":"renmale-lv.github.io","client_id":"a7032a206391d1242a3c","client_secret":"5beb16ecce13a96a943bce7252eab7ab77218b9d","admin_user":"renmale-lv","distraction_free_mode":true,"proxy":"https://cors-anywhere.azm.workers.dev/https://github.com/login/oauth/access_token","language":"zh-CN","js":{"url":"https://cdnjs.cloudflare.com/ajax/libs/gitalk/1.8.0/gitalk.min.js","integrity":"sha256-MVK9MGD/XJaGyIghSVrONSnoXoGh3IFxLw0zfvzpxR4="},"path_md5":"374d5c8454f5d334d414605d45443d59"}</script>
+<script src="/js/third-party/comments/gitalk.js"></script>
+
+</body>
+</html>
+<!-- 页面点击小红心 -->
+<script type="text/javascript" src="/js/clicklove.js"></script>

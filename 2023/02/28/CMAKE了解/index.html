@@ -1,0 +1,666 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width">
+<meta name="theme-color" content="#222"><meta name="generator" content="Hexo 6.3.0">
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+
+<link rel="stylesheet" href="/css/main.css">
+
+
+
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.2.1/css/all.min.css" integrity="sha256-Z1K5uhUaJXA7Ll0XrZ/0JhX4lAtZFpT6jkKrEDT0drU=" crossorigin="anonymous">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/3.1.1/animate.min.css" integrity="sha256-PR7ttpcvz8qrF57fur/yAx1qXMFJeJFiA6pSzWi0OIE=" crossorigin="anonymous">
+
+<script class="next-config" data-name="main" type="application/json">{"hostname":"example.com","root":"/","images":"/images","scheme":"Gemini","darkmode":false,"version":"8.14.2","exturl":false,"sidebar":{"position":"left","display":"always","padding":18,"offset":12},"copycode":{"enable":true,"style":"mac"},"bookmark":{"enable":false,"color":"#222","save":"auto"},"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":"gitalk","storage":true,"lazyload":false,"nav":{"gitalk":{"order":-1}},"activeClass":"gitalk"},"stickytabs":false,"motion":{"enable":true,"async":false,"transition":{"menu_item":"fadeInDown","post_block":"fadeIn","post_header":"fadeInDown","post_body":"fadeInDown","coll_header":"fadeInLeft","sidebar":"fadeInUp"}},"prism":false,"i18n":{"placeholder":"Searching...","empty":"We didn't find any results for the search: ${query}","hits_time":"${hits} results found in ${time} ms","hits":"${hits} results found"},"path":"/search.xml","localsearch":{"enable":true,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false}}</script><script src="/js/config.js"></script>
+
+    <meta name="description" content="Modern CMake 简体中文版CMake实践 前言为什么要使用CMAKE？ 你需要在不止一台电脑上构建软件包 你想使用IDE，但也许不总是使用 你需要支持不同的操作系统（甚至可能只是Unix的不同版本） 你想支持多个编译器 你想使用一个第三方库 ……  CMake的生态极好，大部分的IDE都支持CMake（或者是CMake支持那个IDE）。如果你想要在你的代码中包含一个库，你有两个选择，要么">
+<meta property="og:type" content="article">
+<meta property="og:title" content="CMAKE了解">
+<meta property="og:url" content="http://example.com/2023/02/28/CMAKE%E4%BA%86%E8%A7%A3/index.html">
+<meta property="og:site_name" content="renmale-lv blog">
+<meta property="og:description" content="Modern CMake 简体中文版CMake实践 前言为什么要使用CMAKE？ 你需要在不止一台电脑上构建软件包 你想使用IDE，但也许不总是使用 你需要支持不同的操作系统（甚至可能只是Unix的不同版本） 你想支持多个编译器 你想使用一个第三方库 ……  CMake的生态极好，大部分的IDE都支持CMake（或者是CMake支持那个IDE）。如果你想要在你的代码中包含一个库，你有两个选择，要么">
+<meta property="og:locale" content="en_US">
+<meta property="article:published_time" content="2023-02-28T06:16:05.000Z">
+<meta property="article:modified_time" content="2023-05-15T05:54:05.489Z">
+<meta property="article:author" content="renmale-lv">
+<meta property="article:tag" content="CMAKE">
+<meta name="twitter:card" content="summary">
+
+
+<link rel="canonical" href="http://example.com/2023/02/28/CMAKE%E4%BA%86%E8%A7%A3/">
+
+
+
+<script class="next-config" data-name="page" type="application/json">{"sidebar":"","isHome":false,"isPost":true,"lang":"en","comments":true,"permalink":"http://example.com/2023/02/28/CMAKE%E4%BA%86%E8%A7%A3/","path":"2023/02/28/CMAKE了解/","title":"CMAKE了解"}</script>
+
+<script class="next-config" data-name="calendar" type="application/json">""</script>
+<title>CMAKE了解 | renmale-lv blog</title>
+  
+
+
+
+
+
+
+
+
+  <noscript>
+    <link rel="stylesheet" href="/css/noscript.css">
+  </noscript>
+<link rel="alternate" href="/atom.xml" title="renmale-lv blog" type="application/atom+xml">
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" class="use-motion">
+  <div class="headband"></div>
+
+  <main class="main">
+    <div class="column">
+      <header class="header" itemscope itemtype="http://schema.org/WPHeader"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="Toggle navigation bar" role="button">
+        <span class="toggle-line"></span>
+        <span class="toggle-line"></span>
+        <span class="toggle-line"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <i class="logo-line"></i>
+      <p class="site-title">renmale-lv blog</p>
+      <i class="logo-line"></i>
+    </a>
+      <p class="site-subtitle" itemprop="description">记录学习点滴</p>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger" aria-label="Search" role="button">
+        <i class="fa fa-search fa-fw fa-lg"></i>
+    </div>
+  </div>
+</div>
+
+
+
+<nav class="site-nav">
+  <ul class="main-menu menu"><li class="menu-item menu-item-home"><a href="/" rel="section"><i class="fa fa-home fa-fw"></i>Home</a></li><li class="menu-item menu-item-about"><a href="/about/" rel="section"><i class="fa fa-user fa-fw"></i>About</a></li><li class="menu-item menu-item-tags"><a href="/tags/" rel="section"><i class="fa fa-tags fa-fw"></i>Tags</a></li><li class="menu-item menu-item-categories"><a href="/categories/" rel="section"><i class="fa fa-th fa-fw"></i>Categories</a></li><li class="menu-item menu-item-archives"><a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>Archives</a></li>
+      <li class="menu-item menu-item-search">
+        <a role="button" class="popup-trigger"><i class="fa fa-search fa-fw"></i>Search
+        </a>
+      </li>
+  </ul>
+</nav>
+
+
+
+  <div class="search-pop-overlay">
+    <div class="popup search-popup"><div class="search-header">
+  <span class="search-icon">
+    <i class="fa fa-search"></i>
+  </span>
+  <div class="search-input-container">
+    <input autocomplete="off" autocapitalize="off" maxlength="80"
+           placeholder="Searching..." spellcheck="false"
+           type="search" class="search-input">
+  </div>
+  <span class="popup-btn-close" role="button">
+    <i class="fa fa-times-circle"></i>
+  </span>
+</div>
+<div class="search-result-container no-result">
+  <div class="search-result-icon">
+    <i class="fa fa-spinner fa-pulse fa-5x"></i>
+  </div>
+</div>
+
+    </div>
+  </div>
+
+</header>
+        
+  
+  <aside class="sidebar">
+
+    <div class="sidebar-inner sidebar-nav-active sidebar-toc-active">
+      <ul class="sidebar-nav">
+        <li class="sidebar-nav-toc">
+          Table of Contents
+        </li>
+        <li class="sidebar-nav-overview">
+          Overview
+        </li>
+      </ul>
+
+      <div class="sidebar-panel-container">
+        <!--noindex-->
+        <div class="post-toc-wrap sidebar-panel">
+            <div class="post-toc animated"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#%E5%89%8D%E8%A8%80"><span class="nav-number">1.</span> <span class="nav-text">前言</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E4%B8%BA%E4%BB%80%E4%B9%88%E8%A6%81%E4%BD%BF%E7%94%A8CMAKE%EF%BC%9F"><span class="nav-number">1.1.</span> <span class="nav-text">为什么要使用CMAKE？</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#CMake%E5%BA%94%E8%AF%A5%E9%81%BF%E5%85%8D%E7%9A%84%E8%A1%8C%E4%B8%BA"><span class="nav-number">1.2.</span> <span class="nav-text">CMake应该避免的行为</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#CMake%E5%BA%94%E9%81%B5%E5%AE%88%E7%9A%84%E8%A7%84%E8%8C%83"><span class="nav-number">1.3.</span> <span class="nav-text">CMake应遵守的规范</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#CMake-amp-HelloWorld"><span class="nav-number">2.</span> <span class="nav-text">CMake &amp; HelloWorld</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#cmake-minimum-required"><span class="nav-number">2.1.</span> <span class="nav-text">cmake_minimum_required</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#project"><span class="nav-number">2.2.</span> <span class="nav-text">project</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#set"><span class="nav-number">2.3.</span> <span class="nav-text">set</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#message"><span class="nav-number">2.4.</span> <span class="nav-text">message</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#add-executable"><span class="nav-number">2.5.</span> <span class="nav-text">add_executable</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%86%85%E9%83%A8%E6%9E%84%E5%BB%BA%E5%92%8C%E5%A4%96%E9%83%A8%E6%9E%84%E5%BB%BA"><span class="nav-number">2.6.</span> <span class="nav-text">内部构建和外部构建</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#SET%E5%85%B3%E9%94%AE%E5%AD%97"><span class="nav-number">2.7.</span> <span class="nav-text">SET关键字</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#HelloWorld-amp-%E5%B7%A5%E7%A8%8B"><span class="nav-number">3.</span> <span class="nav-text">HelloWorld &amp; 工程</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#practice"><span class="nav-number">3.1.</span> <span class="nav-text">practice</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#src"><span class="nav-number">3.2.</span> <span class="nav-text">src</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#func"><span class="nav-number">3.3.</span> <span class="nav-text">func</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#add-subdirectory"><span class="nav-number">3.4.</span> <span class="nav-text">add_subdirectory</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#target-include-directories"><span class="nav-number">3.5.</span> <span class="nav-text">target_include_directories</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#include-directories"><span class="nav-number">3.6.</span> <span class="nav-text">include_directories</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E6%9B%B4%E6%94%B9%E4%BA%8C%E8%BF%9B%E5%88%B6%E7%9A%84%E4%BF%9D%E5%AD%98%E8%B7%AF%E5%BE%84%E6%9B%B4%E6%94%B9%E4%BA%8C%E8%BF%9B%E5%88%B6%E7%9A%84%E4%BF%9D%E5%AD%98%E8%B7%AF%E5%BE%84"><span class="nav-number">3.7.</span> <span class="nav-text">更改二进制的保存路径更改二进制的保存路径</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#%E9%9D%99%E6%80%81%E5%BA%93%E5%92%8C%E5%8A%A8%E6%80%81%E5%BA%93"><span class="nav-number">4.</span> <span class="nav-text">静态库和动态库</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#set-target-properties"><span class="nav-number">4.0.1.</span> <span class="nav-text">set_target_properties</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%8A%A8%E6%80%81%E5%BA%93%E7%9A%84%E7%89%88%E6%9C%AC%E5%8F%B7"><span class="nav-number">4.0.2.</span> <span class="nav-text">动态库的版本号</span></a></li></ol></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#%E5%AE%89%E8%A3%85"><span class="nav-number">5.</span> <span class="nav-text">安装</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#QT-amp-CMake"><span class="nav-number">6.</span> <span class="nav-text">QT &amp; CMake</span></a></li></ol></div>
+        </div>
+        <!--/noindex-->
+
+        <div class="site-overview-wrap sidebar-panel">
+          <div class="site-author animated" itemprop="author" itemscope itemtype="http://schema.org/Person">
+    <img class="site-author-image" itemprop="image" alt="renmale-lv"
+      src="/images/avatar.gif">
+  <p class="site-author-name" itemprop="name">renmale-lv</p>
+  <div class="site-description" itemprop="description"></div>
+</div>
+<div class="site-state-wrap animated">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+        <a href="/archives/">
+          <span class="site-state-item-count">11</span>
+          <span class="site-state-item-name">posts</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-tags">
+          <a href="/tags/">
+        <span class="site-state-item-count">6</span>
+        <span class="site-state-item-name">tags</span></a>
+      </div>
+  </nav>
+</div>
+  <div class="cc-license animated" itemprop="license">
+    <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/" class="cc-opacity" rel="noopener" target="_blank"><img src="https://cdnjs.cloudflare.com/ajax/libs/creativecommons-vocabulary/2020.11.3/assets/license_badges/small/by_nc_sa.svg" alt="Creative Commons"></a>
+  </div>
+
+        </div>
+      </div>
+    </div>
+
+    
+  </aside>
+
+
+    </div>
+
+    <div class="main-inner post posts-expand">
+
+
+  
+
+
+<div class="post-block">
+  
+  
+
+  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="en">
+    <link itemprop="mainEntityOfPage" href="http://example.com/2023/02/28/CMAKE%E4%BA%86%E8%A7%A3/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="renmale-lv">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="renmale-lv blog">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="post" itemscope itemtype="http://schema.org/CreativeWork">
+      <meta itemprop="name" content="CMAKE了解 | renmale-lv blog">
+      <meta itemprop="description" content="">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          CMAKE了解
+        </h1>
+
+        <div class="post-meta-container">
+          <div class="post-meta">
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar"></i>
+      </span>
+      <span class="post-meta-item-text">Posted on</span>
+
+      <time title="Created: 2023-02-28 14:16:05" itemprop="dateCreated datePublished" datetime="2023-02-28T14:16:05+08:00">2023-02-28</time>
+    </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar-check"></i>
+      </span>
+      <span class="post-meta-item-text">Edited on</span>
+      <time title="Modified: 2023-05-15 13:54:05" itemprop="dateModified" datetime="2023-05-15T13:54:05+08:00">2023-05-15</time>
+    </span>
+
+  
+    <span class="post-meta-break"></span>
+    <span class="post-meta-item" title="Word count in article">
+      <span class="post-meta-item-icon">
+        <i class="far fa-file-word"></i>
+      </span>
+      <span class="post-meta-item-text">Word count in article: </span>
+      <span>7.9k</span>
+    </span>
+    <span class="post-meta-item" title="Reading time">
+      <span class="post-meta-item-icon">
+        <i class="far fa-clock"></i>
+      </span>
+      <span class="post-meta-item-text">Reading time &asymp;</span>
+      <span>7 mins.</span>
+    </span>
+</div>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+        <p><a target="_blank" rel="noopener" href="https://modern-cmake-cn.github.io/Modern-CMake-zh_CN/">Modern CMake 简体中文版</a><br><a target="_blank" rel="noopener" href="http://file.ncnynl.com/ros/CMake%20Practice.pdf">CMake实践</a></p>
+<h1 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h1><h2 id="为什么要使用CMAKE？"><a href="#为什么要使用CMAKE？" class="headerlink" title="为什么要使用CMAKE？"></a>为什么要使用CMAKE？</h2><ul>
+<li>你需要在不止一台电脑上构建软件包</li>
+<li>你想使用IDE，但也许不总是使用</li>
+<li>你需要支持不同的操作系统（甚至可能只是Unix的不同版本）</li>
+<li>你想支持多个编译器</li>
+<li>你想使用一个第三方库</li>
+<li>……</li>
+</ul>
+<p>CMake的生态极好，大部分的IDE都支持CMake（或者是CMake支持那个IDE）。如果你想要在你的代码中包含一个库，你有两个选择，要么自己写一个构建系统，要么使用该库支持的构建系统中的某个。而那通常包含 CMake。 如何你的工程包含的库多了，CMake 或很快成为那些库所支持的构建系统的交集</p>
+<span id="more"></span>
+<h2 id="CMake应该避免的行为"><a href="#CMake应该避免的行为" class="headerlink" title="CMake应该避免的行为"></a>CMake应该避免的行为</h2><ul>
+<li><strong>不要使用具有全局作用域的函数</strong><br>  包含<em>link_directories</em>、<em>include_libraries</em>等相似的函数</li>
+<li><strong>不要添加非必要的PUBLIC要求</strong><br>  避免把一些不必要的东西强加给用户，更应该声明为PRIVATE</li>
+<li><strong>不要在file函数中添加GLOB文件</strong></li>
+<li><strong>将库直接链接到需要构建的目标上</strong><br>  如果可以的化，总是显示的将库链接到目标上</li>
+<li><strong>当链接库文件时，不要省略 PUBLIC 或 PRIVATE 关键字</strong><br>  这将会导致后续所有的链接都是缺省的<h2 id="CMake应遵守的规范"><a href="#CMake应遵守的规范" class="headerlink" title="CMake应遵守的规范"></a>CMake应遵守的规范</h2></li>
+<li><strong>把 CMake 程序视作代码：</strong><br>  它是代码。它应该和其他的代码一样，是整洁并且可读的。</li>
+<li><strong>建立目标的观念：</strong><br>  你的目标应该代表一系列的概念。为任何需要保持一致的东西指定一个 （导入型）INTERFACE 目标，然后每次都链接到该目标。</li>
+<li><strong>导出你的接口：</strong><br>  你的 CMake 项目应该可以直接构建或者安装。</li>
+<li><strong>为库书写一个 Config.cmake 文件：</strong><br>  这是库作者为支持客户的体验而应该做的。</li>
+<li><strong>声明一个 ALIAS 目标以保持使用的一致性：</strong><br>  使用 add_subdirectory 和 find_package 应该提供相同的目标和命名空间。</li>
+<li><strong>将常见的功能合并到有详细文档的函数或宏中：</strong><br>  函数往往是更好的选择。</li>
+<li><strong>使用小写的函数名：</strong><br>  CMake 的函数和宏的名字可以定义为大写或小写，但是一般都使用小写，变量名用大写。</li>
+<li><strong>使用 cmake_policy 和/或 限定版本号范围：</strong><br>  每次改变版本特性 (policy) 都要有据可依。应该只有不得不使用旧特性时才降低特性 (policy) 版本。<h1 id="CMake-amp-HelloWorld"><a href="#CMake-amp-HelloWorld" class="headerlink" title="CMake &amp; HelloWorld"></a>CMake &amp; HelloWorld</h1>在目录practice下创建两个文件<em>main.cpp</em>和<em>CMakeLists.txt</em>:<br><sup><a href="#fn_注" id="reffn_注">注</a></sup>CMakeLists.txt文件必须保持一致<pre class="line-numbers language-txt" data-language="txt"><code class="language-txt">-practice
+ |-main.cpp
+ |-CMakeLists.txt<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span></span></code></pre>
+<strong><em>main.cpp</em></strong><pre class="line-numbers language-C++" data-language="C++"><code class="language-C++">#include&lt;iostream&gt;
+
+int main()&#123;
+	std::cout&lt;&lt;&quot;Hello, World!&quot;&lt;&lt;std::endl;
+	return 0;
+&#125;<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<strong><em>CMakeLists.txt</em></strong><pre class="line-numbers language-CMake" data-language="CMake"><code class="language-CMake">cmake_minimum_required(VERSION 3.1)
+project(HELLO)
+set(SRC_LIST main.cpp)
+# MESSAGE(STATUS &quot;This is BINARY dir &quot; $&#123;HELLO_BINARY_DIR&#125;)
+add_executable(hello SRC_LIST)<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<h2 id="cmake-minimum-required"><a href="#cmake-minimum-required" class="headerlink" title="cmake_minimum_required"></a>cmake_minimum_required</h2><em>cmake_minimum_required(VERSION 3.1)</em><br>每个CMakeLists.txt都要包含的第一行，CMake的版本与他的特性相互关联，这意味着定义了CMake的行为变化<br>从CMake 3.12开始，版本号可以声明为一个范围，如： VERSION 3.1…3.15，表名该工程最低可以支持3.1版本，但是最高在3.15版本上测试成功过</li>
+</ul>
+<h2 id="project"><a href="#project" class="headerlink" title="project"></a>project</h2><p><em>project</em>命令用来指定工程的名字和支持的语言，默认支持所有的语言</p>
+<ul>
+<li><strong><em>project(HELLO)</em></strong> 指定了工程的名字，并且支持所有的语言</li>
+<li><strong><em>project(HELLO CXX)</em></strong> 指定了工程的名字，并且支持语言的C++</li>
+<li><strong><em>project(HELLO C CXX)</em></strong> 指定了工程的名字，并且支持的语言是C和C++</li>
+</ul>
+<h2 id="set"><a href="#set" class="headerlink" title="set"></a>set</h2><p>set命令用来显示的指定变量<br><strong><em>set(SRC_LIST main.cpp)</em></strong>后，SRC_LIST变量就包含了<em>main.cpp</em><br>也可以<strong><em>set(SRC_LIST main.cpp t1.cpp t2.cpp)</em></strong>，不同的文件用空格分隔，也可以通过<strong><em>；</em></strong>来分隔</p>
+<p>变量名通常全部用大写，变量值跟在其后，你可以通过<strong>${}</strong>来解析一个变量，例如<strong><em>${SRC_LIST}</em></strong></p>
+<p>CMake有作用域的概念，在声明一个变量之后，你只可以在当前作用域（即当前的文件夹下），你可以通过在变量声明末尾添加<strong><em>PARENT_SCOPE</em></strong>来将它的作用域定为当前的上一级作用域</p>
+<h2 id="message"><a href="#message" class="headerlink" title="message"></a>message</h2><p><em>message</em>命令用来向终端输出用户自定义的信息</p>
+<ul>
+<li><strong><em>SEND_ERROR</em></strong>，产生错误，生成过程被跳过</li>
+<li><strong><em>STATUS</em></strong>，输出前缀为 - 的信息</li>
+<li><strong><em>FATAL_ERROR</em></strong>，立即终止所有cmake过程</li>
+</ul>
+<h2 id="add-executable"><a href="#add-executable" class="headerlink" title="add_executable"></a>add_executable</h2><p>该命令用来生成可执行文件<br><strong><em>add_executable(hello SRC_LIST)</em></strong>生成的可执行文件名字是<strong>hello</strong>，源文件读取<strong>SRC_LIST</strong>中的内容<br>也可以写成<strong><em>add_executable(hello main.cpp)</em></strong></p>
+<h2 id="内部构建和外部构建"><a href="#内部构建和外部构建" class="headerlink" title="内部构建和外部构建"></a>内部构建和外部构建</h2><p>上述例子就是内部构建，他生成的临时文件很多，不方便管理<br>而外部构建则是新建一个build文件夹，将所有生成的临时文件都统一的放在build文件夹下，不会对源文件产生影响<br>在我们使用project指令后，会隐式地生成两个CMake变量：</p>
+<ul>
+<li><projectname>_BINARY_DIR，本例中是 HELLO_BINARY_DIR</li>
+<li><projectname>_SOURCE_DIR，本例中是 HELLO_SOURCE_DIR</li>
+</ul>
+<p>当前都指向当前的工作目录</p>
+<hr>
+<p>问题：如果改了工程名，这两个变量名也会改变</p>
+<p>解决：又定义两个预定义变量：PROJECT_BINARY_DIR和PROJECT_SOURCE_DIR，这两个变量和HELLO_BINARY_DIR，HELLO_SOURCE_DIR是一致的。所以改了工程名也没有关系</p>
+<p>在我们在build目录下运行make构建工程后</p>
+<p>HELLO_SOURCE_DIR  还是工程路径</p>
+<p>HELLO_BINARY_DIR  编译路径 也就是 practice/bulid</p>
+<h2 id="SET关键字"><a href="#SET关键字" class="headerlink" title="SET关键字"></a>SET关键字</h2><h1 id="HelloWorld-amp-工程"><a href="#HelloWorld-amp-工程" class="headerlink" title="HelloWorld &amp; 工程"></a>HelloWorld &amp; 工程</h1><p>在我们的实际开发中，我们并不会将工程中的所有源代码文件都挤在一个文件夹下，并且大多时候是分模块开发的</p>
+<pre class="line-numbers language-txt" data-language="txt"><code class="language-txt">-practice
+ |-build
+ |-src
+ |  |-main.cpp
+ |  |-CMakeLists.txt
+ |-func
+ |  |-cal.hpp
+ |  |-CMakeLists.txt
+ |-CMakeLists.txt<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<h2 id="practice"><a href="#practice" class="headerlink" title="practice"></a>practice</h2><p><strong><em>CMakeLists.txt</em></strong><br><pre class="line-numbers language-CMake" data-language="CMake"><code class="language-CMake">cmake_minimum_required(VERSION 3.1)
+project(PRACTICE)
+add_subdirectory(src)
+add_subdirectory(func)<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span></span></code></pre></p>
+<h2 id="src"><a href="#src" class="headerlink" title="src"></a>src</h2><p><strong><em>main.cpp</em></strong></p>
+<pre class="line-numbers language-C++" data-language="C++"><code class="language-C++">#include&lt;iostream&gt;
+#include &quot;cal.hpp&quot;
+
+int main()&#123;
+	int a &#x3D; 10, b &#x3D; 5;
+	int c &#x3D; add(a, b);
+	int d &#x3D; sub(a, b);
+	std::cout&lt;&lt;&quot;a+b&#x3D;&quot;&lt;&lt;c&lt;&lt;std::endl;
+	std::cout&lt;&lt;&quot;a-b&#x3D;&quot;&lt;&lt;d&lt;&lt;std::endl;
+	return 0;
+&#125;<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<p><strong><em>CMakeLists.txt</em></strong><br><pre class="line-numbers language-cmake" data-language="cmake"><code class="language-cmake"><span class="token keyword">cmake_minimum_required</span><span class="token punctuation">(</span><span class="token property">VERSION</span> <span class="token number">3.1</span><span class="token punctuation">)</span>
+<span class="token keyword">project</span><span class="token punctuation">(</span>SRC<span class="token punctuation">)</span>
+<span class="token keyword">add_executable</span><span class="token punctuation">(</span>practice main.cpp<span class="token punctuation">)</span>
+<span class="token keyword">target_include_directories</span><span class="token punctuation">(</span>practice <span class="token namespace">PRIVATE</span> ../func<span class="token punctuation">)</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span></span></code></pre></p>
+<h2 id="func"><a href="#func" class="headerlink" title="func"></a>func</h2><p><strong><em>cal.hpp</em></strong></p>
+<pre class="line-numbers language-C++" data-language="C++"><code class="language-C++">#include&lt;iostream&gt;
+int add(int a,int b)&#123;return a+b;&#125;
+int sub(int a,int b)&#123;return a-b;&#125;<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span></span></code></pre>
+<p><strong><em>CMakeLists.txt</em></strong><br><pre class="line-numbers language-CMake" data-language="CMake"><code class="language-CMake">cmake_minimum_required(VERSION 3.1)
+project(FUNC)<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span></span></code></pre></p>
+<h2 id="add-subdirectory"><a href="#add-subdirectory" class="headerlink" title="add_subdirectory"></a>add_subdirectory</h2><p><strong><em>add_subdirectory(source_dir [binary_dir] [EXCLUDE_FROM_ALL])</em></strong></p>
+<ul>
+<li>这个指令用于向当前工程添加存放源文件的子目录，并可以指定中间二进制和目标二进制存放的位置</li>
+<li>EXCLUDE_FROM_ALL函数是将写的目录从编译中排除</li>
+<li>add_subdirectory(src bin)<br>将 src 子目录加入工程并指定编译输出(包含编译中间结果)路径为bin 目录如果不进行 bin 目录的指定，那么编译结果(包括中间结果)都将存放在build/src 目录<h2 id="target-include-directories"><a href="#target-include-directories" class="headerlink" title="target_include_directories"></a>target_include_directories</h2></li>
+</ul>
+<p><strong><em>target_include_directories</em></strong>命令用来指定目标包含的头文件路径</p>
+<p><strong><em>target_link_libraries</em></strong>命令用来指定目标链接的库</p>
+<p><strong><em>target_compile_options</em></strong>命令用来指定目标的编译选项</p>
+<hr>
+<p><em>target_include_directories(<strong><target></strong> [SYSTEM] [AFTER|BEFORE] <strong><INTERFACE|PUBLIC|PRIVATE> [items1…]</strong>)</em></p>
+<p><strong><em>target</em></strong></p>
+<p><strong>目标由<em>add_library()</em>或<em>add_executable()</em>生成</strong></p>
+<p><strong><em><INTERFACE|PUBLIC|PRIVATE>使用依据</em></strong><br>==INTERFACE==:target对应的头文件使用<br>==PRIVATE==：target对应的源文件使用<br>==PUBLIC==:target对应的头文件和源文件使用</p>
+<h2 id="include-directories"><a href="#include-directories" class="headerlink" title="include_directories"></a><strong>include_directories</strong></h2><p><strong><em>include_directories([AFTER|BEFORE] [SYSTEM] dir1 [dir2 …])</em></strong></p>
+<p>==include_directories(../func)==</p>
+<p><strong><em>target_include_directories</em></strong>的功能可以用<strong><em>include_directories</em></strong>完全替代，但是官方文档和实际项目要求都建议尽可能地使用<strong><em>target_include_directories</em></strong></p>
+<p>因为<strong><em>include_directories</em></strong>是对当前<strong><em>CMakeLists.txt</em></strong>中的==所有目标==以及在其调用点之后添加的子目录中的所有目标将具有此头文件搜索路径，是一个全局包含，所以尽量使用<strong><em>target_include_directories</em></strong>使项目保持清晰</p>
+<h2 id="更改二进制的保存路径更改二进制的保存路径"><a href="#更改二进制的保存路径更改二进制的保存路径" class="headerlink" title="更改二进制的保存路径更改二进制的保存路径"></a>更改二进制的保存路径更改二进制的保存路径</h2><p>SET 指令重新定义 EXECUTABLE_OUTPUT_PATH 和 LIBRARY_OUTPUT_PATH 变量 来指定最终的目标二进制的位置</p>
+<p>SET(EXECUTABLE_OUTPUT_PATH ${PROJECT_BINARY_DIR}/bin)<br>SET(LIBRARY_OUTPUT_PATH ${PROJECT_BINARY_DIR}/lib)</p>
+<h1 id="静态库和动态库"><a href="#静态库和动态库" class="headerlink" title="静态库和动态库"></a>静态库和动态库</h1><p>建立一个静态库和动态库，提供hello函数供其他程序编程使用，作用是向终端输出Hello, World!字符串</p>
+<pre class="line-numbers language-txt" data-language="txt"><code class="language-txt">-practice_lib
+|-build
+|-CMakeLists.txt
+|-lib
+	|-CMakeLists.txt
+	|-hello.hpp
+	|-hello.cpp<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<p><strong><em>hello.hpp</em></strong><br><pre class="line-numbers language-C++" data-language="C++"><code class="language-C++">#ifndef HELLO_H
+#define HELLO_H
+void hello();<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span></span></code></pre><br><strong><em>hello.cpp</em></strong><br><pre class="line-numbers language-C++" data-language="C++"><code class="language-C++">#include &quot;hello.hpp&quot;
+#include&lt;iostream&gt;
+void hello()&#123;
+	std::cout&lt;&lt;&quot;Hello World!&quot;&lt;&lt;std::endl;
+&#125;<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span></span></code></pre><br><strong><em>CMakeLists.txt</em></strong><br><pre class="line-numbers language-cmake" data-language="cmake"><code class="language-cmake"><span class="token keyword">project</span><span class="token punctuation">(</span>HELLO<span class="token punctuation">)</span>
+<span class="token keyword">add_subdirectory</span><span class="token punctuation">(</span>lib bin<span class="token punctuation">)</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span></span></code></pre><br><strong><em>lib/CMakeLists.txt</em></strong><br><pre class="line-numbers language-cmake" data-language="cmake"><code class="language-cmake"><span class="token keyword">set</span><span class="token punctuation">(</span>LIBHELLO_SRC hello.cpp<span class="token punctuation">)</span>
+<span class="token keyword">add_library</span><span class="token punctuation">(</span>hello <span class="token namespace">SHARED</span> <span class="token punctuation">$&#123;</span>LIBHELLO_SRC<span class="token punctuation">&#125;</span><span class="token punctuation">)</span>
+````
+
+<span class="token comment">## add_library</span>
+***<span class="token keyword">add_library</span><span class="token punctuation">(</span>hello <span class="token namespace">SHARED</span> \<span class="token punctuation">$&#123;</span>LIBHELLO_SRC<span class="token punctuation">&#125;</span><span class="token punctuation">)</span>***
+- hello:库名，生成地名字前面会加上lib
+- <span class="token namespace">SHARED</span>，动态库；<span class="token namespace">STATIC</span>：静态库
+- <span class="token punctuation">$&#123;</span>LIBHELLO_SRC<span class="token punctuation">&#125;</span>:源文件
+
+<span class="token comment">### 同时构建静态和动态库</span>
+
+```cmake
+// 如果用这种方式，只会构建一个动态库，不会构建出静态库，虽然静态库的后缀是.a
+<span class="token keyword">add_library</span><span class="token punctuation">(</span>hello <span class="token namespace">SHARED</span> <span class="token punctuation">$&#123;</span>LIBHELLO_SRC<span class="token punctuation">&#125;</span><span class="token punctuation">)</span>
+<span class="token keyword">add_library</span><span class="token punctuation">(</span>hello <span class="token namespace">STATIC</span> <span class="token punctuation">$&#123;</span>LIBHELLO_SRC<span class="token punctuation">&#125;</span><span class="token punctuation">)</span>
+
+// 修改静态库的名字，这样是可以的，但是我们往往希望他们的名字是相同的，只是后缀不同而已
+<span class="token keyword">add_library</span><span class="token punctuation">(</span>hello <span class="token namespace">SHARED</span> <span class="token punctuation">$&#123;</span>LIBHELLO_SRC<span class="token punctuation">&#125;</span><span class="token punctuation">)</span>
+<span class="token keyword">add_library</span><span class="token punctuation">(</span>hello_static <span class="token namespace">STATIC</span> <span class="token punctuation">$&#123;</span>LIBHELLO_SRC<span class="token punctuation">&#125;</span><span class="token punctuation">)</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre></p>
+<h3 id="set-target-properties"><a href="#set-target-properties" class="headerlink" title="set_target_properties"></a>set_target_properties</h3><p>这条指令可以用来设置输出的名称，对于动态库，还可以用来指定动态库版本和 API 版本</p>
+<p>同时构建静态和动态库</p>
+<pre class="line-numbers language-cmake" data-language="cmake"><code class="language-cmake"><span class="token keyword">set</span><span class="token punctuation">(</span>LIBHELLO_SRC hello.cpp<span class="token punctuation">)</span>
+
+<span class="token keyword">add_library</span><span class="token punctuation">(</span>hello_static <span class="token namespace">STATIC</span> <span class="token punctuation">$&#123;</span>LIBHELLO_SRC<span class="token punctuation">&#125;</span><span class="token punctuation">)</span>
+
+//对hello_static的重名为hello
+<span class="token keyword">set_target_properties</span><span class="token punctuation">(</span>hello_static <span class="token namespace">PROPERTIES</span>  <span class="token property">OUTPUT_NAME</span> <span class="token string">"hello"</span><span class="token punctuation">)</span>
+//cmake 在构建一个新的target 时，会尝试清理掉其他使用这个名字的库，因为，在构建 libhello.so 时， 就会清理掉 libhello.a
+<span class="token keyword">set_target_properties</span><span class="token punctuation">(</span>hello_static <span class="token namespace">PROPERTIES</span> CLEAN_DIRECT_OUTPUT <span class="token number">1</span><span class="token punctuation">)</span>
+//CLEAN_DIRECT_OUTPUT 部分用于指示在生成具有相同名字的（<span class="token property">OUTPUT_NAME</span>）的目标时，是否清理上次生成的内容
+
+<span class="token keyword">add_library</span><span class="token punctuation">(</span>hello <span class="token namespace">SHARED</span> <span class="token punctuation">$&#123;</span>LIBHELLO_SRC<span class="token punctuation">&#125;</span><span class="token punctuation">)</span>
+
+<span class="token keyword">set_target_properties</span><span class="token punctuation">(</span>hello <span class="token namespace">PROPERTIES</span> <span class="token property">OUTPUT_NAME</span> <span class="token string">"hello"</span><span class="token punctuation">)</span>
+<span class="token keyword">set_target_properties</span><span class="token punctuation">(</span>hello <span class="token namespace">PROPERTIES</span> CLEAN_DIRECT_OUTPUT <span class="token number">1</span><span class="token punctuation">)</span>
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<h3 id="动态库的版本号"><a href="#动态库的版本号" class="headerlink" title="动态库的版本号"></a>动态库的版本号</h3><p>一般动态库都有一个版本号的关联</p>
+<pre class="line-numbers language-txt" data-language="txt"><code class="language-txt">libhello.so.1.2
+libhello.so ->libhello.so.1
+libhello.so.1->libhello.so.1.2<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span></span></code></pre>
+<p>CMakeLists.txt 插入如下</p>
+<p><code>set_target_properties(hello PROPERTIES VERSION 1.2 SOVERSION 1)</code></p>
+<p>VERSION 指代动态库版本，SOVERSION 指代 API 版本。</p>
+<h1 id="安装"><a href="#安装" class="headerlink" title="安装"></a>安装</h1><p>使用INSTALL指令，可以将二进制、动态库、静态库以及文件、目录、脚本等安装到系统目录下<br><pre class="line-numbers language-cmake" data-language="cmake"><code class="language-cmake"><span class="token keyword">install</span><span class="token punctuation">(</span>TARGETS &lt;target<span class="token punctuation">></span>... [...]<span class="token punctuation">)</span>
+<span class="token keyword">install</span><span class="token punctuation">(</span>&#123;FILES | PROGRAMS<span class="token punctuation">&#125;</span> &lt;file<span class="token punctuation">></span>... [...]<span class="token punctuation">)</span>
+<span class="token keyword">install</span><span class="token punctuation">(</span>DIRECTORY &lt;dir<span class="token punctuation">></span>... [...]<span class="token punctuation">)</span>
+<span class="token keyword">install</span><span class="token punctuation">(</span>SCRIPT &lt;file<span class="token punctuation">></span> [...]<span class="token punctuation">)</span>
+<span class="token keyword">install</span><span class="token punctuation">(</span>CODE &lt;code<span class="token punctuation">></span> [...]<span class="token punctuation">)</span>
+<span class="token keyword">install</span><span class="token punctuation">(</span>EXPORT &lt;export-name<span class="token punctuation">></span> [...]<span class="token punctuation">)</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre></p>
+<h1 id="QT-amp-CMake"><a href="#QT-amp-CMake" class="headerlink" title="QT &amp; CMake"></a>QT &amp; CMake</h1><p><strong><em>CMakeLists.txt</em></strong><br><pre class="line-numbers language-cmake" data-language="cmake"><code class="language-cmake"><span class="token keyword">cmake_minimum_required</span><span class="token punctuation">(</span><span class="token property">VERSION</span> <span class="token number">3.5.1</span><span class="token punctuation">)</span>
+<span class="token keyword">project</span><span class="token punctuation">(</span>qui<span class="token punctuation">)</span>
+
+如果不是用QT Creator开发，需要设置QT路径
+<span class="token keyword">set</span><span class="token punctuation">(</span>Qt5_DIR <span class="token string">"D:/qt5/5.12.9/msvc2017_64/lib/cmake/Qt5"</span><span class="token punctuation">)</span>
+
+<span class="token keyword">set</span><span class="token punctuation">(</span><span class="token variable">CMAKE_INCLUDE_CURRENT_DIR</span> <span class="token boolean">ON</span><span class="token punctuation">)</span>
+<span class="token comment"># QT特有的编译器，需要打开</span>
+<span class="token keyword">set</span><span class="token punctuation">(</span><span class="token variable">CMAKE_AUTOUIC</span> <span class="token boolean">ON</span><span class="token punctuation">)</span>
+<span class="token keyword">set</span><span class="token punctuation">(</span><span class="token variable">CMAKE_AUTOMOC</span> <span class="token boolean">ON</span><span class="token punctuation">)</span>
+<span class="token keyword">set</span><span class="token punctuation">(</span><span class="token variable">CMAKE_AUTORCC</span> <span class="token boolean">ON</span><span class="token punctuation">)</span>
+
+<span class="token keyword">set</span><span class="token punctuation">(</span><span class="token variable">CMAKE_CXX_STANDARD</span> <span class="token number">11</span><span class="token punctuation">)</span>
+<span class="token keyword">set</span><span class="token punctuation">(</span><span class="token variable">CMAKE_CXX_STANDARD_REQUIRED</span> <span class="token boolean">ON</span><span class="token punctuation">)</span>
+
+<span class="token comment">#FIND_PACKAGE(Qt5 COMPONENTS Core Gui Qml Quick Widgets REQUIRED)</span>
+<span class="token function">FIND_PACKAGE</span><span class="token punctuation">(</span>Qt5 COMPONENTS Widgets REQUIRED<span class="token punctuation">)</span>
+<span class="token comment"># 自动寻找QT5，REQUIRED表示没找到不继续下去</span>
+
+<span class="token comment">#源文件</span>
+<span class="token function">SET</span><span class="token punctuation">(</span>qui_SOURCES 
+	src/main.cpp 
+	src/mainwindow.cpp 
+<span class="token punctuation">)</span>
+
+<span class="token comment">#头文件</span>
+<span class="token function">SET</span><span class="token punctuation">(</span>qui_HEADERS 
+	src/mainwindow.h
+<span class="token punctuation">)</span>
+
+<span class="token comment">#ui文件</span>
+<span class="token function">SET</span><span class="token punctuation">(</span>qui_FORMS 
+	src/mainwindow.ui
+<span class="token punctuation">)</span>
+
+qrc文件
+<span class="token comment">#SET(qui_RESOURCES </span>
+<span class="token comment">#	img.qrc</span>
+<span class="token comment">#)</span>
+
+<span class="token comment">#调用预编译器moc，需要使用 QT5_WRAP_CPP宏</span>
+<span class="token function">QT5_WRAP_CPP</span><span class="token punctuation">(</span>qui_HEADERS_MOC <span class="token punctuation">$&#123;</span>qui_HEADERS<span class="token punctuation">&#125;</span><span class="token punctuation">)</span>
+
+<span class="token comment">#使用uic处理.ui文件</span>
+<span class="token function">QT5_WRAP_UI</span><span class="token punctuation">(</span>qui_FORMS_HEADERS <span class="token punctuation">$&#123;</span>qui_FORMS<span class="token punctuation">&#125;</span><span class="token punctuation">)</span>
+
+<span class="token comment">#使用rcc处理.qrc文件</span>
+<span class="token comment">#QT5_ADD_RESOURCES(qui_RESOURCES_RCC $&#123;qui_RESOURCES&#125;)</span>
+
+<span class="token comment">#这些生成的中间文件都会在build目录下，这样的话，编译器则不能定位由uic程序产生的诸如_ui_mainwindow.h等文件。所以，我们需要把build目录添加到包含目录中</span>
+<span class="token property">INCLUDE_DIRECTORIES</span><span class="token punctuation">(</span><span class="token punctuation">$&#123;</span><span class="token variable">CMAKE_CURRENT_BINARY_DIR</span><span class="token punctuation">&#125;</span><span class="token punctuation">)</span>
+
+<span class="token comment">#生成可执行文件</span>
+<span class="token function">ADD_EXECUTABLE</span><span class="token punctuation">(</span>qui 
+	<span class="token punctuation">$&#123;</span>qui_SOURCES<span class="token punctuation">&#125;</span> 
+	<span class="token punctuation">$&#123;</span>qui_HEADERS_MOC<span class="token punctuation">&#125;</span> 
+    <span class="token punctuation">$&#123;</span>qui_FORMS_HEADERS<span class="token punctuation">&#125;</span>
+	<span class="token comment">#$&#123;qui_RESOURCES_RCC&#125; </span>
+<span class="token punctuation">)</span>
+
+<span class="token comment">#为target添加需要链接的共享库</span>
+<span class="token comment">#TARGET_LINK_LIBRARIES(qui Qt5::Core Qt5::Gui Qt5::Qml Qt5::Quick $&#123;Qt5Widgets_LIBRARIES&#125;)</span>
+<span class="token function">TARGET_LINK_LIBRARIES</span><span class="token punctuation">(</span>qui <span class="token punctuation">$&#123;</span>Qt5Widgets_LIBRARIES<span class="token punctuation">&#125;</span><span class="token punctuation">)</span>
+<span class="token function">INSTALL</span><span class="token punctuation">(</span>TARGETS qui
+    RUNTIME DESTINATION lib
+    LIBRARY DESTINATION lib
+    ARCHIVE DESTINATION lib
+<span class="token punctuation">)</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre></p>
+
+    </div>
+
+    
+    
+    
+
+    <footer class="post-footer">
+          
+
+<div class="post-copyright">
+<ul>
+  <li class="post-copyright-author">
+      <strong>Post author:  </strong>renmale-lv
+  </li>
+  <li class="post-copyright-link">
+      <strong>Post link: </strong>
+      <a href="http://example.com/2023/02/28/CMAKE%E4%BA%86%E8%A7%A3/" title="CMAKE了解">http://example.com/2023/02/28/CMAKE了解/</a>
+  </li>
+  <li class="post-copyright-license">
+    <strong>Copyright Notice:  </strong>All articles in this blog are licensed under <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/" rel="noopener" target="_blank"><i class="fab fa-fw fa-creative-commons"></i>BY-NC-SA</a> unless stating additionally.
+  </li>
+</ul>
+</div>
+
+          <div class="post-tags">
+              <a href="/tags/CMAKE/" rel="tag"># CMAKE</a>
+          </div>
+
+        
+
+          <div class="post-nav">
+            <div class="post-nav-item">
+                <a href="/2023/02/19/C++%E5%A4%9A%E7%BA%BF%E7%A8%8B%E5%9F%BA%E7%A1%80/" rel="prev" title="C++多线程基础">
+                  <i class="fa fa-chevron-left"></i> C++多线程基础
+                </a>
+            </div>
+            <div class="post-nav-item">
+                <a href="/2023/09/05/%E7%AC%AC%E4%BA%8C%E7%AB%A0%20%E8%BF%9B%E7%A8%8B%E4%B8%8E%E7%BA%BF%E7%A8%8B/" rel="next" title="第二章 进程和线程">
+                  第二章 进程和线程 <i class="fa fa-chevron-right"></i>
+                </a>
+            </div>
+          </div>
+    </footer>
+  </article>
+</div>
+
+
+
+
+
+
+    <div class="comments gitalk-container"></div>
+</div>
+  </main>
+
+  <footer class="footer">
+    <div class="footer-inner">
+
+
+<div class="copyright">
+  &copy; 
+  <span itemprop="copyrightYear">2023</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">renmale-lv</span>
+</div>
+<div class="wordcount">
+  <span class="post-meta-item">
+    <span class="post-meta-item-icon">
+      <i class="fa fa-chart-line"></i>
+    </span>
+      <span>Word count total: </span>
+    <span title="Word count total">88k</span>
+  </span>
+  <span class="post-meta-item">
+    <span class="post-meta-item-icon">
+      <i class="fa fa-coffee"></i>
+    </span>
+      <span>Reading time total &asymp;</span>
+    <span title="Reading time total">1:20</span>
+  </span>
+</div>
+  <div class="powered-by">Powered by <a href="https://hexo.io/" rel="noopener" target="_blank">Hexo</a> & <a href="https://theme-next.js.org/" rel="noopener" target="_blank">NexT.Gemini</a>
+  </div>
+<!-- 网站运行时间的设置 -->
+<span id="timeDate">载入天数...</span>
+<span id="times">载入时分秒...</span>  Sometimes your whole life boils down to one insame move.
+<script>
+    var now = new Date();
+    function createtime() {
+        var grt= new Date("11/05/2022 00:00:00");//此处修改你的建站时间或者网站上线时间
+        now.setTime(now.getTime()+250);
+        days = (now - grt ) / 1000 / 60 / 60 / 24; dnum = Math.floor(days);
+        hours = (now - grt ) / 1000 / 60 / 60 - (24 * dnum); hnum = Math.floor(hours);
+        if(String(hnum).length ==1 ){hnum = "0" + hnum;} minutes = (now - grt ) / 1000 /60 - (24 * 60 * dnum) - (60 * hnum);
+        mnum = Math.floor(minutes); if(String(mnum).length ==1 ){mnum = "0" + mnum;}
+        seconds = (now - grt ) / 1000 - (24 * 60 * 60 * dnum) - (60 * 60 * hnum) - (60 * mnum);
+        snum = Math.round(seconds); if(String(snum).length ==1 ){snum = "0" + snum;}
+        document.getElementById("timeDate").innerHTML = "本站已安全运行 "+dnum+" 天 ";
+        document.getElementById("times").innerHTML = hnum + " 小时 " + mnum + " 分 " + snum + " 秒";
+}
+setInterval("createtime()",250);
+</script>
+    </div>
+  </footer>
+
+  
+  <div class="back-to-top" role="button" aria-label="Back to top">
+    <i class="fa fa-arrow-up fa-lg"></i>
+    <span>0%</span>
+  </div>
+
+<noscript>
+  <div class="noscript-warning">Theme NexT works best with JavaScript enabled</div>
+</noscript>
+
+
+  
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/animejs/3.2.1/anime.min.js" integrity="sha256-XL2inqUJaslATFnHdJOi9GfQ60on8Wx1C2H8DYiN1xY=" crossorigin="anonymous"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/next-theme-pjax/0.6.0/pjax.min.js" integrity="sha256-vxLn1tSKWD4dqbMRyv940UYw4sXgMtYcK6reefzZrao=" crossorigin="anonymous"></script>
+<script src="/js/comments.js"></script><script src="/js/utils.js"></script><script src="/js/motion.js"></script><script src="/js/next-boot.js"></script><script src="/js/pjax.js"></script>
+
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/hexo-generator-searchdb/1.4.1/search.js" integrity="sha256-1kfA5uHPf65M5cphT2dvymhkuyHPQp5A53EGZOnOLmc=" crossorigin="anonymous"></script>
+<script src="/js/third-party/search/local-search.js"></script>
+
+
+
+
+
+  
+
+
+
+
+  
+
+  <script class="next-config" data-name="enableMath" type="application/json">false</script><script class="next-config" data-name="mathjax" type="application/json">{"enable":true,"tags":"none","js":{"url":"https://cdnjs.cloudflare.com/ajax/libs/mathjax/3.2.2/es5/tex-mml-chtml.js","integrity":"sha256-MASABpB4tYktI2Oitl4t+78w/lyA+D7b/s9GEP0JOGI="}}</script>
+<script src="/js/third-party/math/mathjax.js"></script>
+
+
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/gitalk/1.8.0/gitalk.css" integrity="sha256-AJnUHL7dBv6PGaeyPQJcgQPDjt/Hn/PvYZde1iqfp8U=" crossorigin="anonymous">
+
+<script class="next-config" data-name="gitalk" type="application/json">{"enable":true,"github_id":"renmale-lv","repo":"renmale-lv.github.io","client_id":"a7032a206391d1242a3c","client_secret":"5beb16ecce13a96a943bce7252eab7ab77218b9d","admin_user":"renmale-lv","distraction_free_mode":true,"proxy":"https://cors-anywhere.azm.workers.dev/https://github.com/login/oauth/access_token","language":"zh-CN","js":{"url":"https://cdnjs.cloudflare.com/ajax/libs/gitalk/1.8.0/gitalk.min.js","integrity":"sha256-MVK9MGD/XJaGyIghSVrONSnoXoGh3IFxLw0zfvzpxR4="},"path_md5":"ad615377745d4f9c3768b464b5e7fd30"}</script>
+<script src="/js/third-party/comments/gitalk.js"></script>
+
+</body>
+</html>
+<!-- 页面点击小红心 -->
+<script type="text/javascript" src="/js/clicklove.js"></script>
