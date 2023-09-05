@@ -389,332 +389,6 @@ mjx-container[display="true"] + br {
   
 
   <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="">
-    <link itemprop="mainEntityOfPage" href="http://example.com/2023/09/05/%E7%AC%AC%E4%B8%80%E7%AB%A0%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%B3%BB%E7%BB%9F%E6%A6%82%E8%BF%B0/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/images/avatar.gif">
-      <meta itemprop="name" content="renmale-lv">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="renmale-lv blog">
-      <meta itemprop="description" content="">
-    </span>
-
-    <span hidden itemprop="post" itemscope itemtype="http://schema.org/CreativeWork">
-      <meta itemprop="name" content="undefined | renmale-lv blog">
-      <meta itemprop="description" content="">
-    </span>
-      <header class="post-header">
-        <h2 class="post-title" itemprop="name headline">
-          <a href="/2023/09/05/%E7%AC%AC%E4%B8%80%E7%AB%A0%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%B3%BB%E7%BB%9F%E6%A6%82%E8%BF%B0/" class="post-title-link" itemprop="url">第一章 计算机系统概述</a>
-        </h2>
-
-        <div class="post-meta-container">
-          <div class="post-meta">
-    <span class="post-meta-item">
-      <span class="post-meta-item-icon">
-        <i class="far fa-calendar"></i>
-      </span>
-      <span class="post-meta-item-text">Posted on</span>
-      
-
-      <time title="Created: 2023-09-05 12:27:13 / Modified: 21:04:03" itemprop="dateCreated datePublished" datetime="2023-09-05T12:27:13+08:00">2023-09-05</time>
-    </span>
-
-  
-    <span class="post-meta-break"></span>
-    <span class="post-meta-item" title="Word count in article">
-      <span class="post-meta-item-icon">
-        <i class="far fa-file-word"></i>
-      </span>
-      <span class="post-meta-item-text">Word count in article: </span>
-      <span>2.2k</span>
-    </span>
-    <span class="post-meta-item" title="Reading time">
-      <span class="post-meta-item-icon">
-        <i class="far fa-clock"></i>
-      </span>
-      <span class="post-meta-item-text">Reading time &asymp;</span>
-      <span>2 mins.</span>
-    </span>
-</div>
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-          <meta name="referrer" content="no-referrer">
-
-<h2 id="1-1-计算机发展历程（不考察）"><a href="#1-1-计算机发展历程（不考察）" class="headerlink" title="1.1 计算机发展历程（不考察）"></a>1.1 计算机发展历程（不考察）</h2><ul>
-<li>计算机硬件的发展<ul>
-<li>第一代计算机——电子管时代</li>
-<li>第二代计算机——晶体管时代</li>
-<li>第三代计算机——中小规模集成电路时代</li>
-<li>第四代计算机——超大规模集成电路时代</li>
-<li>摩尔定律——价格不变时，集成电路上可容纳的==晶体管数目==，约每隔==18个月==增长一倍</li>
-</ul>
-</li>
-</ul>
-<h2 id="1-2-计算机系统层次结构"><a href="#1-2-计算机系统层次结构" class="headerlink" title="1.2 计算机系统层次结构"></a>1.2 计算机系统层次结构</h2><p><strong>计算机系统的组成</strong></p>
-<ul>
-<li>硬件系统</li>
-<li>软件系统</li>
-</ul>
-<p><strong>计算机硬件的基本组成</strong></p>
-<ul>
-<li>冯诺依曼机 <ul>
-<li>采用 “存储程序” 的工作方式 —— 将指令以代码的形式事先输入计算机主存储器，然后按其在存储器中的首地址执行程序的第一条指令，以后就按该程序的的规定顺序执行其他指令，直至程序结束</li>
-<li>运算器 + 存储器 + 控制器 + 输入设备 + 输出设备</li>
-<li>指令和数据以同等地位存储在存储器中，但计算机能够区分它们（指令周期的不同阶段）</li>
-<li>指令和数据君用二进制代码表示</li>
-<li>控制流驱动方式</li>
-<li>五大功能<ul>
-<li>数据传送功能</li>
-<li>数据存储功能</li>
-<li>数据处理功能</li>
-<li>操作控制功能</li>
-<li>操作判断功能</li>
-</ul>
-</li>
-</ul>
-</li>
-<li>计算机的功能部件<ul>
-<li>输入设备 —— 将程序和数据以机器能够识别和接受的信息形式输入计算机</li>
-<li>输出设备</li>
-<li>存储器<ul>
-<li>主存储器（内存储器）<ul>
-<li>CPU能够直接访问</li>
-<li>组成<ul>
-<li>地址寄存器（MAR）~存放访存地址~<ul>
-<li>~MAR的位数对应着存储单元的个数~</li>
-<li>~MAR的长度与PC的长度相等~</li>
-</ul>
-</li>
-<li>数据寄存器（MDR）~用于暂存要从存储器中读或写的信息~<ul>
-<li>~MDR的长度和存储字长相等~</li>
-</ul>
-</li>
-<li>时序控制逻辑 ~产生存储器操作所需的各种时序信号~</li>
-<li>存储体 ~包含若干存储单元，每个存储单元包含若干存储元件，每个存储元件存储一位二进制代码~</li>
-</ul>
-</li>
-</ul>
-</li>
-<li>辅助存储器（外存储器）</li>
-</ul>
-</li>
-<li>运算器<ul>
-<li>组成<ul>
-<li>算术逻辑单元 ALU（核心）</li>
-<li>累加寄存器 ACC</li>
-<li>乘商寄存器 MQ</li>
-<li>操作数寄存器 X</li>
-<li>变址寄存器 IX</li>
-<li>基址寄存器 BR</li>
-<li>程序状态字寄存器 PSW ~结果是否溢出，有无产生进位或错位，结果是否为负~</li>
-</ul>
-</li>
-</ul>
-</li>
-<li>控制器<ul>
-<li>控制器是计算机的指挥中心</li>
-<li>组成<ul>
-<li>程序计数器 PC ~存放当前欲执行指令的地址，有自动加1的功能~</li>
-<li>指令寄存器  IR ~存放当前的指令，其内容来自MDR，指令中操作码OP(IP)送至CU，地址码Ad(IR)送完MAR~</li>
-<li>控制单元 CU</li>
-</ul>
-</li>
-</ul>
-</li>
-</ul>
-</li>
-<li>冯诺依曼模型机<ul>
-<li><img src="https://gitee.com/renmale-sztu/image/raw/master/202308232302523.png" alt="image-20230823230159565"> </li>
-<li>CPU包括ALU、通用寄存器组GRPs、标志寄存器、控制器、指令寄存器IR、程序计数器PC、存储器地址寄存器MAR和存储器数据寄存器MAR</li>
-<li>虚线是控制信号<ul>
-<li>控制如何修改PC得到下一条指令的地址</li>
-<li>控制ALU执行什么运算</li>
-<li>控制主存进行读操作还是写操作</li>
-</ul>
-</li>
-<li>CPU和主存之间通过一组总线相连，总线中有地址、控制、数据3组信号线</li>
-</ul>
-</li>
-</ul>
-<p><strong>计算机软件</strong></p>
-<ul>
-<li><p>软件分类</p>
-<ul>
-<li>系统软件<ul>
-<li>操作系统 Operating System</li>
-<li>数据库管理系统 DBMS</li>
-<li>语言处理程序</li>
-<li>分布式软件系统</li>
-<li>网络软件系统</li>
-<li>标准库系统</li>
-<li>服务性程序</li>
-</ul>
-</li>
-<li>应用软件</li>
-</ul>
-</li>
-<li>数据库管理系统（DBMS）和数据库系统（DBS）不一样<ul>
-<li>DBMS是位于用户和操作系统之间的一层数据管理软件，是系统软件</li>
-<li>DBS是指计算机系统引入数据库后的系统，一般由数据库、数据库管理系统、数据库管理员（DBA）和应用系统构成</li>
-</ul>
-</li>
-<li>三个级别的语言<ul>
-<li>机器语言——计算机唯一可以直接识别和执行的语言</li>
-<li>汇编语言</li>
-<li>高级语言</li>
-</ul>
-</li>
-<li>翻译程序<ul>
-<li>汇编程序（汇编器）——汇编语言 —&gt; 机器语言</li>
-<li>解释程序（解释器）——将源程序中的语句逐条翻译成机器指令并立即执行——速度较慢</li>
-<li>编译程序（编译器）——高级语言 —&gt; 汇编语言/机器语言——编译时间较长，运行速度较快</li>
-</ul>
-</li>
-<li>软件和硬件的逻辑等价性<ul>
-<li>硬件实现的往往是最基本的算术和逻辑运算功能</li>
-</ul>
-</li>
-</ul>
-<p><strong>计算机系统的层次结构</strong></p>
-<p><img src="https://gitee.com/renmale-sztu/image/raw/master/202308232315086.png" alt="image-20230823231515391"></p>
-<ul>
-<li><p>计算机系统的多级层次结构 ↓ </p>
-<ul>
-<li><p>第1级：微程序机器层——硬件层，由机器硬件直接执行微程序</p>
-</li>
-<li><p>第2级：传统机器语言层——机器层，由微程序解释机器指令系统</p>
-</li>
-<li><p>第3级：操作系统层</p>
-</li>
-<li><p>第4级：汇编语言层</p>
-</li>
-<li><p>第5级：高级语言层</p>
-</li>
-<li>~应用程序层~</li>
-</ul>
-</li>
-<li><p>裸机——没有配备软件的纯硬件系统</p>
-</li>
-<li><p>指令集体系结构（ISA）——软件和硬件之间的界面</p>
-</li>
-</ul>
-<p><strong>计算机系统的工作原理</strong></p>
-<ul>
-<li>“存储程序”工作方式<ul>
-<li><img src="https://gitee.com/renmale-sztu/image/raw/master/202308232320099.png" alt="image-20230823232031745"></li>
-<li>执行前，需要将程序所含的指令和数据送入主存</li>
-<li>指令执行过程：<ul>
-<li>从主存取地址</li>
-<li>对指令进行译码</li>
-<li>计算下条指令地址</li>
-<li>取操作数并执行</li>
-<li>将结果送回存储器</li>
-</ul>
-</li>
-</ul>
-</li>
-<li>从源程序到可执行文件<ul>
-<li>预处理阶段</li>
-<li>编译阶段</li>
-<li>汇编阶段</li>
-<li>链接阶段</li>
-</ul>
-</li>
-<li>指令执行过程的描述（以取数指令为例）<ul>
-<li>取指令：PC→MAR→M→MDR→IR</li>
-<li>分析指令：OP(IR)→CU</li>
-<li>执行指令：Ad(IR)→MAR→M→MDR→ACC</li>
-</ul>
-</li>
-<li>注意：(PC)指程序计数器PC中存放的内容<code>PC -&gt; MAR</code> 应该理解为<code>(PC)-&gt;MAR</code></li>
-<li>（PC）指PC寄存器存放的地址指向的数据</li>
-</ul>
-<h2 id="1-3-计算机的性能指标"><a href="#1-3-计算机的性能指标" class="headerlink" title="1.3 计算机的性能指标"></a>1.3 计算机的性能指标</h2><ul>
-<li>计算机的主要性能指标<ul>
-<li>机器字长:——一般等于内部寄存器的大小，越长数据表示范围越大，计算精度越高</li>
-<li>数据通路带宽——数据总线一次所能并行传送信息的位数</li>
-<li>主存容量</li>
-<li>运算速度<ul>
-<li>吞吐量——系统在单位事件内处理请求的数量<ul>
-<li>评价计算机性能的综合参数</li>
-</ul>
-</li>
-<li>响应时间</li>
-<li>CPU时钟周期 = 1 / 主频</li>
-<li>CPI ——执行一条指令所需的时钟周期数</li>
-<li>CPU执行时间 = CPU时钟周期数 / 主频 = （指令条数 × CPI）/ 主频<ul>
-<li>上式表明，CPU的性能取决于：主频（时钟频率）、CPI、指令条数</li>
-</ul>
-</li>
-<li>MIPS  每秒执行多少百万条命令</li>
-<li>MFLOPS 每秒执行多少百万次浮点运算<ul>
-<li>GFLOPS 每秒执行多少十亿次浮点运算</li>
-<li>TFLOPS 每秒执行多少万亿次浮点运算</li>
-<li>PFLOPS  10e15</li>
-<li>EFLOPS  10e18</li>
-<li>ZFLOPS  10e21</li>
-</ul>
-</li>
-</ul>
-</li>
-<li>基准程序（Benchmarks）<ul>
-<li>专门用来进行性能评价的一组程序，能够很好地反映机器在运行实际负载时的性能</li>
-</ul>
-</li>
-</ul>
-</li>
-<li>几个专业术语<ul>
-<li>系列机<ul>
-<li>具有相同的体系结构，使用相同基本指令系统的多个不同型号的计算机组成的一个产品系列</li>
-</ul>
-</li>
-<li>兼容<ul>
-<li>软件或硬件的通用性</li>
-</ul>
-</li>
-<li>软件可移植性</li>
-<li>固件<ul>
-<li>将程序固定在ROM中组成的部件称为固件</li>
-</ul>
-</li>
-</ul>
-</li>
-</ul>
-
-      
-    </div>
-
-    
-    
-    
-
-    <footer class="post-footer">
-        <div class="post-eof"></div>
-      
-    </footer>
-  </article>
-</div>
-
-
-
-
-    
-
-
-<div class="post-block">
-  
-  
-
-  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="">
     <link itemprop="mainEntityOfPage" href="http://example.com/2023/09/05/%E7%AC%AC%E4%B8%80%E7%AB%A0%20%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%B3%BB%E7%BB%9F%E6%A6%82%E8%BF%B0/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
@@ -1120,6 +794,332 @@ mjx-container[display="true"] + br {
 <li>当虚拟操作系统执行一条特权指令时，会陷入虚拟机管理程序</li>
 </ul>
 <p><img src="https://gitee.com/renmale-sztu/image/raw/master/202308251702236.png" alt="image-20230825170205827"></p>
+
+      
+    </div>
+
+    
+    
+    
+
+    <footer class="post-footer">
+        <div class="post-eof"></div>
+      
+    </footer>
+  </article>
+</div>
+
+
+
+
+    
+
+
+<div class="post-block">
+  
+  
+
+  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="">
+    <link itemprop="mainEntityOfPage" href="http://example.com/2023/09/05/%E7%AC%AC%E4%B8%80%E7%AB%A0%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%B3%BB%E7%BB%9F%E6%A6%82%E8%BF%B0/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="renmale-lv">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="renmale-lv blog">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="post" itemscope itemtype="http://schema.org/CreativeWork">
+      <meta itemprop="name" content="undefined | renmale-lv blog">
+      <meta itemprop="description" content="">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          <a href="/2023/09/05/%E7%AC%AC%E4%B8%80%E7%AB%A0%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%B3%BB%E7%BB%9F%E6%A6%82%E8%BF%B0/" class="post-title-link" itemprop="url">第一章 计算机系统概述</a>
+        </h2>
+
+        <div class="post-meta-container">
+          <div class="post-meta">
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar"></i>
+      </span>
+      <span class="post-meta-item-text">Posted on</span>
+      
+
+      <time title="Created: 2023-09-05 12:27:13 / Modified: 21:04:03" itemprop="dateCreated datePublished" datetime="2023-09-05T12:27:13+08:00">2023-09-05</time>
+    </span>
+
+  
+    <span class="post-meta-break"></span>
+    <span class="post-meta-item" title="Word count in article">
+      <span class="post-meta-item-icon">
+        <i class="far fa-file-word"></i>
+      </span>
+      <span class="post-meta-item-text">Word count in article: </span>
+      <span>2.2k</span>
+    </span>
+    <span class="post-meta-item" title="Reading time">
+      <span class="post-meta-item-icon">
+        <i class="far fa-clock"></i>
+      </span>
+      <span class="post-meta-item-text">Reading time &asymp;</span>
+      <span>2 mins.</span>
+    </span>
+</div>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+          <meta name="referrer" content="no-referrer">
+
+<h2 id="1-1-计算机发展历程（不考察）"><a href="#1-1-计算机发展历程（不考察）" class="headerlink" title="1.1 计算机发展历程（不考察）"></a>1.1 计算机发展历程（不考察）</h2><ul>
+<li>计算机硬件的发展<ul>
+<li>第一代计算机——电子管时代</li>
+<li>第二代计算机——晶体管时代</li>
+<li>第三代计算机——中小规模集成电路时代</li>
+<li>第四代计算机——超大规模集成电路时代</li>
+<li>摩尔定律——价格不变时，集成电路上可容纳的==晶体管数目==，约每隔==18个月==增长一倍</li>
+</ul>
+</li>
+</ul>
+<h2 id="1-2-计算机系统层次结构"><a href="#1-2-计算机系统层次结构" class="headerlink" title="1.2 计算机系统层次结构"></a>1.2 计算机系统层次结构</h2><p><strong>计算机系统的组成</strong></p>
+<ul>
+<li>硬件系统</li>
+<li>软件系统</li>
+</ul>
+<p><strong>计算机硬件的基本组成</strong></p>
+<ul>
+<li>冯诺依曼机 <ul>
+<li>采用 “存储程序” 的工作方式 —— 将指令以代码的形式事先输入计算机主存储器，然后按其在存储器中的首地址执行程序的第一条指令，以后就按该程序的的规定顺序执行其他指令，直至程序结束</li>
+<li>运算器 + 存储器 + 控制器 + 输入设备 + 输出设备</li>
+<li>指令和数据以同等地位存储在存储器中，但计算机能够区分它们（指令周期的不同阶段）</li>
+<li>指令和数据君用二进制代码表示</li>
+<li>控制流驱动方式</li>
+<li>五大功能<ul>
+<li>数据传送功能</li>
+<li>数据存储功能</li>
+<li>数据处理功能</li>
+<li>操作控制功能</li>
+<li>操作判断功能</li>
+</ul>
+</li>
+</ul>
+</li>
+<li>计算机的功能部件<ul>
+<li>输入设备 —— 将程序和数据以机器能够识别和接受的信息形式输入计算机</li>
+<li>输出设备</li>
+<li>存储器<ul>
+<li>主存储器（内存储器）<ul>
+<li>CPU能够直接访问</li>
+<li>组成<ul>
+<li>地址寄存器（MAR）~存放访存地址~<ul>
+<li>~MAR的位数对应着存储单元的个数~</li>
+<li>~MAR的长度与PC的长度相等~</li>
+</ul>
+</li>
+<li>数据寄存器（MDR）~用于暂存要从存储器中读或写的信息~<ul>
+<li>~MDR的长度和存储字长相等~</li>
+</ul>
+</li>
+<li>时序控制逻辑 ~产生存储器操作所需的各种时序信号~</li>
+<li>存储体 ~包含若干存储单元，每个存储单元包含若干存储元件，每个存储元件存储一位二进制代码~</li>
+</ul>
+</li>
+</ul>
+</li>
+<li>辅助存储器（外存储器）</li>
+</ul>
+</li>
+<li>运算器<ul>
+<li>组成<ul>
+<li>算术逻辑单元 ALU（核心）</li>
+<li>累加寄存器 ACC</li>
+<li>乘商寄存器 MQ</li>
+<li>操作数寄存器 X</li>
+<li>变址寄存器 IX</li>
+<li>基址寄存器 BR</li>
+<li>程序状态字寄存器 PSW ~结果是否溢出，有无产生进位或错位，结果是否为负~</li>
+</ul>
+</li>
+</ul>
+</li>
+<li>控制器<ul>
+<li>控制器是计算机的指挥中心</li>
+<li>组成<ul>
+<li>程序计数器 PC ~存放当前欲执行指令的地址，有自动加1的功能~</li>
+<li>指令寄存器  IR ~存放当前的指令，其内容来自MDR，指令中操作码OP(IP)送至CU，地址码Ad(IR)送完MAR~</li>
+<li>控制单元 CU</li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+</li>
+<li>冯诺依曼模型机<ul>
+<li><img src="https://gitee.com/renmale-sztu/image/raw/master/202308232302523.png" alt="image-20230823230159565"> </li>
+<li>CPU包括ALU、通用寄存器组GRPs、标志寄存器、控制器、指令寄存器IR、程序计数器PC、存储器地址寄存器MAR和存储器数据寄存器MAR</li>
+<li>虚线是控制信号<ul>
+<li>控制如何修改PC得到下一条指令的地址</li>
+<li>控制ALU执行什么运算</li>
+<li>控制主存进行读操作还是写操作</li>
+</ul>
+</li>
+<li>CPU和主存之间通过一组总线相连，总线中有地址、控制、数据3组信号线</li>
+</ul>
+</li>
+</ul>
+<p><strong>计算机软件</strong></p>
+<ul>
+<li><p>软件分类</p>
+<ul>
+<li>系统软件<ul>
+<li>操作系统 Operating System</li>
+<li>数据库管理系统 DBMS</li>
+<li>语言处理程序</li>
+<li>分布式软件系统</li>
+<li>网络软件系统</li>
+<li>标准库系统</li>
+<li>服务性程序</li>
+</ul>
+</li>
+<li>应用软件</li>
+</ul>
+</li>
+<li>数据库管理系统（DBMS）和数据库系统（DBS）不一样<ul>
+<li>DBMS是位于用户和操作系统之间的一层数据管理软件，是系统软件</li>
+<li>DBS是指计算机系统引入数据库后的系统，一般由数据库、数据库管理系统、数据库管理员（DBA）和应用系统构成</li>
+</ul>
+</li>
+<li>三个级别的语言<ul>
+<li>机器语言——计算机唯一可以直接识别和执行的语言</li>
+<li>汇编语言</li>
+<li>高级语言</li>
+</ul>
+</li>
+<li>翻译程序<ul>
+<li>汇编程序（汇编器）——汇编语言 —&gt; 机器语言</li>
+<li>解释程序（解释器）——将源程序中的语句逐条翻译成机器指令并立即执行——速度较慢</li>
+<li>编译程序（编译器）——高级语言 —&gt; 汇编语言/机器语言——编译时间较长，运行速度较快</li>
+</ul>
+</li>
+<li>软件和硬件的逻辑等价性<ul>
+<li>硬件实现的往往是最基本的算术和逻辑运算功能</li>
+</ul>
+</li>
+</ul>
+<p><strong>计算机系统的层次结构</strong></p>
+<p><img src="https://gitee.com/renmale-sztu/image/raw/master/202308232315086.png" alt="image-20230823231515391"></p>
+<ul>
+<li><p>计算机系统的多级层次结构 ↓ </p>
+<ul>
+<li><p>第1级：微程序机器层——硬件层，由机器硬件直接执行微程序</p>
+</li>
+<li><p>第2级：传统机器语言层——机器层，由微程序解释机器指令系统</p>
+</li>
+<li><p>第3级：操作系统层</p>
+</li>
+<li><p>第4级：汇编语言层</p>
+</li>
+<li><p>第5级：高级语言层</p>
+</li>
+<li>~应用程序层~</li>
+</ul>
+</li>
+<li><p>裸机——没有配备软件的纯硬件系统</p>
+</li>
+<li><p>指令集体系结构（ISA）——软件和硬件之间的界面</p>
+</li>
+</ul>
+<p><strong>计算机系统的工作原理</strong></p>
+<ul>
+<li>“存储程序”工作方式<ul>
+<li><img src="https://gitee.com/renmale-sztu/image/raw/master/202308232320099.png" alt="image-20230823232031745"></li>
+<li>执行前，需要将程序所含的指令和数据送入主存</li>
+<li>指令执行过程：<ul>
+<li>从主存取地址</li>
+<li>对指令进行译码</li>
+<li>计算下条指令地址</li>
+<li>取操作数并执行</li>
+<li>将结果送回存储器</li>
+</ul>
+</li>
+</ul>
+</li>
+<li>从源程序到可执行文件<ul>
+<li>预处理阶段</li>
+<li>编译阶段</li>
+<li>汇编阶段</li>
+<li>链接阶段</li>
+</ul>
+</li>
+<li>指令执行过程的描述（以取数指令为例）<ul>
+<li>取指令：PC→MAR→M→MDR→IR</li>
+<li>分析指令：OP(IR)→CU</li>
+<li>执行指令：Ad(IR)→MAR→M→MDR→ACC</li>
+</ul>
+</li>
+<li>注意：(PC)指程序计数器PC中存放的内容<code>PC -&gt; MAR</code> 应该理解为<code>(PC)-&gt;MAR</code></li>
+<li>（PC）指PC寄存器存放的地址指向的数据</li>
+</ul>
+<h2 id="1-3-计算机的性能指标"><a href="#1-3-计算机的性能指标" class="headerlink" title="1.3 计算机的性能指标"></a>1.3 计算机的性能指标</h2><ul>
+<li>计算机的主要性能指标<ul>
+<li>机器字长:——一般等于内部寄存器的大小，越长数据表示范围越大，计算精度越高</li>
+<li>数据通路带宽——数据总线一次所能并行传送信息的位数</li>
+<li>主存容量</li>
+<li>运算速度<ul>
+<li>吞吐量——系统在单位事件内处理请求的数量<ul>
+<li>评价计算机性能的综合参数</li>
+</ul>
+</li>
+<li>响应时间</li>
+<li>CPU时钟周期 = 1 / 主频</li>
+<li>CPI ——执行一条指令所需的时钟周期数</li>
+<li>CPU执行时间 = CPU时钟周期数 / 主频 = （指令条数 × CPI）/ 主频<ul>
+<li>上式表明，CPU的性能取决于：主频（时钟频率）、CPI、指令条数</li>
+</ul>
+</li>
+<li>MIPS  每秒执行多少百万条命令</li>
+<li>MFLOPS 每秒执行多少百万次浮点运算<ul>
+<li>GFLOPS 每秒执行多少十亿次浮点运算</li>
+<li>TFLOPS 每秒执行多少万亿次浮点运算</li>
+<li>PFLOPS  10e15</li>
+<li>EFLOPS  10e18</li>
+<li>ZFLOPS  10e21</li>
+</ul>
+</li>
+</ul>
+</li>
+<li>基准程序（Benchmarks）<ul>
+<li>专门用来进行性能评价的一组程序，能够很好地反映机器在运行实际负载时的性能</li>
+</ul>
+</li>
+</ul>
+</li>
+<li>几个专业术语<ul>
+<li>系列机<ul>
+<li>具有相同的体系结构，使用相同基本指令系统的多个不同型号的计算机组成的一个产品系列</li>
+</ul>
+</li>
+<li>兼容<ul>
+<li>软件或硬件的通用性</li>
+</ul>
+</li>
+<li>软件可移植性</li>
+<li>固件<ul>
+<li>将程序固定在ROM中组成的部件称为固件</li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
 
       
     </div>
