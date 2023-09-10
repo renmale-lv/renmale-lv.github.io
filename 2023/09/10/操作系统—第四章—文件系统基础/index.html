@@ -21,7 +21,7 @@
 
     <meta name="description" content="4.1 文件系统基础4.1.1文件的基本概念 文件是以硬盘为载体的存储再计算机上的信息集合 文件的结构（自底向上） 数据项——文件系统中最低级的数据组织形式 基本数据项——用于描述一个对象的某种属性的一个值，是数据中的最小逻辑单位 组合数据项——由多个基本数据项组成   记录——用一组相关的数据项的集合，用于描述一个对象在某方面的属性 文件——是指由创建者所定义的、具有文件名的一组相关元素的集">
 <meta property="og:type" content="article">
-<meta property="og:title" content="操作系统—第三章—内存管理">
+<meta property="og:title" content="操作系统—第四章—文件系统基础">
 <meta property="og:url" content="http://example.com/2023/09/10/%E6%93%8D%E4%BD%9C%E7%B3%BB%E7%BB%9F%E2%80%94%E7%AC%AC%E5%9B%9B%E7%AB%A0%E2%80%94%E6%96%87%E4%BB%B6%E7%B3%BB%E7%BB%9F%E5%9F%BA%E7%A1%80/index.html">
 <meta property="og:site_name" content="renmale-lv blog">
 <meta property="og:description" content="4.1 文件系统基础4.1.1文件的基本概念 文件是以硬盘为载体的存储再计算机上的信息集合 文件的结构（自底向上） 数据项——文件系统中最低级的数据组织形式 基本数据项——用于描述一个对象的某种属性的一个值，是数据中的最小逻辑单位 组合数据项——由多个基本数据项组成   记录——用一组相关的数据项的集合，用于描述一个对象在某方面的属性 文件——是指由创建者所定义的、具有文件名的一组相关元素的集">
@@ -46,7 +46,7 @@
 <meta property="og:image" content="https://gitee.com/renmale-sztu/image/raw/master/202309091448204.png">
 <meta property="og:image" content="https://gitee.com/renmale-sztu/image/raw/master/202309091503489.png">
 <meta property="article:published_time" content="2023-09-10T04:27:13.000Z">
-<meta property="article:modified_time" content="2023-09-10T06:39:32.013Z">
+<meta property="article:modified_time" content="2023-09-10T06:41:03.787Z">
 <meta property="article:author" content="renmale-lv">
 <meta property="article:tag" content="操作系统">
 <meta name="twitter:card" content="summary">
@@ -57,10 +57,10 @@
 
 
 
-<script class="next-config" data-name="page" type="application/json">{"sidebar":"","isHome":false,"isPost":true,"lang":"en","comments":true,"permalink":"http://example.com/2023/09/10/%E6%93%8D%E4%BD%9C%E7%B3%BB%E7%BB%9F%E2%80%94%E7%AC%AC%E5%9B%9B%E7%AB%A0%E2%80%94%E6%96%87%E4%BB%B6%E7%B3%BB%E7%BB%9F%E5%9F%BA%E7%A1%80/","path":"2023/09/10/操作系统—第四章—文件系统基础/","title":"操作系统—第三章—内存管理"}</script>
+<script class="next-config" data-name="page" type="application/json">{"sidebar":"","isHome":false,"isPost":true,"lang":"en","comments":true,"permalink":"http://example.com/2023/09/10/%E6%93%8D%E4%BD%9C%E7%B3%BB%E7%BB%9F%E2%80%94%E7%AC%AC%E5%9B%9B%E7%AB%A0%E2%80%94%E6%96%87%E4%BB%B6%E7%B3%BB%E7%BB%9F%E5%9F%BA%E7%A1%80/","path":"2023/09/10/操作系统—第四章—文件系统基础/","title":"操作系统—第四章—文件系统基础"}</script>
 
 <script class="next-config" data-name="calendar" type="application/json">""</script>
-<title>操作系统—第三章—内存管理 | renmale-lv blog</title>
+<title>操作系统—第四章—文件系统基础 | renmale-lv blog</title>
   
 
 
@@ -337,12 +337,12 @@ mjx-container[display="true"] + br {
     </span>
 
     <span hidden itemprop="post" itemscope itemtype="http://schema.org/CreativeWork">
-      <meta itemprop="name" content="操作系统—第三章—内存管理 | renmale-lv blog">
+      <meta itemprop="name" content="操作系统—第四章—文件系统基础 | renmale-lv blog">
       <meta itemprop="description" content="">
     </span>
       <header class="post-header">
         <h1 class="post-title" itemprop="name headline">
-          操作系统—第三章—内存管理
+          操作系统—第四章—文件系统基础
         </h1>
 
         <div class="post-meta-container">
@@ -354,7 +354,7 @@ mjx-container[display="true"] + br {
       <span class="post-meta-item-text">Posted on</span>
       
 
-      <time title="Created: 2023-09-10 12:27:13 / Modified: 14:39:32" itemprop="dateCreated datePublished" datetime="2023-09-10T12:27:13+08:00">2023-09-10</time>
+      <time title="Created: 2023-09-10 12:27:13 / Modified: 14:41:03" itemprop="dateCreated datePublished" datetime="2023-09-10T12:27:13+08:00">2023-09-10</time>
     </span>
 
   
@@ -1000,7 +1000,7 @@ mjx-container[display="true"] + br {
   </li>
   <li class="post-copyright-link">
       <strong>Post link: </strong>
-      <a href="http://example.com/2023/09/10/%E6%93%8D%E4%BD%9C%E7%B3%BB%E7%BB%9F%E2%80%94%E7%AC%AC%E5%9B%9B%E7%AB%A0%E2%80%94%E6%96%87%E4%BB%B6%E7%B3%BB%E7%BB%9F%E5%9F%BA%E7%A1%80/" title="操作系统—第三章—内存管理">http://example.com/2023/09/10/操作系统—第四章—文件系统基础/</a>
+      <a href="http://example.com/2023/09/10/%E6%93%8D%E4%BD%9C%E7%B3%BB%E7%BB%9F%E2%80%94%E7%AC%AC%E5%9B%9B%E7%AB%A0%E2%80%94%E6%96%87%E4%BB%B6%E7%B3%BB%E7%BB%9F%E5%9F%BA%E7%A1%80/" title="操作系统—第四章—文件系统基础">http://example.com/2023/09/10/操作系统—第四章—文件系统基础/</a>
   </li>
   <li class="post-copyright-license">
     <strong>Copyright Notice:  </strong>All articles in this blog are licensed under <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/" rel="noopener" target="_blank"><i class="fab fa-fw fa-creative-commons"></i>BY-NC-SA</a> unless stating additionally.
