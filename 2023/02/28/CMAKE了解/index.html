@@ -2,9 +2,9 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width">
-<meta name="theme-color" content="#222"><meta name="generator" content="Hexo 6.3.0">
-
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#222">
+<meta name="generator" content="Hexo 6.3.0">
   <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
   <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png">
   <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png">
@@ -13,13 +13,14 @@
 <link rel="stylesheet" href="/css/main.css">
 
 
+<link rel="stylesheet" href="/lib/font-awesome/css/all.min.css">
 
-<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.2.1/css/all.min.css" integrity="sha256-Z1K5uhUaJXA7Ll0XrZ/0JhX4lAtZFpT6jkKrEDT0drU=" crossorigin="anonymous">
-  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/3.1.1/animate.min.css" integrity="sha256-PR7ttpcvz8qrF57fur/yAx1qXMFJeJFiA6pSzWi0OIE=" crossorigin="anonymous">
+<script id="hexo-configurations">
+    var NexT = window.NexT || {};
+    var CONFIG = {"hostname":"example.com","root":"/","scheme":"Muse","version":"7.8.0","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12,"onmobile":false},"copycode":{"enable":false,"show_result":false,"style":null},"back2top":{"enable":true,"sidebar":false,"scrollpercent":false},"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"algolia":{"hits":{"per_page":10},"labels":{"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}},"localsearch":{"enable":false,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},"path":"search.xml"};
+  </script>
 
-<script class="next-config" data-name="main" type="application/json">{"hostname":"example.com","root":"/","images":"/images","scheme":"Gemini","darkmode":false,"version":"8.14.2","exturl":false,"sidebar":{"position":"left","display":"always","padding":18,"offset":12},"copycode":{"enable":true,"style":"mac"},"bookmark":{"enable":false,"color":"#222","save":"auto"},"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":"gitalk","storage":true,"lazyload":false,"nav":{"gitalk":{"order":-1}},"activeClass":"gitalk"},"stickytabs":false,"motion":{"enable":true,"async":false,"transition":{"menu_item":"fadeInDown","post_block":"fadeIn","post_header":"fadeInDown","post_body":"fadeInDown","coll_header":"fadeInLeft","sidebar":"fadeInUp"}},"prism":false,"i18n":{"placeholder":"Searching...","empty":"We didn't find any results for the search: ${query}","hits_time":"${hits} results found in ${time} ms","hits":"${hits} results found"},"path":"/search.xml","localsearch":{"enable":true,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false}}</script><script src="/js/config.js"></script>
-
-    <meta name="description" content="Modern CMake 简体中文版CMake实践 前言为什么要使用CMAKE？ 你需要在不止一台电脑上构建软件包 你想使用IDE，但也许不总是使用 你需要支持不同的操作系统（甚至可能只是Unix的不同版本） 你想支持多个编译器 你想使用一个第三方库 ……  CMake的生态极好，大部分的IDE都支持CMake（或者是CMake支持那个IDE）。如果你想要在你的代码中包含一个库，你有两个选择，要么">
+  <meta name="description" content="Modern CMake 简体中文版CMake实践 前言为什么要使用CMAKE？ 你需要在不止一台电脑上构建软件包 你想使用IDE，但也许不总是使用 你需要支持不同的操作系统（甚至可能只是Unix的不同版本） 你想支持多个编译器 你想使用一个第三方库 ……  CMake的生态极好，大部分的IDE都支持CMake（或者是CMake支持那个IDE）。如果你想要在你的代码中包含一个库，你有两个选择，要么">
 <meta property="og:type" content="article">
 <meta property="og:title" content="CMAKE了解">
 <meta property="og:url" content="http://example.com/2023/02/28/CMAKE%E4%BA%86%E8%A7%A3/index.html">
@@ -32,18 +33,21 @@
 <meta property="article:tag" content="CMAKE">
 <meta name="twitter:card" content="summary">
 
-
 <link rel="canonical" href="http://example.com/2023/02/28/CMAKE%E4%BA%86%E8%A7%A3/">
 
 
+<script id="page-configurations">
+  // https://hexo.io/docs/variables.html
+  CONFIG.page = {
+    sidebar: "",
+    isHome : false,
+    isPost : true,
+    lang   : 'en'
+  };
+</script>
 
-<script class="next-config" data-name="page" type="application/json">{"sidebar":"","isHome":false,"isPost":true,"lang":"en","comments":true,"permalink":"http://example.com/2023/02/28/CMAKE%E4%BA%86%E8%A7%A3/","path":"2023/02/28/CMAKE了解/","title":"CMAKE了解"}</script>
-
-<script class="next-config" data-name="calendar" type="application/json">""</script>
-<title>CMAKE了解 | renmale-lv blog</title>
+  <title>CMAKE了解 | renmale-lv blog</title>
   
-
-
 
 
 
@@ -51,203 +55,152 @@
 
 
   <noscript>
-    <link rel="stylesheet" href="/css/noscript.css">
-  </noscript>
+  <style>
+  .use-motion .brand,
+  .use-motion .menu-item,
+  .sidebar-inner,
+  .use-motion .post-block,
+  .use-motion .pagination,
+  .use-motion .comments,
+  .use-motion .post-header,
+  .use-motion .post-body,
+  .use-motion .collection-header { opacity: initial; }
+
+  .use-motion .site-title,
+  .use-motion .site-subtitle {
+    opacity: initial;
+    top: initial;
+  }
+
+  .use-motion .logo-line-before i { left: initial; }
+  .use-motion .logo-line-after i { right: initial; }
+  </style>
+</noscript>
+
 <link rel="alternate" href="/atom.xml" title="renmale-lv blog" type="application/atom+xml">
 </head>
 
-<body itemscope itemtype="http://schema.org/WebPage" class="use-motion">
-  <div class="headband"></div>
+<body itemscope itemtype="http://schema.org/WebPage">
+  <div class="container use-motion">
+    <div class="headband"></div>
 
-  <main class="main">
-    <div class="column">
-      <header class="header" itemscope itemtype="http://schema.org/WPHeader"><div class="site-brand-container">
+    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
   <div class="site-nav-toggle">
-    <div class="toggle" aria-label="Toggle navigation bar" role="button">
-        <span class="toggle-line"></span>
-        <span class="toggle-line"></span>
-        <span class="toggle-line"></span>
+    <div class="toggle" aria-label="Toggle navigation bar">
+      <span class="toggle-line toggle-line-first"></span>
+      <span class="toggle-line toggle-line-middle"></span>
+      <span class="toggle-line toggle-line-last"></span>
     </div>
   </div>
 
   <div class="site-meta">
 
     <a href="/" class="brand" rel="start">
-      <i class="logo-line"></i>
-      <p class="site-title">renmale-lv blog</p>
-      <i class="logo-line"></i>
+      <span class="logo-line-before"><i></i></span>
+      <h1 class="site-title">renmale-lv blog</h1>
+      <span class="logo-line-after"><i></i></span>
     </a>
       <p class="site-subtitle" itemprop="description">记录学习点滴</p>
   </div>
 
   <div class="site-nav-right">
-    <div class="toggle popup-trigger" aria-label="Search" role="button">
-        <i class="fa fa-search fa-fw fa-lg"></i>
+    <div class="toggle popup-trigger">
     </div>
   </div>
 </div>
 
 
 
+
 <nav class="site-nav">
-  <ul class="main-menu menu"><li class="menu-item menu-item-home"><a href="/" rel="section"><i class="fa fa-home fa-fw"></i>Home</a></li><li class="menu-item menu-item-about"><a href="/about/" rel="section"><i class="fa fa-user fa-fw"></i>About</a></li><li class="menu-item menu-item-tags"><a href="/tags/" rel="section"><i class="fa fa-tags fa-fw"></i>Tags</a></li><li class="menu-item menu-item-categories"><a href="/categories/" rel="section"><i class="fa fa-th fa-fw"></i>Categories</a></li><li class="menu-item menu-item-archives"><a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>Archives</a></li>
-      <li class="menu-item menu-item-search">
-        <a role="button" class="popup-trigger"><i class="fa fa-search fa-fw"></i>Search
-        </a>
-      </li>
+  <ul id="menu" class="main-menu menu">
+        <li class="menu-item menu-item-home">
+
+    <a href="/" rel="section"><i class="fa fa-home fa-fw"></i>Home</a>
+
+  </li>
+        <li class="menu-item menu-item-archives">
+
+    <a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>Archives</a>
+
+  </li>
   </ul>
 </nav>
 
 
 
-  <div class="search-pop-overlay">
-    <div class="popup search-popup"><div class="search-header">
-  <span class="search-icon">
-    <i class="fa fa-search"></i>
-  </span>
-  <div class="search-input-container">
-    <input autocomplete="off" autocapitalize="off" maxlength="80"
-           placeholder="Searching..." spellcheck="false"
-           type="search" class="search-input">
-  </div>
-  <span class="popup-btn-close" role="button">
-    <i class="fa fa-times-circle"></i>
-  </span>
+
 </div>
-<div class="search-result-container no-result">
-  <div class="search-result-icon">
-    <i class="fa fa-spinner fa-pulse fa-5x"></i>
-  </div>
-</div>
-
-    </div>
-  </div>
-
-</header>
-        
-  
-  <aside class="sidebar">
-
-    <div class="sidebar-inner sidebar-nav-active sidebar-toc-active">
-      <ul class="sidebar-nav">
-        <li class="sidebar-nav-toc">
-          Table of Contents
-        </li>
-        <li class="sidebar-nav-overview">
-          Overview
-        </li>
-      </ul>
-
-      <div class="sidebar-panel-container">
-        <!--noindex-->
-        <div class="post-toc-wrap sidebar-panel">
-            <div class="post-toc animated"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#%E5%89%8D%E8%A8%80"><span class="nav-number">1.</span> <span class="nav-text">前言</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E4%B8%BA%E4%BB%80%E4%B9%88%E8%A6%81%E4%BD%BF%E7%94%A8CMAKE%EF%BC%9F"><span class="nav-number">1.1.</span> <span class="nav-text">为什么要使用CMAKE？</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#CMake%E5%BA%94%E8%AF%A5%E9%81%BF%E5%85%8D%E7%9A%84%E8%A1%8C%E4%B8%BA"><span class="nav-number">1.2.</span> <span class="nav-text">CMake应该避免的行为</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#CMake%E5%BA%94%E9%81%B5%E5%AE%88%E7%9A%84%E8%A7%84%E8%8C%83"><span class="nav-number">1.3.</span> <span class="nav-text">CMake应遵守的规范</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#CMake-amp-HelloWorld"><span class="nav-number">2.</span> <span class="nav-text">CMake &amp; HelloWorld</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#cmake-minimum-required"><span class="nav-number">2.1.</span> <span class="nav-text">cmake_minimum_required</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#project"><span class="nav-number">2.2.</span> <span class="nav-text">project</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#set"><span class="nav-number">2.3.</span> <span class="nav-text">set</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#message"><span class="nav-number">2.4.</span> <span class="nav-text">message</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#add-executable"><span class="nav-number">2.5.</span> <span class="nav-text">add_executable</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%86%85%E9%83%A8%E6%9E%84%E5%BB%BA%E5%92%8C%E5%A4%96%E9%83%A8%E6%9E%84%E5%BB%BA"><span class="nav-number">2.6.</span> <span class="nav-text">内部构建和外部构建</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#SET%E5%85%B3%E9%94%AE%E5%AD%97"><span class="nav-number">2.7.</span> <span class="nav-text">SET关键字</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#HelloWorld-amp-%E5%B7%A5%E7%A8%8B"><span class="nav-number">3.</span> <span class="nav-text">HelloWorld &amp; 工程</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#practice"><span class="nav-number">3.1.</span> <span class="nav-text">practice</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#src"><span class="nav-number">3.2.</span> <span class="nav-text">src</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#func"><span class="nav-number">3.3.</span> <span class="nav-text">func</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#add-subdirectory"><span class="nav-number">3.4.</span> <span class="nav-text">add_subdirectory</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#target-include-directories"><span class="nav-number">3.5.</span> <span class="nav-text">target_include_directories</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#include-directories"><span class="nav-number">3.6.</span> <span class="nav-text">include_directories</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E6%9B%B4%E6%94%B9%E4%BA%8C%E8%BF%9B%E5%88%B6%E7%9A%84%E4%BF%9D%E5%AD%98%E8%B7%AF%E5%BE%84%E6%9B%B4%E6%94%B9%E4%BA%8C%E8%BF%9B%E5%88%B6%E7%9A%84%E4%BF%9D%E5%AD%98%E8%B7%AF%E5%BE%84"><span class="nav-number">3.7.</span> <span class="nav-text">更改二进制的保存路径更改二进制的保存路径</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#%E9%9D%99%E6%80%81%E5%BA%93%E5%92%8C%E5%8A%A8%E6%80%81%E5%BA%93"><span class="nav-number">4.</span> <span class="nav-text">静态库和动态库</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#set-target-properties"><span class="nav-number">4.0.1.</span> <span class="nav-text">set_target_properties</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%8A%A8%E6%80%81%E5%BA%93%E7%9A%84%E7%89%88%E6%9C%AC%E5%8F%B7"><span class="nav-number">4.0.2.</span> <span class="nav-text">动态库的版本号</span></a></li></ol></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#%E5%AE%89%E8%A3%85"><span class="nav-number">5.</span> <span class="nav-text">安装</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#QT-amp-CMake"><span class="nav-number">6.</span> <span class="nav-text">QT &amp; CMake</span></a></li></ol></div>
-        </div>
-        <!--/noindex-->
-
-        <div class="site-overview-wrap sidebar-panel">
-          <div class="site-author animated" itemprop="author" itemscope itemtype="http://schema.org/Person">
-    <img class="site-author-image" itemprop="image" alt="renmale-lv"
-      src="/images/avatar.gif">
-  <p class="site-author-name" itemprop="name">renmale-lv</p>
-  <div class="site-description" itemprop="description"></div>
-</div>
-<div class="site-state-wrap animated">
-  <nav class="site-state">
-      <div class="site-state-item site-state-posts">
-        <a href="/archives/">
-          <span class="site-state-item-count">12</span>
-          <span class="site-state-item-name">posts</span>
-        </a>
-      </div>
-      <div class="site-state-item site-state-tags">
-          <a href="/tags/">
-        <span class="site-state-item-count">6</span>
-        <span class="site-state-item-name">tags</span></a>
-      </div>
-  </nav>
-</div>
-  <div class="cc-license animated" itemprop="license">
-    <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/" class="cc-opacity" rel="noopener" target="_blank"><img src="https://cdnjs.cloudflare.com/ajax/libs/creativecommons-vocabulary/2020.11.3/assets/license_badges/small/by_nc_sa.svg" alt="Creative Commons"></a>
-  </div>
-
-        </div>
-      </div>
-    </div>
+    </header>
 
     
-  </aside>
+  <div class="back-to-top">
+    <i class="fa fa-arrow-up"></i>
+    <span>0%</span>
+  </div>
 
 
-    </div>
+    <main class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          
 
-    <div class="main-inner post posts-expand">
+          <div class="content post posts-expand">
+            
 
-
+    
   
-
-
-<div class="post-block">
   
-  
-
-  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="en">
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="en">
     <link itemprop="mainEntityOfPage" href="http://example.com/2023/02/28/CMAKE%E4%BA%86%E8%A7%A3/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="image" content="/images/avatar.gif">
       <meta itemprop="name" content="renmale-lv">
+      <meta itemprop="description" content="">
     </span>
 
     <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
       <meta itemprop="name" content="renmale-lv blog">
-      <meta itemprop="description" content="">
-    </span>
-
-    <span hidden itemprop="post" itemscope itemtype="http://schema.org/CreativeWork">
-      <meta itemprop="name" content="CMAKE了解 | renmale-lv blog">
-      <meta itemprop="description" content="">
     </span>
       <header class="post-header">
         <h1 class="post-title" itemprop="name headline">
           CMAKE了解
         </h1>
 
-        <div class="post-meta-container">
-          <div class="post-meta">
-    <span class="post-meta-item">
-      <span class="post-meta-item-icon">
-        <i class="far fa-calendar"></i>
-      </span>
-      <span class="post-meta-item-text">Posted on</span>
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">Posted on</span>
 
-      <time title="Created: 2023-02-28 14:16:05" itemprop="dateCreated datePublished" datetime="2023-02-28T14:16:05+08:00">2023-02-28</time>
-    </span>
-    <span class="post-meta-item">
-      <span class="post-meta-item-icon">
-        <i class="far fa-calendar-check"></i>
-      </span>
-      <span class="post-meta-item-text">Edited on</span>
-      <time title="Modified: 2023-05-15 13:54:05" itemprop="dateModified" datetime="2023-05-15T13:54:05+08:00">2023-05-15</time>
-    </span>
+              <time title="Created: 2023-02-28 14:16:05" itemprop="dateCreated datePublished" datetime="2023-02-28T14:16:05+08:00">2023-02-28</time>
+            </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="far fa-calendar-check"></i>
+                </span>
+                <span class="post-meta-item-text">Edited on</span>
+                <time title="Modified: 2023-05-15 13:54:05" itemprop="dateModified" datetime="2023-05-15T13:54:05+08:00">2023-05-15</time>
+              </span>
 
-  
-    <span class="post-meta-break"></span>
-    <span class="post-meta-item" title="Word count in article">
-      <span class="post-meta-item-icon">
-        <i class="far fa-file-word"></i>
-      </span>
-      <span class="post-meta-item-text">Word count in article: </span>
-      <span>7.9k</span>
-    </span>
-    <span class="post-meta-item" title="Reading time">
-      <span class="post-meta-item-icon">
-        <i class="far fa-clock"></i>
-      </span>
-      <span class="post-meta-item-text">Reading time &asymp;</span>
-      <span>7 mins.</span>
-    </span>
-</div>
+          <br>
+            <span class="post-meta-item" title="Symbols count in article">
+              <span class="post-meta-item-icon">
+                <i class="far fa-file-word"></i>
+              </span>
+                <span class="post-meta-item-text">Symbols count in article: </span>
+              <span>7.9k</span>
+            </span>
+            <span class="post-meta-item" title="Reading time">
+              <span class="post-meta-item-icon">
+                <i class="far fa-clock"></i>
+              </span>
+                <span class="post-meta-item-text">Reading time &asymp;</span>
+              <span>7 mins.</span>
+            </span>
 
         </div>
       </header>
@@ -256,6 +209,8 @@
     
     
     <div class="post-body" itemprop="articleBody">
+
+      
         <p><a target="_blank" rel="noopener" href="https://modern-cmake-cn.github.io/Modern-CMake-zh_CN/">Modern CMake 简体中文版</a><br><a target="_blank" rel="noopener" href="http://file.ncnynl.com/ros/CMake%20Practice.pdf">CMake实践</a></p>
 <h1 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h1><h2 id="为什么要使用CMAKE？"><a href="#为什么要使用CMAKE？" class="headerlink" title="为什么要使用CMAKE？"></a>为什么要使用CMAKE？</h2><ul>
 <li>你需要在不止一台电脑上构建软件包</li>
@@ -520,125 +475,190 @@ qrc文件
     
     
 
-    <footer class="post-footer">
-          
-
-<div class="post-copyright">
-<ul>
-  <li class="post-copyright-author">
-      <strong>Post author:  </strong>renmale-lv
-  </li>
-  <li class="post-copyright-link">
-      <strong>Post link: </strong>
-      <a href="http://example.com/2023/02/28/CMAKE%E4%BA%86%E8%A7%A3/" title="CMAKE了解">http://example.com/2023/02/28/CMAKE了解/</a>
-  </li>
-  <li class="post-copyright-license">
-    <strong>Copyright Notice:  </strong>All articles in this blog are licensed under <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/" rel="noopener" target="_blank"><i class="fab fa-fw fa-creative-commons"></i>BY-NC-SA</a> unless stating additionally.
-  </li>
-</ul>
-</div>
-
+      <footer class="post-footer">
           <div class="post-tags">
               <a href="/tags/CMAKE/" rel="tag"># CMAKE</a>
           </div>
 
         
 
-          <div class="post-nav">
-            <div class="post-nav-item">
-                <a href="/2023/02/19/C++%E5%A4%9A%E7%BA%BF%E7%A8%8B%E5%9F%BA%E7%A1%80/" rel="prev" title="C++多线程基础">
-                  <i class="fa fa-chevron-left"></i> C++多线程基础
-                </a>
-            </div>
-            <div class="post-nav-item">
-                <a href="/2023/09/03/%E8%AE%A1%E7%BB%84%E2%80%94%E7%AC%AC%E4%B8%80%E7%AB%A0%E2%80%94%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%B3%BB%E7%BB%9F%E6%A6%82%E8%BF%B0/" rel="next" title="计组—第一章—计算机系统概述">
-                  计组—第一章—计算机系统概述 <i class="fa fa-chevron-right"></i>
-                </a>
-            </div>
-          </div>
-    </footer>
+
+        
+    <div class="post-nav">
+      <div class="post-nav-item">
+    <a href="/2023/02/19/C++%E5%A4%9A%E7%BA%BF%E7%A8%8B%E5%9F%BA%E7%A1%80/" rel="prev" title="C++多线程基础">
+      <i class="fa fa-chevron-left"></i> C++多线程基础
+    </a></div>
+      <div class="post-nav-item">
+    <a href="/2023/05/10/%E7%BD%91%E7%BB%9C%E7%BC%96%E7%A8%8B/" rel="next" title="网络编程">
+      网络编程 <i class="fa fa-chevron-right"></i>
+    </a></div>
+    </div>
+      </footer>
+    
   </article>
+  
+  
+  
+
+
+
+          </div>
+          
+
+<script>
+  window.addEventListener('tabs:register', () => {
+    let { activeClass } = CONFIG.comments;
+    if (CONFIG.comments.storage) {
+      activeClass = localStorage.getItem('comments_active') || activeClass;
+    }
+    if (activeClass) {
+      let activeTab = document.querySelector(`a[href="#comment-${activeClass}"]`);
+      if (activeTab) {
+        activeTab.click();
+      }
+    }
+  });
+  if (CONFIG.comments.storage) {
+    window.addEventListener('tabs:click', event => {
+      if (!event.target.matches('.tabs-comment .tab-content .tab-pane')) return;
+      let commentClass = event.target.classList[1];
+      localStorage.setItem('comments_active', commentClass);
+    });
+  }
+</script>
+
+        </div>
+          
+  
+  <div class="toggle sidebar-toggle">
+    <span class="toggle-line toggle-line-first"></span>
+    <span class="toggle-line toggle-line-middle"></span>
+    <span class="toggle-line toggle-line-last"></span>
+  </div>
+
+  <aside class="sidebar">
+    <div class="sidebar-inner">
+
+      <ul class="sidebar-nav motion-element">
+        <li class="sidebar-nav-toc">
+          Table of Contents
+        </li>
+        <li class="sidebar-nav-overview">
+          Overview
+        </li>
+      </ul>
+
+      <!--noindex-->
+      <div class="post-toc-wrap sidebar-panel">
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#%E5%89%8D%E8%A8%80"><span class="nav-text">前言</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E4%B8%BA%E4%BB%80%E4%B9%88%E8%A6%81%E4%BD%BF%E7%94%A8CMAKE%EF%BC%9F"><span class="nav-text">为什么要使用CMAKE？</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#CMake%E5%BA%94%E8%AF%A5%E9%81%BF%E5%85%8D%E7%9A%84%E8%A1%8C%E4%B8%BA"><span class="nav-text">CMake应该避免的行为</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#CMake%E5%BA%94%E9%81%B5%E5%AE%88%E7%9A%84%E8%A7%84%E8%8C%83"><span class="nav-text">CMake应遵守的规范</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#CMake-amp-HelloWorld"><span class="nav-text">CMake &amp; HelloWorld</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#cmake-minimum-required"><span class="nav-text">cmake_minimum_required</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#project"><span class="nav-text">project</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#set"><span class="nav-text">set</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#message"><span class="nav-text">message</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#add-executable"><span class="nav-text">add_executable</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%86%85%E9%83%A8%E6%9E%84%E5%BB%BA%E5%92%8C%E5%A4%96%E9%83%A8%E6%9E%84%E5%BB%BA"><span class="nav-text">内部构建和外部构建</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#SET%E5%85%B3%E9%94%AE%E5%AD%97"><span class="nav-text">SET关键字</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#HelloWorld-amp-%E5%B7%A5%E7%A8%8B"><span class="nav-text">HelloWorld &amp; 工程</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#practice"><span class="nav-text">practice</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#src"><span class="nav-text">src</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#func"><span class="nav-text">func</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#add-subdirectory"><span class="nav-text">add_subdirectory</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#target-include-directories"><span class="nav-text">target_include_directories</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#include-directories"><span class="nav-text">include_directories</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E6%9B%B4%E6%94%B9%E4%BA%8C%E8%BF%9B%E5%88%B6%E7%9A%84%E4%BF%9D%E5%AD%98%E8%B7%AF%E5%BE%84%E6%9B%B4%E6%94%B9%E4%BA%8C%E8%BF%9B%E5%88%B6%E7%9A%84%E4%BF%9D%E5%AD%98%E8%B7%AF%E5%BE%84"><span class="nav-text">更改二进制的保存路径更改二进制的保存路径</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#%E9%9D%99%E6%80%81%E5%BA%93%E5%92%8C%E5%8A%A8%E6%80%81%E5%BA%93"><span class="nav-text">静态库和动态库</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#set-target-properties"><span class="nav-text">set_target_properties</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%8A%A8%E6%80%81%E5%BA%93%E7%9A%84%E7%89%88%E6%9C%AC%E5%8F%B7"><span class="nav-text">动态库的版本号</span></a></li></ol></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#%E5%AE%89%E8%A3%85"><span class="nav-text">安装</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#QT-amp-CMake"><span class="nav-text">QT &amp; CMake</span></a></li></ol></div>
+      </div>
+      <!--/noindex-->
+
+      <div class="site-overview-wrap sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+  <p class="site-author-name" itemprop="name">renmale-lv</p>
+  <div class="site-description" itemprop="description"></div>
+</div>
+<div class="site-state-wrap motion-element">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+          <a href="/archives/">
+        
+          <span class="site-state-item-count">16</span>
+          <span class="site-state-item-name">posts</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-tags">
+            <a href="/tags/">
+        <span class="site-state-item-count">7</span>
+        <span class="site-state-item-name">tags</span></a>
+      </div>
+  </nav>
 </div>
 
 
 
+      </div>
+
+    </div>
+  </aside>
+  <div id="sidebar-dimmer"></div>
 
 
+      </div>
+    </main>
 
-    <div class="comments gitalk-container"></div>
-</div>
-  </main>
+    <footer class="footer">
+      <div class="footer-inner">
+        
 
-  <footer class="footer">
-    <div class="footer-inner">
-
+        
 
 <div class="copyright">
+  
   &copy; 
   <span itemprop="copyrightYear">2023</span>
   <span class="with-love">
     <i class="fa fa-heart"></i>
   </span>
   <span class="author" itemprop="copyrightHolder">renmale-lv</span>
-</div>
-<div class="wordcount">
-  <span class="post-meta-item">
+    <span class="post-meta-divider">|</span>
     <span class="post-meta-item-icon">
-      <i class="fa fa-chart-line"></i>
+      <i class="fa fa-chart-area"></i>
     </span>
-      <span>Word count total: </span>
-    <span title="Word count total">96k</span>
-  </span>
-  <span class="post-meta-item">
+    <span title="Symbols count total">110k</span>
+    <span class="post-meta-divider">|</span>
     <span class="post-meta-item-icon">
       <i class="fa fa-coffee"></i>
     </span>
-      <span>Reading time total &asymp;</span>
-    <span title="Reading time total">1:28</span>
-  </span>
+    <span title="Reading time total">1:40</span>
 </div>
-  <div class="powered-by">Powered by <a href="https://hexo.io/" rel="noopener" target="_blank">Hexo</a> & <a href="https://theme-next.js.org/" rel="noopener" target="_blank">NexT.Gemini</a>
-  </div>
-<!-- 网站运行时间的设置 -->
-<span id="timeDate">载入天数...</span>
-<span id="times">载入时分秒...</span>  Sometimes your whole life boils down to one insame move.
-<script>
-    var now = new Date();
-    function createtime() {
-        var grt= new Date("11/05/2022 00:00:00");//此处修改你的建站时间或者网站上线时间
-        now.setTime(now.getTime()+250);
-        days = (now - grt ) / 1000 / 60 / 60 / 24; dnum = Math.floor(days);
-        hours = (now - grt ) / 1000 / 60 / 60 - (24 * dnum); hnum = Math.floor(hours);
-        if(String(hnum).length ==1 ){hnum = "0" + hnum;} minutes = (now - grt ) / 1000 /60 - (24 * 60 * dnum) - (60 * hnum);
-        mnum = Math.floor(minutes); if(String(mnum).length ==1 ){mnum = "0" + mnum;}
-        seconds = (now - grt ) / 1000 - (24 * 60 * 60 * dnum) - (60 * 60 * hnum) - (60 * mnum);
-        snum = Math.round(seconds); if(String(snum).length ==1 ){snum = "0" + snum;}
-        document.getElementById("timeDate").innerHTML = "本站已安全运行 "+dnum+" 天 ";
-        document.getElementById("times").innerHTML = hnum + " 小时 " + mnum + " 分 " + snum + " 秒";
-}
-setInterval("createtime()",250);
-</script>
-    </div>
-  </footer>
-
-  
-  <div class="back-to-top" role="button" aria-label="Back to top">
-    <i class="fa fa-arrow-up fa-lg"></i>
-    <span>0%</span>
+  <div class="powered-by">Powered by <a href="https://hexo.io/" class="theme-link" rel="noopener" target="_blank">Hexo</a> & <a href="https://muse.theme-next.org/" class="theme-link" rel="noopener" target="_blank">NexT.Muse</a>
   </div>
 
-<noscript>
-  <div class="noscript-warning">Theme NexT works best with JavaScript enabled</div>
-</noscript>
+        
+
+
+
+
+
+
+
+
+      </div>
+    </footer>
+  </div>
+
+  
+  <script src="/lib/anime.min.js"></script>
+  <script src="/lib/velocity/velocity.min.js"></script>
+  <script src="/lib/velocity/velocity.ui.min.js"></script>
+
+<script src="/js/utils.js"></script>
+
+<script src="/js/motion.js"></script>
+
+
+<script src="/js/schemes/muse.js"></script>
+
+
+<script src="/js/next-boot.js"></script>
+
+
 
 
   
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/animejs/3.2.1/anime.min.js" integrity="sha256-XL2inqUJaslATFnHdJOi9GfQ60on8Wx1C2H8DYiN1xY=" crossorigin="anonymous"></script>
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/next-theme-pjax/0.6.0/pjax.min.js" integrity="sha256-vxLn1tSKWD4dqbMRyv940UYw4sXgMtYcK6reefzZrao=" crossorigin="anonymous"></script>
-<script src="/js/comments.js"></script><script src="/js/utils.js"></script><script src="/js/motion.js"></script><script src="/js/next-boot.js"></script><script src="/js/pjax.js"></script>
 
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/hexo-generator-searchdb/1.4.1/search.js" integrity="sha256-1kfA5uHPf65M5cphT2dvymhkuyHPQp5A53EGZOnOLmc=" crossorigin="anonymous"></script>
-<script src="/js/third-party/search/local-search.js"></script>
+
+
+
+
+
+
+
+
+
 
 
 
@@ -646,21 +666,7 @@ setInterval("createtime()",250);
 
   
 
-
-
-
   
-
-  <script class="next-config" data-name="enableMath" type="application/json">false</script><script class="next-config" data-name="mathjax" type="application/json">{"enable":true,"tags":"none","js":{"url":"https://cdnjs.cloudflare.com/ajax/libs/mathjax/3.2.2/es5/tex-mml-chtml.js","integrity":"sha256-MASABpB4tYktI2Oitl4t+78w/lyA+D7b/s9GEP0JOGI="}}</script>
-<script src="/js/third-party/math/mathjax.js"></script>
-
-
-<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/gitalk/1.8.0/gitalk.css" integrity="sha256-AJnUHL7dBv6PGaeyPQJcgQPDjt/Hn/PvYZde1iqfp8U=" crossorigin="anonymous">
-
-<script class="next-config" data-name="gitalk" type="application/json">{"enable":true,"github_id":"renmale-lv","repo":"renmale-lv.github.io","client_id":"a7032a206391d1242a3c","client_secret":"5beb16ecce13a96a943bce7252eab7ab77218b9d","admin_user":"renmale-lv","distraction_free_mode":true,"proxy":"https://cors-anywhere.azm.workers.dev/https://github.com/login/oauth/access_token","language":"zh-CN","js":{"url":"https://cdnjs.cloudflare.com/ajax/libs/gitalk/1.8.0/gitalk.min.js","integrity":"sha256-MVK9MGD/XJaGyIghSVrONSnoXoGh3IFxLw0zfvzpxR4="},"path_md5":"ad615377745d4f9c3768b464b5e7fd30"}</script>
-<script src="/js/third-party/comments/gitalk.js"></script>
 
 </body>
 </html>
-<!-- 页面点击小红心 -->
-<script type="text/javascript" src="/js/clicklove.js"></script>
