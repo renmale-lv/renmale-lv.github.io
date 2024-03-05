@@ -1,0 +1,1055 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#222">
+<meta name="generator" content="Hexo 6.3.0">
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+
+<link rel="stylesheet" href="/css/main.css">
+
+
+<link rel="stylesheet" href="/lib/font-awesome/css/all.min.css">
+
+<script id="hexo-configurations">
+    var NexT = window.NexT || {};
+    var CONFIG = {"hostname":"example.com","root":"/","scheme":"Muse","version":"7.8.0","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12,"onmobile":false},"copycode":{"enable":false,"show_result":false,"style":null},"back2top":{"enable":true,"sidebar":false,"scrollpercent":false},"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"algolia":{"hits":{"per_page":10},"labels":{"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}},"localsearch":{"enable":false,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},"path":"search.xml"};
+  </script>
+
+  <meta name="description" content="多线程编程Linux线程概述线程模型线程  程序中完成一个独立任务的完整执行序列，即一个可调度的实体  用户线程  运行在用户空间，由线程库来调度  内核线程  有的系统也称为LWP（Light Weight Process，轻量级进程），运行在内核空间，由内核来调度 当进程的一个内核线程获得CPU的使用权时，它就加载并允许一个用户线程，内核线程相当于用户线程运行的“容器”    一个">
+<meta property="og:type" content="article">
+<meta property="og:title" content="多线程编程">
+<meta property="og:url" content="http://example.com/2023/11/29/11-%E5%A4%9A%E7%BA%BF%E7%A8%8B%E7%BC%96%E7%A8%8B/index.html">
+<meta property="og:site_name" content="renmale-lv blog">
+<meta property="og:description" content="多线程编程Linux线程概述线程模型线程  程序中完成一个独立任务的完整执行序列，即一个可调度的实体  用户线程  运行在用户空间，由线程库来调度  内核线程  有的系统也称为LWP（Light Weight Process，轻量级进程），运行在内核空间，由内核来调度 当进程的一个内核线程获得CPU的使用权时，它就加载并允许一个用户线程，内核线程相当于用户线程运行的“容器”    一个">
+<meta property="og:locale" content="en_US">
+<meta property="og:image" content="https://gitee.com/renmale-sztu/image/raw/master/202401162120134.jpeg">
+<meta property="og:image" content="https://gitee.com/renmale-sztu/image/raw/master/202401162119949.jpeg">
+<meta property="og:image" content="https://gitee.com/renmale-sztu/image/raw/master/202401162113033.jpeg">
+<meta property="og:image" content="https://gitee.com/renmale-sztu/image/raw/master/202401192326337.png">
+<meta property="article:published_time" content="2023-11-28T17:36:05.000Z">
+<meta property="article:modified_time" content="2024-03-05T02:34:56.169Z">
+<meta property="article:author" content="renmale-lv">
+<meta property="article:tag" content="C++ socket">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://gitee.com/renmale-sztu/image/raw/master/202401162120134.jpeg">
+
+<link rel="canonical" href="http://example.com/2023/11/29/11-%E5%A4%9A%E7%BA%BF%E7%A8%8B%E7%BC%96%E7%A8%8B/">
+
+
+<script id="page-configurations">
+  // https://hexo.io/docs/variables.html
+  CONFIG.page = {
+    sidebar: "",
+    isHome : false,
+    isPost : true,
+    lang   : 'en'
+  };
+</script>
+
+  <title>多线程编程 | renmale-lv blog</title>
+  
+
+
+
+
+
+
+  <noscript>
+  <style>
+  .use-motion .brand,
+  .use-motion .menu-item,
+  .sidebar-inner,
+  .use-motion .post-block,
+  .use-motion .pagination,
+  .use-motion .comments,
+  .use-motion .post-header,
+  .use-motion .post-body,
+  .use-motion .collection-header { opacity: initial; }
+
+  .use-motion .site-title,
+  .use-motion .site-subtitle {
+    opacity: initial;
+    top: initial;
+  }
+
+  .use-motion .logo-line-before i { left: initial; }
+  .use-motion .logo-line-after i { right: initial; }
+  </style>
+</noscript>
+
+<style>mjx-container[jax="SVG"] {
+  direction: ltr;
+}
+
+mjx-container[jax="SVG"] > svg {
+  overflow: visible;
+}
+
+mjx-container[jax="SVG"][display="true"] {
+  display: block;
+  text-align: center;
+  margin: 1em 0;
+}
+
+mjx-container[jax="SVG"][justify="left"] {
+  text-align: left;
+}
+
+mjx-container[jax="SVG"][justify="right"] {
+  text-align: right;
+}
+
+g[data-mml-node="merror"] > g {
+  fill: red;
+  stroke: red;
+}
+
+g[data-mml-node="merror"] > rect[data-background] {
+  fill: yellow;
+  stroke: none;
+}
+
+g[data-mml-node="mtable"] > line[data-line] {
+  stroke-width: 70px;
+  fill: none;
+}
+
+g[data-mml-node="mtable"] > rect[data-frame] {
+  stroke-width: 70px;
+  fill: none;
+}
+
+g[data-mml-node="mtable"] > .mjx-dashed {
+  stroke-dasharray: 140;
+}
+
+g[data-mml-node="mtable"] > .mjx-dotted {
+  stroke-linecap: round;
+  stroke-dasharray: 0,140;
+}
+
+g[data-mml-node="mtable"] > svg {
+  overflow: visible;
+}
+
+[jax="SVG"] mjx-tool {
+  display: inline-block;
+  position: relative;
+  width: 0;
+  height: 0;
+}
+
+[jax="SVG"] mjx-tool > mjx-tip {
+  position: absolute;
+  top: 0;
+  left: 0;
+}
+
+mjx-tool > mjx-tip {
+  display: inline-block;
+  padding: .2em;
+  border: 1px solid #888;
+  font-size: 70%;
+  background-color: #F8F8F8;
+  color: black;
+  box-shadow: 2px 2px 5px #AAAAAA;
+}
+
+g[data-mml-node="maction"][data-toggle] {
+  cursor: pointer;
+}
+
+mjx-status {
+  display: block;
+  position: fixed;
+  left: 1em;
+  bottom: 1em;
+  min-width: 25%;
+  padding: .2em .4em;
+  border: 1px solid #888;
+  font-size: 90%;
+  background-color: #F8F8F8;
+  color: black;
+}
+
+foreignObject[data-mjx-xml] {
+  font-family: initial;
+  line-height: normal;
+  overflow: visible;
+}
+
+.MathJax path {
+  stroke-width: 3;
+}
+
+mjx-container[display="true"] {
+  overflow: auto hidden;
+}
+
+mjx-container[display="true"] + br {
+  display: none;
+}
+</style><link rel="alternate" href="/atom.xml" title="renmale-lv blog" type="application/atom+xml">
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage">
+  <div class="container use-motion">
+    <div class="headband"></div>
+
+    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="Toggle navigation bar">
+      <span class="toggle-line toggle-line-first"></span>
+      <span class="toggle-line toggle-line-middle"></span>
+      <span class="toggle-line toggle-line-last"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <span class="logo-line-before"><i></i></span>
+      <h1 class="site-title">renmale-lv blog</h1>
+      <span class="logo-line-after"><i></i></span>
+    </a>
+      <p class="site-subtitle" itemprop="description">记录学习点滴</p>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger">
+    </div>
+  </div>
+</div>
+
+
+
+
+<nav class="site-nav">
+  <ul id="menu" class="main-menu menu">
+        <li class="menu-item menu-item-home">
+
+    <a href="/" rel="section"><i class="fa fa-home fa-fw"></i>Home</a>
+
+  </li>
+        <li class="menu-item menu-item-archives">
+
+    <a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>Archives</a>
+
+  </li>
+  </ul>
+</nav>
+
+
+
+
+</div>
+    </header>
+
+    
+  <div class="back-to-top">
+    <i class="fa fa-arrow-up"></i>
+    <span>0%</span>
+  </div>
+
+
+    <main class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          
+
+          <div class="content post posts-expand">
+            
+
+    
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="en">
+    <link itemprop="mainEntityOfPage" href="http://example.com/2023/11/29/11-%E5%A4%9A%E7%BA%BF%E7%A8%8B%E7%BC%96%E7%A8%8B/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="renmale-lv">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="renmale-lv blog">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          多线程编程
+        </h1>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">Posted on</span>
+
+              <time title="Created: 2023-11-29 01:36:05" itemprop="dateCreated datePublished" datetime="2023-11-29T01:36:05+08:00">2023-11-29</time>
+            </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="far fa-calendar-check"></i>
+                </span>
+                <span class="post-meta-item-text">Edited on</span>
+                <time title="Modified: 2024-03-05 10:34:56" itemprop="dateModified" datetime="2024-03-05T10:34:56+08:00">2024-03-05</time>
+              </span>
+
+          <br>
+            <span class="post-meta-item" title="Symbols count in article">
+              <span class="post-meta-item-icon">
+                <i class="far fa-file-word"></i>
+              </span>
+                <span class="post-meta-item-text">Symbols count in article: </span>
+              <span>11k</span>
+            </span>
+            <span class="post-meta-item" title="Reading time">
+              <span class="post-meta-item-icon">
+                <i class="far fa-clock"></i>
+              </span>
+                <span class="post-meta-item-text">Reading time &asymp;</span>
+              <span>10 mins.</span>
+            </span>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+        <meta name="referrer" content="no-referrer">    
+
+<h1 id="多线程编程"><a href="#多线程编程" class="headerlink" title="多线程编程"></a>多线程编程</h1><h2 id="Linux线程概述"><a href="#Linux线程概述" class="headerlink" title="Linux线程概述"></a>Linux线程概述</h2><h3 id="线程模型"><a href="#线程模型" class="headerlink" title="线程模型"></a>线程模型</h3><p><strong>线程</strong></p>
+<ul>
+<li>程序中完成一个独立任务的完整执行序列，即一个可调度的实体</li>
+</ul>
+<p><strong>用户线程</strong></p>
+<ul>
+<li>运行在用户空间，由线程库来调度</li>
+</ul>
+<p><strong>内核线程</strong></p>
+<ul>
+<li>有的系统也称为LWP（Light Weight Process，轻量级进程），运行在内核空间，由内核来调度</li>
+<li>当进程的一个内核线程获得CPU的使用权时，它就加载并允许一个用户线程，内核线程相当于用户线程运行的“容器”</li>
+</ul>
+<hr>
+<ul>
+<li><p>一个进程可以拥有M个内核线程和N个用户线程，其中<mjx-container class="MathJax" jax="SVG"><svg style="vertical-align: -0.312ex;" xmlns="http://www.w3.org/2000/svg" width="7.404ex" height="1.857ex" role="img" focusable="false" viewBox="0 -683 3272.6 821"><g stroke="currentColor" fill="currentColor" stroke-width="0" transform="scale(1,-1)"><g data-mml-node="math"><g data-mml-node="mi"><path data-c="1D440" d="M289 629Q289 635 232 637Q208 637 201 638T194 648Q194 649 196 659Q197 662 198 666T199 671T201 676T203 679T207 681T212 683T220 683T232 684Q238 684 262 684T307 683Q386 683 398 683T414 678Q415 674 451 396L487 117L510 154Q534 190 574 254T662 394Q837 673 839 675Q840 676 842 678T846 681L852 683H948Q965 683 988 683T1017 684Q1051 684 1051 673Q1051 668 1048 656T1045 643Q1041 637 1008 637Q968 636 957 634T939 623Q936 618 867 340T797 59Q797 55 798 54T805 50T822 48T855 46H886Q892 37 892 35Q892 19 885 5Q880 0 869 0Q864 0 828 1T736 2Q675 2 644 2T609 1Q592 1 592 11Q592 13 594 25Q598 41 602 43T625 46Q652 46 685 49Q699 52 704 61Q706 65 742 207T813 490T848 631L654 322Q458 10 453 5Q451 4 449 3Q444 0 433 0Q418 0 415 7Q413 11 374 317L335 624L267 354Q200 88 200 79Q206 46 272 46H282Q288 41 289 37T286 19Q282 3 278 1Q274 0 267 0Q265 0 255 0T221 1T157 2Q127 2 95 1T58 0Q43 0 39 2T35 11Q35 13 38 25T43 40Q45 46 65 46Q135 46 154 86Q158 92 223 354T289 629Z"></path></g><g data-mml-node="mo" transform="translate(1328.8,0)"><path data-c="2264" d="M674 636Q682 636 688 630T694 615T687 601Q686 600 417 472L151 346L399 228Q687 92 691 87Q694 81 694 76Q694 58 676 56H670L382 192Q92 329 90 331Q83 336 83 348Q84 359 96 365Q104 369 382 500T665 634Q669 636 674 636ZM84 -118Q84 -108 99 -98H678Q694 -104 694 -118Q694 -130 679 -138H98Q84 -131 84 -118Z"></path></g><g data-mml-node="mi" transform="translate(2384.6,0)"><path data-c="1D441" d="M234 637Q231 637 226 637Q201 637 196 638T191 649Q191 676 202 682Q204 683 299 683Q376 683 387 683T401 677Q612 181 616 168L670 381Q723 592 723 606Q723 633 659 637Q635 637 635 648Q635 650 637 660Q641 676 643 679T653 683Q656 683 684 682T767 680Q817 680 843 681T873 682Q888 682 888 672Q888 650 880 642Q878 637 858 637Q787 633 769 597L620 7Q618 0 599 0Q585 0 582 2Q579 5 453 305L326 604L261 344Q196 88 196 79Q201 46 268 46H278Q284 41 284 38T282 19Q278 6 272 0H259Q228 2 151 2Q123 2 100 2T63 2T46 1Q31 1 31 10Q31 14 34 26T39 40Q41 46 62 46Q130 49 150 85Q154 91 221 362L289 634Q287 635 234 637Z"></path></g></g></g></svg></mjx-container></p>
+</li>
+<li><p>在一个系统的所有进程中，M和N的比值都是固定的</p>
+</li>
+<li>按照M:N的取值，线程的实现方式可以分为三种模式<ul>
+<li>完全在用户空间实现<ul>
+<li><img src="https://gitee.com/renmale-sztu/image/raw/master/202401162120134.jpeg" alt="img" style="zoom:25%;"></li>
+</ul>
+</li>
+<li>完全由内核调度<ul>
+<li><img src="https://gitee.com/renmale-sztu/image/raw/master/202401162119949.jpeg" alt="img" style="zoom:25%;"></li>
+</ul>
+</li>
+<li>双层调度<ul>
+<li><img src="https://gitee.com/renmale-sztu/image/raw/master/202401162113033.jpeg" alt="img" style="zoom: 25%;"></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+<h3 id="Linux线程库"><a href="#Linux线程库" class="headerlink" title="Linux线程库"></a>Linux线程库</h3><ul>
+<li><p>Linux上最有名的两个线程库是LinuxThreads和NPTL，它们都是采用1:1的方式实现的</p>
+</li>
+<li><p>线代Linux默认使用的线程库时NPTL</p>
+</li>
+<li><p>查看当前系统使用的线程库</p>
+<pre class="line-numbers language-bash" data-language="bash"><code class="language-bash">getconf GNU_LIBPTHREAD_VERSION<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
+</li>
+</ul>
+<h3 id="创建线程和结束线程"><a href="#创建线程和结束线程" class="headerlink" title="创建线程和结束线程"></a>创建线程和结束线程</h3><h4 id="pthread-create创建线程"><a href="#pthread-create创建线程" class="headerlink" title="pthread_create创建线程"></a>pthread_create创建线程</h4><pre class="line-numbers language-c" data-language="c"><code class="language-c"><span class="token macro property"><span class="token directive-hash">#</span><span class="token directive keyword">include</span> <span class="token string">&lt;pthread.h&gt;</span></span>
+<span class="token keyword">int</span> <span class="token function">pthread_create</span><span class="token punctuation">(</span><span class="token class-name">pthread_t</span><span class="token operator">*</span> thread<span class="token punctuation">,</span> <span class="token keyword">const</span> <span class="token class-name">pthread_attr_t</span><span class="token operator">*</span> attr<span class="token punctuation">,</span> <span class="token keyword">void</span><span class="token operator">*</span> <span class="token punctuation">(</span><span class="token operator">*</span>start_routine<span class="token punctuation">)</span><span class="token punctuation">(</span><span class="token keyword">void</span><span class="token operator">*</span><span class="token punctuation">)</span><span class="token punctuation">,</span> <span class="token keyword">void</span><span class="token operator">*</span> arg<span class="token punctuation">)</span><span class="token punctuation">;</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span></span></code></pre>
+<ul>
+<li><p>thread参数是新线程的标识符，后续pthread_*函数通过它来引用新线程</p>
+<ul>
+<li>```c<h1 id="include"><a href="#include" class="headerlink" title="include "></a>include <bits></bits></h1>typedef unsigned long int pthread_t;<pre class="line-numbers language-none"><code class="language-none">
+- attr参数用于设置新线程的属性，给它传递NULL表示使用默认线程属性
+
+- start_routine参数指定新线程运行的函数
+
+- arg参数指定函数运行的参数
+
+- 成功时返回0，失败时返回错误码
+
+#### pthread_exit结束进程
+
+```c
+#include &lt;pthread.h&gt;
+void pthread_exit(void* retval);<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+</li>
+</ul>
+</li>
+<li><p>线程函数在结束时最好调用该函数，以确保安全、干净地退出</p>
+</li>
+<li>该函数通过retval参数项线程地回收者传递其退出信息</li>
+<li>执行完之后不会返回到调用者，永远不会失败</li>
+</ul>
+<h4 id="pthread-join回收线程"><a href="#pthread-join回收线程" class="headerlink" title="pthread_join回收线程"></a>pthread_join回收线程</h4><p>等待其他线程结束，类似回收进程的wait和waitpid系统调用</p>
+<pre class="line-numbers language-c" data-language="c"><code class="language-c"><span class="token macro property"><span class="token directive-hash">#</span><span class="token directive keyword">include</span> <span class="token string">&lt;pthread.h&gt;</span></span>
+<span class="token keyword">int</span> <span class="token function">pthread_join</span><span class="token punctuation">(</span><span class="token class-name">pthread_t</span> thread<span class="token punctuation">,</span> <span class="token keyword">void</span><span class="token operator">*</span><span class="token operator">*</span> retval<span class="token punctuation">)</span><span class="token punctuation">;</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span></span></code></pre>
+<ul>
+<li>thread参数事目标线程的标识符</li>
+<li>retval参数事目标线程返回的退出信息</li>
+<li>该函数会一直阻塞直到被回收的线程结束为止</li>
+<li>成功时返回0，失败则返回错误码<ul>
+<li><img src="https://gitee.com/renmale-sztu/image/raw/master/202401192326337.png" alt="image-20240119232636350"></li>
+</ul>
+</li>
+</ul>
+<h4 id="pthread-cancel"><a href="#pthread-cancel" class="headerlink" title="pthread_cancel"></a>pthread_cancel</h4><p>异常终止一个线程</p>
+<pre class="line-numbers language-c" data-language="c"><code class="language-c"><span class="token macro property"><span class="token directive-hash">#</span><span class="token directive keyword">include</span> <span class="token string">&lt;pthread.h&gt;</span></span>
+<span class="token keyword">int</span> <span class="token function">pthread_cancel</span><span class="token punctuation">(</span><span class="token class-name">pthread_t</span> thread<span class="token punctuation">)</span><span class="token punctuation">;</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span></span></code></pre>
+<ul>
+<li>thread参数时目标线程的标识符</li>
+<li>成功时返回0，失败则返回错误码</li>
+</ul>
+<hr>
+<p>接受到取消请求的目标线程可以决定是否允许被取消以及如何取消</p>
+<pre class="line-numbers language-c" data-language="c"><code class="language-c"><span class="token macro property"><span class="token directive-hash">#</span><span class="token directive keyword">include</span> <span class="token string">&lt;pthread.h&gt;</span></span>
+<span class="token keyword">int</span> <span class="token function">pthread_setcancelstate</span><span class="token punctuation">(</span><span class="token keyword">int</span> state<span class="token punctuation">,</span> <span class="token keyword">int</span><span class="token operator">*</span> oldstate<span class="token punctuation">)</span><span class="token punctuation">;</span>
+<span class="token keyword">int</span> <span class="token function">pthread_setcanceltype</span><span class="token punctuation">(</span><span class="token keyword">int</span> type<span class="token punctuation">,</span> <span class="token keyword">int</span><span class="token operator">*</span> oldtype<span class="token punctuation">)</span><span class="token punctuation">;</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span></span></code></pre>
+<ul>
+<li>第一个参数分别用于设置线程的取消状态（是否允许取消）和取消类型（如何取消）<ul>
+<li>state<ul>
+<li>PTHREAD_CANCEL_ENABLE，允许线程被取消，线程创建时的默认取消状态</li>
+<li>PTHREAD_CANCEL_DISABLE，禁止线程被取消，如果一个线程收到取消请求，则它会将请求挂起，直到该线程允许被取消</li>
+</ul>
+</li>
+<li>type<ul>
+<li>PTHREAD_CANCEL_ASYNCHRONOUS，线程随时都可以被取消，使得接收到取消请求的目标线程立即采取行动</li>
+<li>PTHREAD_CANCEL_DEFERRED，允许目标线程推迟行动，直到它调用下面几个所谓的取消点函数中的一个<ul>
+<li>pthread_join</li>
+<li>pthread_testcancel</li>
+<li>pthread_cond_wait</li>
+<li>pthread_cond_timewait</li>
+<li>sem_wait</li>
+<li>sigwait</li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+</li>
+<li>第二个线程分别记录线程原来的取消状态和取消类型</li>
+<li>成功时返回0，失败则返回错误码</li>
+</ul>
+<h2 id="线程属性"><a href="#线程属性" class="headerlink" title="线程属性"></a>线程属性</h2><p>pthread_attr_t结构体定义了一套完整的线程属性</p>
+<pre class="line-numbers language-c" data-language="c"><code class="language-c"><span class="token macro property"><span class="token directive-hash">#</span><span class="token directive keyword">include</span><span class="token string">&lt;bits/pthreadtypes.h&gt;</span></span>
+<span class="token macro property"><span class="token directive-hash">#</span><span class="token directive keyword">define</span><span class="token expression">__SIZEOF_PTHREAD_ATTR_T <span class="token number">36</span></span></span>
+<span class="token keyword">typedef</span> <span class="token keyword">union</span><span class="token punctuation">{</span>
+    char__size<span class="token punctuation">[</span>__SIZEOF_PTHREAD_ATTR_T<span class="token punctuation">]</span><span class="token punctuation">;</span>
+    <span class="token keyword">long</span> int__align<span class="token punctuation">;</span>
+<span class="token punctuation">}</span><span class="token class-name">pthread_attr_t</span><span class="token punctuation">;</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<ul>
+<li>各种线程属性都包含在一个字符数组中</li>
+</ul>
+<hr>
+<p>线程库定义了一系列函数来操作pthread_attr_t类型的变量，以方便我们获取和设置线程属性</p>
+<pre class="line-numbers language-c" data-language="c"><code class="language-c"><span class="token macro property"><span class="token directive-hash">#</span><span class="token directive keyword">include</span><span class="token string">&lt;pthread.h&gt;</span></span>
+<span class="token comment">/*初始化线程属性对象*/</span>
+<span class="token keyword">int</span> <span class="token function">pthread_attr_init</span><span class="token punctuation">(</span><span class="token class-name">pthread_attr_t</span><span class="token operator">*</span>attr<span class="token punctuation">)</span><span class="token punctuation">;</span>
+<span class="token comment">/*销毁线程属性对象。被销毁的线程属性对象只有再次初始化之后才能继续使用*/</span>
+<span class="token keyword">int</span> <span class="token function">pthread_attr_destroy</span><span class="token punctuation">(</span><span class="token class-name">pthread_attr_t</span><span class="token operator">*</span>attr<span class="token punctuation">)</span><span class="token punctuation">;</span>
+<span class="token comment">/*下面这些函数用于获取和设置线程属性对象的某个属性*/</span>
+<span class="token keyword">int</span> <span class="token function">pthread_attr_getdetachstate</span><span class="token punctuation">(</span><span class="token keyword">const</span> <span class="token class-name">pthread_attr_t</span><span class="token operator">*</span> attr<span class="token punctuation">,</span><span class="token keyword">int</span><span class="token operator">*</span> detachstate<span class="token punctuation">)</span><span class="token punctuation">;</span>
+<span class="token keyword">int</span> <span class="token function">pthread_attr_setdetachstate</span><span class="token punctuation">(</span><span class="token class-name">pthread_attr_t</span><span class="token operator">*</span> attr<span class="token punctuation">,</span><span class="token keyword">int</span> detachstate<span class="token punctuation">)</span><span class="token punctuation">;</span>
+<span class="token keyword">int</span> <span class="token function">pthread_attr_getstackaddr</span><span class="token punctuation">(</span><span class="token keyword">const</span> <span class="token class-name">pthread_attr_t</span><span class="token operator">*</span> attr<span class="token punctuation">,</span><span class="token keyword">void</span><span class="token operator">*</span><span class="token operator">*</span> stackaddr<span class="token punctuation">)</span><span class="token punctuation">;</span>
+<span class="token keyword">int</span> <span class="token function">pthread_attr_setstackaddr</span><span class="token punctuation">(</span><span class="token class-name">pthread_attr_t</span><span class="token operator">*</span> attr<span class="token punctuation">,</span><span class="token keyword">void</span><span class="token operator">*</span> stackaddr<span class="token punctuation">)</span><span class="token punctuation">;</span>
+<span class="token keyword">int</span> <span class="token function">pthread_attr_getstacksize</span><span class="token punctuation">(</span><span class="token keyword">const</span> <span class="token class-name">pthread_attr_t</span><span class="token operator">*</span>attr<span class="token punctuation">,</span><span class="token class-name">size_t</span><span class="token operator">*</span> stacksize<span class="token punctuation">)</span><span class="token punctuation">;</span>
+<span class="token keyword">int</span> <span class="token function">pthread_attr_setstacksize</span><span class="token punctuation">(</span><span class="token class-name">pthread_attr_t</span><span class="token operator">*</span> attr<span class="token punctuation">,</span><span class="token class-name">size_t</span> stacksize<span class="token punctuation">)</span><span class="token punctuation">;</span>
+<span class="token keyword">int</span> <span class="token function">pthread_attr_getstack</span><span class="token punctuation">(</span><span class="token keyword">const</span> <span class="token class-name">pthread_attr_t</span><span class="token operator">*</span> attr<span class="token punctuation">,</span><span class="token keyword">void</span><span class="token operator">*</span><span class="token operator">*</span> stackaddr<span class="token punctuation">,</span><span class="token class-name">size_t</span><span class="token operator">*</span> stacksize<span class="token punctuation">)</span><span class="token punctuation">;</span>
+<span class="token keyword">int</span> <span class="token function">pthread_attr_setstack</span><span class="token punctuation">(</span><span class="token class-name">pthread_attr_t</span><span class="token operator">*</span> attr<span class="token punctuation">,</span><span class="token keyword">void</span><span class="token operator">*</span> stackaddr<span class="token punctuation">,</span><span class="token class-name">size_t</span> stacksize<span class="token punctuation">)</span><span class="token punctuation">;</span>
+<span class="token keyword">int</span> <span class="token function">pthread_attr_getguardsize</span><span class="token punctuation">(</span><span class="token keyword">const</span> <span class="token class-name">pthread_attr_t</span><span class="token operator">*</span> __attr<span class="token punctuation">,</span><span class="token class-name">size_t</span><span class="token operator">*</span> guardsize<span class="token punctuation">)</span><span class="token punctuation">;</span>
+<span class="token keyword">int</span> <span class="token function">pthread_attr_setguardsize</span><span class="token punctuation">(</span><span class="token class-name">pthread_attr_t</span><span class="token operator">*</span> attr<span class="token punctuation">,</span><span class="token class-name">size_t</span> guardsize<span class="token punctuation">)</span><span class="token punctuation">;</span>
+<span class="token keyword">int</span> <span class="token function">pthread_attr_getschedparam</span><span class="token punctuation">(</span><span class="token keyword">const</span> <span class="token class-name">pthread_attr_t</span><span class="token operator">*</span> attr<span class="token punctuation">,</span><span class="token keyword">struct</span> <span class="token class-name">sched_param</span><span class="token operator">*</span> param<span class="token punctuation">)</span><span class="token punctuation">;</span>
+<span class="token keyword">int</span> <span class="token function">pthread_attr_setschedparam</span><span class="token punctuation">(</span><span class="token class-name">pthread_attr_t</span><span class="token operator">*</span> attr<span class="token punctuation">,</span><span class="token keyword">const</span> <span class="token keyword">struct</span> <span class="token class-name">sched_param</span><span class="token operator">*</span> param<span class="token punctuation">)</span><span class="token punctuation">;</span>
+<span class="token keyword">int</span> <span class="token function">pthread_attr_getschedpolicy</span><span class="token punctuation">(</span><span class="token keyword">const</span> <span class="token class-name">pthread_attr_t</span><span class="token operator">*</span> attr<span class="token punctuation">,</span><span class="token keyword">int</span><span class="token operator">*</span> policy<span class="token punctuation">)</span><span class="token punctuation">;</span>
+<span class="token keyword">int</span> <span class="token function">pthread_attr_setschedpolicy</span><span class="token punctuation">(</span><span class="token class-name">pthread_attr_t</span><span class="token operator">*</span> attr<span class="token punctuation">,</span><span class="token keyword">int</span> policy<span class="token punctuation">)</span><span class="token punctuation">;</span>
+<span class="token keyword">int</span> <span class="token function">pthread_attr_getinheritsched</span><span class="token punctuation">(</span><span class="token keyword">const</span> <span class="token class-name">pthread_attr_t</span><span class="token operator">*</span> attr<span class="token punctuation">,</span><span class="token keyword">int</span><span class="token operator">*</span> inherit<span class="token punctuation">)</span><span class="token punctuation">;</span>
+<span class="token keyword">int</span> <span class="token function">pthread_attr_setinheritsched</span><span class="token punctuation">(</span><span class="token class-name">pthread_attr_t</span><span class="token operator">*</span> attr<span class="token punctuation">,</span><span class="token keyword">int</span> inherit<span class="token punctuation">)</span><span class="token punctuation">;</span>
+<span class="token keyword">int</span> <span class="token function">pthread_attr_getscope</span><span class="token punctuation">(</span><span class="token keyword">const</span> <span class="token class-name">pthread_attr_t</span><span class="token operator">*</span> attr<span class="token punctuation">,</span><span class="token keyword">int</span><span class="token operator">*</span> scope<span class="token punctuation">)</span><span class="token punctuation">;</span>
+<span class="token keyword">int</span> <span class="token function">pthread_attr_setscope</span><span class="token punctuation">(</span><span class="token class-name">pthread_attr_t</span><span class="token operator">*</span> attr<span class="token punctuation">,</span><span class="token keyword">int</span> scope<span class="token punctuation">)</span><span class="token punctuation">;</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<hr>
+<p><strong>各个线程属性的含义</strong></p>
+<ol>
+<li>detachstate，线程的脱离状态<ul>
+<li>PTHREAD_CREATE_JOINABLE，指定线程是可以回收的，默认值</li>
+<li>PTHREAD_CREATE_DETACH，使调用线程脱离于进程中其他线程的同步<ul>
+<li>脱离了与其他线程同步的线程称为“脱离线程”，脱离线程在退出时将自行释放其占用的系统资源</li>
+<li>可以使用pthread_detach函数将线程设置为脱离线程</li>
+</ul>
+</li>
+</ul>
+</li>
+<li>stackaddr和stacksize，线程堆栈的起始地址和大小</li>
+<li>guardsize，保护区域大小<ul>
+<li>大于0，则系统创建线程的时候会在其堆栈的尾部额外分配guardsize字节的空间，作为保护堆栈不被错误地覆盖的区域</li>
+<li>等于0，则系统不为新创建的线程设置堆栈保护区</li>
+<li>如果使用者通过pthread_attr_setstackaddr或pthread_attr_setstack函数手动设置线程的堆栈，则该属性将被忽略</li>
+</ul>
+</li>
+<li>schedparam，线程调度参数<ul>
+<li>其类型是sched_param结构体，该结构体只有一个整形类型的成员——sched_priority，表示线程运行优先级</li>
+</ul>
+</li>
+<li>schedpolicy，线程调度策略<ul>
+<li>SCHED_FIFO，先进先出</li>
+<li>SCHED_RR，时间片轮转</li>
+<li>SCHED_OTHER，默认</li>
+</ul>
+</li>
+<li>inheritsched，是否继承调用线程的调度属性<ul>
+<li>PTHREAD_INHERIT_SCHED，新线程沿用其创建者的线程调度参数，这种情况下设置新线程的调度参数属性没有任何效果</li>
+<li>PTHREAD_EXPLICIT_SCHED，表示调用者要明确地指定新线程地调度参数</li>
+</ul>
+</li>
+<li>scope，线程间竞争CPU的范围，即线程优先级的有效范围<ul>
+<li>PTHREAD_SCOPE_SYSTEM，目标线程与系统中所有线程一起竞争CPU的使用</li>
+<li>PTHREAD_SCOPE_PROCESS，目标线程仅与其他隶属于同一进程的线程竞争CPU的使用</li>
+<li>LINUX只支持第一种</li>
+</ul>
+</li>
+</ol>
+<h2 id="POSIX信号量"><a href="#POSIX信号量" class="headerlink" title="POSIX信号量"></a>POSIX信号量</h2><p>常用的POSIX信号量函数</p>
+<pre class="line-numbers language-c" data-language="c"><code class="language-c"><span class="token macro property"><span class="token directive-hash">#</span><span class="token directive keyword">include</span> <span class="token string">&lt;semaphore.h&gt;</span></span>
+<span class="token keyword">int</span> <span class="token function">sem_init</span><span class="token punctuation">(</span><span class="token class-name">sem_t</span><span class="token operator">*</span> sem<span class="token punctuation">,</span> <span class="token keyword">int</span> pshared<span class="token punctuation">,</span> <span class="token keyword">unsigned</span> <span class="token keyword">int</span> value<span class="token punctuation">)</span><span class="token punctuation">;</span>
+<span class="token keyword">int</span> <span class="token function">sem_destory</span><span class="token punctuation">(</span><span class="token class-name">sem_t</span><span class="token operator">*</span> sem<span class="token punctuation">)</span><span class="token punctuation">;</span>
+<span class="token keyword">int</span> <span class="token function">sem_wait</span><span class="token punctuation">(</span><span class="token class-name">sem_t</span><span class="token operator">*</span> sem<span class="token punctuation">)</span><span class="token punctuation">;</span>
+<span class="token keyword">int</span> <span class="token function">sem_trywait</span><span class="token punctuation">(</span><span class="token class-name">sem_t</span><span class="token operator">*</span> sem<span class="token punctuation">)</span><span class="token punctuation">;</span>
+<span class="token keyword">int</span> <span class="token function">sem_post</span><span class="token punctuation">(</span><span class="token class-name">sem_t</span><span class="token operator">*</span> sem<span class="token punctuation">)</span><span class="token punctuation">;</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<ul>
+<li>sem参数指向被操作的信号量</li>
+<li>sem_init函数<ul>
+<li>用于初始化一个未命名的信号量（POSIX信号量API支持命名信号量）</li>
+<li>pshared参数指定信号量的类型，为0表示该信号量是当前进程的局部信号量，否则该信号量可以在多个进程之间共享</li>
+<li>value参数指定信号量的初始值</li>
+</ul>
+</li>
+<li><p>sem_destory函数</p>
+<ul>
+<li>用于销毁信号量</li>
+</ul>
+</li>
+<li><p>sem_wait函数</p>
+<ul>
+<li>以原子操作的方式将信号量的值减一</li>
+<li>如果信号量的值为0，则将被阻塞</li>
+</ul>
+</li>
+<li>sem_trywait函数<ul>
+<li>sem_wait函数的非阻塞版</li>
+<li>信号量为0时返回-1并设置errno为EAGAIN</li>
+</ul>
+</li>
+<li>sem_post函数<ul>
+<li>以原子操作的方式将信号量的值加一</li>
+<li>当信号量的值大于0时，其他正在调用sem_wait等待信号量的线程将被唤醒</li>
+</ul>
+</li>
+<li>成功时返回0，失败时返回-1并设置errno</li>
+</ul>
+<h2 id="互斥锁"><a href="#互斥锁" class="headerlink" title="互斥锁"></a>互斥锁</h2><h3 id="互斥锁基础API"><a href="#互斥锁基础API" class="headerlink" title="互斥锁基础API"></a>互斥锁基础API</h3><pre class="line-numbers language-c" data-language="c"><code class="language-c"><span class="token macro property"><span class="token directive-hash">#</span><span class="token directive keyword">include</span> <span class="token string">&lt;pthread.h&gt;</span></span>
+<span class="token keyword">int</span> <span class="token function">pthread_mutex_init</span><span class="token punctuation">(</span><span class="token class-name">pthread_mutex_t</span><span class="token operator">*</span> mutex<span class="token punctuation">,</span> <span class="token keyword">const</span> <span class="token class-name">pthread_mutexattr_t</span><span class="token operator">*</span> mutexattr<span class="token punctuation">)</span><span class="token punctuation">;</span>
+<span class="token keyword">int</span> <span class="token function">pthread_mutex_destroy</span><span class="token punctuation">(</span><span class="token class-name">pthread_mutex_t</span><span class="token operator">*</span> mutex<span class="token punctuation">)</span><span class="token punctuation">;</span>
+<span class="token keyword">int</span> <span class="token function">pthread_mutex_lock</span><span class="token punctuation">(</span><span class="token class-name">pthread_mutex_t</span><span class="token operator">*</span> mutex<span class="token punctuation">)</span><span class="token punctuation">;</span>
+<span class="token keyword">int</span> <span class="token function">pthread_mutex_trylock</span><span class="token punctuation">(</span><span class="token class-name">pthread_mutex_t</span><span class="token operator">*</span> mutex<span class="token punctuation">)</span><span class="token punctuation">;</span>
+<span class="token keyword">int</span> <span class="token function">pthread_mutex_unlock</span><span class="token punctuation">(</span><span class="token class-name">pthread_mutex_t</span><span class="token operator">*</span> mutex<span class="token punctuation">)</span><span class="token punctuation">;</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<ul>
+<li><p>mutex参数指向要操作的目标互斥锁，互斥锁的类型是pthread_mutex_t结构体</p>
+</li>
+<li><p>pthread_mutex_init函数</p>
+<ul>
+<li><p>用于初始化互斥锁</p>
+</li>
+<li><p>mutexattr参数指定互斥锁的属性，为NULL时表示使用默认属性</p>
+</li>
+<li><p>初始化互斥锁的另一种方式</p>
+<ul>
+<li>```c<br>pthread_mutex_t mutex=PTHREAD_MUTEX_INITIALIZER;<pre class="line-numbers language-none"><code class="language-none">
+    - 宏PTHREAD_MUTEX_INITIALIZER实际上只是把互斥锁的各个字段都初始化为0
+
+- pthread_mutex_destory函数
+
+  - 用于销毁互斥锁
+
+- pthread_mutex_lock函数
+
+  - 以原子操作的方式给一个互斥锁加锁
+  - 如果已被锁上，则阻塞
+
+- pthread_mutex_trylock函数
+
+  - pthread_mutex_lock函数的非阻塞版
+  - 如果已经被锁上返回错误码EBUSY
+  - 以上针对普通锁
+
+- pthread_mutex_unlock函数
+
+  - 以原子操作的方式给一个互斥锁解锁
+
+- 成功时返回0，失败时返回错误码
+
+### 互斥锁属性
+
+**主要函数**
+
+```c
+#include &lt;pthread.h&gt;
+/*初始化互斥锁属性对象*/
+int pthread_mutexattr_init(pthread_mutexattr_t*attr);
+/*销毁互斥锁属性对象*/
+int pthread_mutexattr_destroy(pthread_mutexattr_t*attr);
+/*获取和设置互斥锁的pshared属性*/
+int pthread_mutexattr_getpshared(const pthread_mutexattr_t* attr,int* pshared);
+int pthread_mutexattr_setpshared(pthread_mutexattr_t* attr,int pshared);
+/*获取和设置互斥锁的type属性*/
+int pthread_mutexattr_gettype(const pthread_mutexattr_t* attr,int* type);
+int pthread_mutexattr_settype(pthread_mutexattr_t* attr,int ype);<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+</li>
+</ul>
+</li>
+</ul>
+</li>
+<li><p>pshared属性，指定是否允许跨进程共享互斥锁</p>
+<ul>
+<li>PTHREAD_PROCESS_SHARED，互斥锁可以被跨进程共享</li>
+<li>PTHREAD_PROCESS_PRIVATE，互斥锁只能被和锁的初始化线程隶属于同一个进程的线程共享</li>
+</ul>
+</li>
+<li>type属性<ul>
+<li>PTHREAD_MUTEX_NORMAL，普通锁，互斥锁默认的类型<ul>
+<li>当一个线程对一个普通锁加锁以后,其余请求该锁的线程将形成一个等待队列，并在该锁解锁后按优先级获得它</li>
+<li>一个线程如果对一个已经加锁的普通锁再次加锁，将引发死锁;对一个已经被其他线程加锁的普通锁解锁，或者对一个已经解锁的普通锁再次解锁,将导致不可预期的后果</li>
+</ul>
+</li>
+<li>PTHREAD_MUTEX_ERRORCHECK，检错锁<ul>
+<li>一个线程如果对一个已经加锁的检错锁再次加锁，则加锁操作返回EDEADLK</li>
+<li>对一个已经解锁的检错锁再次解锁,则解锁操作返回EPERM</li>
+</ul>
+</li>
+<li>PTHREAD_MUTEX_RECURSIVE，嵌套锁<ul>
+<li>允许一个线程在释放锁之前多次对它加锁而不发生死锁。不过其他线程如果要获得这个锁,则当前锁的拥有者必须执行相应次数的解锁操作</li>
+<li>对一个已经被其他线程加锁的嵌套锁解锁，或者对一个已经解锁的嵌套锁再次解锁,则解锁操作返回EPERM</li>
+</ul>
+</li>
+<li>PTHREAD_MUTEX_DEFAULT，默认锁<ul>
+<li>一个线程如果对一个已经加锁的默认锁再次加锁，或者对一个已经被其他线程加锁的默认锁解锁，或者对一个已经解锁的默认锁再次解锁,将导致不可预期的后果</li>
+<li>这种锁在实现的时候可能被映射为上面三种锁之一</li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+<h2 id="条件变量"><a href="#条件变量" class="headerlink" title="条件变量"></a>条件变量</h2><p>如果说互斥锁是用于同步线程对共享数据的访问的话，那么条件变量则是用于在线程之间同步共享数据的值</p>
+<p>条件变量提供了一种线程间的通知机制：当某个共享数据达到某个值的时候，唤醒等待这个共享数据的线程</p>
+<hr>
+<p><strong>主要函数</strong></p>
+<pre class="line-numbers language-c" data-language="c"><code class="language-c"><span class="token macro property"><span class="token directive-hash">#</span><span class="token directive keyword">include</span> <span class="token string">&lt;pthread.h&gt;</span></span>
+<span class="token keyword">int</span> <span class="token function">pthread_cond_init</span><span class="token punctuation">(</span><span class="token class-name">pthread_cond_t</span><span class="token operator">*</span> cond<span class="token punctuation">,</span><span class="token keyword">const</span> <span class="token class-name">pthread_condattr_t</span><span class="token operator">*</span> cond_attr<span class="token punctuation">)</span><span class="token punctuation">;</span>
+<span class="token keyword">int</span> <span class="token function">pthread_cond_destroy</span><span class="token punctuation">(</span><span class="token class-name">pthread_cond_t</span><span class="token operator">*</span> cond<span class="token punctuation">)</span><span class="token punctuation">;</span>
+<span class="token keyword">int</span> <span class="token function">pthread_cond_broadcast</span><span class="token punctuation">(</span><span class="token class-name">pthread_cond_t</span><span class="token operator">*</span> cond<span class="token punctuation">)</span><span class="token punctuation">;</span>
+<span class="token keyword">int</span> <span class="token function">pthread_cond_signal</span><span class="token punctuation">(</span><span class="token class-name">pthread_cond_t</span><span class="token operator">*</span> cond<span class="token punctuation">)</span><span class="token punctuation">;</span>
+<span class="token keyword">int</span> <span class="token function">pthread_cond_wait</span><span class="token punctuation">(</span><span class="token class-name">pthread_cond_t</span><span class="token operator">*</span> cond<span class="token punctuation">,</span><span class="token class-name">pthread_mutex_t</span><span class="token operator">*</span> mutex<span class="token punctuation">)</span><span class="token punctuation">;</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<ul>
+<li><p>cond参数指向要操作的目标条件变量，条件变量的类型时pthread_cond结构体</p>
+</li>
+<li><p>pthread_cond_init函数用于初始化条件变量</p>
+<ul>
+<li><p>cond_attr参数指定条件变量的属性，若为NULL，则表示使用默认属性</p>
+</li>
+<li><p>另一种初始化方式</p>
+<ul>
+<li>```c<br>pthread_cond_t cond=PTHREAD_COND_INITIALIZER;<pre class="line-numbers language-none"><code class="language-none">
+    - 宏PTHREAD_COND_INITIALIZER实际上只是把条件变量的各个字段都初始化为0
+
+- pthread_cond_destroy函数用于销毁条件变量
+
+  - 销毁一个正在被等待的条件变量将失败并返回EBUSY
+
+- pthread_cond_broadcast函数以广播的方式唤醒所有等待目标条件变量的线程
+
+- pthread_coond_signal函数用于唤醒一个等待目标条件变量的线程
+
+  - 哪个线程被唤醒取决于线程的优先级和调度策略
+
+- pthread_cond_wait函数用于等待目标条件变量
+
+  - mutex参数是用于保护条件变量的互斥锁，以确保pthread_cond_wait操作的原子性
+    - 在调用前，**必须**确保互斥锁mutex已经加锁
+  - pthread_cond_wait函数执行时，首先把调用线程放入条件变量的等待队列中，然后将互斥锁mutex解锁
+  - 当pthread_cond_wait函数成功返回时，互斥锁mutex将再次被锁上
+
+- 成功时返回0，失败则返回错误码
+
+## 线程同步机制包装类
+
+```c++
+#ifndef LOCKER_H
+#define LOCKER_H
+#include &lt;exception&gt;
+#include &lt;pthread.h&gt;
+#include &lt;semaphore.h&gt;
+/*封装信号量的类*/
+class sem{
+public:
+	/*创建并初始化信号量*/
+	sem(){
+        if(sem_init(&amp;m_sem,0,0)!=0){
+            /*构造函数没有返回值,可以通过抛出异常来报告错误*/
+            throw std::exception();
+		}
+	}
+    /*销毁信号量*/
+    ~sem(){
+		sem_destroy(&amp;m_sem);
+	}
+    /*等待信号量*/
+    bool wait(){
+        return sem_wait(&amp;m_sem)==0;
+	}
+    /*增加信号量*/
+    bool post(){
+		return sem_post(&amp;m_sem)==0;
+	}
+private:
+	sem_t m_sem;
+};
+
+/*封装互斥锁的类*/
+class locker{
+	public:
+	/*创建并初始化互斥锁*/
+	locker(){
+		if(pthread_mutex_init(&amp;m_mutex,NULL)!=0){
+			throw std::exception();
+		}
+	}
+	/*销毁互斥锁*/
+	~locker(){
+		pthread_mutex_destroy(&amp;m_mutex);
+	}
+	/*获取互斥锁*/
+	bool lock(){
+		return pthread_mutex_lock(&amp;m_mutex)==0;
+	}
+	/*释放互斥锁*/
+	bool unlock(){
+		return pthread_mutex_unlock(&amp;m_mutex)==0;
+	}
+private:
+	pthread_mutex_t m_mutex;
+};
+
+/*封装条件变量的类*/
+class cond{
+	public:
+	/*创建并初始化条件变量*/
+	cond(){
+		if(pthread_mutex_init(&amp;m_mutex,NULL)!=0){
+			throw std::exception();
+		}
+		if(pthread_cond_init(&amp;m_cond,NULL)!=0){
+            /*构造函数中一旦出现问题,就应该立即释放已经成功分配了的资源*/
+            pthread_mutex_destroy(&amp;m_mutex);
+            throw std::exception();
+		}
+	}
+	/*销毁条件变量*/
+    ~cond(){
+        pthread_mutex_destroy(&amp;m_mutex);
+        pthread_cond_destroy(&amp;m_cond);
+    }
+    /*等待条件变量*/
+    bool wait(){
+        int ret=0;
+        pthread_mutex_lock(&amp;m_mutex);
+        ret=pthread_cond_wait(&amp;m_cond,&amp;m_mutex);
+        pthread_mutex_unlock(&amp;m_mutex);
+        return ret==0;
+	}
+    /*唤醒等待条件变量的线程*/
+    bool signal(){
+		return pthread_cond_signal(&amp;m_cond)==0;
+	}
+private:
+    pthread_mutex_t m_mutex;
+    pthread_cond_t m_cond;
+};
+#endif<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+</li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+<h2 id="多线程环境"><a href="#多线程环境" class="headerlink" title="多线程环境"></a>多线程环境</h2><h3 id="可重入函数"><a href="#可重入函数" class="headerlink" title="可重入函数"></a>可重入函数</h3><p>如果一个函数能被多个线程同时调用且不发生竞态条件，则我们称它是线程安全的(thread safe)，或者说它是可重入函数</p>
+<p>在多线程程序中调用库函数，一定要使用其可重入版本</p>
+<h3 id="线程和进程"><a href="#线程和进程" class="headerlink" title="线程和进程"></a>线程和进程</h3><p>思考这样一个问题：如果一个多线程程序的某个线程调用了fork函数，那么新创建的子进程是否将自动创建和父进程相同数量的线程呢？</p>
+<hr>
+<p>答案是“否”，正如我们期望的那样。子进程只拥有一个执行线程，它是调用fork的那个线程的完整复制。并且子进程将自动继承父进程中互斥锁（条件变量与之类似）的状态。也就是说，父进程中已经被加锁的互斥锁在子进程中也是被锁住的</p>
+<p>这就引起了一个问题：子进程可能不清楚从父进程继承而来的互斥锁的具体状态（是加锁状态还是解锁状态）。这个互斥锁可能被加锁了，但并不是由调用fork函数的那个线程锁住的,而是由其他线程锁住的。如果是这种情况，则子进程若再次对该互斥锁执行加锁操作就会导致死锁</p>
+<hr>
+<p>pthread提供了一个专门的函数pthread_atfork，以确保fork调用后父进程和子进程都拥有一个清楚的锁状态</p>
+<pre class="line-numbers language-c" data-language="c"><code class="language-c"><span class="token macro property"><span class="token directive-hash">#</span><span class="token directive keyword">include</span> <span class="token string">&lt;pthread.h&gt;</span></span>
+<span class="token keyword">int</span> <span class="token function">pthread_atfork</span><span class="token punctuation">(</span><span class="token keyword">void</span><span class="token punctuation">(</span><span class="token operator">*</span>prepare<span class="token punctuation">)</span><span class="token punctuation">(</span><span class="token keyword">void</span><span class="token punctuation">)</span><span class="token punctuation">,</span><span class="token keyword">void</span><span class="token punctuation">(</span><span class="token operator">*</span>parent<span class="token punctuation">)</span><span class="token punctuation">(</span><span class="token keyword">void</span><span class="token punctuation">)</span><span class="token punctuation">,</span><span class="token keyword">void</span><span class="token punctuation">(</span><span class="token operator">*</span>child<span class="token punctuation">)</span><span class="token punctuation">(</span><span class="token keyword">void</span><span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">;</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span></span></code></pre>
+<ul>
+<li>该函数建立3个fork句柄来帮助我们清理互斥锁的状态</li>
+<li>prepare句柄将在fork调用创建出子进程之前被执行，可以用来锁住所有父进程中的互斥锁</li>
+<li>parent句柄则是fork调用创建出子进程之后，而fork返回之前，在父进程中被执行，释放所有在prepare句柄中被锁住的互斥锁</li>
+<li>child句柄是fork返回之前，在子进程中被执行，作用与parent句柄一样</li>
+<li>成功时返回0，失败则返回错误码</li>
+</ul>
+<h3 id="线程和信号"><a href="#线程和信号" class="headerlink" title="线程和信号"></a>线程和信号</h3><p>每个线程都可以独立地设置信号掩码</p>
+<pre class="line-numbers language-c" data-language="c"><code class="language-c"><span class="token macro property"><span class="token directive-hash">#</span><span class="token directive keyword">include</span> <span class="token string">&lt;pthread.h&gt;</span></span>
+<span class="token macro property"><span class="token directive-hash">#</span><span class="token directive keyword">include</span> <span class="token string">&lt;signal.h&gt;</span></span>
+<span class="token keyword">int</span> <span class="token function">pthread_sigmask</span><span class="token punctuation">(</span><span class="token keyword">int</span> how<span class="token punctuation">,</span> <span class="token keyword">const</span> <span class="token class-name">sigset_t</span><span class="token operator">*</span> newmask<span class="token punctuation">,</span> <span class="token class-name">sigset_t</span><span class="token operator">*</span> oldmask<span class="token punctuation">)</span><span class="token punctuation">;</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span></span></code></pre>
+<ul>
+<li>该函数参数的含义与sigprocmask的参数完全相同</li>
+<li>成功时返回0，失败则返回错误码</li>
+</ul>
+<hr>
+<p>由于进程中的所有线程共享该进程的信号，所以线程库将根据线程掩码决定把信号发送给哪个具体的线程。因此，如果我们在每个子线程中都单独设置信号掩码，就很容易导致逻辑错误。此外，所有线程共享信号处理函数。也就是说，当我们在一个线程中设置了某个信号的信号处理函数后，它将覆盖其他线程为同一个信号设置的信号处理函数。这两点都说明,我们应该定义一个专门的线程来处理所有的信号</p>
+<p><strong>步骤：</strong></p>
+<ol>
+<li><p>在主线程创建出其他子线程之前就调用pthread_sigmask来设置好信号掩码，所有新创建的子线程都将自动继承这个信号掩码。这样做之后，实际上所有线程都不会响应被屏蔽的信号了。</p>
+</li>
+<li><p>在某个线程中调用如下函数来等待信号并处理之：</p>
+<pre class="line-numbers language-c" data-language="c"><code class="language-c"><span class="token macro property"><span class="token directive-hash">#</span><span class="token directive keyword">include</span> <span class="token string">&lt;signal.h&gt;</span></span>
+<span class="token keyword">int</span> <span class="token function">sigwait</span><span class="token punctuation">(</span><span class="token keyword">const</span> <span class="token class-name">sigset_t</span><span class="token operator">*</span> set<span class="token punctuation">,</span> <span class="token keyword">int</span><span class="token operator">*</span> sig<span class="token punctuation">)</span><span class="token punctuation">;</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span></span></code></pre>
+<ul>
+<li>set参数指定要等待的信号的集合</li>
+<li>sig指向的整数用于存储该函数返回的信号值</li>
+<li>成功时返回0，失败则返回错误码</li>
+<li>如果我们使用了sigwait，就不应该再为信号设置信号处理函数了。这是因为当程序接收到信号时，二者中只能有一个起作用</li>
+</ul>
+</li>
+</ol>
+<hr>
+<p>pthread还提供了下面的方法，使得我们可以明确地将一个信号发送给指定的线程：</p>
+<pre class="line-numbers language-c" data-language="c"><code class="language-c"><span class="token macro property"><span class="token directive-hash">#</span><span class="token directive keyword">include</span> <span class="token string">&lt;signal.h&gt;</span></span>
+<span class="token keyword">int</span> <span class="token function">pthread_kill</span><span class="token punctuation">(</span><span class="token class-name">pthread_t</span> thread<span class="token punctuation">,</span> <span class="token keyword">int</span> sig<span class="token punctuation">)</span><span class="token punctuation">;</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span></span></code></pre>
+<ul>
+<li>thread参数指定目标线程</li>
+<li>sig参数指定待发送的信号</li>
+<li>如果sig为0，则pthread_kill不发送信号，但它仍然会执行错误检查，可以利用这种方式来检测目标线程是否存在</li>
+<li>成功时返回0，失败则返回错误码</li>
+</ul>
+
+    </div>
+
+    
+    
+    
+
+      <footer class="post-footer">
+          <div class="post-tags">
+              <a href="/tags/C-socket/" rel="tag"># C++ socket</a>
+          </div>
+
+        
+
+
+        
+    <div class="post-nav">
+      <div class="post-nav-item">
+    <a href="/2023/11/29/4-%E9%AB%98%E6%80%A7%E8%83%BD%E6%9C%8D%E5%8A%A1%E5%99%A8%E7%A8%8B%E5%BA%8F%E6%A1%86%E6%9E%B6/" rel="prev" title="高性能服务器程序框架">
+      <i class="fa fa-chevron-left"></i> 高性能服务器程序框架
+    </a></div>
+      <div class="post-nav-item">
+    <a href="/2023/11/29/12-%E8%BF%9B%E7%A8%8B%E6%B1%A0%E5%92%8C%E7%BA%BF%E7%A8%8B%E6%B1%A0%E6%A6%82%E8%BF%B0/" rel="next" title="进程池和线程池">
+      进程池和线程池 <i class="fa fa-chevron-right"></i>
+    </a></div>
+    </div>
+      </footer>
+    
+  </article>
+  
+  
+  
+
+
+
+          </div>
+          
+
+<script>
+  window.addEventListener('tabs:register', () => {
+    let { activeClass } = CONFIG.comments;
+    if (CONFIG.comments.storage) {
+      activeClass = localStorage.getItem('comments_active') || activeClass;
+    }
+    if (activeClass) {
+      let activeTab = document.querySelector(`a[href="#comment-${activeClass}"]`);
+      if (activeTab) {
+        activeTab.click();
+      }
+    }
+  });
+  if (CONFIG.comments.storage) {
+    window.addEventListener('tabs:click', event => {
+      if (!event.target.matches('.tabs-comment .tab-content .tab-pane')) return;
+      let commentClass = event.target.classList[1];
+      localStorage.setItem('comments_active', commentClass);
+    });
+  }
+</script>
+
+        </div>
+          
+  
+  <div class="toggle sidebar-toggle">
+    <span class="toggle-line toggle-line-first"></span>
+    <span class="toggle-line toggle-line-middle"></span>
+    <span class="toggle-line toggle-line-last"></span>
+  </div>
+
+  <aside class="sidebar">
+    <div class="sidebar-inner">
+
+      <ul class="sidebar-nav motion-element">
+        <li class="sidebar-nav-toc">
+          Table of Contents
+        </li>
+        <li class="sidebar-nav-overview">
+          Overview
+        </li>
+      </ul>
+
+      <!--noindex-->
+      <div class="post-toc-wrap sidebar-panel">
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#%E5%A4%9A%E7%BA%BF%E7%A8%8B%E7%BC%96%E7%A8%8B"><span class="nav-text">多线程编程</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#Linux%E7%BA%BF%E7%A8%8B%E6%A6%82%E8%BF%B0"><span class="nav-text">Linux线程概述</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E7%BA%BF%E7%A8%8B%E6%A8%A1%E5%9E%8B"><span class="nav-text">线程模型</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Linux%E7%BA%BF%E7%A8%8B%E5%BA%93"><span class="nav-text">Linux线程库</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%88%9B%E5%BB%BA%E7%BA%BF%E7%A8%8B%E5%92%8C%E7%BB%93%E6%9D%9F%E7%BA%BF%E7%A8%8B"><span class="nav-text">创建线程和结束线程</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#pthread-create%E5%88%9B%E5%BB%BA%E7%BA%BF%E7%A8%8B"><span class="nav-text">pthread_create创建线程</span></a></li></ol></li></ol></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#include"><span class="nav-text">include </span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#pthread-join%E5%9B%9E%E6%94%B6%E7%BA%BF%E7%A8%8B"><span class="nav-text">pthread_join回收线程</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#pthread-cancel"><span class="nav-text">pthread_cancel</span></a></li></ol></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E7%BA%BF%E7%A8%8B%E5%B1%9E%E6%80%A7"><span class="nav-text">线程属性</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#POSIX%E4%BF%A1%E5%8F%B7%E9%87%8F"><span class="nav-text">POSIX信号量</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E4%BA%92%E6%96%A5%E9%94%81"><span class="nav-text">互斥锁</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E4%BA%92%E6%96%A5%E9%94%81%E5%9F%BA%E7%A1%80API"><span class="nav-text">互斥锁基础API</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E6%9D%A1%E4%BB%B6%E5%8F%98%E9%87%8F"><span class="nav-text">条件变量</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%A4%9A%E7%BA%BF%E7%A8%8B%E7%8E%AF%E5%A2%83"><span class="nav-text">多线程环境</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%8F%AF%E9%87%8D%E5%85%A5%E5%87%BD%E6%95%B0"><span class="nav-text">可重入函数</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E7%BA%BF%E7%A8%8B%E5%92%8C%E8%BF%9B%E7%A8%8B"><span class="nav-text">线程和进程</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E7%BA%BF%E7%A8%8B%E5%92%8C%E4%BF%A1%E5%8F%B7"><span class="nav-text">线程和信号</span></a></li></ol></li></ol></li></ol></div>
+      </div>
+      <!--/noindex-->
+
+      <div class="site-overview-wrap sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+  <p class="site-author-name" itemprop="name">renmale-lv</p>
+  <div class="site-description" itemprop="description"></div>
+</div>
+<div class="site-state-wrap motion-element">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+          <a href="/archives/">
+        
+          <span class="site-state-item-count">25</span>
+          <span class="site-state-item-name">posts</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-tags">
+            <a href="/tags/">
+        <span class="site-state-item-count">9</span>
+        <span class="site-state-item-name">tags</span></a>
+      </div>
+  </nav>
+</div>
+
+
+
+      </div>
+
+    </div>
+  </aside>
+  <div id="sidebar-dimmer"></div>
+
+
+      </div>
+    </main>
+
+    <footer class="footer">
+      <div class="footer-inner">
+        
+
+        
+
+<div class="copyright">
+  
+  &copy; 
+  <span itemprop="copyrightYear">2024</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">renmale-lv</span>
+    <span class="post-meta-divider">|</span>
+    <span class="post-meta-item-icon">
+      <i class="fa fa-chart-area"></i>
+    </span>
+    <span title="Symbols count total">225k</span>
+    <span class="post-meta-divider">|</span>
+    <span class="post-meta-item-icon">
+      <i class="fa fa-coffee"></i>
+    </span>
+    <span title="Reading time total">3:24</span>
+</div>
+  <div class="powered-by">Powered by <a href="https://hexo.io/" class="theme-link" rel="noopener" target="_blank">Hexo</a> & <a href="https://muse.theme-next.org/" class="theme-link" rel="noopener" target="_blank">NexT.Muse</a>
+  </div>
+
+        
+
+
+
+
+
+
+
+
+      </div>
+    </footer>
+  </div>
+
+  
+  <script src="/lib/anime.min.js"></script>
+  <script src="/lib/velocity/velocity.min.js"></script>
+  <script src="/lib/velocity/velocity.ui.min.js"></script>
+
+<script src="/js/utils.js"></script>
+
+<script src="/js/motion.js"></script>
+
+
+<script src="/js/schemes/muse.js"></script>
+
+
+<script src="/js/next-boot.js"></script>
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+  
+
+</body>
+</html>

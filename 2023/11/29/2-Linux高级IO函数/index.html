@@ -1,0 +1,627 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#222">
+<meta name="generator" content="Hexo 6.3.0">
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+
+<link rel="stylesheet" href="/css/main.css">
+
+
+<link rel="stylesheet" href="/lib/font-awesome/css/all.min.css">
+
+<script id="hexo-configurations">
+    var NexT = window.NexT || {};
+    var CONFIG = {"hostname":"example.com","root":"/","scheme":"Muse","version":"7.8.0","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12,"onmobile":false},"copycode":{"enable":false,"show_result":false,"style":null},"back2top":{"enable":true,"sidebar":false,"scrollpercent":false},"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"algolia":{"hits":{"per_page":10},"labels":{"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}},"localsearch":{"enable":false,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},"path":"search.xml"};
+  </script>
+
+  <meta name="description" content="用于创建文件描述符pipe函数#include&lt;unistd.h&gt; int pipe(int fd[2]);  pipe函数用于创建一个单向管道，以实现进程间的通信 pipe函数的参数是一个包含两个int型整数的数组指针，该函数成功时返回0，并将一对打开的文件描述符值填入其参数指向的数组；如果失败，则返回-1并设置errno。   #include&lt;sys&#x2F;types">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Linux高级I&#x2F;O函数">
+<meta property="og:url" content="http://example.com/2023/11/29/2-Linux%E9%AB%98%E7%BA%A7IO%E5%87%BD%E6%95%B0/index.html">
+<meta property="og:site_name" content="renmale-lv blog">
+<meta property="og:description" content="用于创建文件描述符pipe函数#include&lt;unistd.h&gt; int pipe(int fd[2]);  pipe函数用于创建一个单向管道，以实现进程间的通信 pipe函数的参数是一个包含两个int型整数的数组指针，该函数成功时返回0，并将一对打开的文件描述符值填入其参数指向的数组；如果失败，则返回-1并设置errno。   #include&lt;sys&#x2F;types">
+<meta property="og:locale" content="en_US">
+<meta property="og:image" content="https://gitee.com/renmale-sztu/image/raw/master/202312282136663.png">
+<meta property="og:image" content="https://gitee.com/renmale-sztu/image/raw/master/202312282213040.png">
+<meta property="og:image" content="https://gitee.com/renmale-sztu/image/raw/master/202312282210892.png">
+<meta property="og:image" content="https://gitee.com/renmale-sztu/image/raw/master/202312282356818.png">
+<meta property="article:published_time" content="2023-11-28T17:36:05.000Z">
+<meta property="article:modified_time" content="2024-03-05T02:32:59.874Z">
+<meta property="article:author" content="renmale-lv">
+<meta property="article:tag" content="C++ socket">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://gitee.com/renmale-sztu/image/raw/master/202312282136663.png">
+
+<link rel="canonical" href="http://example.com/2023/11/29/2-Linux%E9%AB%98%E7%BA%A7IO%E5%87%BD%E6%95%B0/">
+
+
+<script id="page-configurations">
+  // https://hexo.io/docs/variables.html
+  CONFIG.page = {
+    sidebar: "",
+    isHome : false,
+    isPost : true,
+    lang   : 'en'
+  };
+</script>
+
+  <title>Linux高级I/O函数 | renmale-lv blog</title>
+  
+
+
+
+
+
+
+  <noscript>
+  <style>
+  .use-motion .brand,
+  .use-motion .menu-item,
+  .sidebar-inner,
+  .use-motion .post-block,
+  .use-motion .pagination,
+  .use-motion .comments,
+  .use-motion .post-header,
+  .use-motion .post-body,
+  .use-motion .collection-header { opacity: initial; }
+
+  .use-motion .site-title,
+  .use-motion .site-subtitle {
+    opacity: initial;
+    top: initial;
+  }
+
+  .use-motion .logo-line-before i { left: initial; }
+  .use-motion .logo-line-after i { right: initial; }
+  </style>
+</noscript>
+
+<style>mjx-container[jax="SVG"] {
+  direction: ltr;
+}
+
+mjx-container[jax="SVG"] > svg {
+  overflow: visible;
+}
+
+mjx-container[jax="SVG"][display="true"] {
+  display: block;
+  text-align: center;
+  margin: 1em 0;
+}
+
+mjx-container[jax="SVG"][justify="left"] {
+  text-align: left;
+}
+
+mjx-container[jax="SVG"][justify="right"] {
+  text-align: right;
+}
+
+g[data-mml-node="merror"] > g {
+  fill: red;
+  stroke: red;
+}
+
+g[data-mml-node="merror"] > rect[data-background] {
+  fill: yellow;
+  stroke: none;
+}
+
+g[data-mml-node="mtable"] > line[data-line] {
+  stroke-width: 70px;
+  fill: none;
+}
+
+g[data-mml-node="mtable"] > rect[data-frame] {
+  stroke-width: 70px;
+  fill: none;
+}
+
+g[data-mml-node="mtable"] > .mjx-dashed {
+  stroke-dasharray: 140;
+}
+
+g[data-mml-node="mtable"] > .mjx-dotted {
+  stroke-linecap: round;
+  stroke-dasharray: 0,140;
+}
+
+g[data-mml-node="mtable"] > svg {
+  overflow: visible;
+}
+
+[jax="SVG"] mjx-tool {
+  display: inline-block;
+  position: relative;
+  width: 0;
+  height: 0;
+}
+
+[jax="SVG"] mjx-tool > mjx-tip {
+  position: absolute;
+  top: 0;
+  left: 0;
+}
+
+mjx-tool > mjx-tip {
+  display: inline-block;
+  padding: .2em;
+  border: 1px solid #888;
+  font-size: 70%;
+  background-color: #F8F8F8;
+  color: black;
+  box-shadow: 2px 2px 5px #AAAAAA;
+}
+
+g[data-mml-node="maction"][data-toggle] {
+  cursor: pointer;
+}
+
+mjx-status {
+  display: block;
+  position: fixed;
+  left: 1em;
+  bottom: 1em;
+  min-width: 25%;
+  padding: .2em .4em;
+  border: 1px solid #888;
+  font-size: 90%;
+  background-color: #F8F8F8;
+  color: black;
+}
+
+foreignObject[data-mjx-xml] {
+  font-family: initial;
+  line-height: normal;
+  overflow: visible;
+}
+
+.MathJax path {
+  stroke-width: 3;
+}
+
+mjx-container[display="true"] {
+  overflow: auto hidden;
+}
+
+mjx-container[display="true"] + br {
+  display: none;
+}
+</style><link rel="alternate" href="/atom.xml" title="renmale-lv blog" type="application/atom+xml">
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage">
+  <div class="container use-motion">
+    <div class="headband"></div>
+
+    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="Toggle navigation bar">
+      <span class="toggle-line toggle-line-first"></span>
+      <span class="toggle-line toggle-line-middle"></span>
+      <span class="toggle-line toggle-line-last"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <span class="logo-line-before"><i></i></span>
+      <h1 class="site-title">renmale-lv blog</h1>
+      <span class="logo-line-after"><i></i></span>
+    </a>
+      <p class="site-subtitle" itemprop="description">记录学习点滴</p>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger">
+    </div>
+  </div>
+</div>
+
+
+
+
+<nav class="site-nav">
+  <ul id="menu" class="main-menu menu">
+        <li class="menu-item menu-item-home">
+
+    <a href="/" rel="section"><i class="fa fa-home fa-fw"></i>Home</a>
+
+  </li>
+        <li class="menu-item menu-item-archives">
+
+    <a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>Archives</a>
+
+  </li>
+  </ul>
+</nav>
+
+
+
+
+</div>
+    </header>
+
+    
+  <div class="back-to-top">
+    <i class="fa fa-arrow-up"></i>
+    <span>0%</span>
+  </div>
+
+
+    <main class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          
+
+          <div class="content post posts-expand">
+            
+
+    
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="en">
+    <link itemprop="mainEntityOfPage" href="http://example.com/2023/11/29/2-Linux%E9%AB%98%E7%BA%A7IO%E5%87%BD%E6%95%B0/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="renmale-lv">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="renmale-lv blog">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          Linux高级I/O函数
+        </h1>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">Posted on</span>
+
+              <time title="Created: 2023-11-29 01:36:05" itemprop="dateCreated datePublished" datetime="2023-11-29T01:36:05+08:00">2023-11-29</time>
+            </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="far fa-calendar-check"></i>
+                </span>
+                <span class="post-meta-item-text">Edited on</span>
+                <time title="Modified: 2024-03-05 10:32:59" itemprop="dateModified" datetime="2024-03-05T10:32:59+08:00">2024-03-05</time>
+              </span>
+
+          <br>
+            <span class="post-meta-item" title="Symbols count in article">
+              <span class="post-meta-item-icon">
+                <i class="far fa-file-word"></i>
+              </span>
+                <span class="post-meta-item-text">Symbols count in article: </span>
+              <span>2.1k</span>
+            </span>
+            <span class="post-meta-item" title="Reading time">
+              <span class="post-meta-item-icon">
+                <i class="far fa-clock"></i>
+              </span>
+                <span class="post-meta-item-text">Reading time &asymp;</span>
+              <span>2 mins.</span>
+            </span>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+        <meta name="referrer" content="no-referrer">    
+
+<h2 id="用于创建文件描述符"><a href="#用于创建文件描述符" class="headerlink" title="用于创建文件描述符"></a>用于创建文件描述符</h2><h3 id="pipe函数"><a href="#pipe函数" class="headerlink" title="pipe函数"></a>pipe函数</h3><pre class="line-numbers language-c" data-language="c"><code class="language-c"><span class="token macro property"><span class="token directive-hash">#</span><span class="token directive keyword">include</span><span class="token string">&lt;unistd.h&gt;</span></span>
+<span class="token keyword">int</span> <span class="token function">pipe</span><span class="token punctuation">(</span><span class="token keyword">int</span> fd<span class="token punctuation">[</span><span class="token number">2</span><span class="token punctuation">]</span><span class="token punctuation">)</span><span class="token punctuation">;</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span></span></code></pre>
+<ul>
+<li>pipe函数用于创建一个单向管道，以实现进程间的通信</li>
+<li>pipe函数的参数是一个包含两个int型整数的数组指针，该函数成功时返回0，并将一对打开的文件描述符值填入其参数指向的数组；如果失败，则返回-1并设置errno。</li>
+</ul>
+<hr>
+<pre class="line-numbers language-c" data-language="c"><code class="language-c"><span class="token macro property"><span class="token directive-hash">#</span><span class="token directive keyword">include</span><span class="token string">&lt;sys/types.h&gt;</span></span>
+<span class="token macro property"><span class="token directive-hash">#</span><span class="token directive keyword">include</span><span class="token string">&lt;sys/socket.h&gt;</span></span>
+<span class="token keyword">int</span> socketpair<span class="token operator">&lt;</span><span class="token keyword">int</span> domain<span class="token punctuation">,</span> <span class="token keyword">int</span> type<span class="token punctuation">,</span> <span class="token keyword">int</span> protocol<span class="token punctuation">,</span> <span class="token keyword">int</span> fd<span class="token punctuation">[</span><span class="token number">2</span><span class="token punctuation">]</span><span class="token punctuation">)</span><span class="token punctuation">;</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span></span></code></pre>
+<ul>
+<li>socket基础API，能方便地创建双向管道</li>
+<li>前三个参数与socket系统调用一致，但domain只能使用UNIX本地域协议族AF_UNIX，因此只能在本地使用这个双向管道</li>
+<li>成功返回0，失败返回-1并设置errno。</li>
+</ul>
+<h3 id="dup函数和dup2函数"><a href="#dup函数和dup2函数" class="headerlink" title="dup函数和dup2函数"></a>dup函数和dup2函数</h3><pre class="line-numbers language-c" data-language="c"><code class="language-c"><span class="token macro property"><span class="token directive-hash">#</span><span class="token directive keyword">include</span><span class="token string">&lt;unistd.h&gt;</span></span>
+<span class="token keyword">int</span> <span class="token function">dup</span><span class="token punctuation">(</span><span class="token keyword">int</span> file_descriptor<span class="token punctuation">)</span><span class="token punctuation">;</span>
+<span class="token keyword">int</span> <span class="token function">dup2</span><span class="token punctuation">(</span><span class="token keyword">int</span> file_descriptor_one<span class="token punctuation">,</span> <span class="token keyword">int</span> file_descriptor_two<span class="token punctuation">)</span><span class="token punctuation">;</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span></span></code></pre>
+<ul>
+<li>dup函数创建一个新的文件描述符，该新文件描述符和原有原件描述符file_descriptor指向相同的文件、管道或者网络连接</li>
+<li>dup总是返回系统当前可用的最小整数值</li>
+<li>dup2和dup类似，不过返回的是第一个不小于file_descriptor_two的整数值</li>
+<li>调用失败时返回-1并设置errno</li>
+<li>通过dup/dup2函数创建的文件描述符并不继承原有文件描述符的属性</li>
+</ul>
+<h2 id="用于读写数据"><a href="#用于读写数据" class="headerlink" title="用于读写数据"></a>用于读写数据</h2><h3 id="readv函数和writev函数"><a href="#readv函数和writev函数" class="headerlink" title="readv函数和writev函数"></a>readv函数和writev函数</h3><pre class="line-numbers language-c" data-language="c"><code class="language-c"><span class="token macro property"><span class="token directive-hash">#</span><span class="token directive keyword">include</span><span class="token string">&lt;sys/uio.h&gt;</span></span>
+<span class="token class-name">ssize_t</span> <span class="token function">readv</span><span class="token punctuation">(</span><span class="token keyword">int</span> fd<span class="token punctuation">,</span> <span class="token keyword">const</span> <span class="token keyword">struct</span> <span class="token class-name">iovec</span><span class="token operator">*</span> vector<span class="token punctuation">,</span> <span class="token keyword">int</span> count<span class="token punctuation">)</span><span class="token punctuation">;</span>
+<span class="token class-name">ssize_t</span> <span class="token function">writev</span><span class="token punctuation">(</span><span class="token keyword">int</span> fd<span class="token punctuation">,</span> <span class="token keyword">const</span> <span class="token keyword">struct</span> <span class="token class-name">iovec</span><span class="token operator">*</span> vector<span class="token punctuation">,</span> <span class="token keyword">int</span> count<span class="token punctuation">)</span><span class="token punctuation">;</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span></span></code></pre>
+<ul>
+<li>readv函数将数据从文件描述符读到分散的内存块中，即分散读</li>
+<li>writev函数将多块分散的内存数据一并写入文件描述符中，即集中写</li>
+<li>fd参数是被操作的文件描述符</li>
+<li>vector是内存块数组</li>
+<li>count是数组的长度</li>
+</ul>
+<h3 id="mmap函数和munmap函数"><a href="#mmap函数和munmap函数" class="headerlink" title="mmap函数和munmap函数"></a>mmap函数和munmap函数</h3><pre class="line-numbers language-c" data-language="c"><code class="language-c"><span class="token macro property"><span class="token directive-hash">#</span><span class="token directive keyword">include</span><span class="token string">&lt;sys/mman.h&gt;</span></span>
+<span class="token keyword">void</span><span class="token operator">*</span> <span class="token function">mmap</span><span class="token punctuation">(</span><span class="token keyword">void</span><span class="token operator">*</span> start<span class="token punctuation">,</span> <span class="token class-name">size_t</span> length<span class="token punctuation">,</span> <span class="token keyword">int</span> port<span class="token punctuation">,</span> <span class="token keyword">int</span> flags<span class="token punctuation">,</span> <span class="token keyword">int</span> fd<span class="token punctuation">,</span> <span class="token class-name">off_t</span> offset<span class="token punctuation">)</span><span class="token punctuation">;</span>
+<span class="token keyword">int</span> <span class="token function">munmap</span><span class="token punctuation">(</span><span class="token keyword">void</span><span class="token operator">*</span> start<span class="token punctuation">,</span> <span class="token class-name">size_t</span> length<span class="token punctuation">)</span><span class="token punctuation">;</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span></span></code></pre>
+<ul>
+<li>mmap函数用于申请一段内存空间，成功时返回指向目标内存区域的指针，失败则返回MAP_FAILED((void*)-1)并设置errno</li>
+<li>munmap函数则释放由mmap创建的这段内存空间，成功时返回0，失败时返回-1并设置errno</li>
+<li>start参数允许用户使用某个特定的地址作为这段内存的起始地址，为null时系统自动分配一个地址</li>
+<li>length指定内存段的长度</li>
+<li>port用来设置内存段的访问权限<ul>
+<li>PORT_READ，内存段可读</li>
+<li>PORT_WRITE，内存段可写</li>
+<li>PORT_EXEC，内存段可执行</li>
+<li>PORT_NONE，内存段不能被访问</li>
+</ul>
+</li>
+<li>flags参数控制内存段内容被修改后程序的行为<ul>
+<li><img src="https://gitee.com/renmale-sztu/image/raw/master/202312282136663.png" alt="image-20231228213611717"></li>
+</ul>
+</li>
+<li>fd参数是被映射文件的文件描述符</li>
+<li>offset参数设置从文件的何处开始映射</li>
+</ul>
+<h3 id="splice函数"><a href="#splice函数" class="headerlink" title="splice函数"></a>splice函数</h3><pre class="line-numbers language-c" data-language="c"><code class="language-c"><span class="token macro property"><span class="token directive-hash">#</span><span class="token directive keyword">include</span><span class="token string">&lt;fcntl.h&gt;</span></span>
+<span class="token class-name">ssize_t</span> <span class="token function">splice</span><span class="token punctuation">(</span><span class="token keyword">int</span> fd_in<span class="token punctuation">,</span> <span class="token class-name">loff_t</span><span class="token operator">*</span> off_in<span class="token punctuation">,</span> <span class="token keyword">int</span> fd_out<span class="token punctuation">,</span> <span class="token class-name">loff_t</span><span class="token operator">*</span> off_out<span class="token punctuation">,</span> <span class="token class-name">size_t</span> len<span class="token punctuation">,</span> <span class="token keyword">unsigned</span> <span class="token keyword">int</span> flags<span class="token punctuation">)</span><span class="token punctuation">;</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span></span></code></pre>
+<ul>
+<li>splice函数用于在两个文件描述符之间移动数据，也就是零拷贝操作，成功时返回移动字节的数量，失败时返回-1并设置errno<ul>
+<li><img src="https://gitee.com/renmale-sztu/image/raw/master/202312282213040.png" alt="image-20231228221323161"></li>
+</ul>
+</li>
+<li>fd_in参数是待输入数据的文件描述符</li>
+<li>off_in<ul>
+<li>如果fd_in是一个管道文件描述符，则off_in参数必须被设置为NULL</li>
+<li>如果fd_in不是一个管道文件描述符，则off_in表示从输入数据流的何处开始读取数据，为NULL时则表示从输入数据流的当前偏移位置读入</li>
+</ul>
+</li>
+<li>fd_out/off_out参数的含义与fd_in/fd_out相同，不过用于输出数据流</li>
+<li>len参数指定移动数据的长度</li>
+<li>flags参数则控制数据如何移动<ul>
+<li><img src="https://gitee.com/renmale-sztu/image/raw/master/202312282210892.png" alt="image-20231228221039832"></li>
+</ul>
+</li>
+<li>fd_in和fd_out必须至少有一个是管道文件描述符</li>
+</ul>
+<h3 id="tee函数"><a href="#tee函数" class="headerlink" title="tee函数"></a>tee函数</h3><pre class="line-numbers language-c" data-language="c"><code class="language-c"><span class="token macro property"><span class="token directive-hash">#</span><span class="token directive keyword">include</span> <span class="token string">&lt;fcntl.h&gt;</span></span>
+<span class="token class-name">ssize_t</span> <span class="token function">tee</span><span class="token punctuation">(</span><span class="token keyword">int</span> fd_in<span class="token punctuation">,</span> <span class="token keyword">int</span> fd_out<span class="token punctuation">,</span> <span class="token class-name">size_t</span> len<span class="token punctuation">,</span> <span class="token keyword">unsigned</span> <span class="token keyword">int</span> flags<span class="token punctuation">)</span><span class="token punctuation">;</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span></span></code></pre>
+<ul>
+<li>tee函数在两个管道文件描述符之间复制数据，也是零拷贝操作</li>
+<li>各参数含义与splice函数一致</li>
+<li>成功时返回在两个文件描述符之间复制的数据数量（字节数），失败时返回-1并设置errno</li>
+</ul>
+<h2 id="用于控制I-O行为和属性"><a href="#用于控制I-O行为和属性" class="headerlink" title="用于控制I/O行为和属性"></a>用于控制I/O行为和属性</h2><h3 id="fcntl函数"><a href="#fcntl函数" class="headerlink" title="fcntl函数"></a>fcntl函数</h3><pre class="line-numbers language-c" data-language="c"><code class="language-c"><span class="token macro property"><span class="token directive-hash">#</span><span class="token directive keyword">include</span><span class="token string">&lt;fcntl.h&gt;</span></span>
+<span class="token keyword">int</span> <span class="token function">fcntl</span><span class="token punctuation">(</span><span class="token keyword">int</span> fd<span class="token punctuation">,</span> <span class="token keyword">int</span> cmd<span class="token punctuation">,</span> <span class="token punctuation">.</span><span class="token punctuation">.</span><span class="token punctuation">.</span><span class="token punctuation">)</span><span class="token punctuation">;</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span></span></code></pre>
+<ul>
+<li>fcntl函数提供了对文件描述符的各种控制操作</li>
+<li>fd参数是被操作的文件描述符</li>
+<li>cmd参数指定执行何种类型的操作，根据操作类型的不同，可能还需要第三个可选参数arg</li>
+<li><img src="https://gitee.com/renmale-sztu/image/raw/master/202312282356818.png" alt="image-20231228235648756"></li>
+</ul>
+
+    </div>
+
+    
+    
+    
+
+      <footer class="post-footer">
+          <div class="post-tags">
+              <a href="/tags/C-socket/" rel="tag"># C++ socket</a>
+          </div>
+
+        
+
+
+        
+    <div class="post-nav">
+      <div class="post-nav-item">
+    <a href="/2023/11/29/5-IO%E5%A4%8D%E7%94%A8/" rel="prev" title="I/O复用">
+      <i class="fa fa-chevron-left"></i> I/O复用
+    </a></div>
+      <div class="post-nav-item">
+    <a href="/2023/11/29/4-%E9%AB%98%E6%80%A7%E8%83%BD%E6%9C%8D%E5%8A%A1%E5%99%A8%E7%A8%8B%E5%BA%8F%E6%A1%86%E6%9E%B6/" rel="next" title="高性能服务器程序框架">
+      高性能服务器程序框架 <i class="fa fa-chevron-right"></i>
+    </a></div>
+    </div>
+      </footer>
+    
+  </article>
+  
+  
+  
+
+
+
+          </div>
+          
+
+<script>
+  window.addEventListener('tabs:register', () => {
+    let { activeClass } = CONFIG.comments;
+    if (CONFIG.comments.storage) {
+      activeClass = localStorage.getItem('comments_active') || activeClass;
+    }
+    if (activeClass) {
+      let activeTab = document.querySelector(`a[href="#comment-${activeClass}"]`);
+      if (activeTab) {
+        activeTab.click();
+      }
+    }
+  });
+  if (CONFIG.comments.storage) {
+    window.addEventListener('tabs:click', event => {
+      if (!event.target.matches('.tabs-comment .tab-content .tab-pane')) return;
+      let commentClass = event.target.classList[1];
+      localStorage.setItem('comments_active', commentClass);
+    });
+  }
+</script>
+
+        </div>
+          
+  
+  <div class="toggle sidebar-toggle">
+    <span class="toggle-line toggle-line-first"></span>
+    <span class="toggle-line toggle-line-middle"></span>
+    <span class="toggle-line toggle-line-last"></span>
+  </div>
+
+  <aside class="sidebar">
+    <div class="sidebar-inner">
+
+      <ul class="sidebar-nav motion-element">
+        <li class="sidebar-nav-toc">
+          Table of Contents
+        </li>
+        <li class="sidebar-nav-overview">
+          Overview
+        </li>
+      </ul>
+
+      <!--noindex-->
+      <div class="post-toc-wrap sidebar-panel">
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E7%94%A8%E4%BA%8E%E5%88%9B%E5%BB%BA%E6%96%87%E4%BB%B6%E6%8F%8F%E8%BF%B0%E7%AC%A6"><span class="nav-text">用于创建文件描述符</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#pipe%E5%87%BD%E6%95%B0"><span class="nav-text">pipe函数</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#dup%E5%87%BD%E6%95%B0%E5%92%8Cdup2%E5%87%BD%E6%95%B0"><span class="nav-text">dup函数和dup2函数</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E7%94%A8%E4%BA%8E%E8%AF%BB%E5%86%99%E6%95%B0%E6%8D%AE"><span class="nav-text">用于读写数据</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#readv%E5%87%BD%E6%95%B0%E5%92%8Cwritev%E5%87%BD%E6%95%B0"><span class="nav-text">readv函数和writev函数</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#mmap%E5%87%BD%E6%95%B0%E5%92%8Cmunmap%E5%87%BD%E6%95%B0"><span class="nav-text">mmap函数和munmap函数</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#splice%E5%87%BD%E6%95%B0"><span class="nav-text">splice函数</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#tee%E5%87%BD%E6%95%B0"><span class="nav-text">tee函数</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E7%94%A8%E4%BA%8E%E6%8E%A7%E5%88%B6I-O%E8%A1%8C%E4%B8%BA%E5%92%8C%E5%B1%9E%E6%80%A7"><span class="nav-text">用于控制I&#x2F;O行为和属性</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#fcntl%E5%87%BD%E6%95%B0"><span class="nav-text">fcntl函数</span></a></li></ol></li></ol></div>
+      </div>
+      <!--/noindex-->
+
+      <div class="site-overview-wrap sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+  <p class="site-author-name" itemprop="name">renmale-lv</p>
+  <div class="site-description" itemprop="description"></div>
+</div>
+<div class="site-state-wrap motion-element">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+          <a href="/archives/">
+        
+          <span class="site-state-item-count">25</span>
+          <span class="site-state-item-name">posts</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-tags">
+            <a href="/tags/">
+        <span class="site-state-item-count">9</span>
+        <span class="site-state-item-name">tags</span></a>
+      </div>
+  </nav>
+</div>
+
+
+
+      </div>
+
+    </div>
+  </aside>
+  <div id="sidebar-dimmer"></div>
+
+
+      </div>
+    </main>
+
+    <footer class="footer">
+      <div class="footer-inner">
+        
+
+        
+
+<div class="copyright">
+  
+  &copy; 
+  <span itemprop="copyrightYear">2024</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">renmale-lv</span>
+    <span class="post-meta-divider">|</span>
+    <span class="post-meta-item-icon">
+      <i class="fa fa-chart-area"></i>
+    </span>
+    <span title="Symbols count total">225k</span>
+    <span class="post-meta-divider">|</span>
+    <span class="post-meta-item-icon">
+      <i class="fa fa-coffee"></i>
+    </span>
+    <span title="Reading time total">3:24</span>
+</div>
+  <div class="powered-by">Powered by <a href="https://hexo.io/" class="theme-link" rel="noopener" target="_blank">Hexo</a> & <a href="https://muse.theme-next.org/" class="theme-link" rel="noopener" target="_blank">NexT.Muse</a>
+  </div>
+
+        
+
+
+
+
+
+
+
+
+      </div>
+    </footer>
+  </div>
+
+  
+  <script src="/lib/anime.min.js"></script>
+  <script src="/lib/velocity/velocity.min.js"></script>
+  <script src="/lib/velocity/velocity.ui.min.js"></script>
+
+<script src="/js/utils.js"></script>
+
+<script src="/js/motion.js"></script>
+
+
+<script src="/js/schemes/muse.js"></script>
+
+
+<script src="/js/next-boot.js"></script>
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+  
+
+</body>
+</html>

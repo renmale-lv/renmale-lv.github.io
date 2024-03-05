@@ -1,0 +1,1151 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#222">
+<meta name="generator" content="Hexo 6.3.0">
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+
+<link rel="stylesheet" href="/css/main.css">
+
+
+<link rel="stylesheet" href="/lib/font-awesome/css/all.min.css">
+
+<script id="hexo-configurations">
+    var NexT = window.NexT || {};
+    var CONFIG = {"hostname":"example.com","root":"/","scheme":"Muse","version":"7.8.0","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12,"onmobile":false},"copycode":{"enable":false,"show_result":false,"style":null},"back2top":{"enable":true,"sidebar":false,"scrollpercent":false},"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"algolia":{"hits":{"per_page":10},"labels":{"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}},"localsearch":{"enable":false,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},"path":"search.xml"};
+  </script>
+
+  <meta name="description" content="高性能服务器程序框架服务器的桑格主要模块  I&#x2F;O处理单元 逻辑单元 存储单元  服务器模型C&#x2F;S模型   服务器启动后，首先创建一&#x2F;多个监听socket并调用bind函数将其绑定刀服务器感兴趣的端口上，然后调用listen函数等待客户连接 客户端调用connect函数向服务器发起连接  客户连接请求是随机到达的异步事件，服务器需要使用某种I&#x2F;O模型来监听这一事件  服务器监听到连接请">
+<meta property="og:type" content="article">
+<meta property="og:title" content="高性能服务器程序框架">
+<meta property="og:url" content="http://example.com/2023/11/29/4-%E9%AB%98%E6%80%A7%E8%83%BD%E6%9C%8D%E5%8A%A1%E5%99%A8%E7%A8%8B%E5%BA%8F%E6%A1%86%E6%9E%B6/index.html">
+<meta property="og:site_name" content="renmale-lv blog">
+<meta property="og:description" content="高性能服务器程序框架服务器的桑格主要模块  I&#x2F;O处理单元 逻辑单元 存储单元  服务器模型C&#x2F;S模型   服务器启动后，首先创建一&#x2F;多个监听socket并调用bind函数将其绑定刀服务器感兴趣的端口上，然后调用listen函数等待客户连接 客户端调用connect函数向服务器发起连接  客户连接请求是随机到达的异步事件，服务器需要使用某种I&#x2F;O模型来监听这一事件  服务器监听到连接请">
+<meta property="og:locale" content="en_US">
+<meta property="og:image" content="https://gitee.com/renmale-sztu/image/raw/master/202401022340788.png">
+<meta property="og:image" content="https://gitee.com/renmale-sztu/image/raw/master/202401031908326.png">
+<meta property="og:image" content="https://gitee.com/renmale-sztu/image/raw/master/202401031910231.png">
+<meta property="og:image" content="https://gitee.com/renmale-sztu/image/raw/master/202401031917128.png">
+<meta property="og:image" content="https://gitee.com/renmale-sztu/image/raw/master/202401031919932.png">
+<meta property="og:image" content="https://gitee.com/renmale-sztu/image/raw/master/202401041926282.png">
+<meta property="og:image" content="https://gitee.com/renmale-sztu/image/raw/master/202401042004762.png">
+<meta property="og:image" content="https://gitee.com/renmale-sztu/image/raw/master/202401042201628.png">
+<meta property="og:image" content="https://gitee.com/renmale-sztu/image/raw/master/202401042210726.png">
+<meta property="og:image" content="https://gitee.com/renmale-sztu/image/raw/master/202401042225120.png">
+<meta property="og:image" content="https://gitee.com/renmale-sztu/image/raw/master/202401042226850.png">
+<meta property="og:image" content="https://gitee.com/renmale-sztu/image/raw/master/202401042235599.png">
+<meta property="og:image" content="https://gitee.com/renmale-sztu/image/raw/master/202401051559577.png">
+<meta property="og:image" content="https://gitee.com/renmale-sztu/image/raw/master/202401051543250.png">
+<meta property="og:image" content="https://gitee.com/renmale-sztu/image/raw/master/202401051551234.png">
+<meta property="og:image" content="https://gitee.com/renmale-sztu/image/raw/master/202401051820710.png">
+<meta property="og:image" content="https://gitee.com/renmale-sztu/image/raw/master/202401051824382.png">
+<meta property="og:image" content="https://gitee.com/renmale-sztu/image/raw/master/202401051824536.png">
+<meta property="article:published_time" content="2023-11-28T17:36:05.000Z">
+<meta property="article:modified_time" content="2024-03-05T02:33:44.116Z">
+<meta property="article:author" content="renmale-lv">
+<meta property="article:tag" content="C++ socket">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://gitee.com/renmale-sztu/image/raw/master/202401022340788.png">
+
+<link rel="canonical" href="http://example.com/2023/11/29/4-%E9%AB%98%E6%80%A7%E8%83%BD%E6%9C%8D%E5%8A%A1%E5%99%A8%E7%A8%8B%E5%BA%8F%E6%A1%86%E6%9E%B6/">
+
+
+<script id="page-configurations">
+  // https://hexo.io/docs/variables.html
+  CONFIG.page = {
+    sidebar: "",
+    isHome : false,
+    isPost : true,
+    lang   : 'en'
+  };
+</script>
+
+  <title>高性能服务器程序框架 | renmale-lv blog</title>
+  
+
+
+
+
+
+
+  <noscript>
+  <style>
+  .use-motion .brand,
+  .use-motion .menu-item,
+  .sidebar-inner,
+  .use-motion .post-block,
+  .use-motion .pagination,
+  .use-motion .comments,
+  .use-motion .post-header,
+  .use-motion .post-body,
+  .use-motion .collection-header { opacity: initial; }
+
+  .use-motion .site-title,
+  .use-motion .site-subtitle {
+    opacity: initial;
+    top: initial;
+  }
+
+  .use-motion .logo-line-before i { left: initial; }
+  .use-motion .logo-line-after i { right: initial; }
+  </style>
+</noscript>
+
+<style>mjx-container[jax="SVG"] {
+  direction: ltr;
+}
+
+mjx-container[jax="SVG"] > svg {
+  overflow: visible;
+}
+
+mjx-container[jax="SVG"][display="true"] {
+  display: block;
+  text-align: center;
+  margin: 1em 0;
+}
+
+mjx-container[jax="SVG"][justify="left"] {
+  text-align: left;
+}
+
+mjx-container[jax="SVG"][justify="right"] {
+  text-align: right;
+}
+
+g[data-mml-node="merror"] > g {
+  fill: red;
+  stroke: red;
+}
+
+g[data-mml-node="merror"] > rect[data-background] {
+  fill: yellow;
+  stroke: none;
+}
+
+g[data-mml-node="mtable"] > line[data-line] {
+  stroke-width: 70px;
+  fill: none;
+}
+
+g[data-mml-node="mtable"] > rect[data-frame] {
+  stroke-width: 70px;
+  fill: none;
+}
+
+g[data-mml-node="mtable"] > .mjx-dashed {
+  stroke-dasharray: 140;
+}
+
+g[data-mml-node="mtable"] > .mjx-dotted {
+  stroke-linecap: round;
+  stroke-dasharray: 0,140;
+}
+
+g[data-mml-node="mtable"] > svg {
+  overflow: visible;
+}
+
+[jax="SVG"] mjx-tool {
+  display: inline-block;
+  position: relative;
+  width: 0;
+  height: 0;
+}
+
+[jax="SVG"] mjx-tool > mjx-tip {
+  position: absolute;
+  top: 0;
+  left: 0;
+}
+
+mjx-tool > mjx-tip {
+  display: inline-block;
+  padding: .2em;
+  border: 1px solid #888;
+  font-size: 70%;
+  background-color: #F8F8F8;
+  color: black;
+  box-shadow: 2px 2px 5px #AAAAAA;
+}
+
+g[data-mml-node="maction"][data-toggle] {
+  cursor: pointer;
+}
+
+mjx-status {
+  display: block;
+  position: fixed;
+  left: 1em;
+  bottom: 1em;
+  min-width: 25%;
+  padding: .2em .4em;
+  border: 1px solid #888;
+  font-size: 90%;
+  background-color: #F8F8F8;
+  color: black;
+}
+
+foreignObject[data-mjx-xml] {
+  font-family: initial;
+  line-height: normal;
+  overflow: visible;
+}
+
+.MathJax path {
+  stroke-width: 3;
+}
+
+mjx-container[display="true"] {
+  overflow: auto hidden;
+}
+
+mjx-container[display="true"] + br {
+  display: none;
+}
+</style><link rel="alternate" href="/atom.xml" title="renmale-lv blog" type="application/atom+xml">
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage">
+  <div class="container use-motion">
+    <div class="headband"></div>
+
+    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="Toggle navigation bar">
+      <span class="toggle-line toggle-line-first"></span>
+      <span class="toggle-line toggle-line-middle"></span>
+      <span class="toggle-line toggle-line-last"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <span class="logo-line-before"><i></i></span>
+      <h1 class="site-title">renmale-lv blog</h1>
+      <span class="logo-line-after"><i></i></span>
+    </a>
+      <p class="site-subtitle" itemprop="description">记录学习点滴</p>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger">
+    </div>
+  </div>
+</div>
+
+
+
+
+<nav class="site-nav">
+  <ul id="menu" class="main-menu menu">
+        <li class="menu-item menu-item-home">
+
+    <a href="/" rel="section"><i class="fa fa-home fa-fw"></i>Home</a>
+
+  </li>
+        <li class="menu-item menu-item-archives">
+
+    <a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>Archives</a>
+
+  </li>
+  </ul>
+</nav>
+
+
+
+
+</div>
+    </header>
+
+    
+  <div class="back-to-top">
+    <i class="fa fa-arrow-up"></i>
+    <span>0%</span>
+  </div>
+
+
+    <main class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          
+
+          <div class="content post posts-expand">
+            
+
+    
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="en">
+    <link itemprop="mainEntityOfPage" href="http://example.com/2023/11/29/4-%E9%AB%98%E6%80%A7%E8%83%BD%E6%9C%8D%E5%8A%A1%E5%99%A8%E7%A8%8B%E5%BA%8F%E6%A1%86%E6%9E%B6/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="renmale-lv">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="renmale-lv blog">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          高性能服务器程序框架
+        </h1>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">Posted on</span>
+
+              <time title="Created: 2023-11-29 01:36:05" itemprop="dateCreated datePublished" datetime="2023-11-29T01:36:05+08:00">2023-11-29</time>
+            </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="far fa-calendar-check"></i>
+                </span>
+                <span class="post-meta-item-text">Edited on</span>
+                <time title="Modified: 2024-03-05 10:33:44" itemprop="dateModified" datetime="2024-03-05T10:33:44+08:00">2024-03-05</time>
+              </span>
+
+          <br>
+            <span class="post-meta-item" title="Symbols count in article">
+              <span class="post-meta-item-icon">
+                <i class="far fa-file-word"></i>
+              </span>
+                <span class="post-meta-item-text">Symbols count in article: </span>
+              <span>12k</span>
+            </span>
+            <span class="post-meta-item" title="Reading time">
+              <span class="post-meta-item-icon">
+                <i class="far fa-clock"></i>
+              </span>
+                <span class="post-meta-item-text">Reading time &asymp;</span>
+              <span>11 mins.</span>
+            </span>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+        <meta name="referrer" content="no-referrer">    
+
+<h1 id="高性能服务器程序框架"><a href="#高性能服务器程序框架" class="headerlink" title="高性能服务器程序框架"></a>高性能服务器程序框架</h1><p><strong>服务器的桑格主要模块</strong></p>
+<ul>
+<li>I/O处理单元</li>
+<li>逻辑单元</li>
+<li>存储单元</li>
+</ul>
+<h2 id="服务器模型"><a href="#服务器模型" class="headerlink" title="服务器模型"></a>服务器模型</h2><h3 id="C-S模型"><a href="#C-S模型" class="headerlink" title="C/S模型"></a>C/S模型</h3><p><img src="https://gitee.com/renmale-sztu/image/raw/master/202401022340788.png" alt="image-20240102234004705"></p>
+<hr>
+<ul>
+<li>服务器启动后，首先创建一/多个监听socket并调用bind函数将其绑定刀服务器感兴趣的端口上，然后调用listen函数等待客户连接</li>
+<li><p>客户端调用connect函数向服务器发起连接</p>
+</li>
+<li><p>客户连接请求是随机到达的异步事件，服务器需要使用某种I/O模型来监听这一事件</p>
+</li>
+<li>服务器监听到连接请求后，需要调用accept函数接受它，并分配一个逻辑单元为新的连接服务，逻辑单元可以是新创建的子进程、子线程或者其他</li>
+<li>逻辑单元读取客户请求，处理该请求，然后将处理结果返回给客户端</li>
+<li>服务器再处理一个客户请求的同时还会继续监听其他客户请求</li>
+<li><img src="https://gitee.com/renmale-sztu/image/raw/master/202401031908326.png" alt="image-20240103190410942"></li>
+</ul>
+<hr>
+<p><strong>优点：</strong></p>
+<ul>
+<li>非常适合资源相对集中的场合</li>
+<li>实现简单</li>
+</ul>
+<p><strong>缺点</strong></p>
+<ul>
+<li>服务器是通信的中心，当访问量过大时，可能所有客户都将得到很慢的响应</li>
+</ul>
+<h3 id="P2P模型"><a href="#P2P模型" class="headerlink" title="P2P模型"></a>P2P模型</h3><p><img src="https://gitee.com/renmale-sztu/image/raw/master/202401031910231.png" alt="image-20240103191009526"></p>
+<hr>
+<ul>
+<li>每台机器在消耗服务的同时也给别人提供服务</li>
+<li>典范：云计算机群</li>
+<li>主机之间很难互相法向，实际使用的P2P模型通常带有一个专门的发现服务器，这个发现服务器通常还提供查找服务<ul>
+<li><img src="https://gitee.com/renmale-sztu/image/raw/master/202401031917128.png" alt="image-20240103191755238"></li>
+</ul>
+</li>
+</ul>
+<hr>
+<p><strong>优点</strong></p>
+<ul>
+<li>资源能够充分、自由地共享</li>
+</ul>
+<p><strong>缺点</strong></p>
+<ul>
+<li>当用户之间传输地请求过多时，网络地负载将加重</li>
+</ul>
+<h2 id="服务器编程框架"><a href="#服务器编程框架" class="headerlink" title="服务器编程框架"></a>服务器编程框架</h2><p><img src="https://gitee.com/renmale-sztu/image/raw/master/202401031919932.png" alt="image-20240103191927126"></p>
+<p><strong>服务器基本模块功能描述</strong></p>
+<div class="table-container">
+<table>
+<thead>
+<tr>
+<th style="text-align:center">模块</th>
+<th style="text-align:left">单个服务器程序</th>
+<th style="text-align:left">服务器机群</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:center">I/O处理单元</td>
+<td style="text-align:left">处理客户连接，读写网络数据</td>
+<td style="text-align:left">作为接入服务器，实现负载均衡</td>
+</tr>
+<tr>
+<td style="text-align:center">逻辑单元</td>
+<td style="text-align:left">业务进程或线程</td>
+<td style="text-align:left">逻辑服务器</td>
+</tr>
+<tr>
+<td style="text-align:center">网络存储单元</td>
+<td style="text-align:left">本地数据库、文件或缓存</td>
+<td style="text-align:left">数据库服务器</td>
+</tr>
+<tr>
+<td style="text-align:center">请求队列</td>
+<td style="text-align:left">各单元之间的通信方式</td>
+<td style="text-align:left">各服务器之间的永久TCP连接</td>
+</tr>
+</tbody>
+</table>
+</div>
+<h2 id="I-O模型"><a href="#I-O模型" class="headerlink" title="I/O模型"></a>I/O模型</h2><p><strong>阻塞I/O</strong></p>
+<ul>
+<li>针对阻塞I/O执行的系统调用可能无法立即完成而被操作系统挂起，直到等待的事件发生为止</li>
+<li>比如客户端通过connect向服务器发起连接时，connect将首先发送同步报文段给服务器，然后等待服务器返回确认报文段。如果服务器的确认报文段没有立即到达客户端，则connect调用将被挂起，直到客户端收到确认报文段并唤醒connect调用</li>
+<li>socket基础API中，可能被阻塞的系统调用包括accept、send、recv和connect</li>
+</ul>
+<p><strong>非阻塞I/O</strong></p>
+<ul>
+<li>针对非阻塞I/O执行的系统调用总是立即返回，而不管事件是否已经发生，如果事件没有发生，这些系统调用就返回-1，和出错的情况一样，此时需要根据errno来区分这两种情况</li>
+<li>对于accept、send、recv而言，事件未发生时errno通常被设置未<strong>EAGAIN</strong>或者<strong>EWOULDBLOCK</strong></li>
+<li>对于connect而言，errno则被设置为<strong>EINPROGRESS</strong></li>
+<li>只有在事件已经发生的情况下操作非阻塞I/O时，才能提高程序的效率，因此，非阻塞I/O通常要和其他I/O通知机制一起使用，比如I/O复用和SIGIO信号</li>
+</ul>
+<p><strong>I/O复用</strong></p>
+<ul>
+<li>应用程序通过I/O复用函数向内核注册一组事件，内核通过I/O复用程序把其中就绪的事件通知给应用程序</li>
+<li>Linux上常用的I/O复用函数是select、poll和epoll_wait</li>
+<li>I/O复用函数本身是阻塞的，它们能提高程序效率的原因在于它们具有同时监听多个I/O事件的能力</li>
+</ul>
+<p><strong>SIGIO信号</strong></p>
+<ul>
+<li>我们可以为一个目标文件描述符指定宿主进程，那么被指定的宿主进程将捕获到SIGIO信号，这样，当目标文件描述符上有事件发生时，SIGIO信号的信号处理函数将被触发，我们也就可以在该信号处理函数中对目标文件描述符执行非阻塞I/O操作</li>
+</ul>
+<p><strong>异步I/O</strong></p>
+<ul>
+<li>用户可以直接对I/O执行读写操作，这些操作告诉内核用户读写缓冲区的位置，以及I/O操作完成之后内核通知应用程序的方式</li>
+<li>异步I/O的读写操作总是立即返回，而不论是否是阻塞的，因为真正的读写操作已经有内核接管</li>
+<li>同步I/O模型要求用户代码自行执行I/O操作（将数据从内核缓冲区读入用户缓冲区，或将数据从用户缓冲区写入内核缓冲区），而异步I/O机制则由内核来执行I/O操作（数据在内核缓冲区和用户缓冲区之间的移动是由内核在”后台“完成的）</li>
+<li>同步I/O向应用程序通知的是I/O就绪事件，异步I/O向应用程序通知的是I/O完成事件</li>
+</ul>
+<hr>
+<div class="table-container">
+<table>
+<thead>
+<tr>
+<th style="text-align:center">I/O模型</th>
+<th style="text-align:left">读写操作和阻塞阶段</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:center">阻塞I/O</td>
+<td style="text-align:left">程序阻塞于读写函数</td>
+</tr>
+<tr>
+<td style="text-align:center">I/O复用</td>
+<td style="text-align:left">程序阻塞于I/O复用系统调用，但可同时监听多个I/O事件。对于I/O本身的读写操作是非阻塞的</td>
+</tr>
+<tr>
+<td style="text-align:center">SIGIO信号</td>
+<td style="text-align:left">信号触发读写就绪事件，用户程序执行读写操作。程序没有阻塞阶段</td>
+</tr>
+<tr>
+<td style="text-align:center">异步I/O</td>
+<td style="text-align:left">内核执行读写操作并触发读写完成事件。程序没有阻塞阶段</td>
+</tr>
+</tbody>
+</table>
+</div>
+<h2 id="两种高效的事件处理模式"><a href="#两种高效的事件处理模式" class="headerlink" title="两种高效的事件处理模式"></a>两种高效的事件处理模式</h2><h3 id="Reactor模式"><a href="#Reactor模式" class="headerlink" title="Reactor模式"></a>Reactor模式</h3><p>Reactor模式要求主线程（I/O处理单元）只负责监听文件描述符上是否有事件发生，有的话就立即将该事件通知工作线程（逻辑单元）。除此之外，主线程不做任何其他实质性的工作。读写数据，接受新的连接，以及处理客户请求均在工作线程中完成。</p>
+<hr>
+<p><strong>工作流程</strong></p>
+<ul>
+<li>主线程往epoll内核事件表中注册socket上的读就绪事件</li>
+<li>主线程调用epoll_wait等待socket上有数据可读</li>
+<li>当socket上有数据可读是，epoll_wait通知主线程，主线程则将socket可读事件放入请求队列</li>
+<li>睡眠在请求队列上的某个工作线程被唤醒，它从socket读取数据，并处理客户请求，然后往epoll内核事件表中注册该socket上的写就绪事件</li>
+<li>主线程调用epoll_wait等待socket可写</li>
+<li>当socket可写时，epoll_wait通知主线程，主线程将socket可写事件放入请求队列</li>
+<li>睡眠在请求队列上的某个工作线程被唤醒，它往socket上写入服务器处理客户请求的结果</li>
+</ul>
+<p><img src="https://gitee.com/renmale-sztu/image/raw/master/202401041926282.png" alt="image-20240104192642172"></p>
+<p>工作线程从请求队列中取出事件后，将根据事件的类型来决定如何处理它，因此没必要区分所谓的”读工作线程“和”写工作线程“</p>
+<h3 id="Proactor模式"><a href="#Proactor模式" class="headerlink" title="Proactor模式"></a>Proactor模式</h3><p>与Reactor模式不同，Proactor模式将所有I/O操作都交给主线程和内核来处理，工作线程仅仅负责业务逻辑</p>
+<hr>
+<p><strong>使用异步I/O模型实现Proactor模式的工作流程（以aio_read和aio_write为例）</strong></p>
+<ul>
+<li>主线程调用aio_read函数向内核注册socket上的读完成事件，并告诉内核用户读缓冲区的位置，以及读操作完成时如何通知应用程序（这里以信号为例）</li>
+<li>主线程继续处理其他逻辑</li>
+<li>当socket上的数据被读入用户缓冲区后，内核将向应用程序发送一个信号，以通知应用程序数据已经可用</li>
+<li>应用程序预先定义好的信号处理函数选择一个工作线程来处理客户请求。工作线程处理完客户请求之后，调用aio_write函数向内核注册socket上的写完成事件，并告诉内核用户写缓存区的位置，以及写操作完成时如何通知应用程序</li>
+<li>主线程继续处理其他逻辑</li>
+<li>当用户缓冲区的数据被写入socket之后，内核将向应用程序发送一个信号，以通知应用程序数据以及发送完毕</li>
+<li>应用程序预先定义好的信号处理函数选择一个工作线程来坐善后处理，比如决定是否关闭socket</li>
+</ul>
+<p><img src="https://gitee.com/renmale-sztu/image/raw/master/202401042004762.png" alt="image-20240104200456610"></p>
+<h3 id="模拟Proactor模式"><a href="#模拟Proactor模式" class="headerlink" title="模拟Proactor模式"></a>模拟Proactor模式</h3><p><strong>使用同步I/O方式模拟Proactor原理</strong></p>
+<p>主线程执行数据读写操作，读写完成之后，主线程向工作线程通知这一”完成事件“，那么从工作线程的角度来看，它们就直接获得了数据读写的结果，接下来要做的只是对读写的结果进行逻辑处理</p>
+<hr>
+<p><strong>工作流程</strong></p>
+<ul>
+<li>主线程往epoll内核事件表中注册socket上的读就绪事件</li>
+<li>主线程调用epoll_wait等待socket上有数据可读</li>
+<li>当socket上有数据可读时，epoll_wait通知主线程。主线程从socket循环读取数据，直到没有更多数据可读，然后将读取到的数据封装成一个请求对象并插入请求队列</li>
+<li>睡眠在请求队列上的某个工作线程被唤醒，它获得请求对象并处理客户请求，然后往epoll内核事件表中注册socket上的写就绪事件</li>
+<li>主线程调用epoll_wait等待socket可写</li>
+<li>当socket可写时，epoll_wait通知主线程，主线程往socket上写入服务器处理客户请求的结果</li>
+</ul>
+<p><img src="https://gitee.com/renmale-sztu/image/raw/master/202401042201628.png" alt="image-20240104220134342"></p>
+<h2 id="两种高效的并发模式"><a href="#两种高效的并发模式" class="headerlink" title="两种高效的并发模式"></a>两种高效的并发模式</h2><p><strong>并发模式</strong></p>
+<p>指I/O处理单元和多个逻辑单元之间协调完成任务的方法</p>
+<h3 id="半同步-半异步模式"><a href="#半同步-半异步模式" class="headerlink" title="半同步/半异步模式"></a>半同步/半异步模式</h3><p><strong>同步</strong></p>
+<ul>
+<li>程序完全按照代码序列的顺序执行</li>
+</ul>
+<p><strong>异步</strong></p>
+<ul>
+<li>程序的执行需要系统事件来驱动</li>
+<li>常见的系统事件包括中断、信号等</li>
+</ul>
+<p><img src="https://gitee.com/renmale-sztu/image/raw/master/202401042210726.png" alt="image-20240104221015851"></p>
+<hr>
+<p><strong>同步线程</strong></p>
+<ul>
+<li>按照同步方式运行的线程</li>
+<li>效率相对较低，实时性较差，但逻辑简单</li>
+</ul>
+<p><strong>异步线程</strong></p>
+<ul>
+<li>按照异步方式运行的线程</li>
+<li>执行效率高，实时性强，但程序复杂，难以调试和扩展，不适合大量的并发</li>
+</ul>
+<p><strong>半同步/半异步模式</strong></p>
+<ul>
+<li>同时使用同步线程和异步线程</li>
+<li>既有较好的实时性，又能同时处理多个客户请求</li>
+</ul>
+<hr>
+<p><strong>半同步/半异步模式</strong></p>
+<ul>
+<li>同步线程用于处理客户逻辑，相当于逻辑单元</li>
+<li>异步线程用于处理I/O事件，相当于I/O处理单元</li>
+<li>工作流程<ul>
+<li>异步线程监听到客户请求后，就将其封装成请求对象并插入请求队列中</li>
+<li>请求队列将通知某个工作在同步模式的工作线程来读取并处理该请求对象</li>
+</ul>
+</li>
+<li><img src="https://gitee.com/renmale-sztu/image/raw/master/202401042225120.png" alt="image-20240104222535300"></li>
+</ul>
+<hr>
+<p><strong>半同步/半反应堆模式（变体）</strong></p>
+<p><img src="https://gitee.com/renmale-sztu/image/raw/master/202401042226850.png" alt="image-20240104222651428"></p>
+<ul>
+<li>异步线程只有一个，由主线程来充当，负责监听所有socket上的事件</li>
+<li>如果监听socket上有可读事件发生，即有新的请求到来，主线程就接受之已得到新的连接socket，然后往epoll内核事件表中注册该socket上的读写事件</li>
+<li>如果连接socket上有读写事件发生，即有新的客户请求到来或有数据要发送至客户端，主线程就将该连接socket插入请求队列中</li>
+<li><p>所有工作线程都睡眠在请求队列上，当有任务到来时，它们将通过竞争获得任务的接管权</p>
+</li>
+<li><p>缺点</p>
+<ul>
+<li>主线程和工作线程共享请求队列，主线程往请求队列中添加任务，或者工作线程从请求队列中取出任务，都需要对请求队列枷锁保护，从而拜拜浪费CPU时间</li>
+<li>每个工作线程在同一时间只能处理一个客户请求。如果客户数量较多，而工作线程较少，则请求队列中将堆积很多任务对象，客户端的响应速度将越来越慢。如果通过增加工作线程来解决该问题，工作线程的切换也将耗费大量CPU时间</li>
+</ul>
+</li>
+</ul>
+<hr>
+<p><strong>一种相对高效的半同步/半异步模式</strong></p>
+<p><img src="https://gitee.com/renmale-sztu/image/raw/master/202401042235599.png" alt="image-20240104223501134"></p>
+<ul>
+<li>主线程只管理监听socket，连接socket由工作线程来管理</li>
+<li>当有新的连接到来时，主线程就接受之并将新返回的连接socket派发给某个工作线程，此后该新socket上的任何I/O操作都由被选中的工作线程来处理，直到客户关闭连接</li>
+<li>主线程向工作线程派发socket的最简单方式，就是往它和工作线程之间的管道里写数据；工作线程检测到管道上有数据可读时，就分析是否是一个新的客户连接请求到来；如果是，则把该新socket上的读写事件注册到自己的epoll内核事件表中</li>
+<li>每个线程（主线程和工作线程）都维持自己的事件循环，独立地监听不同的事件，每个线程都工作在异步模式，并非严格意义上的半同步/半异步</li>
+</ul>
+<h3 id="领导者-追随者模式"><a href="#领导者-追随者模式" class="headerlink" title="领导者/追随者模式"></a>领导者/追随者模式</h3><p><strong>领导者/追随者模式</strong></p>
+<ul>
+<li>是多个工作线程轮流获得事件源集合，轮流监听、分发并处理事件的一种模式</li>
+<li>在任意时间点，程序都仅有一个领导者线程，它负责监听I/O事件，而其他线程都是追随者，它们休眠在线程池中等待成为新的领导者</li>
+<li>当前的领导者如果检测到I/O事件，首先要从线程池中推选出新的领导者线程，然后处理I/O事件；新的领导者等待新的I/O事件，而原来的领导者处理I/O事件，二者实现了并发</li>
+<li><img src="https://gitee.com/renmale-sztu/image/raw/master/202401051559577.png" alt="image-20240105155943535"></li>
+</ul>
+<p><strong>组件</strong></p>
+<ul>
+<li>句柄集（HandleSet）</li>
+<li>线程集（ThreadSet）</li>
+<li>事件处理器（EventHandler）</li>
+<li>具体的事件处理器（ConcreteEventHendler）</li>
+</ul>
+<p><img src="https://gitee.com/renmale-sztu/image/raw/master/202401051543250.png" alt="image-20240105154112689"></p>
+<hr>
+<p><strong>句柄集</strong></p>
+<ul>
+<li>句柄用于表示I/O资源，在Linux下通常就是一个文件描述符</li>
+<li>句柄集管理众多句柄，它使用wait_for_event方法来监听这些句柄上的I/O事件，并将其中的就绪事件通知给领导者线程</li>
+<li>领导者调用绑定到Handle上的事件处理器来处理事件，领导者将Handle和事件处理器绑定时通过调用句柄集中的register_handle方法实现</li>
+</ul>
+<p><strong>线程集</strong></p>
+<ul>
+<li>所有工作线程的管理者，负责各线程之间的同步以及新领导者线程的推选</li>
+<li>三种状态<ul>
+<li><strong>Leader</strong><ul>
+<li>线程当前处理领导者身份，负责等待句柄集上的I/O事件</li>
+</ul>
+</li>
+<li><strong>Processing</strong><ul>
+<li>线程正在处理事件</li>
+<li>领导者检测到I/O事件之后，可以转移到Processing状态来处理该事件，并调用promote_new_leader方法推选新的领导者；也可以指定其他追随者来处理事件，此时领导者的地位不变</li>
+<li>处于该状态的线程处理完事件之后，如果当前线程集没有领导者，则它成为新的领导者，否则变为追随者</li>
+</ul>
+</li>
+<li><strong>Follower</strong><ul>
+<li>追随者</li>
+<li>通过调用线程集的join方法等待成为新的领导者，也可能被当前的领导者指定来处理新的任务</li>
+</ul>
+</li>
+</ul>
+</li>
+<li><img src="https://gitee.com/renmale-sztu/image/raw/master/202401051551234.png" alt="image-20240105155155403"></li>
+<li>领导者线程推选i虚拟的领导者和追随者等待成为新领导者这两个操作都将修改线程集，因此线程集提供一个成员Synchronizer来同步这两个操作，以避免竞态条件</li>
+</ul>
+<p><strong>事件处理器和具体的事件处理器</strong></p>
+<ul>
+<li>事件处理器通常包含一个/多个回调函数handle_event，这些函数用于处理事件对应的业务逻辑</li>
+<li>事件处理器在使用前需要被绑定到某个句柄上，当该句柄上有事件发生时，领导者就执行与之绑定的事件处理器中的回调函数</li>
+<li>具体的事件处理器是事件处理器的派生类，必须重新实现基类的handle_event方法</li>
+</ul>
+<hr>
+<p><strong>总结</strong></p>
+<ul>
+<li>由于领导者线程自己监听I/O事件并处理客户请求，因而该模式不需要在线程之间传递任何额外的数据，也无需像半同步/半反应堆模式在线程之间同步对请求队列的访问</li>
+<li>仅支持一个事件源集合，无法让每个工作线程独立地管理多个客户连接</li>
+</ul>
+<h2 id="有限状态机"><a href="#有限状态机" class="headerlink" title="有限状态机"></a>有限状态机</h2><p>逻辑单元内部的一种高效编程方法</p>
+<hr>
+<p><strong>状态独立的有限状态机</strong></p>
+<pre class="line-numbers language-c" data-language="c"><code class="language-c"><span class="token comment">//有的应用层协议头部包含数据包类型的字段，每种类型可以映射为逻辑单元的一种执行状态，服务器可以根据它来编写相应的处理逻辑</span>
+<span class="token function">STATE_MACHINE</span><span class="token punctuation">(</span>Package_pack<span class="token punctuation">)</span><span class="token punctuation">{</span>
+	PackageType_type<span class="token operator">=</span>_pack<span class="token punctuation">.</span><span class="token function">GetType</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+	<span class="token keyword">switch</span><span class="token punctuation">(</span>_type<span class="token punctuation">)</span><span class="token punctuation">{</span>
+		<span class="token keyword">case</span> type_A<span class="token operator">:</span>
+			<span class="token function">process_package_A</span><span class="token punctuation">(</span>_pack<span class="token punctuation">)</span><span class="token punctuation">;</span>
+			<span class="token keyword">break</span><span class="token punctuation">;</span>
+		<span class="token keyword">case</span> type_B<span class="token operator">:</span>
+			<span class="token function">process_package_B</span><span class="token punctuation">(</span>_pack<span class="token punctuation">)</span><span class="token punctuation">;</span>
+			<span class="token keyword">break</span><span class="token punctuation">;</span>
+	<span class="token punctuation">}</span>
+<span class="token punctuation">}</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<ul>
+<li>每个状态相互独立即状态之间没有转移</li>
+</ul>
+<hr>
+<p><strong>带状态转移的有限状态机</strong></p>
+<pre class="line-numbers language-c" data-language="c"><code class="language-c"><span class="token function">STATE_MACHINE</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">{</span>
+	State cur_State<span class="token operator">=</span>type_A<span class="token punctuation">;</span>
+	<span class="token keyword">while</span><span class="token punctuation">(</span>cur_State<span class="token operator">!=</span>type_C<span class="token punctuation">)</span><span class="token punctuation">{</span>
+		Package_pack<span class="token operator">=</span><span class="token function">getNewPackage</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+		<span class="token keyword">switch</span><span class="token punctuation">(</span>cur_State<span class="token punctuation">)</span><span class="token punctuation">{</span>
+			<span class="token keyword">case</span> type_A<span class="token operator">:</span>
+				<span class="token function">process_package_state_A</span><span class="token punctuation">(</span>_pack<span class="token punctuation">)</span><span class="token punctuation">;</span>
+				cur_State<span class="token operator">=</span>type_B<span class="token punctuation">;</span>
+				<span class="token keyword">break</span><span class="token punctuation">;</span>
+			<span class="token keyword">case</span> type_B<span class="token operator">:</span>
+				<span class="token function">process_package_state_B</span><span class="token punctuation">(</span>_pack<span class="token punctuation">)</span><span class="token punctuation">;</span>
+				cur_State<span class="token operator">=</span>type_C<span class="token punctuation">;</span>
+                <span class="token keyword">break</span><span class="token punctuation">;</span>
+		<span class="token punctuation">}</span>
+    <span class="token punctuation">}</span>
+<span class="token punctuation">}</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<h2 id="有限状态机的实例：HTTP请求的读取和分析"><a href="#有限状态机的实例：HTTP请求的读取和分析" class="headerlink" title="有限状态机的实例：HTTP请求的读取和分析"></a>有限状态机的实例：HTTP请求的读取和分析</h2><p><strong>背景</strong></p>
+<p>很多网络协议，包括TCP协议和IP协议，都在其头部中提供了头部长度字段，程序根据该字段的值就可以直到是否接收到一个完整的协议头部。但HTTP协议并未提供这样的头部长度字段，并且其头部长度变化很大，可以只有十几字节，也可以有上百字节。根据协议规定，我们判断HTTP头部借宿的依据是遇到一个空行，该空行仅包含一堆回车换行符（\<cr>\<lf>）。</lf></cr></p>
+<hr>
+<p><strong>代码</strong></p>
+<pre class="line-numbers language-c" data-language="c"><code class="language-c"><span class="token macro property"><span class="token directive-hash">#</span><span class="token directive keyword">include</span><span class="token expression">＜sys<span class="token operator">/</span>socket<span class="token punctuation">.</span>h＞</span></span>
+<span class="token macro property"><span class="token directive-hash">#</span><span class="token directive keyword">include</span><span class="token expression">＜netinet<span class="token operator">/</span>in<span class="token punctuation">.</span>h＞</span></span>
+<span class="token macro property"><span class="token directive-hash">#</span><span class="token directive keyword">include</span><span class="token expression">＜arpa<span class="token operator">/</span>inet<span class="token punctuation">.</span>h＞</span></span>
+<span class="token macro property"><span class="token directive-hash">#</span><span class="token directive keyword">include</span><span class="token expression">＜assert<span class="token punctuation">.</span>h＞</span></span>
+<span class="token macro property"><span class="token directive-hash">#</span><span class="token directive keyword">include</span><span class="token expression">＜stdio<span class="token punctuation">.</span>h＞</span></span>
+<span class="token macro property"><span class="token directive-hash">#</span><span class="token directive keyword">include</span><span class="token expression">＜stdlib<span class="token punctuation">.</span>h＞</span></span>
+<span class="token macro property"><span class="token directive-hash">#</span><span class="token directive keyword">include</span><span class="token expression">＜unistd<span class="token punctuation">.</span>h＞</span></span>
+<span class="token macro property"><span class="token directive-hash">#</span><span class="token directive keyword">include</span><span class="token expression">＜errno<span class="token punctuation">.</span>h＞</span></span>
+<span class="token macro property"><span class="token directive-hash">#</span><span class="token directive keyword">include</span><span class="token expression">＜string<span class="token punctuation">.</span>h＞</span></span>
+<span class="token macro property"><span class="token directive-hash">#</span><span class="token directive keyword">include</span><span class="token expression">＜fcntl<span class="token punctuation">.</span>h＞</span></span>
+<span class="token macro property"><span class="token directive-hash">#</span><span class="token directive keyword">define</span> <span class="token macro-name">BUFFER_SIZE</span> <span class="token expression"><span class="token number">4096</span></span><span class="token comment">//读缓冲区大小</span></span>
+
+<span class="token comment">//主状态机的两种可能状态</span>
+<span class="token keyword">enum</span> <span class="token class-name">CHECK_STATE</span><span class="token punctuation">{</span>
+    CHECK_STATE_REQUESTLINE<span class="token operator">=</span><span class="token number">0</span><span class="token punctuation">,</span> 		<span class="token comment">//当前正在分析请求行</span>
+    CHECK_STATE_HEADER				<span class="token comment">//当前正在分析头部字段</span>
+<span class="token punctuation">}</span><span class="token punctuation">;</span>
+
+<span class="token comment">//从状态机的三种可能状态</span>
+<span class="token keyword">enum</span> <span class="token class-name">LINE_STATUS</span><span class="token punctuation">{</span>
+    LINE_OK<span class="token operator">=</span><span class="token number">0</span><span class="token punctuation">,</span>						<span class="token comment">//读取到一个完整的行</span>
+    LINE_BAD<span class="token punctuation">,</span>						<span class="token comment">//行出错</span>
+    LINE_OPEN						<span class="token comment">//行数据尚且不完整</span>
+<span class="token punctuation">}</span><span class="token punctuation">;</span>
+
+<span class="token comment">//服务器处理HTTP请求的结果</span>
+<span class="token keyword">enum</span> <span class="token class-name">HTTP_CODE</span><span class="token punctuation">{</span>
+    NO_REQUEST<span class="token punctuation">,</span>						<span class="token comment">//请求不完整，需要继续读取客户数据</span>
+    GET_REQUEST<span class="token punctuation">,</span>					<span class="token comment">//获得了一个完整的客户请求</span>
+    BAD_REQUEST<span class="token punctuation">,</span>					<span class="token comment">//客户请求有语法错误</span>
+	FORBIDDEN_REQUEST<span class="token punctuation">,</span>				<span class="token comment">//客户对资源没有足够的访问权限</span>
+    INTERNAL_ERROR<span class="token punctuation">,</span>					<span class="token comment">//服务器内部错误</span>
+    CLOSED_CONNECTION				<span class="token comment">//客户端已经关闭连接</span>
+<span class="token punctuation">}</span><span class="token punctuation">;</span>
+
+<span class="token comment">//为了简化问题，我们没有给客户端发送一个完整的HTTP应答报文，而只是根据服务器的处理结果发送如下成功或失败信息</span>
+<span class="token keyword">static</span> <span class="token keyword">const</span> <span class="token keyword">char</span><span class="token operator">*</span>szret<span class="token punctuation">[</span><span class="token punctuation">]</span><span class="token operator">=</span><span class="token punctuation">{</span>
+    <span class="token string">"I get a correct result\n"</span><span class="token punctuation">,</span>
+    <span class="token string">"Somethingwrong\n"</span>
+<span class="token punctuation">}</span><span class="token punctuation">;</span>
+
+<span class="token comment">//从状态机，用于解析出一行内容</span>
+LINE_STATUS <span class="token function">parse_line</span><span class="token punctuation">(</span><span class="token keyword">char</span><span class="token operator">*</span> buffer<span class="token punctuation">,</span> <span class="token keyword">int</span><span class="token operator">&amp;</span> checked_index<span class="token punctuation">,</span> <span class="token keyword">int</span><span class="token operator">&amp;</span> read_index<span class="token punctuation">)</span><span class="token punctuation">{</span>
+	<span class="token keyword">char</span> temp<span class="token punctuation">;</span>
+	<span class="token comment">//checked_index指向buffer（应用程序的读缓冲区）中当前正在分析的字节</span>
+    <span class="token comment">//read_index指向buffer中客户数据的尾部的下一字节</span>
+    <span class="token comment">//buffer中第0～checked_index字节都已分析完毕，第checked_index～(read_index-1)字节由下面的循环挨个分析</span>
+	<span class="token keyword">for</span><span class="token punctuation">(</span><span class="token punctuation">;</span> checked_index<span class="token operator">&lt;</span>read_index<span class="token punctuation">;</span> <span class="token operator">++</span>checked_index<span class="token punctuation">)</span><span class="token punctuation">{</span>
+		<span class="token comment">//获得当前要分析的字节</span>
+		temp<span class="token operator">=</span>buffer<span class="token punctuation">[</span>checked_index<span class="token punctuation">]</span><span class="token punctuation">;</span>
+		<span class="token comment">//如果当前的字节是“\r”，即回车符，则说明可能读取到一个完整的行</span>
+		<span class="token keyword">if</span><span class="token punctuation">(</span>temp<span class="token operator">==</span><span class="token char">'\r'</span><span class="token punctuation">)</span><span class="token punctuation">{</span>
+			<span class="token comment">//如果“\r”字符碰巧是目前buffer中的最后一个已经被读入的客户数据，那么这次分析没有读取到一个完整的行，返回LINE_OPEN以表示还需要继续读取客户数据才能进一步分析</span>
+			<span class="token keyword">if</span><span class="token punctuation">(</span><span class="token punctuation">(</span>checked_index<span class="token operator">+</span><span class="token number">1</span><span class="token punctuation">)</span><span class="token operator">==</span>read_index<span class="token punctuation">)</span><span class="token punctuation">{</span>
+				<span class="token keyword">return</span> LINE_OPEN<span class="token punctuation">;</span>
+			<span class="token punctuation">}</span>
+			<span class="token comment">//如果下一个字符是“\n”，则说明我们成功读取到一个完整的行</span>
+			<span class="token keyword">else</span> <span class="token keyword">if</span><span class="token punctuation">(</span>buffer<span class="token punctuation">[</span>checked_index<span class="token operator">+</span><span class="token number">1</span><span class="token punctuation">]</span><span class="token operator">==</span><span class="token char">'\n'</span><span class="token punctuation">)</span><span class="token punctuation">{</span>
+				buffer<span class="token punctuation">[</span>checked_index<span class="token operator">++</span><span class="token punctuation">]</span><span class="token operator">=</span><span class="token char">'\0'</span><span class="token punctuation">;</span>
+				buffer<span class="token punctuation">[</span>checked_index<span class="token operator">++</span><span class="token punctuation">]</span><span class="token operator">=</span><span class="token char">'\0'</span><span class="token punctuation">;</span>
+				<span class="token keyword">return</span> LINE_OK<span class="token punctuation">;</span>
+			<span class="token punctuation">}</span>
+			<span class="token comment">//否则的话，说明客户发送的HTTP请求存在语法问题</span>
+			<span class="token keyword">return</span> LINE_BAD<span class="token punctuation">;</span>
+        <span class="token punctuation">}</span>
+		<span class="token comment">//如果当前的字节是“\n”，即换行符，则也说明可能读取到一个完整的行</span>
+		<span class="token keyword">else</span> <span class="token keyword">if</span><span class="token punctuation">(</span>temp<span class="token operator">==</span><span class="token char">'\n'</span><span class="token punctuation">)</span><span class="token punctuation">{</span>
+			<span class="token keyword">if</span><span class="token punctuation">(</span><span class="token punctuation">(</span>checked_index＞<span class="token number">1</span><span class="token punctuation">)</span><span class="token operator">&amp;&amp;</span>buffer<span class="token punctuation">[</span>checked_index<span class="token operator">-</span><span class="token number">1</span><span class="token punctuation">]</span><span class="token operator">==</span><span class="token char">'\r'</span><span class="token punctuation">)</span><span class="token punctuation">{</span>
+				buffer<span class="token punctuation">[</span>checked_index<span class="token operator">-</span><span class="token number">1</span><span class="token punctuation">]</span><span class="token operator">=</span><span class="token char">'\0'</span><span class="token punctuation">;</span>
+				buffer<span class="token punctuation">[</span>checked_index<span class="token operator">++</span><span class="token punctuation">]</span><span class="token operator">=</span><span class="token char">'\0'</span><span class="token punctuation">;</span>
+				<span class="token keyword">return</span> LINE_OK<span class="token punctuation">;</span>
+            <span class="token punctuation">}</span>
+			<span class="token keyword">return</span> LINE_BAD<span class="token punctuation">;</span>
+		<span class="token punctuation">}</span>
+    <span class="token punctuation">}</span>
+	<span class="token comment">//如果所有内容都分析完毕也没遇到“\r”字符，则返回LINE_OPEN，表示还需要继续读取客户数据才能进一步分析</span>
+	<span class="token keyword">return</span> LINE_OPEN<span class="token punctuation">;</span>
+<span class="token punctuation">}</span>
+
+<span class="token comment">//分析请求行</span>
+HTTP_CODE <span class="token function">parse_requestline</span><span class="token punctuation">(</span><span class="token keyword">char</span><span class="token operator">*</span> temp<span class="token punctuation">,</span> CHECK_STATE<span class="token operator">&amp;</span> checkstate<span class="token punctuation">)</span><span class="token punctuation">{</span>
+	<span class="token keyword">char</span><span class="token operator">*</span> url<span class="token operator">=</span><span class="token function">strpbrk</span><span class="token punctuation">(</span>temp<span class="token punctuation">,</span><span class="token string">"\t"</span><span class="token punctuation">)</span><span class="token punctuation">;</span> <span class="token comment">//strpbrk比较两个字符串是否有同样的字符，返回第一个temp相同的字符</span>
+	<span class="token comment">//如果请求行中没有空白字符或“\t”字符，则HTTP请求必有问题</span>
+	<span class="token keyword">if</span><span class="token punctuation">(</span><span class="token operator">!</span>url<span class="token punctuation">)</span><span class="token punctuation">{</span>
+		<span class="token keyword">return</span> BAD_REQUEST<span class="token punctuation">;</span>
+	<span class="token punctuation">}</span>
+	<span class="token operator">*</span>url<span class="token operator">++</span><span class="token operator">=</span><span class="token char">'\0'</span><span class="token punctuation">;</span>
+	<span class="token keyword">char</span><span class="token operator">*</span> method<span class="token operator">=</span>temp<span class="token punctuation">;</span>
+	<span class="token keyword">if</span><span class="token punctuation">(</span><span class="token function">strcasecmp</span><span class="token punctuation">(</span>method<span class="token punctuation">,</span><span class="token string">"GET"</span><span class="token punctuation">)</span><span class="token operator">==</span><span class="token number">0</span><span class="token punctuation">)</span><span class="token punctuation">{</span>
+        <span class="token comment">//strcasecmp判断两个字符串是否相等，忽略大小写</span>
+        <span class="token comment">//仅支持GET方法</span>
+		<span class="token function">printf</span><span class="token punctuation">(</span><span class="token string">"The request method is GET\n"</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+	<span class="token punctuation">}</span><span class="token keyword">else</span><span class="token punctuation">{</span>
+		<span class="token keyword">return</span> BAD_REQUEST<span class="token punctuation">;</span>
+	<span class="token punctuation">}</span>
+	url<span class="token operator">+=</span><span class="token function">strspn</span><span class="token punctuation">(</span>url<span class="token punctuation">,</span><span class="token string">"\t"</span><span class="token punctuation">)</span><span class="token punctuation">;</span> <span class="token comment">//strspn检索字符串 str1 中第一个不在字符串 str2 中出现的字符下标</span>
+	<span class="token keyword">char</span><span class="token operator">*</span> version<span class="token operator">=</span><span class="token function">strpbrk</span><span class="token punctuation">(</span>url<span class="token punctuation">,</span><span class="token string">"\t"</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+	<span class="token keyword">if</span><span class="token punctuation">(</span><span class="token operator">!</span>version<span class="token punctuation">)</span><span class="token punctuation">{</span>
+		<span class="token keyword">return</span> BAD_REQUEST<span class="token punctuation">;</span>
+	<span class="token punctuation">}</span>
+	<span class="token operator">*</span>version<span class="token operator">++</span><span class="token operator">=</span><span class="token char">'\0'</span><span class="token punctuation">;</span>
+	version<span class="token operator">+=</span><span class="token function">strspn</span><span class="token punctuation">(</span>version<span class="token punctuation">,</span><span class="token string">"\t"</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+	<span class="token comment">//仅支持HTTP/1.1</span>
+	<span class="token keyword">if</span><span class="token punctuation">(</span><span class="token function">strcasecmp</span><span class="token punctuation">(</span>version<span class="token punctuation">,</span><span class="token string">"HTTP/1.1"</span><span class="token punctuation">)</span><span class="token operator">!=</span><span class="token number">0</span><span class="token punctuation">)</span><span class="token punctuation">{</span>
+		<span class="token keyword">return</span> BAD_REQUEST<span class="token punctuation">;</span>
+	<span class="token punctuation">}</span>
+	<span class="token comment">//检查URL是否合法</span>
+	<span class="token keyword">if</span><span class="token punctuation">(</span><span class="token function">strncasecmp</span><span class="token punctuation">(</span>url<span class="token punctuation">,</span><span class="token string">"http://"</span><span class="token punctuation">,</span><span class="token number">7</span><span class="token punctuation">)</span><span class="token operator">==</span><span class="token number">0</span><span class="token punctuation">)</span><span class="token punctuation">{</span>
+		url<span class="token operator">+=</span><span class="token number">7</span><span class="token punctuation">;</span>
+		url<span class="token operator">=</span><span class="token function">strchr</span><span class="token punctuation">(</span>url<span class="token punctuation">,</span><span class="token char">'/'</span><span class="token punctuation">)</span><span class="token punctuation">;</span> <span class="token comment">//strchr查找字符串中的一个字符，并返回该字符在字符串中第一次出现的位置</span>
+	<span class="token punctuation">}</span>
+	<span class="token keyword">if</span><span class="token punctuation">(</span><span class="token operator">!</span>url<span class="token operator">||</span>url<span class="token punctuation">[</span><span class="token number">0</span><span class="token punctuation">]</span><span class="token operator">!=</span><span class="token char">'/'</span><span class="token punctuation">)</span><span class="token punctuation">{</span>
+		<span class="token keyword">return</span> BAD_REQUEST<span class="token punctuation">;</span>
+	<span class="token punctuation">}</span>
+	<span class="token function">printf</span><span class="token punctuation">(</span><span class="token string">"The request URL is:%s\n"</span><span class="token punctuation">,</span>url<span class="token punctuation">)</span><span class="token punctuation">;</span>
+	<span class="token comment">//HTTP请求行处理完毕，状态转移到头部字段的分析</span>
+	checkstate<span class="token operator">=</span>CHECK_STATE_HEADER<span class="token punctuation">;</span>
+	<span class="token keyword">return</span> NO_REQUEST<span class="token punctuation">;</span>
+<span class="token punctuation">}</span>
+
+<span class="token comment">//分析头部字段</span>
+HTTP_CODE <span class="token function">parse_headers</span><span class="token punctuation">(</span><span class="token keyword">char</span><span class="token operator">*</span>temp<span class="token punctuation">)</span><span class="token punctuation">{</span>
+	<span class="token comment">//遇到一个空行，说明我们得到了一个正确的HTTP请求</span>
+	<span class="token keyword">if</span><span class="token punctuation">(</span>temp<span class="token punctuation">[</span><span class="token number">0</span><span class="token punctuation">]</span><span class="token operator">==</span><span class="token char">'\0'</span><span class="token punctuation">)</span><span class="token punctuation">{</span>
+		<span class="token keyword">return</span> GET_REQUEST<span class="token punctuation">;</span>
+	<span class="token punctuation">}</span><span class="token keyword">else</span> <span class="token keyword">if</span><span class="token punctuation">(</span><span class="token function">strncasecmp</span><span class="token punctuation">(</span>temp<span class="token punctuation">,</span><span class="token string">"Host:"</span><span class="token punctuation">,</span><span class="token number">5</span><span class="token punctuation">)</span><span class="token operator">==</span><span class="token number">0</span><span class="token punctuation">)</span><span class="token punctuation">{</span>
+        <span class="token comment">//处理“HOST”头部字段</span>
+		temp<span class="token operator">+=</span><span class="token number">5</span><span class="token punctuation">;</span>
+		temp<span class="token operator">+=</span><span class="token function">strspn</span><span class="token punctuation">(</span>temp<span class="token punctuation">,</span><span class="token string">"\t"</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+        <span class="token function">printf</span><span class="token punctuation">(</span><span class="token string">"the request host is:%s\n"</span><span class="token punctuation">,</span>temp<span class="token punctuation">)</span><span class="token punctuation">;</span>
+	<span class="token punctuation">}</span><span class="token keyword">else</span><span class="token punctuation">{</span>
+        <span class="token comment">//其他头部字段都不处理</span>
+		<span class="token function">printf</span><span class="token punctuation">(</span><span class="token string">"I can not handle this header\n"</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+	<span class="token punctuation">}</span>
+	<span class="token keyword">return</span> NO_REQUEST<span class="token punctuation">;</span>
+<span class="token punctuation">}</span>
+
+<span class="token comment">//分析HTTP请求的入口函数</span>
+HTTP_CODE <span class="token function">parse_content</span><span class="token punctuation">(</span><span class="token keyword">char</span><span class="token operator">*</span> buffer<span class="token punctuation">,</span><span class="token keyword">int</span> checked_index<span class="token punctuation">,</span>CHECK_STATE<span class="token operator">&amp;</span> checkstate<span class="token punctuation">,</span><span class="token keyword">int</span><span class="token operator">&amp;</span> read_index<span class="token punctuation">,</span><span class="token keyword">int</span><span class="token operator">&amp;</span> start_line<span class="token punctuation">)</span><span class="token punctuation">{</span>
+	LINE_STATUS linestatus<span class="token operator">=</span>LINE_OK<span class="token punctuation">;</span><span class="token comment">//记录当前行的读取状态</span>
+	HTTP_CODE retcode<span class="token operator">=</span>NO_REQUEST<span class="token punctuation">;</span><span class="token comment">//记录HTTP请求的处理结果</span>
+	<span class="token comment">//主状态机，用于从buffer中取出所有完整的行</span>
+	<span class="token keyword">while</span><span class="token punctuation">(</span><span class="token punctuation">(</span>linestatus<span class="token operator">=</span><span class="token function">parse_line</span><span class="token punctuation">(</span>buffer<span class="token punctuation">,</span>checked_index<span class="token punctuation">,</span>read_index<span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token operator">==</span>LINE_OK<span class="token punctuation">)</span><span class="token punctuation">{</span>
+		<span class="token keyword">char</span><span class="token operator">*</span> temp<span class="token operator">=</span>buffer<span class="token operator">+</span>start_line<span class="token punctuation">;</span><span class="token comment">//start_line是行在buffer中的起始位置</span>
+		start_line<span class="token operator">=</span>checked_index<span class="token punctuation">;</span><span class="token comment">//记录下一行的起始位置</span>
+		<span class="token comment">//checkstate记录主状态机当前的状态</span>
+		<span class="token keyword">switch</span><span class="token punctuation">(</span>checkstate<span class="token punctuation">)</span><span class="token punctuation">{</span>
+			<span class="token keyword">case</span> CHECK_STATE_REQUESTLINE<span class="token operator">:</span><span class="token punctuation">{</span>
+                <span class="token comment">//第一个状态，分析请求行</span>
+                retcode<span class="token operator">=</span><span class="token function">parse_requestline</span><span class="token punctuation">(</span>temp<span class="token punctuation">,</span>checkstate<span class="token punctuation">)</span><span class="token punctuation">;</span>
+				<span class="token keyword">if</span><span class="token punctuation">(</span>retcode<span class="token operator">==</span>BAD_REQUEST<span class="token punctuation">)</span><span class="token punctuation">{</span>
+					<span class="token keyword">return</span> BAD_REQUEST<span class="token punctuation">;</span>
+                <span class="token punctuation">}</span>
+				<span class="token keyword">break</span><span class="token punctuation">;</span>
+            <span class="token punctuation">}</span>
+			<span class="token keyword">case</span> CHECK_STATE_HEADER<span class="token operator">:</span><span class="token punctuation">{</span>
+                <span class="token comment">//第二个状态，分析头部字段</span>
+				retcode<span class="token operator">=</span><span class="token function">parse_headers</span><span class="token punctuation">(</span>temp<span class="token punctuation">)</span><span class="token punctuation">;</span>
+				<span class="token keyword">if</span><span class="token punctuation">(</span>retcode<span class="token operator">==</span>BAD_REQUEST<span class="token punctuation">)</span><span class="token punctuation">{</span>
+					<span class="token keyword">return</span> BAD_REQUEST<span class="token punctuation">;</span>
+				<span class="token punctuation">}</span><span class="token keyword">else</span> <span class="token keyword">if</span><span class="token punctuation">(</span>retcode<span class="token operator">==</span>GET_REQUEST<span class="token punctuation">)</span><span class="token punctuation">{</span>
+					<span class="token keyword">return</span> GET_REQUEST<span class="token punctuation">;</span>
+				<span class="token punctuation">}</span>
+				<span class="token keyword">break</span><span class="token punctuation">;</span>
+			<span class="token punctuation">}</span>
+			<span class="token keyword">default</span><span class="token operator">:</span><span class="token punctuation">{</span>
+				<span class="token keyword">return</span> INTERNAL_ERROR<span class="token punctuation">;</span>
+			<span class="token punctuation">}</span>
+        <span class="token punctuation">}</span>
+    <span class="token punctuation">}</span>
+	<span class="token comment">//若没有读取到一个完整的行，则表示还需要继续读取客户数据才能进一步分析</span>
+	<span class="token keyword">if</span><span class="token punctuation">(</span>linestatus<span class="token operator">==</span>LINE_OPEN<span class="token punctuation">)</span><span class="token punctuation">{</span>
+        <span class="token keyword">return</span> NO_REQUEST<span class="token punctuation">;</span>
+	<span class="token punctuation">}</span><span class="token keyword">else</span><span class="token punctuation">{</span>
+		<span class="token keyword">return</span> BAD_REQUEST<span class="token punctuation">;</span>
+	<span class="token punctuation">}</span>
+<span class="token punctuation">}</span>
+
+<span class="token keyword">int</span> <span class="token function">main</span><span class="token punctuation">(</span><span class="token keyword">int</span> argc<span class="token punctuation">,</span><span class="token keyword">char</span><span class="token operator">*</span>argv<span class="token punctuation">[</span><span class="token punctuation">]</span><span class="token punctuation">)</span><span class="token punctuation">{</span>
+	<span class="token keyword">if</span><span class="token punctuation">(</span>argc<span class="token operator">&lt;=</span><span class="token number">2</span><span class="token punctuation">)</span><span class="token punctuation">{</span>
+		<span class="token function">printf</span><span class="token punctuation">(</span><span class="token string">"usage:%s ip_address port_number\n"</span><span class="token punctuation">,</span><span class="token function">basename</span><span class="token punctuation">(</span>argv<span class="token punctuation">[</span><span class="token number">0</span><span class="token punctuation">]</span><span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+		<span class="token keyword">return</span> <span class="token number">1</span><span class="token punctuation">;</span>
+	<span class="token punctuation">}</span>
+	<span class="token keyword">const</span> <span class="token keyword">char</span><span class="token operator">*</span> ip<span class="token operator">=</span>argv<span class="token punctuation">[</span><span class="token number">1</span><span class="token punctuation">]</span><span class="token punctuation">;</span>
+	<span class="token keyword">int</span> port<span class="token operator">=</span><span class="token function">atoi</span><span class="token punctuation">(</span>argv<span class="token punctuation">[</span><span class="token number">2</span><span class="token punctuation">]</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+ 	<span class="token keyword">struct</span> <span class="token class-name">sockaddr_in</span> address<span class="token punctuation">;</span>
+	<span class="token function">bzero</span><span class="token punctuation">(</span><span class="token operator">&amp;</span>address<span class="token punctuation">,</span><span class="token keyword">sizeof</span><span class="token punctuation">(</span>address<span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">;</span> <span class="token comment">// void bzero(void *s, int n); 将内存块s前n个字节清空</span>
+	address<span class="token punctuation">.</span>sin_family<span class="token operator">=</span>AF_INET<span class="token punctuation">;</span><span class="token comment">//设置TCP/IPv4协议族</span>
+	<span class="token function">inet_pton</span><span class="token punctuation">(</span>AF_INET<span class="token punctuation">,</span>ip<span class="token punctuation">,</span><span class="token operator">&amp;</span>address<span class="token punctuation">.</span>sin_addr<span class="token punctuation">)</span><span class="token punctuation">;</span><span class="token comment">//转换ip地址</span>
+	address<span class="token punctuation">.</span>sin_port<span class="token operator">=</span><span class="token function">htons</span><span class="token punctuation">(</span>port<span class="token punctuation">)</span><span class="token punctuation">;</span><span class="token comment">//转换端口</span>
+	<span class="token keyword">int</span> listenfd<span class="token operator">=</span><span class="token function">socket</span><span class="token punctuation">(</span>PF_INET<span class="token punctuation">,</span>SOCK_STREAM<span class="token punctuation">,</span><span class="token number">0</span><span class="token punctuation">)</span><span class="token punctuation">;</span><span class="token comment">//创建socket，PF_INET表示IPv4，SOCK_STREAM表示流服务</span>
+	<span class="token function">assert</span><span class="token punctuation">(</span>listenfd<span class="token operator">&gt;=</span><span class="token number">0</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+	<span class="token keyword">int</span> ret<span class="token operator">=</span><span class="token function">bind</span><span class="token punctuation">(</span>listenfd<span class="token punctuation">,</span><span class="token punctuation">(</span><span class="token keyword">struct</span> <span class="token class-name">sockaddr</span><span class="token operator">*</span><span class="token punctuation">)</span><span class="token operator">&amp;</span>address<span class="token punctuation">,</span><span class="token keyword">sizeof</span><span class="token punctuation">(</span>address<span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">;</span> <span class="token comment">//绑定socket和地址</span>
+	<span class="token function">assert</span><span class="token punctuation">(</span>ret<span class="token operator">!=</span><span class="token operator">-</span><span class="token number">1</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+	ret<span class="token operator">=</span><span class="token function">listen</span><span class="token punctuation">(</span>listenfd<span class="token punctuation">,</span><span class="token number">5</span><span class="token punctuation">)</span><span class="token punctuation">;</span> <span class="token comment">//最多监听5个客户</span>
+	<span class="token function">assert</span><span class="token punctuation">(</span>ret<span class="token operator">!=</span><span class="token operator">-</span><span class="token number">1</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+	<span class="token keyword">struct</span> <span class="token class-name">sockaddr_in</span> client_address<span class="token punctuation">;</span>
+	<span class="token class-name">socklen_t</span> client_addrlength<span class="token operator">=</span><span class="token keyword">sizeof</span><span class="token punctuation">(</span>client_address<span class="token punctuation">)</span><span class="token punctuation">;</span>
+	<span class="token keyword">int</span> fd<span class="token operator">=</span><span class="token function">accept</span><span class="token punctuation">(</span>listenfd<span class="token punctuation">,</span><span class="token punctuation">(</span><span class="token keyword">struct</span> <span class="token class-name">sockaddr</span><span class="token operator">*</span><span class="token punctuation">)</span><span class="token operator">&amp;</span>client_address<span class="token punctuation">,</span><span class="token operator">&amp;</span>client_addrlength<span class="token punctuation">)</span><span class="token punctuation">;</span>
+	<span class="token keyword">if</span><span class="token punctuation">(</span>fd<span class="token operator">&lt;</span><span class="token number">0</span><span class="token punctuation">)</span><span class="token punctuation">{</span>
+		<span class="token function">printf</span><span class="token punctuation">(</span><span class="token string">"errno is:%d\n"</span><span class="token punctuation">,</span>errno<span class="token punctuation">)</span><span class="token punctuation">;</span>
+	<span class="token punctuation">}</span><span class="token keyword">else</span><span class="token punctuation">{</span>
+		<span class="token keyword">char</span> buffer<span class="token punctuation">[</span>BUFFER_SIZE<span class="token punctuation">]</span><span class="token punctuation">;</span><span class="token comment">//读缓冲区</span>
+		<span class="token function">memset</span><span class="token punctuation">(</span>buffer<span class="token punctuation">,</span><span class="token char">'\0'</span><span class="token punctuation">,</span>BUFFER_SIZE<span class="token punctuation">)</span><span class="token punctuation">;</span>
+		<span class="token keyword">int</span> data_read<span class="token operator">=</span><span class="token number">0</span><span class="token punctuation">;</span>
+		<span class="token keyword">int</span> read_index<span class="token operator">=</span><span class="token number">0</span><span class="token punctuation">;</span><span class="token comment">//当前已经读取了多少字节的客户数据</span>
+		<span class="token keyword">int</span> checked_index<span class="token operator">=</span><span class="token number">0</span><span class="token punctuation">;</span><span class="token comment">//当前已经分析完了多少字节的客户数据</span>
+		<span class="token keyword">int</span> start_line<span class="token operator">=</span><span class="token number">0</span><span class="token punctuation">;</span><span class="token comment">//行在buffer中的起始位置</span>
+		<span class="token comment">//设置主状态机的初始状态</span>
+		CHECK_STATE checkstate<span class="token operator">=</span>CHECK_STATE_REQUESTLINE<span class="token punctuation">;</span> <span class="token comment">//正在分析请求行</span>
+		<span class="token keyword">while</span><span class="token punctuation">(</span><span class="token number">1</span><span class="token punctuation">)</span><span class="token punctuation">{</span>
+            <span class="token comment">//循环读取客户数据并分析之</span>
+			data_read<span class="token operator">=</span><span class="token function">recv</span><span class="token punctuation">(</span>fd<span class="token punctuation">,</span>buffer<span class="token operator">+</span>read_index<span class="token punctuation">,</span>BUFFER_SIZE<span class="token operator">-</span>read_index<span class="token punctuation">,</span><span class="token number">0</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+			<span class="token keyword">if</span><span class="token punctuation">(</span>data_read<span class="token operator">==</span><span class="token operator">-</span><span class="token number">1</span><span class="token punctuation">)</span><span class="token punctuation">{</span>
+				<span class="token function">printf</span><span class="token punctuation">(</span><span class="token string">"reading failed\n"</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+				<span class="token keyword">break</span><span class="token punctuation">;</span>
+            <span class="token punctuation">}</span><span class="token keyword">else</span> <span class="token keyword">if</span><span class="token punctuation">(</span>data_read<span class="token operator">==</span><span class="token number">0</span><span class="token punctuation">)</span><span class="token punctuation">{</span>
+				<span class="token function">printf</span><span class="token punctuation">(</span><span class="token string">"remote client has closed the connection\n"</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+				<span class="token keyword">break</span><span class="token punctuation">;</span>
+            <span class="token punctuation">}</span>
+			read_index<span class="token operator">+=</span>data_read<span class="token punctuation">;</span>
+			<span class="token comment">//分析目前已经获得的所有客户数据</span>
+			HTTP_CODE result<span class="token operator">=</span><span class="token function">parse_content</span><span class="token punctuation">(</span>buffer<span class="token punctuation">,</span>checked_index<span class="token punctuation">,</span>checkstate<span class="token punctuation">,</span>read_index<span class="token punctuation">,</span>start_line<span class="token punctuation">)</span><span class="token punctuation">;</span>
+			<span class="token keyword">if</span><span class="token punctuation">(</span>result<span class="token operator">==</span>NO_REQUEST<span class="token punctuation">)</span><span class="token punctuation">{</span>
+                <span class="token comment">//尚未得到一个完整的HTTP请求</span>
+				<span class="token keyword">continue</span><span class="token punctuation">;</span>
+            <span class="token punctuation">}</span><span class="token keyword">else</span> <span class="token keyword">if</span><span class="token punctuation">(</span>result<span class="token operator">==</span>GET_REQUEST<span class="token punctuation">)</span><span class="token punctuation">{</span>
+                <span class="token comment">//得到一个完整的、正确的HTTP请求</span>
+				<span class="token function">send</span><span class="token punctuation">(</span>fd<span class="token punctuation">,</span>szret<span class="token punctuation">[</span><span class="token number">0</span><span class="token punctuation">]</span><span class="token punctuation">,</span><span class="token function">strlen</span><span class="token punctuation">(</span>szret<span class="token punctuation">[</span><span class="token number">0</span><span class="token punctuation">]</span><span class="token punctuation">)</span><span class="token punctuation">,</span><span class="token number">0</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+				<span class="token keyword">break</span><span class="token punctuation">;</span>
+			<span class="token punctuation">}</span><span class="token keyword">else</span><span class="token punctuation">{</span>
+                <span class="token comment">//其他情况表示发生错误</span>
+				<span class="token function">send</span><span class="token punctuation">(</span>fd<span class="token punctuation">,</span>szret<span class="token punctuation">[</span><span class="token number">1</span><span class="token punctuation">]</span><span class="token punctuation">,</span><span class="token function">strlen</span><span class="token punctuation">(</span>szret<span class="token punctuation">[</span><span class="token number">1</span><span class="token punctuation">]</span><span class="token punctuation">)</span><span class="token punctuation">,</span><span class="token number">0</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+				<span class="token keyword">break</span><span class="token punctuation">;</span>
+            <span class="token punctuation">}</span>
+        <span class="token punctuation">}</span>
+		<span class="token function">close</span><span class="token punctuation">(</span>fd<span class="token punctuation">)</span><span class="token punctuation">;</span>
+	<span class="token punctuation">}</span>
+	<span class="token function">close</span><span class="token punctuation">(</span>listenfd<span class="token punctuation">)</span><span class="token punctuation">;</span>
+	<span class="token keyword">return</span> <span class="token number">0</span><span class="token punctuation">;</span>
+<span class="token punctuation">}</span>
+<span class="token comment">//多看几遍，没有很难</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<hr>
+<p><strong>从状态机（parse_line)</strong></p>
+<p><img src="https://gitee.com/renmale-sztu/image/raw/master/202401051820710.png" alt="image-20240105182051405"></p>
+<ul>
+<li>初始状态是LINE_OK</li>
+</ul>
+<p><img src="https://gitee.com/renmale-sztu/image/raw/master/202401051824382.png" alt="image-20240105182410984"></p>
+<p><img src="https://gitee.com/renmale-sztu/image/raw/master/202401051824536.png" alt="image-20240105182424760"></p>
+<hr>
+<p><strong>主状态机</strong></p>
+<ul>
+<li>主状态机使用checkstate变量来记录当前的状态</li>
+<li>如果当前的状态是CHECK_STATE_REQUESTLINE，则表示parse_line函数解析出的行是请求行，于是主状态机调用parse_requestline来分析请求行</li>
+<li>如果当前的状态是CHECK_STATE_HEADER，则表示parse_line函数解析出的是头部字段，于是主状态机调用parse_headers来分析头部字段</li>
+<li>checkstate变量的初始值是CHECK_STATE_REQUESTLINE，parse_requestline函数在成功地分析完请求行之后将其设置为CHECK_STATE_HEADER，从而实现状态转移</li>
+</ul>
+
+    </div>
+
+    
+    
+    
+
+      <footer class="post-footer">
+          <div class="post-tags">
+              <a href="/tags/C-socket/" rel="tag"># C++ socket</a>
+          </div>
+
+        
+
+
+        
+    <div class="post-nav">
+      <div class="post-nav-item">
+    <a href="/2023/11/29/2-Linux%E9%AB%98%E7%BA%A7IO%E5%87%BD%E6%95%B0/" rel="prev" title="Linux高级I/O函数">
+      <i class="fa fa-chevron-left"></i> Linux高级I/O函数
+    </a></div>
+      <div class="post-nav-item">
+    <a href="/2023/11/29/11-%E5%A4%9A%E7%BA%BF%E7%A8%8B%E7%BC%96%E7%A8%8B/" rel="next" title="多线程编程">
+      多线程编程 <i class="fa fa-chevron-right"></i>
+    </a></div>
+    </div>
+      </footer>
+    
+  </article>
+  
+  
+  
+
+
+
+          </div>
+          
+
+<script>
+  window.addEventListener('tabs:register', () => {
+    let { activeClass } = CONFIG.comments;
+    if (CONFIG.comments.storage) {
+      activeClass = localStorage.getItem('comments_active') || activeClass;
+    }
+    if (activeClass) {
+      let activeTab = document.querySelector(`a[href="#comment-${activeClass}"]`);
+      if (activeTab) {
+        activeTab.click();
+      }
+    }
+  });
+  if (CONFIG.comments.storage) {
+    window.addEventListener('tabs:click', event => {
+      if (!event.target.matches('.tabs-comment .tab-content .tab-pane')) return;
+      let commentClass = event.target.classList[1];
+      localStorage.setItem('comments_active', commentClass);
+    });
+  }
+</script>
+
+        </div>
+          
+  
+  <div class="toggle sidebar-toggle">
+    <span class="toggle-line toggle-line-first"></span>
+    <span class="toggle-line toggle-line-middle"></span>
+    <span class="toggle-line toggle-line-last"></span>
+  </div>
+
+  <aside class="sidebar">
+    <div class="sidebar-inner">
+
+      <ul class="sidebar-nav motion-element">
+        <li class="sidebar-nav-toc">
+          Table of Contents
+        </li>
+        <li class="sidebar-nav-overview">
+          Overview
+        </li>
+      </ul>
+
+      <!--noindex-->
+      <div class="post-toc-wrap sidebar-panel">
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#%E9%AB%98%E6%80%A7%E8%83%BD%E6%9C%8D%E5%8A%A1%E5%99%A8%E7%A8%8B%E5%BA%8F%E6%A1%86%E6%9E%B6"><span class="nav-text">高性能服务器程序框架</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E6%9C%8D%E5%8A%A1%E5%99%A8%E6%A8%A1%E5%9E%8B"><span class="nav-text">服务器模型</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#C-S%E6%A8%A1%E5%9E%8B"><span class="nav-text">C&#x2F;S模型</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#P2P%E6%A8%A1%E5%9E%8B"><span class="nav-text">P2P模型</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E6%9C%8D%E5%8A%A1%E5%99%A8%E7%BC%96%E7%A8%8B%E6%A1%86%E6%9E%B6"><span class="nav-text">服务器编程框架</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#I-O%E6%A8%A1%E5%9E%8B"><span class="nav-text">I&#x2F;O模型</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E4%B8%A4%E7%A7%8D%E9%AB%98%E6%95%88%E7%9A%84%E4%BA%8B%E4%BB%B6%E5%A4%84%E7%90%86%E6%A8%A1%E5%BC%8F"><span class="nav-text">两种高效的事件处理模式</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#Reactor%E6%A8%A1%E5%BC%8F"><span class="nav-text">Reactor模式</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Proactor%E6%A8%A1%E5%BC%8F"><span class="nav-text">Proactor模式</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E6%A8%A1%E6%8B%9FProactor%E6%A8%A1%E5%BC%8F"><span class="nav-text">模拟Proactor模式</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E4%B8%A4%E7%A7%8D%E9%AB%98%E6%95%88%E7%9A%84%E5%B9%B6%E5%8F%91%E6%A8%A1%E5%BC%8F"><span class="nav-text">两种高效的并发模式</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%8D%8A%E5%90%8C%E6%AD%A5-%E5%8D%8A%E5%BC%82%E6%AD%A5%E6%A8%A1%E5%BC%8F"><span class="nav-text">半同步&#x2F;半异步模式</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E9%A2%86%E5%AF%BC%E8%80%85-%E8%BF%BD%E9%9A%8F%E8%80%85%E6%A8%A1%E5%BC%8F"><span class="nav-text">领导者&#x2F;追随者模式</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E6%9C%89%E9%99%90%E7%8A%B6%E6%80%81%E6%9C%BA"><span class="nav-text">有限状态机</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E6%9C%89%E9%99%90%E7%8A%B6%E6%80%81%E6%9C%BA%E7%9A%84%E5%AE%9E%E4%BE%8B%EF%BC%9AHTTP%E8%AF%B7%E6%B1%82%E7%9A%84%E8%AF%BB%E5%8F%96%E5%92%8C%E5%88%86%E6%9E%90"><span class="nav-text">有限状态机的实例：HTTP请求的读取和分析</span></a></li></ol></li></ol></div>
+      </div>
+      <!--/noindex-->
+
+      <div class="site-overview-wrap sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+  <p class="site-author-name" itemprop="name">renmale-lv</p>
+  <div class="site-description" itemprop="description"></div>
+</div>
+<div class="site-state-wrap motion-element">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+          <a href="/archives/">
+        
+          <span class="site-state-item-count">25</span>
+          <span class="site-state-item-name">posts</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-tags">
+            <a href="/tags/">
+        <span class="site-state-item-count">9</span>
+        <span class="site-state-item-name">tags</span></a>
+      </div>
+  </nav>
+</div>
+
+
+
+      </div>
+
+    </div>
+  </aside>
+  <div id="sidebar-dimmer"></div>
+
+
+      </div>
+    </main>
+
+    <footer class="footer">
+      <div class="footer-inner">
+        
+
+        
+
+<div class="copyright">
+  
+  &copy; 
+  <span itemprop="copyrightYear">2024</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">renmale-lv</span>
+    <span class="post-meta-divider">|</span>
+    <span class="post-meta-item-icon">
+      <i class="fa fa-chart-area"></i>
+    </span>
+    <span title="Symbols count total">225k</span>
+    <span class="post-meta-divider">|</span>
+    <span class="post-meta-item-icon">
+      <i class="fa fa-coffee"></i>
+    </span>
+    <span title="Reading time total">3:24</span>
+</div>
+  <div class="powered-by">Powered by <a href="https://hexo.io/" class="theme-link" rel="noopener" target="_blank">Hexo</a> & <a href="https://muse.theme-next.org/" class="theme-link" rel="noopener" target="_blank">NexT.Muse</a>
+  </div>
+
+        
+
+
+
+
+
+
+
+
+      </div>
+    </footer>
+  </div>
+
+  
+  <script src="/lib/anime.min.js"></script>
+  <script src="/lib/velocity/velocity.min.js"></script>
+  <script src="/lib/velocity/velocity.ui.min.js"></script>
+
+<script src="/js/utils.js"></script>
+
+<script src="/js/motion.js"></script>
+
+
+<script src="/js/schemes/muse.js"></script>
+
+
+<script src="/js/next-boot.js"></script>
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+  
+
+</body>
+</html>

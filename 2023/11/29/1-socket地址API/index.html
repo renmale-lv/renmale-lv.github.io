@@ -1,0 +1,1003 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#222">
+<meta name="generator" content="Hexo 6.3.0">
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+
+<link rel="stylesheet" href="/css/main.css">
+
+
+<link rel="stylesheet" href="/lib/font-awesome/css/all.min.css">
+
+<script id="hexo-configurations">
+    var NexT = window.NexT || {};
+    var CONFIG = {"hostname":"example.com","root":"/","scheme":"Muse","version":"7.8.0","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12,"onmobile":false},"copycode":{"enable":false,"show_result":false,"style":null},"back2top":{"enable":true,"sidebar":false,"scrollpercent":false},"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"algolia":{"hits":{"per_page":10},"labels":{"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}},"localsearch":{"enable":false,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},"path":"search.xml"};
+  </script>
+
+  <meta name="description" content="主机字节序和网络字节序大端字节序  一个整数的高位字节（23~31bit）存储在内存的低地址处，低位字节（0~7bit）存储在内存的高地址处 也称网络字节序 在两台使用不同字节序的主机之间传递数据时 发送端总是要把发送的数据转化成大端字节序数据后再发送，而接收端再根据自身采用的字节序决定是否对接收到的数据进行转换    小端字节序  整数的高位字节存储在内存的高地址处，而低位字节则存储">
+<meta property="og:type" content="article">
+<meta property="og:title" content="socket地址API">
+<meta property="og:url" content="http://example.com/2023/11/29/1-socket%E5%9C%B0%E5%9D%80API/index.html">
+<meta property="og:site_name" content="renmale-lv blog">
+<meta property="og:description" content="主机字节序和网络字节序大端字节序  一个整数的高位字节（23~31bit）存储在内存的低地址处，低位字节（0~7bit）存储在内存的高地址处 也称网络字节序 在两台使用不同字节序的主机之间传递数据时 发送端总是要把发送的数据转化成大端字节序数据后再发送，而接收端再根据自身采用的字节序决定是否对接收到的数据进行转换    小端字节序  整数的高位字节存储在内存的高地址处，而低位字节则存储">
+<meta property="og:locale" content="en_US">
+<meta property="og:image" content="https://gitee.com/renmale-sztu/image/raw/master/202312271554454.png">
+<meta property="article:published_time" content="2023-11-28T17:36:05.000Z">
+<meta property="article:modified_time" content="2024-03-05T02:32:47.277Z">
+<meta property="article:author" content="renmale-lv">
+<meta property="article:tag" content="C++ socket">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://gitee.com/renmale-sztu/image/raw/master/202312271554454.png">
+
+<link rel="canonical" href="http://example.com/2023/11/29/1-socket%E5%9C%B0%E5%9D%80API/">
+
+
+<script id="page-configurations">
+  // https://hexo.io/docs/variables.html
+  CONFIG.page = {
+    sidebar: "",
+    isHome : false,
+    isPost : true,
+    lang   : 'en'
+  };
+</script>
+
+  <title>socket地址API | renmale-lv blog</title>
+  
+
+
+
+
+
+
+  <noscript>
+  <style>
+  .use-motion .brand,
+  .use-motion .menu-item,
+  .sidebar-inner,
+  .use-motion .post-block,
+  .use-motion .pagination,
+  .use-motion .comments,
+  .use-motion .post-header,
+  .use-motion .post-body,
+  .use-motion .collection-header { opacity: initial; }
+
+  .use-motion .site-title,
+  .use-motion .site-subtitle {
+    opacity: initial;
+    top: initial;
+  }
+
+  .use-motion .logo-line-before i { left: initial; }
+  .use-motion .logo-line-after i { right: initial; }
+  </style>
+</noscript>
+
+<style>mjx-container[jax="SVG"] {
+  direction: ltr;
+}
+
+mjx-container[jax="SVG"] > svg {
+  overflow: visible;
+}
+
+mjx-container[jax="SVG"][display="true"] {
+  display: block;
+  text-align: center;
+  margin: 1em 0;
+}
+
+mjx-container[jax="SVG"][justify="left"] {
+  text-align: left;
+}
+
+mjx-container[jax="SVG"][justify="right"] {
+  text-align: right;
+}
+
+g[data-mml-node="merror"] > g {
+  fill: red;
+  stroke: red;
+}
+
+g[data-mml-node="merror"] > rect[data-background] {
+  fill: yellow;
+  stroke: none;
+}
+
+g[data-mml-node="mtable"] > line[data-line] {
+  stroke-width: 70px;
+  fill: none;
+}
+
+g[data-mml-node="mtable"] > rect[data-frame] {
+  stroke-width: 70px;
+  fill: none;
+}
+
+g[data-mml-node="mtable"] > .mjx-dashed {
+  stroke-dasharray: 140;
+}
+
+g[data-mml-node="mtable"] > .mjx-dotted {
+  stroke-linecap: round;
+  stroke-dasharray: 0,140;
+}
+
+g[data-mml-node="mtable"] > svg {
+  overflow: visible;
+}
+
+[jax="SVG"] mjx-tool {
+  display: inline-block;
+  position: relative;
+  width: 0;
+  height: 0;
+}
+
+[jax="SVG"] mjx-tool > mjx-tip {
+  position: absolute;
+  top: 0;
+  left: 0;
+}
+
+mjx-tool > mjx-tip {
+  display: inline-block;
+  padding: .2em;
+  border: 1px solid #888;
+  font-size: 70%;
+  background-color: #F8F8F8;
+  color: black;
+  box-shadow: 2px 2px 5px #AAAAAA;
+}
+
+g[data-mml-node="maction"][data-toggle] {
+  cursor: pointer;
+}
+
+mjx-status {
+  display: block;
+  position: fixed;
+  left: 1em;
+  bottom: 1em;
+  min-width: 25%;
+  padding: .2em .4em;
+  border: 1px solid #888;
+  font-size: 90%;
+  background-color: #F8F8F8;
+  color: black;
+}
+
+foreignObject[data-mjx-xml] {
+  font-family: initial;
+  line-height: normal;
+  overflow: visible;
+}
+
+.MathJax path {
+  stroke-width: 3;
+}
+
+mjx-container[display="true"] {
+  overflow: auto hidden;
+}
+
+mjx-container[display="true"] + br {
+  display: none;
+}
+</style><link rel="alternate" href="/atom.xml" title="renmale-lv blog" type="application/atom+xml">
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage">
+  <div class="container use-motion">
+    <div class="headband"></div>
+
+    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="Toggle navigation bar">
+      <span class="toggle-line toggle-line-first"></span>
+      <span class="toggle-line toggle-line-middle"></span>
+      <span class="toggle-line toggle-line-last"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <span class="logo-line-before"><i></i></span>
+      <h1 class="site-title">renmale-lv blog</h1>
+      <span class="logo-line-after"><i></i></span>
+    </a>
+      <p class="site-subtitle" itemprop="description">记录学习点滴</p>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger">
+    </div>
+  </div>
+</div>
+
+
+
+
+<nav class="site-nav">
+  <ul id="menu" class="main-menu menu">
+        <li class="menu-item menu-item-home">
+
+    <a href="/" rel="section"><i class="fa fa-home fa-fw"></i>Home</a>
+
+  </li>
+        <li class="menu-item menu-item-archives">
+
+    <a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>Archives</a>
+
+  </li>
+  </ul>
+</nav>
+
+
+
+
+</div>
+    </header>
+
+    
+  <div class="back-to-top">
+    <i class="fa fa-arrow-up"></i>
+    <span>0%</span>
+  </div>
+
+
+    <main class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          
+
+          <div class="content post posts-expand">
+            
+
+    
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="en">
+    <link itemprop="mainEntityOfPage" href="http://example.com/2023/11/29/1-socket%E5%9C%B0%E5%9D%80API/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="renmale-lv">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="renmale-lv blog">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          socket地址API
+        </h1>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">Posted on</span>
+
+              <time title="Created: 2023-11-29 01:36:05" itemprop="dateCreated datePublished" datetime="2023-11-29T01:36:05+08:00">2023-11-29</time>
+            </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="far fa-calendar-check"></i>
+                </span>
+                <span class="post-meta-item-text">Edited on</span>
+                <time title="Modified: 2024-03-05 10:32:47" itemprop="dateModified" datetime="2024-03-05T10:32:47+08:00">2024-03-05</time>
+              </span>
+
+          <br>
+            <span class="post-meta-item" title="Symbols count in article">
+              <span class="post-meta-item-icon">
+                <i class="far fa-file-word"></i>
+              </span>
+                <span class="post-meta-item-text">Symbols count in article: </span>
+              <span>9.2k</span>
+            </span>
+            <span class="post-meta-item" title="Reading time">
+              <span class="post-meta-item-icon">
+                <i class="far fa-clock"></i>
+              </span>
+                <span class="post-meta-item-text">Reading time &asymp;</span>
+              <span>8 mins.</span>
+            </span>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+        <meta name="referrer" content="no-referrer">    
+
+<h2 id="主机字节序和网络字节序"><a href="#主机字节序和网络字节序" class="headerlink" title="主机字节序和网络字节序"></a>主机字节序和网络字节序</h2><p><strong>大端字节序</strong></p>
+<ul>
+<li>一个整数的高位字节（23~31bit）存储在内存的低地址处，低位字节（0~7bit）存储在内存的高地址处</li>
+<li>也称网络字节序<ul>
+<li>在两台使用不同字节序的主机之间传递数据时</li>
+<li>发送端总是要把发送的数据转化成大端字节序数据后再发送，而接收端再根据自身采用的字节序决定是否对接收到的数据进行转换</li>
+</ul>
+</li>
+</ul>
+<p><strong>小端字节序</strong></p>
+<ul>
+<li>整数的高位字节存储在内存的高地址处，而低位字节则存储在内存的地址处</li>
+<li>现代PC大多采用小端字节序，因此小端字节序又被称为主机字节序</li>
+</ul>
+<p><strong>判断机器字节序</strong></p>
+<pre class="line-numbers language-c" data-language="c"><code class="language-c"><span class="token macro property"><span class="token directive-hash">#</span><span class="token directive keyword">include</span> <span class="token string">&lt;stdio.h&gt;</span></span>
+<span class="token keyword">void</span> <span class="token function">byteorder</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">{</span>
+	<span class="token keyword">union</span><span class="token punctuation">{</span>
+		<span class="token keyword">short</span> value<span class="token punctuation">;</span>
+		<span class="token keyword">char</span> union_bytes<span class="token punctuation">[</span><span class="token keyword">sizeof</span><span class="token punctuation">(</span><span class="token keyword">short</span><span class="token punctuation">)</span><span class="token punctuation">]</span><span class="token punctuation">;</span>
+	<span class="token punctuation">}</span>test<span class="token punctuation">;</span>
+	test<span class="token punctuation">.</span>value <span class="token operator">=</span> <span class="token number">0x0102</span><span class="token punctuation">;</span>
+	
+	<span class="token keyword">if</span><span class="token punctuation">(</span><span class="token punctuation">(</span>test<span class="token punctuation">.</span>union_bytes<span class="token punctuation">[</span><span class="token number">0</span><span class="token punctuation">]</span> <span class="token operator">==</span> <span class="token number">1</span><span class="token punctuation">)</span> <span class="token operator">&amp;&amp;</span> <span class="token punctuation">(</span>test<span class="token punctuation">.</span>union_bytes<span class="token punctuation">[</span><span class="token number">1</span><span class="token punctuation">]</span> <span class="token operator">==</span> <span class="token number">2</span><span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">{</span>
+		<span class="token function">printf</span><span class="token punctuation">(</span><span class="token string">"big endian\n"</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+	<span class="token punctuation">}</span>
+	<span class="token keyword">else</span> <span class="token keyword">if</span><span class="token punctuation">(</span><span class="token punctuation">(</span>test<span class="token punctuation">.</span>union_bytes<span class="token punctuation">[</span><span class="token number">0</span><span class="token punctuation">]</span> <span class="token operator">==</span> <span class="token number">2</span><span class="token punctuation">)</span> <span class="token operator">&amp;&amp;</span> <span class="token punctuation">(</span>test<span class="token punctuation">.</span>union_bytes<span class="token punctuation">[</span><span class="token number">1</span><span class="token punctuation">]</span> <span class="token operator">==</span> <span class="token number">1</span><span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">{</span>
+		<span class="token function">printf</span><span class="token punctuation">(</span><span class="token string">"little endian\n"</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+	<span class="token punctuation">}</span>
+	<span class="token keyword">else</span><span class="token punctuation">{</span>
+		<span class="token function">printf</span><span class="token punctuation">(</span><span class="token string">"unknown...\n"</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+	<span class="token punctuation">}</span>
+<span class="token punctuation">}</span>
+
+<span class="token keyword">int</span> <span class="token function">main</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">{</span>
+    <span class="token function">byteorder</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+    <span class="token keyword">return</span> <span class="token number">0</span><span class="token punctuation">;</span>
+<span class="token punctuation">}</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<p><strong>主机字节序和网络字节序之间的转换</strong></p>
+<pre class="line-numbers language-c" data-language="c"><code class="language-c"><span class="token macro property"><span class="token directive-hash">#</span><span class="token directive keyword">include</span> <span class="token string">&lt;netinet/in.h&gt;</span></span>
+<span class="token comment">//htonl = "host to network long",将长整形（32bit）的主机字节序数据转化为网络字节序数据</span>
+<span class="token keyword">unsigned</span> <span class="token keyword">long</span> <span class="token keyword">int</span> <span class="token function">htonl</span><span class="token punctuation">(</span><span class="token keyword">unsigned</span> <span class="token keyword">long</span> <span class="token keyword">int</span> hostlong<span class="token punctuation">)</span><span class="token punctuation">;</span>
+<span class="token keyword">unsigned</span> <span class="token keyword">short</span> <span class="token keyword">int</span> <span class="token function">htons</span><span class="token punctuation">(</span><span class="token keyword">unsigned</span> <span class="token keyword">short</span> <span class="token keyword">int</span> hostshort<span class="token punctuation">)</span><span class="token punctuation">;</span>
+<span class="token keyword">unsigned</span> <span class="token keyword">long</span> <span class="token keyword">int</span> <span class="token function">ntohl</span><span class="token punctuation">(</span><span class="token keyword">unsigned</span> <span class="token keyword">long</span> <span class="token keyword">int</span> netlong<span class="token punctuation">)</span><span class="token punctuation">;</span>
+<span class="token keyword">unsigned</span> <span class="token keyword">short</span> <span class="token keyword">int</span> <span class="token function">ntohs</span><span class="token punctuation">(</span><span class="token keyword">unsigned</span> <span class="token keyword">short</span> <span class="token keyword">int</span> netshort<span class="token punctuation">)</span><span class="token punctuation">;</span>
+<span class="token comment">//长整型函数通常用来转换IP地址，短整形函数用来转换端口号</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<h2 id="通用socket地址"><a href="#通用socket地址" class="headerlink" title="通用socket地址"></a>通用socket地址</h2><p>socket网络编程接口中表示socket地址的是结构体sockaddr</p>
+<pre class="line-numbers language-c" data-language="c"><code class="language-c"><span class="token comment">// sockaddr结构体</span>
+<span class="token macro property"><span class="token directive-hash">#</span><span class="token directive keyword">include</span> <span class="token string">&lt;bits/socket.h&gt;</span></span>
+<span class="token keyword">struct</span> <span class="token class-name">sockaddr</span><span class="token punctuation">{</span>
+	<span class="token class-name">sa_family_t</span> sa_family<span class="token punctuation">;</span>
+	<span class="token keyword">char</span> sa_data<span class="token punctuation">[</span><span class="token number">14</span><span class="token punctuation">]</span><span class="token punctuation">;</span>
+<span class="token punctuation">}</span><span class="token punctuation">;</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<p><strong>sa_family</strong></p>
+<ul>
+<li><p>地址族类型（sa_family_t）的变量，通常与协议族类型对应</p>
+</li>
+<li><p>| 协议族   | 地址族   | 描述             |<br>| ———— | ———— | ———————— |<br>| PF_UNIX  | AF_UNIX  | UNIX本地域协议族 |<br>| PF_INET  | AF_INET  | TCP/IPv4协议族   |<br>| PF_INET6 | AF_INET6 | TCP/IPv6协议族   |</p>
+</li>
+</ul>
+<p><strong>sa_data</strong></p>
+<ul>
+<li><p>用于存放socket地址值</p>
+</li>
+<li><p>不同的协议族的地址值具有不同的含义和长度</p>
+</li>
+<li><p>| 协议族   | 地址值含义和长度                                             |<br>| ———— | —————————————————————————————— |<br>| PF_UNIX  | 文件的路径名，长度可达到108字节                              |<br>| PF_INET  | 16bit端口号和32bit IPv4地址，共6字节                         |<br>| PF_INET6 | 16bit端口号，32bit流标识，128bit IPv6地址，32bit范围ID，共26字节 |</p>
+</li>
+</ul>
+<hr>
+<p>14字节的sa_data根本无法完全容纳多数协议族的地址值，因此，Linux定义了新的通用socket地址结构体</p>
+<pre class="line-numbers language-c" data-language="c"><code class="language-c"><span class="token macro property"><span class="token directive-hash">#</span><span class="token directive keyword">include</span> <span class="token string">&lt;bits/socket.h&gt;</span></span>
+
+<span class="token keyword">struct</span> <span class="token class-name">sockaddr_storage</span><span class="token punctuation">{</span>
+	<span class="token class-name">sa_family_t</span> sa_family<span class="token punctuation">;</span>
+	<span class="token keyword">unsigned</span> <span class="token keyword">long</span> <span class="token keyword">int</span> __ss_align<span class="token punctuation">;</span>
+	<span class="token keyword">char</span> __ss_padding<span class="token punctuation">[</span><span class="token number">128</span><span class="token operator">-</span><span class="token keyword">sizeof</span><span class="token punctuation">(</span>__ss_align<span class="token punctuation">)</span><span class="token punctuation">]</span><span class="token punctuation">;</span>
+<span class="token punctuation">}</span><span class="token punctuation">;</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<p>该结体不仅提供了足够大的空间用于存放地址值，而且是内存对齐的</p>
+<h2 id="专用socket地址"><a href="#专用socket地址" class="headerlink" title="专用socket地址"></a>专用socket地址</h2><p>通用的socket地址结构体不好用，设置与获取IP地址和端口号就需要执行烦琐的位操作，Linux为各个协议族提供了专门的socket地址结构体</p>
+<h3 id="UNIX本地域协议族"><a href="#UNIX本地域协议族" class="headerlink" title="UNIX本地域协议族"></a><strong>UNIX本地域协议族</strong></h3><pre class="line-numbers language-c" data-language="c"><code class="language-c"><span class="token macro property"><span class="token directive-hash">#</span><span class="token directive keyword">include</span> <span class="token string">&lt;sys/un.h&gt;</span></span>
+<span class="token keyword">struct</span> <span class="token class-name">sockaddr_un</span><span class="token punctuation">{</span>
+	<span class="token class-name">sa_family_t</span> sin_family<span class="token punctuation">;</span> <span class="token comment">//地址族：AF_UNIX</span>
+	<span class="token keyword">char</span> sun_path<span class="token punctuation">[</span><span class="token number">108</span><span class="token punctuation">]</span><span class="token punctuation">;</span> 	<span class="token comment">//文件路径名</span>
+<span class="token punctuation">}</span><span class="token punctuation">;</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<h3 id="TCP-IP协议族"><a href="#TCP-IP协议族" class="headerlink" title="TCP/IP协议族"></a><strong>TCP/IP协议族</strong></h3><pre class="line-numbers language-c" data-language="c"><code class="language-c"><span class="token comment">// IPv4</span>
+<span class="token keyword">struct</span> <span class="token class-name">sockaddr_in</span><span class="token punctuation">{</span>
+	<span class="token class-name">sa_family_t</span> sin_family<span class="token punctuation">;</span>		<span class="token comment">//地址族：AF_INET</span>
+	<span class="token class-name">u_int16_t</span> sin_port<span class="token punctuation">;</span>			<span class="token comment">//端口号，要用网络字节序表示</span>
+	<span class="token keyword">struct</span> <span class="token class-name">in_addr</span> sin_addr<span class="token punctuation">;</span>	<span class="token comment">//IPv4地址结构体，见下面</span>
+<span class="token punctuation">}</span><span class="token punctuation">;</span>
+<span class="token keyword">struct</span> <span class="token class-name">in_addr</span><span class="token punctuation">{</span>
+	<span class="token class-name">u_int32_t</span> s_addr<span class="token punctuation">;</span>			<span class="token comment">//IPv4地址，要用网络字节序表示</span>
+<span class="token punctuation">}</span><span class="token punctuation">;</span>
+
+<span class="token comment">// IPv6</span>
+<span class="token keyword">struct</span> <span class="token class-name">sockaddr_in6</span><span class="token punctuation">{</span>
+	<span class="token class-name">sa_family_t</span> sin6_family<span class="token punctuation">;</span>
+	<span class="token class-name">u_int16_t</span> sin6_port<span class="token punctuation">;</span>		<span class="token comment">//端口号，要用网络字节序表示</span>
+	<span class="token class-name">u_int32_t</span> sin6_flowinfo<span class="token punctuation">;</span>	<span class="token comment">//流信息，应设置为0</span>
+	<span class="token keyword">struct</span> <span class="token class-name">in6_addr</span> sin6_addr<span class="token punctuation">;</span>	<span class="token comment">//IPv6地址结构体，见下面</span>
+	<span class="token class-name">u_int32_t</span> sin6_scope_id<span class="token punctuation">;</span>	<span class="token comment">//scope ID，尚处于实验阶段</span>
+<span class="token punctuation">}</span><span class="token punctuation">;</span>
+<span class="token keyword">struct</span> <span class="token class-name">in6_addr</span>
+<span class="token punctuation">{</span>
+	<span class="token keyword">unsigned</span> <span class="token keyword">char</span> sa_addr<span class="token punctuation">[</span><span class="token number">16</span><span class="token punctuation">]</span><span class="token punctuation">;</span>	<span class="token comment">//IPv6地址，要用网络字节序表示</span>
+<span class="token punctuation">}</span><span class="token punctuation">;</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<ul>
+<li>所有专用socket地址（以及sockaddr_storage）类型的变量在实际使用时都需要转化为通用socket地址类型sockaddr（强制转换即可）</li>
+<li>所有socket编程接口使用的地址参数都是sockaddr</li>
+</ul>
+<h2 id="IP地址转换函数"><a href="#IP地址转换函数" class="headerlink" title="IP地址转换函数"></a>IP地址转换函数</h2><p>通常，人们习惯用可读性好的字符串来表示IP地址，比如用点分十进制字符串表示IPv4地址，以及用十六进制字符串表示IPv6地址。但编程中我们需要先把它们转化为整数（二进制数）方能使用</p>
+<p>而记录日志时则相反，我们要把整数表示的IP地址转化为可读的字符串 </p>
+<pre class="line-numbers language-c" data-language="c"><code class="language-c"><span class="token macro property"><span class="token directive-hash">#</span><span class="token directive keyword">include</span> <span class="token string">&lt;arpa/inet.h&gt;</span></span>
+
+<span class="token comment">/*
+inet_addr函数将用点分十进制字符串表示的IPv4地址转化为用网络字节序整数表示的IPv4地址
+失败时返回INADDR_NONE
+*/</span>
+<span class="token class-name">in_addr_t</span> <span class="token function">inet_addr</span><span class="token punctuation">(</span><span class="token keyword">const</span> <span class="token keyword">char</span><span class="token operator">*</span> strpte<span class="token punctuation">)</span><span class="token punctuation">;</span>
+
+<span class="token comment">/*
+完成和inet_addr同样的功能
+将转化结果存储于参数imp指向的地址结构中
+成功时返回1，失败则返回0
+*/</span>
+<span class="token keyword">int</span> <span class="token function">inet_aton</span><span class="token punctuation">(</span><span class="token keyword">const</span> <span class="token keyword">char</span><span class="token operator">*</span> cp<span class="token punctuation">,</span> <span class="token keyword">struct</span> <span class="token class-name">in_addr</span><span class="token operator">*</span> inp<span class="token punctuation">)</span><span class="token punctuation">;</span>
+
+<span class="token comment">/*
+将用胃囊螺字节序整数表示的IPv4地址转化为用点分十进制字符串表示的IPv4地址
+用一个静态变量存储转化结果，函数的返回值指向该静态内存
+因此inet_ntoa是不可重入的
+*/</span>
+<span class="token keyword">char</span><span class="token operator">*</span> <span class="token function">inet_ntoa</span><span class="token punctuation">(</span><span class="token keyword">struct</span> <span class="token class-name">in_addr</span> in<span class="token punctuation">)</span><span class="token punctuation">;</span>
+
+<span class="token comment">/*
+将用字符串表示的IP地址src（用点分十进制字符串表示的IPv4地址或用十六进制字符串表示的IPv6地址）转换成用网络字节序整数表示的IP地址，并把转换结构存储于dst指向的内存中
+af参数指定地址族，可以是AF_INET或者AF_INET6
+成功时返回1，失败则返回0并设置error
+*/</span>
+<span class="token keyword">int</span> <span class="token function">inet_pton</span><span class="token punctuation">(</span><span class="token keyword">int</span> af<span class="token punctuation">,</span> <span class="token keyword">const</span> <span class="token keyword">char</span><span class="token operator">*</span> src<span class="token punctuation">,</span> <span class="token keyword">void</span><span class="token operator">*</span> dst<span class="token punctuation">)</span><span class="token punctuation">;</span>
+
+<span class="token comment">/*
+进行与inet_pton相反的转换
+前三个参数的含义与inet_pton的参数相同
+最后一个参数cnt指明目标存储单元的大小，下面两个宏能帮助我们指定大小
+#include &lt;netinet/in.h&gt;
+#define INET_ADDRSTRLEN 16
+#define INET6_ADDRSTRLEN 46
+*/</span>
+<span class="token keyword">const</span> <span class="token keyword">char</span><span class="token operator">*</span> <span class="token function">inet_ntop</span><span class="token punctuation">(</span><span class="token keyword">int</span> af<span class="token punctuation">,</span> <span class="token keyword">const</span> <span class="token keyword">void</span><span class="token operator">*</span> src<span class="token punctuation">,</span> <span class="token keyword">char</span><span class="token operator">*</span> dst<span class="token punctuation">,</span> <span class="token class-name">socklen_t</span> cnt<span class="token punctuation">)</span><span class="token punctuation">;</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<h2 id="创建socket"><a href="#创建socket" class="headerlink" title="创建socket"></a>创建socket</h2><p><strong>socket</strong></p>
+<ul>
+<li>可读、可写、可控制、可关闭的文件描述符</li>
+</ul>
+<p><strong>创建socket</strong></p>
+<pre class="line-numbers language-c" data-language="c"><code class="language-c"><span class="token macro property"><span class="token directive-hash">#</span><span class="token directive keyword">include</span> <span class="token string">&lt;sys/types.h&gt;</span></span>
+<span class="token macro property"><span class="token directive-hash">#</span><span class="token directive keyword">include</span> <span class="token string">&lt;sys/socket.h&gt;</span></span>
+<span class="token keyword">int</span> <span class="token function">socket</span><span class="token punctuation">(</span><span class="token keyword">int</span> domain<span class="token punctuation">,</span> <span class="token keyword">int</span> type<span class="token punctuation">,</span> <span class="token keyword">int</span> protocol<span class="token punctuation">)</span><span class="token punctuation">;</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span></span></code></pre>
+<ul>
+<li>domain<ul>
+<li>告诉系统使用哪个底层协议族</li>
+<li>TCP/IP：PF_INET或PF_INET6</li>
+<li>UNIX本地域：PF_UNIX</li>
+<li>……</li>
+</ul>
+</li>
+<li>type<ul>
+<li>指定服务类型</li>
+<li>SOCK_STREAM：流服务</li>
+<li>SOCK_DGRAM：数据报</li>
+<li>对TCP/IP协议族来说<ul>
+<li>SOCK_STREAM：传输层使用TCP协议</li>
+<li>SOCK_DGRAM：传输层使用UDP协议</li>
+</ul>
+</li>
+<li>可相与的值<ul>
+<li>SOCK_NONBLOCK ：新创建的socket设为非阻塞的</li>
+<li>SOCK_CLOEXEC  ：用fork调用创建子进程时在子进程中关闭该socket</li>
+</ul>
+</li>
+</ul>
+</li>
+<li>protocol<ul>
+<li>在前两个参数构成的协议集合下，再选择一个具体的协议</li>
+<li>该值通常唯一，前两个参数已经完全决定了它的值</li>
+<li>几乎在所有情况下，我们都应该把它设置为0，表示使用默认协议</li>
+</ul>
+</li>
+<li>返回一个socket文件描述符，失败则返回-1，并设置error</li>
+</ul>
+<h2 id="命名socket"><a href="#命名socket" class="headerlink" title="命名socket"></a>命名socket</h2><p><strong>给socket命名</strong></p>
+<ul>
+<li>将一个socket与socket地址绑定</li>
+<li>只有命名后服务器程序才知道该如何连接它</li>
+<li>客户端通常不需要命名socket，采用匿名方式，使用操作系统自动分配的socket地址</li>
+<li>使用bind系统调用命名</li>
+</ul>
+<p><strong>bind系统调用</strong></p>
+<pre class="line-numbers language-c" data-language="c"><code class="language-c"><span class="token macro property"><span class="token directive-hash">#</span><span class="token directive keyword">include</span> <span class="token string">&lt;sys/types.h&gt;</span></span>
+<span class="token macro property"><span class="token directive-hash">#</span><span class="token directive keyword">include</span> <span class="token string">&lt;sys/socket.h&gt;</span></span>
+<span class="token keyword">int</span> <span class="token function">bind</span><span class="token punctuation">(</span><span class="token keyword">int</span> sockfd<span class="token punctuation">,</span> <span class="token keyword">const</span> <span class="token keyword">struct</span> <span class="token class-name">sockaddr</span><span class="token operator">*</span> my_addr<span class="token punctuation">,</span> <span class="token class-name">socklen_t</span> addrlen<span class="token punctuation">)</span><span class="token punctuation">;</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span></span></code></pre>
+<ul>
+<li>将my_addr所指的socket地址分配给未命名的sockfd文件描述符，addrlen参数指出该socket地址的长度</li>
+<li>bind成功返回0，失败则返回-1并设置errno</li>
+<li>两种常见的errno<ul>
+<li>EACCES<ul>
+<li>被绑定的地址时受保护的地址，仅超级用户能够访问</li>
+</ul>
+</li>
+<li>EADDRINUSE<ul>
+<li>被绑定的地址正在使用中</li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+<h2 id="监听socket"><a href="#监听socket" class="headerlink" title="监听socket"></a>监听socket</h2><p>创建一个监听队列以存放待处理的客户连接</p>
+<pre class="line-numbers language-c" data-language="c"><code class="language-c"><span class="token macro property"><span class="token directive-hash">#</span><span class="token directive keyword">include</span> <span class="token string">&lt;sys/socket.h&gt;</span></span>
+<span class="token keyword">int</span> <span class="token function">listen</span><span class="token punctuation">(</span><span class="token keyword">int</span> sockfd<span class="token punctuation">,</span> <span class="token keyword">int</span> backlog<span class="token punctuation">)</span><span class="token punctuation">;</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span></span></code></pre>
+<ul>
+<li>sockfd：指定被监听的socket</li>
+<li>backlog：提示内核监听队列的最大长度<ul>
+<li>监听队列如果超过backlog，服务器将不受理新的客户连接，客户端也将收到ECONNEREFUSED错误信息</li>
+<li>所有处于完全连接状态的socket的上限</li>
+<li>典型值是5</li>
+<li>监听队列的上限通常比backlog略大</li>
+</ul>
+</li>
+<li>成功是返回1，失败则返回-1，并设置errno</li>
+</ul>
+<h2 id="接受连接"><a href="#接受连接" class="headerlink" title="接受连接"></a>接受连接</h2><p><strong>accept系统调用</strong></p>
+<pre class="line-numbers language-C" data-language="C"><code class="language-C">#include &lt;sys/types.h&gt;
+#include &lt;sys/socket.h&gt;
+int accept(int sockfd, struct sockaddr* addr, socklen_t* addrlen);<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span></span></code></pre>
+<ul>
+<li>sockfd：执行listen系统调用的监听socket</li>
+<li><p>addr：获取被接受连接的远端socket地址，该socket地址的长度由addrlen参数指出</p>
+</li>
+<li><p>成功时返回一个新的连接socket，该socket唯一标识了被接受的这个连接，服务器可以通过读写该socket来与被接受连接对应的客户端通信</p>
+</li>
+<li>失败时返回-1并设置errno</li>
+</ul>
+<p>accept只是从监听队列中取出连接，而不论连接处于何种状态（如ESTABLISHED和CLOSE_WAIT），更不关心任何网络状况的变化</p>
+<h2 id="发起连接"><a href="#发起连接" class="headerlink" title="发起连接"></a>发起连接</h2><p>服务器通过listen调用来被动接受连接，客户端则通过connect来主动与服务器建立连接</p>
+<p><strong>connect系统调用</strong></p>
+<pre class="line-numbers language-c" data-language="c"><code class="language-c"><span class="token macro property"><span class="token directive-hash">#</span><span class="token directive keyword">include</span> <span class="token string">&lt;sys/types.h&gt;</span></span>
+<span class="token macro property"><span class="token directive-hash">#</span><span class="token directive keyword">include</span> <span class="token string">&lt;sys/socket.h&gt;</span></span>
+<span class="token keyword">int</span> <span class="token function">connect</span><span class="token punctuation">(</span><span class="token keyword">int</span> sockfd<span class="token punctuation">,</span> <span class="token keyword">const</span> <span class="token keyword">struct</span> <span class="token class-name">sockaddr</span><span class="token operator">*</span> serv_addr<span class="token punctuation">.</span> <span class="token class-name">socklen_t</span> addrlen<span class="token punctuation">)</span><span class="token punctuation">;</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span></span></code></pre>
+<ul>
+<li>sockfd：由socket系统调用返回的socket</li>
+<li>serv_addr：服务器监听的socket地址，addrlen参数指定这个地址的长度</li>
+<li>成功时返回0，一旦成功建立连接，sockfd就唯一地标识了这个连接，客户端就可以通过读写sockfd来与服务器通信 </li>
+<li>connect失败则返回-1并设置errno，其中两种常见的errno是ECONNREFUSED和ETIMEDOUT<ul>
+<li>ECONNREFUSED：目标端口不存在，连接被拒绝</li>
+<li>ETIMEDOUT：连接超时</li>
+</ul>
+</li>
+</ul>
+<h2 id="关闭连接"><a href="#关闭连接" class="headerlink" title="关闭连接"></a>关闭连接</h2><p>关闭该连接对应的socket</p>
+<p><strong>close系统调用</strong></p>
+<pre class="line-numbers language-c" data-language="c"><code class="language-c"><span class="token macro property"><span class="token directive-hash">#</span><span class="token directive keyword">include</span> <span class="token string">&lt;unistd.h&gt;</span></span>
+<span class="token keyword">int</span> <span class="token function">close</span><span class="token punctuation">(</span><span class="token keyword">int</span> fd<span class="token punctuation">)</span><span class="token punctuation">;</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span></span></code></pre>
+<ul>
+<li><p>fd：待关闭的socket</p>
+</li>
+<li><p>close系统调用并非总是立即关闭一个连接，而是将fd引用计数减一，当fd计数为0时，才真正关闭连接</p>
+</li>
+<li><p>在多进程程序中，一次fork系统调用默认将使父进程中打开的socket的引用计数加1，因此我们必须在父进程和子进程都对该socket执行close调用才能将连接关闭</p>
+</li>
+</ul>
+<hr>
+<p><strong>shutdown系统调用</strong></p>
+<p>无论如何都要终止连接，而不是将socket引用计数减一，使用shutdown系统调用</p>
+<pre class="line-numbers language-C" data-language="C"><code class="language-C">#include &lt;sys/socket.h&gt;
+int shutdown(int sockfd, int howto);<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span></span></code></pre>
+<ul>
+<li>sockfd：待关闭的socket</li>
+<li>howto：<ul>
+<li>SHUT_RD<ul>
+<li>关闭sockfd上读的这一半，应用程序不能再针对socket文件描述符执行读操作，并且该socket接受缓冲区中的数据都被丢弃</li>
+</ul>
+</li>
+<li>SHUT_WR<ul>
+<li>关闭sockfd上写的这一半，sockfd的发送缓冲区中的数据会在真正关闭连接之前全部发送出去，应用程序不可再对该socket文件描述符执行写操作</li>
+<li>这种情况下，连接处于半关闭状态</li>
+</ul>
+</li>
+<li>SHUT_RDWR<ul>
+<li>同时关闭sockfd上的读和写</li>
+</ul>
+</li>
+</ul>
+</li>
+<li>成功返回0，失败返回-1并设置errno</li>
+</ul>
+<h2 id="数据读写"><a href="#数据读写" class="headerlink" title="数据读写"></a>数据读写</h2><p>对文件的读写操作read和write同样适用于socket，但是socket编程接口提供了几个专门用于socket数据读写的系统调用</p>
+<h3 id="TCP数据读写"><a href="#TCP数据读写" class="headerlink" title="TCP数据读写"></a>TCP数据读写</h3><pre class="line-numbers language-c" data-language="c"><code class="language-c"><span class="token macro property"><span class="token directive-hash">#</span><span class="token directive keyword">include</span> <span class="token string">&lt;sys/types.h&gt;</span></span>
+<span class="token macro property"><span class="token directive-hash">#</span><span class="token directive keyword">include</span> <span class="token string">&lt;sys/socket.h&gt;</span></span>
+<span class="token class-name">ssize_t</span> <span class="token function">recv</span><span class="token punctuation">(</span><span class="token keyword">int</span> sockfd<span class="token punctuation">,</span> <span class="token keyword">void</span><span class="token operator">*</span> buf<span class="token punctuation">,</span> <span class="token class-name">size_t</span> len<span class="token punctuation">,</span> <span class="token keyword">int</span> flags<span class="token punctuation">)</span><span class="token punctuation">;</span>
+<span class="token class-name">ssize_t</span> <span class="token function">send</span><span class="token punctuation">(</span><span class="token keyword">int</span> sockfd<span class="token punctuation">,</span> <span class="token keyword">const</span> <span class="token keyword">void</span><span class="token operator">*</span> buf<span class="token punctuation">,</span> <span class="token class-name">size_t</span> len<span class="token punctuation">,</span> <span class="token keyword">int</span> flags<span class="token punctuation">)</span><span class="token punctuation">;</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span></span></code></pre>
+<ul>
+<li>recv——读取sockfd上的数据<ul>
+<li>buf：设置缓冲区的位置</li>
+<li>len：设置缓冲区的大小</li>
+<li>成功时返回实际读取的数据的长度</li>
+<li>返回0表示通信对方已经关闭连接</li>
+<li>出错时返回-1并设置errno</li>
+</ul>
+</li>
+<li>send——往sockfd上写入数据<ul>
+<li>buf：设置缓冲区的位置</li>
+<li>len：设置缓冲区的大小</li>
+<li>成功时返回实际写入的数据的长度</li>
+<li>失败返回-1并设置errno</li>
+</ul>
+</li>
+</ul>
+<hr>
+<p><strong>flags参数的可选值</strong></p>
+<div class="table-container">
+<table>
+<thead>
+<tr>
+<th>选项名</th>
+<th>含义</th>
+<th>send</th>
+<th>recv</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>MSG_CONFIRM</td>
+<td>指示数据链路层协议痴心监听对方的回应，直到得到答复；仅能用于SOCK_DGRAM和SOCK_RAW类型的socket</td>
+<td>Y</td>
+<td>N</td>
+</tr>
+<tr>
+<td>MSG_DONTROUTE</td>
+<td>不查看路由表，直接将数据发送给本地局域网络内的主机，表示发送者确切地知道目标主机就在本地网络上</td>
+<td>Y</td>
+<td>N</td>
+</tr>
+<tr>
+<td>MSG_DONTWAIT</td>
+<td>对socket的此次操作将是非阻塞的</td>
+<td>Y</td>
+<td>Y</td>
+</tr>
+<tr>
+<td>MSG_MORE</td>
+<td>告诉内核应用程序还有更多数据要发送，内核将等待新数据写入TCP发送缓冲区后一并发送；这样可防止TCP发送过多小的报文端，从而提高传输效率</td>
+<td>Y</td>
+<td>N</td>
+</tr>
+<tr>
+<td>MSG_WAITALL</td>
+<td>读操作仅在读取到指定数量的字节后才返回</td>
+<td>N</td>
+<td>Y</td>
+</tr>
+<tr>
+<td>MSG_PEEK</td>
+<td>窥探读缓冲中的数据，此次读操作不会导致这些数据被清除</td>
+<td>N</td>
+<td>Y</td>
+</tr>
+<tr>
+<td>MSG_OOB</td>
+<td>发送或接受紧急数据</td>
+<td>Y</td>
+<td>Y</td>
+</tr>
+<tr>
+<td>MSG_NOSIGNAL</td>
+<td>往读端关闭的管道或者socket连接中写数据时不引发SIGPIPE信号</td>
+<td>Y</td>
+<td>N</td>
+</tr>
+</tbody>
+</table>
+</div>
+<h3 id="UDP数据读写"><a href="#UDP数据读写" class="headerlink" title="UDP数据读写"></a>UDP数据读写</h3><pre class="line-numbers language-c" data-language="c"><code class="language-c"><span class="token macro property"><span class="token directive-hash">#</span><span class="token directive keyword">include</span> <span class="token string">&lt;sys/types.h&gt;</span></span>
+<span class="token macro property"><span class="token directive-hash">#</span><span class="token directive keyword">include</span> <span class="token string">&lt;sys/socket.h&gt;</span></span>
+<span class="token class-name">ssize_t</span> <span class="token function">recvfrom</span><span class="token punctuation">(</span><span class="token keyword">int</span> sockfd<span class="token punctuation">,</span> <span class="token keyword">void</span> <span class="token operator">*</span>buf<span class="token punctuation">,</span> <span class="token class-name">size_t</span> len<span class="token punctuation">,</span> <span class="token keyword">int</span> flags<span class="token punctuation">,</span> <span class="token keyword">struct</span> <span class="token class-name">sockaddr</span><span class="token operator">*</span> src_addr<span class="token punctuation">,</span> <span class="token class-name">socklen_t</span><span class="token operator">*</span> addrlen<span class="token punctuation">)</span><span class="token punctuation">;</span>
+<span class="token class-name">ssize_t</span> <span class="token function">sendto</span><span class="token punctuation">(</span><span class="token keyword">int</span> sockfd<span class="token punctuation">,</span> <span class="token keyword">const</span> <span class="token keyword">void</span><span class="token operator">*</span> buf<span class="token punctuation">,</span> <span class="token class-name">size_t</span> len<span class="token punctuation">,</span> <span class="token keyword">int</span> flags<span class="token punctuation">,</span> <span class="token keyword">const</span> <span class="token keyword">struct</span> <span class="token class-name">sockaddr</span><span class="token operator">*</span> dest_addr<span class="token punctuation">,</span> <span class="token class-name">socklen_t</span> addrlen<span class="token punctuation">)</span><span class="token punctuation">;</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span></span></code></pre>
+<ul>
+<li>recvfrom读取sockfd上的数据，buf和len参数分别指定读缓冲区的位置和大小。因为UDP通信没有连接的概念，所以我们每次读取数据都需要获取发送端的socket地址，即参数src_addr所指的内容，addrlen参数则指定该地址的长度  </li>
+<li>sendto往sockfd上写入数据，buf和len参数分别指定写缓冲区的位置和大小。dest_addr参数指定接收端的socket地址，addrlen参数则指定该地址的长度 </li>
+<li>这两个系统调用的flags参数以及返回值的含义均与send/recv系统调用的flags参数及返回值相同 </li>
+<li>recvfrom/sendto系统调用也可以用于面向连接（STREAM）的socket的数据读写，只需要把最后两个参数都设置为NULL以忽略发送端/接收端的socket地址（因为我们已经和对方建立了连接，所以已经知道其socket地址了）  </li>
+</ul>
+<h3 id="通用数据读写函数"><a href="#通用数据读写函数" class="headerlink" title="通用数据读写函数"></a>通用数据读写函数</h3><p>既能用于TCP流数据，也能用于UDP数据报</p>
+<pre class="line-numbers language-c" data-language="c"><code class="language-c"><span class="token macro property"><span class="token directive-hash">#</span><span class="token directive keyword">include</span> <span class="token string">&lt;sys/socket.h&gt;</span></span>
+<span class="token class-name">ssize_t</span> <span class="token function">recvmsg</span><span class="token punctuation">(</span><span class="token keyword">int</span> sockfd<span class="token punctuation">,</span> <span class="token keyword">struct</span> <span class="token class-name">msghdr</span><span class="token operator">*</span> msg<span class="token punctuation">,</span> <span class="token keyword">int</span> flags<span class="token punctuation">)</span><span class="token punctuation">;</span>
+<span class="token class-name">ssize_t</span> <span class="token function">sendmsg</span><span class="token punctuation">(</span><span class="token keyword">int</span> sockfd<span class="token punctuation">,</span> <span class="token keyword">struct</span> <span class="token class-name">msghdr</span><span class="token operator">*</span> msg<span class="token punctuation">,</span> <span class="token keyword">int</span> flags<span class="token punctuation">)</span><span class="token punctuation">;</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span></span></code></pre>
+<ul>
+<li><p>sockfd参数指定被操作的目标socket</p>
+</li>
+<li><p>msg参数是msghdr结构体类型的指针</p>
+<ul>
+<li><p>msghdr结构体定义</p>
+</li>
+<li><p>```c<br>struct msghdr{</p>
+<pre><code>void* msg_name;/*socket地址*/
+socklen_t msg_namelen;/*socket地址的长度*/
+struct iovec* msg_iov;/*分散的内存块，见后文*/
+int msg_iovlen;/*分散内存块的数量*/
+void* msg_control;/*指向辅助数据的起始位置*/
+socklen_t msg_controllen;/*辅助数据的大小*/
+int msg_flags;/*复制函数中的flags参数，并在调用过程中更新*/
+</code></pre><p>};</p>
+<pre class="line-numbers language-none"><code class="language-none">
+- msg_name指向一个socket地址结构变量，指定通信对方的socket地址；对于面向连接的TCP协议，该成员没有意义，必须被设置位NULL，因为对方的地址已经知道
+
+- msg_iov成员是iovec结构体类型的指针，结构体定义如下
+
+- ```c
+  struct iovec
+  {
+  	void* iov_base;/*内存起始地址*/
+  	size_t iov_len;/*这块内存的长度*/
+  };<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+</li>
+<li><p>msg_iovlen指定这样的iovec结构对象有多少个；对于recvmsg而言，数据将被读取并存放在msg_iovlen块分散的内存中，这些内存的位置和长度则由msg_iov指向的数组指定，这称为分散读（scatter read）；对于sendmsg而言，msg_iovlen块分散内存中的数据将被一并发送，这称为集中写（gather write）</p>
+</li>
+<li><p>recvmsg/sendmsg的flags参数以及返回值的含义均与send/recv的flags参数及返回值相同 </p>
+</li>
+</ul>
+</li>
+</ul>
+<h2 id="带外标志"><a href="#带外标志" class="headerlink" title="带外标志"></a>带外标志</h2><p>在实际应用中，我们通常无法预期带外数据何时到来，好在Linux内核检测到TCP紧急标志时，将通知应用程序有带外数据需要接收</p>
+<p>~注：TCP带外数据，即紧急模式下的接收和发送~</p>
+<p><strong>两种常见方式</strong></p>
+<ul>
+<li>I/O复用产生的异常事件</li>
+<li>SIGURG信号</li>
+</ul>
+<p><strong>sockatmark系统调用</strong></p>
+<pre class="line-numbers language-c" data-language="c"><code class="language-c"><span class="token macro property"><span class="token directive-hash">#</span><span class="token directive keyword">include</span>  <span class="token string">&lt;sys/socket.h&gt;</span></span>
+<span class="token keyword">int</span> <span class="token function">sockatmark</span><span class="token punctuation">(</span><span class="token keyword">int</span> sockfd<span class="token punctuation">)</span><span class="token punctuation">;</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span></span></code></pre>
+<ul>
+<li>该系统调用判断sockfd是否处于带外标记，即下一个被读取到的数据是否是带外数据</li>
+<li>如果是返回1，此时可以利用带MSG_OOB标志的recv调用来接收带外数据</li>
+<li>如果不是，返回0</li>
+</ul>
+<h2 id="地址信息函数"><a href="#地址信息函数" class="headerlink" title="地址信息函数"></a>地址信息函数</h2><pre class="line-numbers language-c" data-language="c"><code class="language-c"><span class="token macro property"><span class="token directive-hash">#</span><span class="token directive keyword">include</span><span class="token expression">＜sys<span class="token operator">/</span>socket<span class="token punctuation">.</span>h＞</span></span>
+
+<span class="token keyword">int</span> <span class="token function">getsockname</span><span class="token punctuation">(</span><span class="token keyword">int</span> sockfd<span class="token punctuation">,</span> <span class="token keyword">struct</span> <span class="token class-name">sockaddr</span><span class="token operator">*</span> address<span class="token punctuation">,</span> <span class="token class-name">socklen_t</span><span class="token operator">*</span> addresss_len<span class="token punctuation">)</span><span class="token punctuation">;</span>
+
+<span class="token keyword">int</span> <span class="token function">getpeername</span><span class="token punctuation">(</span><span class="token keyword">int</span> sockfd<span class="token punctuation">,</span> <span class="token keyword">struct</span> <span class="token class-name">sockaddr</span><span class="token operator">*</span> address<span class="token punctuation">,</span> <span class="token class-name">socklen_t</span><span class="token operator">*</span> address_len<span class="token punctuation">)</span><span class="token punctuation">;</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<ul>
+<li>getsockname获取sockfd对应的本端socket地址，并将其存储于address参数指定的内存中，该socket地址的长度则存储于address_len参数指向的变量中。如果实际socket地址的长度大于address所指内存区的大小，那么该socket地址将被截断  <ul>
+<li>getsockname成功时返回0，失败返回-1并设置errno  </li>
+</ul>
+</li>
+<li>getpeername获取sockfd对应的远端socket地址，其参数及返回值的含义与getsockname的参数及返回值相同  </li>
+</ul>
+<h2 id="socket选项"><a href="#socket选项" class="headerlink" title="socket选项"></a>socket选项</h2><pre class="line-numbers language-c" data-language="c"><code class="language-c"><span class="token macro property"><span class="token directive-hash">#</span><span class="token directive keyword">include</span><span class="token string">&lt;sys/socket.h&gt;</span></span>
+<span class="token keyword">int</span> <span class="token function">getsockopt</span><span class="token punctuation">(</span><span class="token keyword">int</span> sockfd<span class="token punctuation">,</span> <span class="token keyword">int</span> level<span class="token punctuation">,</span> <span class="token keyword">int</span> option_name<span class="token punctuation">,</span> <span class="token keyword">void</span><span class="token operator">*</span> option_value<span class="token punctuation">,</span> <span class="token class-name">socklen_t</span><span class="token operator">*</span> optlen<span class="token punctuation">)</span><span class="token punctuation">;</span>
+<span class="token keyword">int</span> <span class="token function">setsockopt</span><span class="token punctuation">(</span><span class="token keyword">int</span> sockfd<span class="token punctuation">,</span> <span class="token keyword">int</span> level<span class="token punctuation">,</span> <span class="token keyword">int</span> optionm_name<span class="token punctuation">,</span> <span class="token keyword">const</span> <span class="token keyword">void</span><span class="token operator">*</span> option_value<span class="token punctuation">,</span> <span class="token class-name">socklen_t</span> option_len<span class="token punctuation">)</span><span class="token punctuation">;</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span></span></code></pre>
+<ul>
+<li>sockfd指定被操作的目标socket</li>
+<li>level指定要操作哪个协议的选项，比如IPv4、IPv6、TCP等</li>
+<li>option_name 参数则指定选项的名字<ul>
+<li><img src="https://gitee.com/renmale-sztu/image/raw/master/202312271554454.png" alt="image-20231227155435128"></li>
+</ul>
+</li>
+<li>option_value指被操作选项的值</li>
+<li>option_len指被操作选项的长度</li>
+<li>两个函数成功时都返回0，失败是返回-1并设置errno</li>
+</ul>
+
+    </div>
+
+    
+    
+    
+
+      <footer class="post-footer">
+          <div class="post-tags">
+              <a href="/tags/C-socket/" rel="tag"># C++ socket</a>
+          </div>
+
+        
+
+
+        
+    <div class="post-nav">
+      <div class="post-nav-item">
+    <a href="/2023/11/29/10-%E5%A4%9A%E8%BF%9B%E7%A8%8B%E7%BC%96%E7%A8%8B/" rel="prev" title="多进程编程">
+      <i class="fa fa-chevron-left"></i> 多进程编程
+    </a></div>
+      <div class="post-nav-item">
+    <a href="/2024/03/05/3-Linux%E6%9C%8D%E5%8A%A1%E5%99%A8%E7%A8%8B%E5%BA%8F%E8%A7%84%E8%8C%83/" rel="next" title="">
+       <i class="fa fa-chevron-right"></i>
+    </a></div>
+    </div>
+      </footer>
+    
+  </article>
+  
+  
+  
+
+
+
+          </div>
+          
+
+<script>
+  window.addEventListener('tabs:register', () => {
+    let { activeClass } = CONFIG.comments;
+    if (CONFIG.comments.storage) {
+      activeClass = localStorage.getItem('comments_active') || activeClass;
+    }
+    if (activeClass) {
+      let activeTab = document.querySelector(`a[href="#comment-${activeClass}"]`);
+      if (activeTab) {
+        activeTab.click();
+      }
+    }
+  });
+  if (CONFIG.comments.storage) {
+    window.addEventListener('tabs:click', event => {
+      if (!event.target.matches('.tabs-comment .tab-content .tab-pane')) return;
+      let commentClass = event.target.classList[1];
+      localStorage.setItem('comments_active', commentClass);
+    });
+  }
+</script>
+
+        </div>
+          
+  
+  <div class="toggle sidebar-toggle">
+    <span class="toggle-line toggle-line-first"></span>
+    <span class="toggle-line toggle-line-middle"></span>
+    <span class="toggle-line toggle-line-last"></span>
+  </div>
+
+  <aside class="sidebar">
+    <div class="sidebar-inner">
+
+      <ul class="sidebar-nav motion-element">
+        <li class="sidebar-nav-toc">
+          Table of Contents
+        </li>
+        <li class="sidebar-nav-overview">
+          Overview
+        </li>
+      </ul>
+
+      <!--noindex-->
+      <div class="post-toc-wrap sidebar-panel">
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E4%B8%BB%E6%9C%BA%E5%AD%97%E8%8A%82%E5%BA%8F%E5%92%8C%E7%BD%91%E7%BB%9C%E5%AD%97%E8%8A%82%E5%BA%8F"><span class="nav-text">主机字节序和网络字节序</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E9%80%9A%E7%94%A8socket%E5%9C%B0%E5%9D%80"><span class="nav-text">通用socket地址</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E4%B8%93%E7%94%A8socket%E5%9C%B0%E5%9D%80"><span class="nav-text">专用socket地址</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#UNIX%E6%9C%AC%E5%9C%B0%E5%9F%9F%E5%8D%8F%E8%AE%AE%E6%97%8F"><span class="nav-text">UNIX本地域协议族</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#TCP-IP%E5%8D%8F%E8%AE%AE%E6%97%8F"><span class="nav-text">TCP&#x2F;IP协议族</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#IP%E5%9C%B0%E5%9D%80%E8%BD%AC%E6%8D%A2%E5%87%BD%E6%95%B0"><span class="nav-text">IP地址转换函数</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%88%9B%E5%BB%BAsocket"><span class="nav-text">创建socket</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%91%BD%E5%90%8Dsocket"><span class="nav-text">命名socket</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E7%9B%91%E5%90%ACsocket"><span class="nav-text">监听socket</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E6%8E%A5%E5%8F%97%E8%BF%9E%E6%8E%A5"><span class="nav-text">接受连接</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%8F%91%E8%B5%B7%E8%BF%9E%E6%8E%A5"><span class="nav-text">发起连接</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%85%B3%E9%97%AD%E8%BF%9E%E6%8E%A5"><span class="nav-text">关闭连接</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E6%95%B0%E6%8D%AE%E8%AF%BB%E5%86%99"><span class="nav-text">数据读写</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#TCP%E6%95%B0%E6%8D%AE%E8%AF%BB%E5%86%99"><span class="nav-text">TCP数据读写</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#UDP%E6%95%B0%E6%8D%AE%E8%AF%BB%E5%86%99"><span class="nav-text">UDP数据读写</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E9%80%9A%E7%94%A8%E6%95%B0%E6%8D%AE%E8%AF%BB%E5%86%99%E5%87%BD%E6%95%B0"><span class="nav-text">通用数据读写函数</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%B8%A6%E5%A4%96%E6%A0%87%E5%BF%97"><span class="nav-text">带外标志</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%9C%B0%E5%9D%80%E4%BF%A1%E6%81%AF%E5%87%BD%E6%95%B0"><span class="nav-text">地址信息函数</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#socket%E9%80%89%E9%A1%B9"><span class="nav-text">socket选项</span></a></li></ol></div>
+      </div>
+      <!--/noindex-->
+
+      <div class="site-overview-wrap sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+  <p class="site-author-name" itemprop="name">renmale-lv</p>
+  <div class="site-description" itemprop="description"></div>
+</div>
+<div class="site-state-wrap motion-element">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+          <a href="/archives/">
+        
+          <span class="site-state-item-count">25</span>
+          <span class="site-state-item-name">posts</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-tags">
+            <a href="/tags/">
+        <span class="site-state-item-count">9</span>
+        <span class="site-state-item-name">tags</span></a>
+      </div>
+  </nav>
+</div>
+
+
+
+      </div>
+
+    </div>
+  </aside>
+  <div id="sidebar-dimmer"></div>
+
+
+      </div>
+    </main>
+
+    <footer class="footer">
+      <div class="footer-inner">
+        
+
+        
+
+<div class="copyright">
+  
+  &copy; 
+  <span itemprop="copyrightYear">2024</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">renmale-lv</span>
+    <span class="post-meta-divider">|</span>
+    <span class="post-meta-item-icon">
+      <i class="fa fa-chart-area"></i>
+    </span>
+    <span title="Symbols count total">225k</span>
+    <span class="post-meta-divider">|</span>
+    <span class="post-meta-item-icon">
+      <i class="fa fa-coffee"></i>
+    </span>
+    <span title="Reading time total">3:24</span>
+</div>
+  <div class="powered-by">Powered by <a href="https://hexo.io/" class="theme-link" rel="noopener" target="_blank">Hexo</a> & <a href="https://muse.theme-next.org/" class="theme-link" rel="noopener" target="_blank">NexT.Muse</a>
+  </div>
+
+        
+
+
+
+
+
+
+
+
+      </div>
+    </footer>
+  </div>
+
+  
+  <script src="/lib/anime.min.js"></script>
+  <script src="/lib/velocity/velocity.min.js"></script>
+  <script src="/lib/velocity/velocity.ui.min.js"></script>
+
+<script src="/js/utils.js"></script>
+
+<script src="/js/motion.js"></script>
+
+
+<script src="/js/schemes/muse.js"></script>
+
+
+<script src="/js/next-boot.js"></script>
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+  
+
+</body>
+</html>
