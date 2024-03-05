@@ -72,6 +72,7 @@
   </style>
 </noscript>
 
+<link rel="alternate" href="/atom.xml" title="renmale-lv blog" type="application/atom+xml">
 <style>mjx-container[jax="SVG"] {
   direction: ltr;
 }
@@ -184,8 +185,7 @@ mjx-container[display="true"] {
 mjx-container[display="true"] + br {
   display: none;
 }
-</style><link rel="alternate" href="/atom.xml" title="renmale-lv blog" type="application/atom+xml">
-</head>
+</style></head>
 
 <body itemscope itemtype="http://schema.org/WebPage">
   <div class="container use-motion">
@@ -290,7 +290,7 @@ mjx-container[display="true"] + br {
                   <i class="far fa-calendar-check"></i>
                 </span>
                 <span class="post-meta-item-text">Edited on</span>
-                <time title="Modified: 2024-03-05 10:34:12" itemprop="dateModified" datetime="2024-03-05T10:34:12+08:00">2024-03-05</time>
+                <time title="Modified: 2024-03-05 10:38:45" itemprop="dateModified" datetime="2024-03-05T10:38:45+08:00">2024-03-05</time>
               </span>
 
           <br>
@@ -320,7 +320,9 @@ mjx-container[display="true"] + br {
       
           <meta name="referrer" content="no-referrer">    
 
-<h1 id="信号"><a href="#信号" class="headerlink" title="信号"></a>信号</h1><h2 id="Linux信号产生的条件"><a href="#Linux信号产生的条件" class="headerlink" title="Linux信号产生的条件"></a>Linux信号产生的条件</h2><ul>
+
+
+<h2 id="Linux信号产生的条件"><a href="#Linux信号产生的条件" class="headerlink" title="Linux信号产生的条件"></a>Linux信号产生的条件</h2><ul>
 <li>对于前台进程，用户可以通过输入特殊的终端字符来给它发送信号<ul>
 <li>比如输入CRTL+C通常会给进程发送一个中断信号</li>
 </ul>
@@ -335,285 +337,14 @@ mjx-container[display="true"] + br {
 </li>
 <li>运行kill命令或调用kill函数</li>
 </ul>
-<h2 id="Linux信号概述"><a href="#Linux信号概述" class="headerlink" title="Linux信号概述"></a>Linux信号概述</h2><h3 id="发送信号"><a href="#发送信号" class="headerlink" title="发送信号"></a>发送信号</h3><pre class="line-numbers language-c" data-language="c"><code class="language-c"><span class="token macro property"><span class="token directive-hash">#</span><span class="token directive keyword">include</span> <span class="token string">&lt;sys/types.h&gt;</span></span>
-<span class="token macro property"><span class="token directive-hash">#</span><span class="token directive keyword">include</span> <span class="token string">&lt;signal.h&gt;</span></span>
-<span class="token keyword">int</span> <span class="token function">kill</span><span class="token punctuation">(</span><span class="token class-name">pid_t</span> pid<span class="token punctuation">,</span> <span class="token keyword">int</span> sig<span class="token punctuation">)</span><span class="token punctuation">;</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span></span></code></pre>
-<ul>
-<li>该函数把信号sig发送给目标进程，目标进程由pid参数指定</li>
-<li><p>pid取值</p>
-<ul>
-<li><img src="https://gitee.com/renmale-sztu/image/raw/master/202401091557011.png" alt="image-20240109155257484"></li>
-</ul>
-</li>
-<li><p>Linux定义的信号值都大于0，如果sig取0，则kill函数不发送任何信号，但可以用来检测目标进程或进程组是否存在，因为检查工作总是在信号发送之前就执行，但是这种方法是不可靠的</p>
-</li>
-<li>成功时返回0，失败则返回-1并设置errno<ul>
-<li><img src="https://gitee.com/renmale-sztu/image/raw/master/202401091600868.png" alt="image-20240109160014039"></li>
-</ul>
-</li>
-</ul>
-<h3 id="信号处理方式"><a href="#信号处理方式" class="headerlink" title="信号处理方式"></a>信号处理方式</h3><pre class="line-numbers language-c" data-language="c"><code class="language-c"><span class="token macro property"><span class="token directive-hash">#</span><span class="token directive keyword">include</span> <span class="token string">&lt;signal.h&gt;</span></span>
-<span class="token keyword">typedef</span> <span class="token keyword">void</span><span class="token punctuation">(</span><span class="token operator">*</span>__sighandler_t<span class="token punctuation">)</span><span class="token punctuation">(</span><span class="token keyword">int</span><span class="token punctuation">)</span><span class="token punctuation">;</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span></span></code></pre>
-<ul>
-<li>信号处理函数只带有一个整形参数，改参数用来表示信号类型</li>
-<li>信号处理函数应该是可重入的，否则很容易引发一些竞态条件，因此在型号处理函数中严禁调用一些不安全的函数</li>
-</ul>
-<hr>
-<pre class="line-numbers language-c" data-language="c"><code class="language-c"><span class="token macro property"><span class="token directive-hash">#</span><span class="token directive keyword">include</span> <span class="token string">&lt;bits/signum.h&gt;</span></span>
-<span class="token macro property"><span class="token directive-hash">#</span><span class="token directive keyword">define</span> <span class="token macro-name function">SIG_DFL</span><span class="token expression"><span class="token punctuation">(</span><span class="token punctuation">(</span>__sighandler_t<span class="token punctuation">)</span><span class="token number">0</span><span class="token punctuation">)</span></span></span>
-<span class="token macro property"><span class="token directive-hash">#</span><span class="token directive keyword">define</span> <span class="token macro-name function">SIG_IGN</span><span class="token expression"><span class="token punctuation">(</span><span class="token punctuation">(</span>__sighandler_t<span class="token punctuation">)</span><span class="token number">1</span><span class="token punctuation">)</span></span></span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span></span></code></pre>
-<ul>
-<li>SIG_IGN表示忽略目标信号</li>
-<li>SIG_DFL表示使用信号的默认处理方式</li>
-</ul>
-<h3 id="LINUX信号"><a href="#LINUX信号" class="headerlink" title="LINUX信号"></a>LINUX信号</h3><p><img src="https://gitee.com/renmale-sztu/image/raw/master/202401091610062.png" alt="image-20240109161041046"></p>
-<p><img src="https://gitee.com/renmale-sztu/image/raw/master/202401091610700.png" alt="image-20240109161048880"></p>
-<h3 id="中断系统调用"><a href="#中断系统调用" class="headerlink" title="中断系统调用"></a>中断系统调用</h3><p>如果程序在执行处于阻塞状态的系统调用时接收到信号，并且我们为该信号设置了信号处理函数，则默认情况下系统调用将被中断，并且errno被设置为EINTR；我们可以使用sigaction函数为信号设置SA_RESTART标志以自动重启该信号中断的系统调用</p>
-<p>对于默认行为是暂停进程的信号（比如SIGSTOP、SIGTTIN），如果我们没有为他们设置信号处理函数，则它们也可以中断某些系统调用（比如connect、epoll_wait）</p>
-<h2 id="信号函数"><a href="#信号函数" class="headerlink" title="信号函数"></a>信号函数</h2><h3 id="signal系统调用"><a href="#signal系统调用" class="headerlink" title="signal系统调用"></a>signal系统调用</h3><pre class="line-numbers language-c" data-language="c"><code class="language-c"><span class="token macro property"><span class="token directive-hash">#</span><span class="token directive keyword">include</span> <span class="token string">&lt;signal.h&gt;</span></span>
-__sighandler_t <span class="token function">signal</span><span class="token punctuation">(</span><span class="token keyword">int</span> sig<span class="token punctuation">,</span> _sighandler_t _handler<span class="token punctuation">)</span><span class="token punctuation">;</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span></span></code></pre>
-<ul>
-<li>该函数为一个信号设置处理函数</li>
-<li>sig参数指出要捕获的信号类型</li>
-<li>_hendler参数是_sighandler_t类型的函数指针，用于指定信号sig的处理函数</li>
-<li>成功时返回一个函数指针，这个返回值时前一次调用signal函数时传入的函数指针（即先前的信号处理函数指针），或者是信号sig对应的默认处理函数指针SIG_DEF（如果是第一次调用signal）</li>
-<li>出错时返回SIG_ERR，并设置errno</li>
-</ul>
-<h3 id="sigaction系统调用"><a href="#sigaction系统调用" class="headerlink" title="sigaction系统调用"></a>sigaction系统调用</h3><pre class="line-numbers language-c" data-language="c"><code class="language-c"><span class="token macro property"><span class="token directive-hash">#</span><span class="token directive keyword">include</span> <span class="token string">&lt;signal.h&gt;</span></span>
-<span class="token keyword">int</span> <span class="token function">sigaction</span><span class="token punctuation">(</span><span class="token keyword">int</span> sig<span class="token punctuation">,</span> <span class="token keyword">const</span> <span class="token keyword">struct</span> <span class="token class-name">sigaction</span><span class="token operator">*</span> act<span class="token punctuation">,</span> <span class="token keyword">struct</span> <span class="token class-name">sigaction</span><span class="token operator">*</span> oact<span class="token punctuation">)</span><span class="token punctuation">;</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span></span></code></pre>
-<ul>
-<li><p>该函数也用于为一个信号设置处理函数，但相比signal更为健壮</p>
-</li>
-<li><p>sig参数指出要捕获的信号类型</p>
-</li>
-<li><p>act参数指定新的信号处理方式</p>
-</li>
-<li><p>oact参数输出信号先前的处理方式</p>
-</li>
-<li><p>sigaction结构体</p>
-<ul>
-<li>```c<br>struct sigaction{<pre><code>#ifdef__USE_POSIX199309
-    union{
-        _sighandler_t sa_handler;
-        void(*sa_sigaction)(int,siginfo_t*,void*);
-    }_sigaction_handler;
-    #define sa_handler__sigaction_handler.sa_handler
-    #define sa_sigaction__sigaction_handler.sa_sigaction
-#else
-    _sighandler_t sa_handler;
-#endif
-_sigset_t sa_mask;
-int sa_flags;
-void(*sa_restorer)(void);
-</code></pre>};<pre class="line-numbers language-none"><code class="language-none">
-  - sa_hander成员指定信号处理函数
-
-  - sa_mask成员设置进程的信号掩码（在原有信号源码的基础上增加信号掩码）
-
-  - sa_flags成员用于设置程序收到信号时的行为
-
-    - ![image-20240109162820540](https://gitee.com/renmale-sztu/image/raw/master/202401091628457.png)
-
-  - sa_restorer成员已经过时
-
-  - 成功时返回0，失败时返回-1并设置errno
-
-## 信号集
-
-### 信号集函数
-
-**sigset_t结构体**
-
-```c
-#include &lt;bits/sigset.h&gt;
-#define_SIGSET_NWORDS(1024/(8*sizeof(unsigned long int)))
-typedef struct{
-	unsigned long int __val[_SIGSET_NWORDS];
-}__sigset_t;<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
-</li>
-</ul>
-</li>
-<li><p>实际上是一个长整型数组，数组的每个元素的每个位表示一个信号</p>
-</li>
-</ul>
-<hr>
-<p><strong>信号集操作函数</strong></p>
-<pre class="line-numbers language-c" data-language="c"><code class="language-c"><span class="token macro property"><span class="token directive-hash">#</span><span class="token directive keyword">include</span><span class="token expression">＜signal<span class="token punctuation">.</span>h＞</span></span>
-<span class="token keyword">int</span> <span class="token function">sigemptyset</span><span class="token punctuation">(</span><span class="token class-name">sigset_t</span><span class="token operator">*</span>_set<span class="token punctuation">)</span>					<span class="token comment">//清空信号集</span>
-<span class="token keyword">int</span> <span class="token function">sigfillset</span><span class="token punctuation">(</span><span class="token class-name">sigset_t</span><span class="token operator">*</span>_set<span class="token punctuation">)</span>					<span class="token comment">//在信号集中设置所有信号</span>
-<span class="token keyword">int</span> <span class="token function">sigaddset</span><span class="token punctuation">(</span><span class="token class-name">sigset_t</span><span class="token operator">*</span>_set<span class="token punctuation">,</span>int_signo<span class="token punctuation">)</span>			<span class="token comment">//将信号_signo添加至信号集中</span>
-<span class="token keyword">int</span> <span class="token function">sigdelset</span><span class="token punctuation">(</span><span class="token class-name">sigset_t</span><span class="token operator">*</span>_set<span class="token punctuation">,</span>int_signo<span class="token punctuation">)</span>			<span class="token comment">//将信号_signo从信号集中删除</span>
-<span class="token keyword">int</span> <span class="token function">sigismember</span><span class="token punctuation">(</span>_const <span class="token class-name">sigset_t</span><span class="token operator">*</span>_set<span class="token punctuation">,</span>int_signo<span class="token punctuation">)</span>	<span class="token comment">//测试_signo是否在信号集中</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
-<h3 id="进程信号掩码"><a href="#进程信号掩码" class="headerlink" title="进程信号掩码"></a>进程信号掩码</h3><pre class="line-numbers language-c" data-language="c"><code class="language-c"><span class="token macro property"><span class="token directive-hash">#</span><span class="token directive keyword">include</span> <span class="token string">&lt;signal.h&gt;</span></span>
-<span class="token keyword">int</span> <span class="token function">sigprocmask</span><span class="token punctuation">(</span><span class="token keyword">int</span> _how<span class="token punctuation">,</span> <span class="token keyword">const</span> <span class="token class-name">sigset_t</span><span class="token operator">*</span> _set<span class="token punctuation">,</span> <span class="token class-name">sigset_t</span><span class="token operator">*</span> _oset<span class="token punctuation">)</span><span class="token punctuation">;</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span></span></code></pre>
-<ul>
-<li>该函数可以用于设置或查看进程的信号掩码</li>
-<li>_set参数指定新的信号掩码</li>
-<li>_oset参数则输出原来的信号掩码</li>
-<li>如果_set参数不为NULL，则_how参数指定设置进程信号掩码的方式<ul>
-<li><img src="https://gitee.com/renmale-sztu/image/raw/master/202401091649948.png" alt="image-20240109164956927"></li>
-</ul>
-</li>
-<li>如果_set为NULL，则进程信号掩码不变，此时仍然可以利用_oset参数来获取进程当前的信号掩码</li>
-<li>成功时返回0，失败时返回-1并设置errno</li>
-</ul>
-<h3 id="被挂起的信号"><a href="#被挂起的信号" class="headerlink" title="被挂起的信号"></a>被挂起的信号</h3><p>设置进程信号掩码后，被屏蔽的信号将不能被进程接收，如果给一个进程发送一个被屏蔽的信号，则操作系统将该信号设置为进程的一个被挂起的信号；如果我们取消对被挂起信号的屏蔽，则它能立即被进程接收到</p>
-<hr>
-<p><strong>获取进程当前被挂起的信号集</strong></p>
-<pre class="line-numbers language-c" data-language="c"><code class="language-c"><span class="token macro property"><span class="token directive-hash">#</span><span class="token directive keyword">include</span> <span class="token string">&lt;signal.h&gt;</span></span>
-<span class="token keyword">int</span> <span class="token function">sigpending</span><span class="token punctuation">(</span><span class="token class-name">sigset_t</span> <span class="token operator">*</span>set<span class="token punctuation">)</span><span class="token punctuation">;</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span></span></code></pre>
-<ul>
-<li>set参数用于保存被挂起的信号集，进程即使多次接收到同一个被挂起的信号，sigpending函数也只能反映一次；并且，当使用sigprocmask使能该挂起的信号时，该信号的处理函数也只被触发一次</li>
-<li>成功时返回0，失败时返回-1并设置errno</li>
-</ul>
-<h2 id="统一事件源"><a href="#统一事件源" class="headerlink" title="统一事件源"></a>统一事件源</h2><p>信号是一种异步事件，信号处理函数喝程序的主循环是两条不同的执行路线；信号处理函数需要尽可能快地执行完毕，以确保该信号不被屏蔽（为了避免一些竞态条件，信号在处理期间，系统不会再次触发它）太久</p>
-<p>一种解决方案是把信号的主要处理逻辑放到程序的主循环中，当信号处理函数被触发时，它只是简单地通知主循环程序接收到信号，并把信号值传递给主循环，主循环再根据接收到的信号值执行目标信号对应的逻辑代码。</p>
-<p>信号处理函数通常使用管道来将信号“传递”给主循环：信号处理函数往管道的写端写入信号值，主循环则从管道的读端读出该信号值，使用I/O复用系统调用来见监听管道的读端文件描述符上的可读事件，使主循环指导管道上何时有数据可读，这样，信号事件就能和其他I/O事件一样被处理，即统一事件源</p>
-<hr>
-<p><strong>简单实现</strong></p>
-<pre class="line-numbers language-c" data-language="c"><code class="language-c"><span class="token macro property"><span class="token directive-hash">#</span><span class="token directive keyword">include</span> <span class="token string">&lt;sys/types.h&gt;</span></span>
-<span class="token macro property"><span class="token directive-hash">#</span><span class="token directive keyword">include</span> <span class="token expression"><span class="token operator">&lt;</span>sys<span class="token operator">/</span>socket<span class="token punctuation">.</span>h＞</span></span>
-<span class="token macro property"><span class="token directive-hash">#</span><span class="token directive keyword">include</span> <span class="token string">&lt;netinet/in.h&gt;</span></span>
-<span class="token macro property"><span class="token directive-hash">#</span><span class="token directive keyword">include</span> <span class="token string">&lt;arpa/inet.h&gt;</span></span>
-<span class="token macro property"><span class="token directive-hash">#</span><span class="token directive keyword">include</span> <span class="token string">&lt;assert.h&gt;</span></span>
-<span class="token macro property"><span class="token directive-hash">#</span><span class="token directive keyword">include</span> <span class="token string">&lt;stdio.h&gt;</span></span>
-<span class="token macro property"><span class="token directive-hash">#</span><span class="token directive keyword">include</span> <span class="token string">&lt;signal.h&gt;</span></span>
-<span class="token macro property"><span class="token directive-hash">#</span><span class="token directive keyword">include</span> <span class="token string">&lt;unistd.h&gt;</span></span>
-<span class="token macro property"><span class="token directive-hash">#</span><span class="token directive keyword">include</span> <span class="token string">&lt;errno.h&gt;</span></span>
-<span class="token macro property"><span class="token directive-hash">#</span><span class="token directive keyword">include</span> <span class="token string">&lt;string.h&gt;</span></span>
-<span class="token macro property"><span class="token directive-hash">#</span><span class="token directive keyword">include</span> <span class="token string">&lt;fcntl.h&gt;</span></span>
-<span class="token macro property"><span class="token directive-hash">#</span><span class="token directive keyword">include</span> <span class="token string">&lt;stdlib.h&gt;</span></span>
-<span class="token macro property"><span class="token directive-hash">#</span><span class="token directive keyword">include</span> <span class="token string">&lt;sys/epoll.h&gt;</span></span>
-<span class="token macro property"><span class="token directive-hash">#</span><span class="token directive keyword">include</span> <span class="token string">&lt;pthread.h&gt;</span></span>
-<span class="token macro property"><span class="token directive-hash">#</span><span class="token directive keyword">define</span> <span class="token macro-name">MAX_EVENT_NUMBER</span> <span class="token expression"><span class="token number">1024</span></span></span>
-<span class="token keyword">static</span> <span class="token keyword">int</span> pipefd<span class="token punctuation">[</span><span class="token number">2</span><span class="token punctuation">]</span><span class="token punctuation">;</span>
-
-<span class="token keyword">int</span> <span class="token function">setnonblocking</span><span class="token punctuation">(</span><span class="token keyword">int</span> fd<span class="token punctuation">)</span><span class="token punctuation">{</span>
-	<span class="token keyword">int</span> old_option<span class="token operator">=</span><span class="token function">fcntl</span><span class="token punctuation">(</span>fd<span class="token punctuation">,</span>F_GETFL<span class="token punctuation">)</span><span class="token punctuation">;</span>
-	<span class="token keyword">int</span> new_option<span class="token operator">=</span>old_option<span class="token operator">|</span>O_NONBLOCK<span class="token punctuation">;</span>
-	<span class="token function">fcntl</span><span class="token punctuation">(</span>fd<span class="token punctuation">,</span>F_SETFL<span class="token punctuation">,</span>new_option<span class="token punctuation">)</span><span class="token punctuation">;</span>
-	<span class="token keyword">return</span> old_option<span class="token punctuation">;</span>
-<span class="token punctuation">}</span>
-
-<span class="token keyword">void</span> <span class="token function">addfd</span><span class="token punctuation">(</span><span class="token keyword">int</span> epollfd<span class="token punctuation">,</span><span class="token keyword">int</span> fd<span class="token punctuation">)</span><span class="token punctuation">{</span>
-	epoll_event event<span class="token punctuation">;</span>
-	event<span class="token punctuation">.</span>data<span class="token punctuation">.</span>fd<span class="token operator">=</span>fd<span class="token punctuation">;</span>
-	event<span class="token punctuation">.</span>events<span class="token operator">=</span>EPOLLIN<span class="token operator">|</span>EPOLLET<span class="token punctuation">;</span>
-	<span class="token function">epoll_ctl</span><span class="token punctuation">(</span>epollfd<span class="token punctuation">,</span>EPOLL_CTL_ADD<span class="token punctuation">,</span>fd<span class="token punctuation">,</span><span class="token operator">&amp;</span>event<span class="token punctuation">)</span><span class="token punctuation">;</span>
-	<span class="token function">setnonblocking</span><span class="token punctuation">(</span>fd<span class="token punctuation">)</span><span class="token punctuation">;</span>
-<span class="token punctuation">}</span>
-
-<span class="token comment">/*信号处理函数*/</span>
-<span class="token keyword">void</span> <span class="token function">sig_handler</span><span class="token punctuation">(</span><span class="token keyword">int</span> sig<span class="token punctuation">)</span><span class="token punctuation">{</span>
-	<span class="token comment">/*保留原来的errno，在函数最后恢复，以保证函数的可重入性*/</span>
-	<span class="token keyword">int</span> save_errno<span class="token operator">=</span>errno<span class="token punctuation">;</span>
-	<span class="token keyword">int</span> msg<span class="token operator">=</span>sig<span class="token punctuation">;</span>
-	<span class="token function">send</span><span class="token punctuation">(</span>pipefd<span class="token punctuation">[</span><span class="token number">1</span><span class="token punctuation">]</span><span class="token punctuation">,</span><span class="token punctuation">(</span><span class="token keyword">char</span><span class="token operator">*</span><span class="token punctuation">)</span><span class="token operator">&amp;</span>msg<span class="token punctuation">,</span><span class="token number">1</span><span class="token punctuation">,</span><span class="token number">0</span><span class="token punctuation">)</span><span class="token punctuation">;</span><span class="token comment">/*将信号值写入管道，以通知主循环*/</span>
-	errno<span class="token operator">=</span>save_errno<span class="token punctuation">;</span>
-<span class="token punctuation">}</span>
-
-<span class="token comment">/*设置信号的处理函数*/</span>
-<span class="token keyword">void</span> <span class="token function">addsig</span><span class="token punctuation">(</span><span class="token keyword">int</span> sig<span class="token punctuation">)</span><span class="token punctuation">{</span>
-	<span class="token keyword">struct</span> <span class="token class-name">sigaction</span> sa<span class="token punctuation">;</span>
-	<span class="token function">memset</span><span class="token punctuation">(</span>＆sa<span class="token punctuation">,</span><span class="token char">'\0'</span><span class="token punctuation">,</span><span class="token keyword">sizeof</span><span class="token punctuation">(</span>sa<span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
-	sa<span class="token punctuation">.</span>sa_handler<span class="token operator">=</span>sig_handler<span class="token punctuation">;</span>
-	sa<span class="token punctuation">.</span>sa_flags<span class="token operator">|=</span>SA_RESTART<span class="token punctuation">;</span>
-	<span class="token function">sigfillset</span><span class="token punctuation">(</span><span class="token operator">&amp;</span>sa<span class="token punctuation">.</span>sa_mask<span class="token punctuation">)</span><span class="token punctuation">;</span>
-	<span class="token function">assert</span><span class="token punctuation">(</span><span class="token function">sigaction</span><span class="token punctuation">(</span>sig<span class="token punctuation">,</span>＆sa<span class="token punctuation">,</span><span class="token constant">NULL</span><span class="token punctuation">)</span><span class="token operator">!=</span><span class="token operator">-</span><span class="token number">1</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
-<span class="token punctuation">}</span>
-
-<span class="token keyword">int</span> <span class="token function">main</span><span class="token punctuation">(</span><span class="token keyword">int</span> argc<span class="token punctuation">,</span><span class="token keyword">char</span><span class="token operator">*</span>argv<span class="token punctuation">[</span><span class="token punctuation">]</span><span class="token punctuation">)</span><span class="token punctuation">{</span>
-	<span class="token keyword">if</span><span class="token punctuation">(</span>argc<span class="token operator">&lt;=</span><span class="token number">2</span><span class="token punctuation">)</span><span class="token punctuation">{</span>
-		<span class="token function">printf</span><span class="token punctuation">(</span><span class="token string">"usage:%s ip_address port_number\n"</span><span class="token punctuation">,</span><span class="token function">basename</span><span class="token punctuation">(</span>argv<span class="token punctuation">[</span><span class="token number">0</span><span class="token punctuation">]</span><span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
-		<span class="token keyword">return</span> <span class="token number">1</span><span class="token punctuation">;</span>
-	<span class="token punctuation">}</span>
-	<span class="token keyword">const</span> <span class="token keyword">char</span><span class="token operator">*</span> ip<span class="token operator">=</span>argv<span class="token punctuation">[</span><span class="token number">1</span><span class="token punctuation">]</span><span class="token punctuation">;</span>
-	<span class="token keyword">int</span> port<span class="token operator">=</span><span class="token function">atoi</span><span class="token punctuation">(</span>argv<span class="token punctuation">[</span><span class="token number">2</span><span class="token punctuation">]</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
-	<span class="token keyword">int</span> ret<span class="token operator">=</span><span class="token number">0</span><span class="token punctuation">;</span>
-	<span class="token keyword">struct</span> <span class="token class-name">sockaddr_in</span> address<span class="token punctuation">;</span>
-	<span class="token function">bzero</span><span class="token punctuation">(</span><span class="token operator">&amp;</span>address<span class="token punctuation">,</span><span class="token keyword">sizeof</span><span class="token punctuation">(</span>address<span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
-	address<span class="token punctuation">.</span>sin_family<span class="token operator">=</span>AF_INET<span class="token punctuation">;</span>
-	<span class="token function">inet_pton</span><span class="token punctuation">(</span>AF_INET<span class="token punctuation">,</span>ip<span class="token punctuation">,</span><span class="token operator">&amp;</span>address<span class="token punctuation">.</span>sin_addr<span class="token punctuation">)</span><span class="token punctuation">;</span>
-	address<span class="token punctuation">.</span>sin_port<span class="token operator">=</span><span class="token function">htons</span><span class="token punctuation">(</span>port<span class="token punctuation">)</span><span class="token punctuation">;</span>
-	<span class="token keyword">int</span> listenfd<span class="token operator">=</span><span class="token function">socket</span><span class="token punctuation">(</span>PF_INET<span class="token punctuation">,</span>SOCK_STREAM<span class="token punctuation">,</span><span class="token number">0</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
-	<span class="token function">assert</span><span class="token punctuation">(</span>listenfd<span class="token operator">&gt;=</span><span class="token number">0</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
-	ret<span class="token operator">=</span><span class="token function">bind</span><span class="token punctuation">(</span>listenfd<span class="token punctuation">,</span><span class="token punctuation">(</span><span class="token keyword">struct</span> <span class="token class-name">sockaddr</span><span class="token operator">*</span><span class="token punctuation">)</span><span class="token operator">&amp;</span>address<span class="token punctuation">,</span><span class="token keyword">sizeof</span><span class="token punctuation">(</span>address<span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
-	<span class="token keyword">if</span><span class="token punctuation">(</span>ret<span class="token operator">==</span><span class="token operator">-</span><span class="token number">1</span><span class="token punctuation">)</span><span class="token punctuation">{</span>
-		<span class="token function">printf</span><span class="token punctuation">(</span><span class="token string">"errno is%d\n"</span><span class="token punctuation">,</span>errno<span class="token punctuation">)</span><span class="token punctuation">;</span>
-		<span class="token keyword">return</span> <span class="token number">1</span><span class="token punctuation">;</span>
-	<span class="token punctuation">}</span>
-	ret<span class="token operator">=</span><span class="token function">listen</span><span class="token punctuation">(</span>listenfd<span class="token punctuation">,</span><span class="token number">5</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
-	<span class="token function">assert</span><span class="token punctuation">(</span>ret<span class="token operator">!=</span><span class="token operator">-</span><span class="token number">1</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
-	epoll_event events<span class="token punctuation">[</span>MAX_EVENT_NUMBER<span class="token punctuation">]</span><span class="token punctuation">;</span>
-	<span class="token keyword">int</span> epollfd<span class="token operator">=</span><span class="token function">epoll_create</span><span class="token punctuation">(</span><span class="token number">5</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
-	<span class="token function">assert</span><span class="token punctuation">(</span>epollfd<span class="token operator">!=</span><span class="token operator">-</span><span class="token number">1</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
-	<span class="token function">addfd</span><span class="token punctuation">(</span>epollfd<span class="token punctuation">,</span>listenfd<span class="token punctuation">)</span><span class="token punctuation">;</span>
-	<span class="token comment">/*使用socketpair创建管道，注册pipefd[0]上的可读事件*/</span>
-	ret<span class="token operator">=</span><span class="token function">socketpair</span><span class="token punctuation">(</span>PF_UNIX<span class="token punctuation">,</span>SOCK_STREAM<span class="token punctuation">,</span><span class="token number">0</span><span class="token punctuation">,</span>pipefd<span class="token punctuation">)</span><span class="token punctuation">;</span>
-	<span class="token function">assert</span><span class="token punctuation">(</span>ret<span class="token operator">!=</span><span class="token operator">-</span><span class="token number">1</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
-	<span class="token function">setnonblocking</span><span class="token punctuation">(</span>pipefd<span class="token punctuation">[</span><span class="token number">1</span><span class="token punctuation">]</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
-	<span class="token function">addfd</span><span class="token punctuation">(</span>epollfd<span class="token punctuation">,</span>pipefd<span class="token punctuation">[</span><span class="token number">0</span><span class="token punctuation">]</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
-	<span class="token comment">/*设置一些信号的处理函数*/</span>
-	<span class="token function">addsig</span><span class="token punctuation">(</span>SIGHUP<span class="token punctuation">)</span><span class="token punctuation">;</span>
-	<span class="token function">addsig</span><span class="token punctuation">(</span>SIGCHLD<span class="token punctuation">)</span><span class="token punctuation">;</span>
-	<span class="token function">addsig</span><span class="token punctuation">(</span>SIGTERM<span class="token punctuation">)</span><span class="token punctuation">;</span>
-	<span class="token function">addsig</span><span class="token punctuation">(</span>SIGINT<span class="token punctuation">)</span><span class="token punctuation">;</span>
-    bool stop_server<span class="token operator">=</span>false<span class="token punctuation">;</span>
-	<span class="token keyword">while</span><span class="token punctuation">(</span><span class="token operator">!</span>stop_server<span class="token punctuation">)</span><span class="token punctuation">{</span>
-		<span class="token keyword">int</span> number<span class="token operator">=</span><span class="token function">epoll_wait</span><span class="token punctuation">(</span>epollfd<span class="token punctuation">,</span>events<span class="token punctuation">,</span>MAX_EVENT_NUMBER<span class="token punctuation">,</span><span class="token operator">-</span><span class="token number">1</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
-		<span class="token keyword">if</span><span class="token punctuation">(</span><span class="token punctuation">(</span>number<span class="token operator">&lt;</span><span class="token number">0</span><span class="token punctuation">)</span><span class="token operator">&amp;&amp;</span><span class="token punctuation">(</span>errno<span class="token operator">!=</span>EINTR<span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">{</span>
-			<span class="token function">printf</span><span class="token punctuation">(</span><span class="token string">"epoll failure\n"</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
-			<span class="token keyword">break</span><span class="token punctuation">;</span>
-		<span class="token punctuation">}</span>
-        <span class="token keyword">for</span><span class="token punctuation">(</span><span class="token keyword">int</span> i<span class="token operator">=</span><span class="token number">0</span><span class="token punctuation">;</span>i<span class="token operator">&lt;</span>number<span class="token punctuation">;</span>i<span class="token operator">++</span><span class="token punctuation">)</span><span class="token punctuation">{</span>
-			<span class="token keyword">int</span> sockfd<span class="token operator">=</span>events<span class="token punctuation">[</span>i<span class="token punctuation">]</span><span class="token punctuation">.</span>data<span class="token punctuation">.</span>fd<span class="token punctuation">;</span>
-			<span class="token comment">/*如果就绪的文件描述符是listenfd，则处理新的连接*/</span>
-			<span class="token keyword">if</span><span class="token punctuation">(</span>sockfd<span class="token operator">==</span>listenfd<span class="token punctuation">)</span><span class="token punctuation">{</span>
-				<span class="token keyword">struct</span> <span class="token class-name">sockaddr_in</span> client_address<span class="token punctuation">;</span>
-				<span class="token class-name">socklen_t</span> client_addrlength<span class="token operator">=</span><span class="token keyword">sizeof</span><span class="token punctuation">(</span>client_address<span class="token punctuation">)</span><span class="token punctuation">;</span>
-				<span class="token keyword">int</span> connfd<span class="token operator">=</span><span class="token function">accept</span><span class="token punctuation">(</span>listenfd<span class="token punctuation">,</span><span class="token punctuation">(</span><span class="token keyword">struct</span> <span class="token class-name">sockaddr</span><span class="token operator">*</span><span class="token punctuation">)</span><span class="token operator">&amp;</span>client_address<span class="token punctuation">,</span><span class="token operator">&amp;</span>client_addrlength<span class="token punctuation">)</span><span class="token punctuation">;</span>
-				<span class="token function">addfd</span><span class="token punctuation">(</span>epollfd<span class="token punctuation">,</span>connfd<span class="token punctuation">)</span><span class="token punctuation">;</span>
-			<span class="token punctuation">}</span>
-			<span class="token comment">/*如果就绪的文件描述符是pipefd[0]，则处理信号*/</span>
-			<span class="token keyword">else</span> <span class="token keyword">if</span><span class="token punctuation">(</span><span class="token punctuation">(</span>sockfd<span class="token operator">==</span>pipefd<span class="token punctuation">[</span><span class="token number">0</span><span class="token punctuation">]</span><span class="token punctuation">)</span><span class="token operator">&amp;&amp;</span><span class="token punctuation">(</span>events<span class="token punctuation">[</span>i<span class="token punctuation">]</span><span class="token punctuation">.</span>events<span class="token operator">&amp;</span>EPOLLIN<span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">{</span>
-				<span class="token keyword">int</span> sig<span class="token punctuation">;</span>
-				<span class="token keyword">char</span> signals<span class="token punctuation">[</span><span class="token number">1024</span><span class="token punctuation">]</span><span class="token punctuation">;</span>
-				ret<span class="token operator">=</span><span class="token function">recv</span><span class="token punctuation">(</span>pipefd<span class="token punctuation">[</span><span class="token number">0</span><span class="token punctuation">]</span><span class="token punctuation">,</span>signals<span class="token punctuation">,</span><span class="token keyword">sizeof</span><span class="token punctuation">(</span>signals<span class="token punctuation">)</span><span class="token punctuation">,</span><span class="token number">0</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
-				<span class="token keyword">if</span><span class="token punctuation">(</span>ret<span class="token operator">==</span><span class="token operator">-</span><span class="token number">1</span><span class="token punctuation">)</span><span class="token punctuation">{</span>
-					<span class="token keyword">continue</span><span class="token punctuation">;</span>
-				<span class="token punctuation">}</span>
-				<span class="token keyword">else</span> <span class="token keyword">if</span><span class="token punctuation">(</span>ret<span class="token operator">==</span><span class="token number">0</span><span class="token punctuation">)</span><span class="token punctuation">{</span>
-					<span class="token keyword">continue</span><span class="token punctuation">;</span>
-				<span class="token punctuation">}</span>
-				<span class="token keyword">else</span><span class="token punctuation">{</span>
-					<span class="token comment">/*因为每个信号值占1字节，所以按字节来逐个接收信号。我们以SIGTERM为例，来说明如何安全地终止服务器主循环*/</span>
-					<span class="token keyword">for</span><span class="token punctuation">(</span><span class="token keyword">int</span> i<span class="token operator">=</span><span class="token number">0</span><span class="token punctuation">;</span>i<span class="token operator">&lt;</span>ret<span class="token punctuation">;</span><span class="token operator">++</span>i<span class="token punctuation">)</span><span class="token punctuation">{</span>
-						<span class="token keyword">switch</span><span class="token punctuation">(</span>signals<span class="token punctuation">[</span>i<span class="token punctuation">]</span><span class="token punctuation">)</span><span class="token punctuation">{</span>
-							<span class="token keyword">case</span> SIGCHLD<span class="token operator">:</span>
-							<span class="token keyword">case</span> SIGHUP<span class="token operator">:</span><span class="token punctuation">{</span>
-								<span class="token keyword">continue</span><span class="token punctuation">;</span>
-							<span class="token punctuation">}</span>
-							<span class="token keyword">case</span> SIGTERM<span class="token operator">:</span>
-							<span class="token keyword">case</span> SIGINT<span class="token operator">:</span><span class="token punctuation">{</span>
-								stop_server<span class="token operator">=</span>true<span class="token punctuation">;</span>
-							<span class="token punctuation">}</span>
-                        <span class="token punctuation">}</span>
-                    <span class="token punctuation">}</span>
-                <span class="token punctuation">}</span>
-            <span class="token punctuation">}</span>
-            <span class="token keyword">else</span><span class="token punctuation">{</span><span class="token punctuation">}</span>
-        <span class="token punctuation">}</span>
-    <span class="token punctuation">}</span>
-    <span class="token function">printf</span><span class="token punctuation">(</span><span class="token string">"close fds\n"</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
-    <span class="token function">close</span><span class="token punctuation">(</span>listenfd<span class="token punctuation">)</span><span class="token punctuation">;</span>
-    <span class="token function">close</span><span class="token punctuation">(</span>pipefd<span class="token punctuation">[</span><span class="token number">1</span><span class="token punctuation">]</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
-    <span class="token function">close</span><span class="token punctuation">(</span>pipefd<span class="token punctuation">[</span><span class="token number">0</span><span class="token punctuation">]</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
-	<span class="token keyword">return</span> <span class="token number">0</span><span class="token punctuation">;</span>
-<span class="token punctuation">}</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
-<h2 id="网络编程相关信号"><a href="#网络编程相关信号" class="headerlink" title="网络编程相关信号"></a>网络编程相关信号</h2><h3 id="SIGHUP"><a href="#SIGHUP" class="headerlink" title="SIGHUP"></a>SIGHUP</h3><p>当挂起进程的控制终端时，SIGHUP信号将被触发；对于没有控制终端的网络后台程序而言，它们通常利用SIGHUP信号来强制服务器重读配置文件</p>
-<h3 id="SIGPIPE"><a href="#SIGPIPE" class="headerlink" title="SIGPIPE"></a>SIGPIPE</h3><p>默认情况下，往一个读端关闭的管道或socket连接中写数据将引发SIGPIPE信号，程序接收到SIGPIPE信号的默认行为时结束进程，引起SIGPIPE信号的写操作将设置errno为EPIPE</p>
-<h3 id="SIGURG"><a href="#SIGURG" class="headerlink" title="SIGURG"></a>SIGURG</h3><p>通知带外数据是否到达</p>
-
+          <!--noindex-->
+            <div class="post-button">
+              <a class="btn" href="/2023/11/29/7-%E4%BF%A1%E5%8F%B7/#more" rel="contents">
+                Read more &raquo;
+              </a>
+            </div>
+          <!--/noindex-->
+        
       
     </div>
 

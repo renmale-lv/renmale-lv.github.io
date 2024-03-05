@@ -14,6 +14,7 @@
 </ul>
 </li>
 </ul>
+<span id="more"></span>
 <p><strong>小端字节序</strong></p>
 <ul>
 <li>整数的高位字节存储在内存的高地址处，而低位字节则存储在内存的地址处</li>
@@ -487,7 +488,8 @@ int msg_flags;/*复制函数中的flags参数，并在调用过程中更新*/
     <url>/2023/11/29/10-%E5%A4%9A%E8%BF%9B%E7%A8%8B%E7%BC%96%E7%A8%8B/</url>
     <content><![CDATA[<meta name="referrer" content="no-referrer">    
 
-<h1 id="多进程编程"><a href="#多进程编程" class="headerlink" title="多进程编程"></a>多进程编程</h1><h2 id="fork系统调用"><a href="#fork系统调用" class="headerlink" title="fork系统调用"></a>fork系统调用</h2><p>Linux创建新进程的系统调用是fork</p>
+<h2 id="fork系统调用"><a href="#fork系统调用" class="headerlink" title="fork系统调用"></a>fork系统调用</h2><p>Linux创建新进程的系统调用是fork</p>
+<span id="more"></span>
 <pre class="line-numbers language-c" data-language="c"><code class="language-c"><span class="token macro property"><span class="token directive-hash">#</span><span class="token directive keyword">include</span> <span class="token string">&lt;sys/types.h&gt;</span></span>
 <span class="token macro property"><span class="token directive-hash">#</span><span class="token directive keyword">include</span> <span class="token string">&lt;unistd.h&gt;</span></span>
 <span class="token class-name">pid_t</span> <span class="token function">fork</span><span class="token punctuation">(</span><span class="token keyword">void</span><span class="token punctuation">)</span><span class="token punctuation">;</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span></span></code></pre>
@@ -1457,7 +1459,8 @@ int msgrcv(int msqid, void* msg_ptr, size_t msg_sz, long int msgtype, int msgflg
     <url>/2023/11/29/12-%E8%BF%9B%E7%A8%8B%E6%B1%A0%E5%92%8C%E7%BA%BF%E7%A8%8B%E6%B1%A0%E6%A6%82%E8%BF%B0/</url>
     <content><![CDATA[<meta name="referrer" content="no-referrer">    
 
-<h1 id="进程池和线程池"><a href="#进程池和线程池" class="headerlink" title="进程池和线程池"></a>进程池和线程池</h1><h2 id="进程池和线程池概述"><a href="#进程池和线程池概述" class="headerlink" title="进程池和线程池概述"></a>进程池和线程池概述</h2><p>进程池和线程池类似，下面以进程池为例进行介绍</p>
+<h2 id="进程池和线程池概述"><a href="#进程池和线程池概述" class="headerlink" title="进程池和线程池概述"></a>进程池和线程池概述</h2><p>进程池和线程池类似，下面以进程池为例进行介绍</p>
+<span id="more"></span>
 <hr>
 <p>进程池是由服务器预先创建的一组子进程，这些子进程的数目在3~10个之间（典型情况），httpd守护进程就是使用包含7个子进程的进程池来实现并发的，线程池中的线程数量应该和CPU数量差不多。</p>
 <p>进程池中的所有子进程都运行着相同的代码，并具有相同的属性，比如优先级、PGID等。因为进程池在服务器启动之初就创建好了，所以每个子进程都相对“干净”，即它们没有打开不必要的文件描述符（从父进程继承而来），也不会错误地使用大块的堆内存（从父进程复制得到）。</p>
@@ -1495,7 +1498,7 @@ int msgrcv(int msqid, void* msg_ptr, size_t msg_sz, long int msgtype, int msgflg
     <url>/2023/11/29/11-%E5%A4%9A%E7%BA%BF%E7%A8%8B%E7%BC%96%E7%A8%8B/</url>
     <content><![CDATA[<meta name="referrer" content="no-referrer">    
 
-<h1 id="多线程编程"><a href="#多线程编程" class="headerlink" title="多线程编程"></a>多线程编程</h1><h2 id="Linux线程概述"><a href="#Linux线程概述" class="headerlink" title="Linux线程概述"></a>Linux线程概述</h2><h3 id="线程模型"><a href="#线程模型" class="headerlink" title="线程模型"></a>线程模型</h3><p><strong>线程</strong></p>
+<h2 id="Linux线程概述"><a href="#Linux线程概述" class="headerlink" title="Linux线程概述"></a>Linux线程概述</h2><h3 id="线程模型"><a href="#线程模型" class="headerlink" title="线程模型"></a>线程模型</h3><p><strong>线程</strong></p>
 <ul>
 <li>程序中完成一个独立任务的完整执行序列，即一个可调度的实体</li>
 </ul>
@@ -1508,6 +1511,7 @@ int msgrcv(int msqid, void* msg_ptr, size_t msg_sz, long int msgtype, int msgflg
 <li>有的系统也称为LWP（Light Weight Process，轻量级进程），运行在内核空间，由内核来调度</li>
 <li>当进程的一个内核线程获得CPU的使用权时，它就加载并允许一个用户线程，内核线程相当于用户线程运行的“容器”</li>
 </ul>
+<span id="more"></span>
 <hr>
 <ul>
 <li><p>一个进程可以拥有M个内核线程和N个用户线程，其中<mjx-container class="MathJax" jax="SVG"><svg style="vertical-align: -0.312ex;" xmlns="http://www.w3.org/2000/svg" width="7.404ex" height="1.857ex" role="img" focusable="false" viewBox="0 -683 3272.6 821"><g stroke="currentColor" fill="currentColor" stroke-width="0" transform="scale(1,-1)"><g data-mml-node="math"><g data-mml-node="mi"><path data-c="1D440" d="M289 629Q289 635 232 637Q208 637 201 638T194 648Q194 649 196 659Q197 662 198 666T199 671T201 676T203 679T207 681T212 683T220 683T232 684Q238 684 262 684T307 683Q386 683 398 683T414 678Q415 674 451 396L487 117L510 154Q534 190 574 254T662 394Q837 673 839 675Q840 676 842 678T846 681L852 683H948Q965 683 988 683T1017 684Q1051 684 1051 673Q1051 668 1048 656T1045 643Q1041 637 1008 637Q968 636 957 634T939 623Q936 618 867 340T797 59Q797 55 798 54T805 50T822 48T855 46H886Q892 37 892 35Q892 19 885 5Q880 0 869 0Q864 0 828 1T736 2Q675 2 644 2T609 1Q592 1 592 11Q592 13 594 25Q598 41 602 43T625 46Q652 46 685 49Q699 52 704 61Q706 65 742 207T813 490T848 631L654 322Q458 10 453 5Q451 4 449 3Q444 0 433 0Q418 0 415 7Q413 11 374 317L335 624L267 354Q200 88 200 79Q206 46 272 46H282Q288 41 289 37T286 19Q282 3 278 1Q274 0 267 0Q265 0 255 0T221 1T157 2Q127 2 95 1T58 0Q43 0 39 2T35 11Q35 13 38 25T43 40Q45 46 65 46Q135 46 154 86Q158 92 223 354T289 629Z"></path></g><g data-mml-node="mo" transform="translate(1328.8,0)"><path data-c="2264" d="M674 636Q682 636 688 630T694 615T687 601Q686 600 417 472L151 346L399 228Q687 92 691 87Q694 81 694 76Q694 58 676 56H670L382 192Q92 329 90 331Q83 336 83 348Q84 359 96 365Q104 369 382 500T665 634Q669 636 674 636ZM84 -118Q84 -108 99 -98H678Q694 -104 694 -118Q694 -130 679 -138H98Q84 -131 84 -118Z"></path></g><g data-mml-node="mi" transform="translate(2384.6,0)"><path data-c="1D441" d="M234 637Q231 637 226 637Q201 637 196 638T191 649Q191 676 202 682Q204 683 299 683Q376 683 387 683T401 677Q612 181 616 168L670 381Q723 592 723 606Q723 633 659 637Q635 637 635 648Q635 650 637 660Q641 676 643 679T653 683Q656 683 684 682T767 680Q817 680 843 681T873 682Q888 682 888 672Q888 650 880 642Q878 637 858 637Q787 633 769 597L620 7Q618 0 599 0Q585 0 582 2Q579 5 453 305L326 604L261 344Q196 88 196 79Q201 46 268 46H278Q284 41 284 38T282 19Q278 6 272 0H259Q228 2 151 2Q123 2 100 2T63 2T46 1Q31 1 31 10Q31 14 34 26T39 40Q41 46 62 46Q130 49 150 85Q154 91 221 362L289 634Q287 635 234 637Z"></path></g></g></g></svg></mjx-container></p>
@@ -2022,13 +2026,12 @@ private:
       </tags>
   </entry>
   <entry>
-    <title></title>
-    <url>/2024/03/05/3-Linux%E6%9C%8D%E5%8A%A1%E5%99%A8%E7%A8%8B%E5%BA%8F%E8%A7%84%E8%8C%83/</url>
-    <content><![CDATA[<hr>
-<p>title: Linux服务器程序规范<br>date: 2023-11-29 01:36:05<br>tags: C++ socket</p>
-<h2 id="mathjax-true"><a href="#mathjax-true" class="headerlink" title="mathjax: true"></a>mathjax: true</h2><meta name="referrer" content="no-referrer" />    
+    <title>Linux服务器程序规范</title>
+    <url>/2023/11/29/3-Linux%E6%9C%8D%E5%8A%A1%E5%99%A8%E7%A8%8B%E5%BA%8F%E8%A7%84%E8%8C%83/</url>
+    <content><![CDATA[<meta name="referrer" content="no-referrer">    
 
-<h1 id="Linux服务器程序规范"><a href="#Linux服务器程序规范" class="headerlink" title="Linux服务器程序规范"></a>Linux服务器程序规范</h1><ul>
+
+<ul>
 <li>Linux服务器程序一般以后台进程形式运行，后台进程又称守护进程，没有控制终端，因而不会意外接收到用户输入，守护进程的父进程通常是init进程</li>
 <li>Linux服务器程序通常有一套日志系统，它至少能输出日志到文件，有的高级服务器还能输出日志到专门的UDP服务器。大部分后台进程都在/var/log目录下拥有自己的日志目录</li>
 <li>Linux服务器程序一般以某个专门的非root身份运行，比如mysqld、httpd、syslogd等后台进程，分别拥有自己的运行账户mysql、apache和syslog</li>
@@ -2036,6 +2039,7 @@ private:
 <li>Linux服务器进程通常会在启动的时候生成一个PID文件并存入/var/run目录中，以记录改后台进程的PID</li>
 <li>Linux服务器程序需要考虑系统资源和限制，已预测自身能承受多大负荷，比如进程可用文件描述符总数和内存总量</li>
 </ul>
+<span id="more"></span>
 <h2 id="日志"><a href="#日志" class="headerlink" title="日志"></a>日志</h2><h3 id="Linux系统日志"><a href="#Linux系统日志" class="headerlink" title="Linux系统日志"></a>Linux系统日志</h3><p>linux提供一个守护进程来处理系统日志——rsyslogd</p>
 <ul>
 <li>rsyslogd守护进程既能接收用户进程输出的日志，又能接收内核日志<ul>
@@ -2051,7 +2055,7 @@ private:
 </li>
 <li><img src="https://gitee.com/renmale-sztu/image/raw/master/202312311545712.png" alt="image-20231231154522607"></li>
 </ul>
-<h3 id="syslog函数"><a href="#syslog函数" class="headerlink" title="syslog函数"></a>syslog函数</h3><pre class="line-numbers language-c" data-language="c"><code class="language-c"><span class="token macro property"><span class="token directive-hash">#</span><span class="token directive keyword">include</span> <span class="token string">&lt;syslog.h></span></span>
+<h3 id="syslog函数"><a href="#syslog函数" class="headerlink" title="syslog函数"></a>syslog函数</h3><pre class="line-numbers language-c" data-language="c"><code class="language-c"><span class="token macro property"><span class="token directive-hash">#</span><span class="token directive keyword">include</span> <span class="token string">&lt;syslog.h&gt;</span></span>
 <span class="token keyword">void</span> <span class="token function">syslog</span><span class="token punctuation">(</span><span class="token keyword">int</span> priority<span class="token punctuation">,</span> <span class="token keyword">const</span> <span class="token keyword">char</span><span class="token operator">*</span> message<span class="token punctuation">,</span> <span class="token punctuation">.</span><span class="token punctuation">.</span><span class="token punctuation">.</span><span class="token punctuation">)</span><span class="token punctuation">;</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span></span></code></pre>
 <ul>
 <li><p>应用程序使用syslog函数与rsyslogd守护进程通信</p>
@@ -2075,7 +2079,7 @@ private:
 </li>
 </ul>
 <hr>
-<pre class="line-numbers language-c" data-language="c"><code class="language-c"><span class="token macro property"><span class="token directive-hash">#</span><span class="token directive keyword">include</span> <span class="token string">&lt;syslog.h></span></span>
+<pre class="line-numbers language-c" data-language="c"><code class="language-c"><span class="token macro property"><span class="token directive-hash">#</span><span class="token directive keyword">include</span> <span class="token string">&lt;syslog.h&gt;</span></span>
 <span class="token keyword">void</span> <span class="token function">openlog</span><span class="token punctuation">(</span><span class="token keyword">const</span> <span class="token keyword">char</span><span class="token operator">*</span> ident<span class="token punctuation">,</span> <span class="token keyword">int</span> logopt<span class="token punctuation">,</span> <span class="token keyword">int</span> facility<span class="token punctuation">)</span><span class="token punctuation">;</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span></span></code></pre>
 <ul>
 <li><p>该函数可以改变syslog的默认输出方式，进一步结构化日志内容</p>
@@ -2089,7 +2093,7 @@ private:
 
 -----
 
-&#96;&#96;&#96;c
+```c
 #include &lt;syslog.h&gt;
 int setlogmask(int maskpri);<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
 </li>
@@ -2101,7 +2105,7 @@ int setlogmask(int maskpri);<span aria-hidden="true" class="line-numbers-rows"><
 <li>该函数始终会成功，返回调用进程先前的日志掩码值</li>
 </ul>
 <hr>
-<pre class="line-numbers language-c" data-language="c"><code class="language-c"><span class="token macro property"><span class="token directive-hash">#</span><span class="token directive keyword">include</span> <span class="token string">&lt;syslog.h></span></span>
+<pre class="line-numbers language-c" data-language="c"><code class="language-c"><span class="token macro property"><span class="token directive-hash">#</span><span class="token directive keyword">include</span> <span class="token string">&lt;syslog.h&gt;</span></span>
 <span class="token keyword">void</span> <span class="token function">closelog</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span></span></code></pre>
 <ul>
 <li>该函数用户关闭日志功能</li>
@@ -2124,30 +2128,30 @@ int setlogmask(int maskpri);<span aria-hidden="true" class="line-numbers-rows"><
 </ul>
 <hr>
 <p><strong>EUID和EGID的作用</strong>——方便资源访问，使运行程序的用户拥有该程序的有效用户的权限</p>
-<pre class="line-numbers language-none"><code class="language-none">比如su程序，任何用户都可以使用它来修改自己的账户信息，但修改账户时su程序不得不访问&#x2F;etc&#x2F;passwd文件，而访问该文件是需要root权限的。那么以普通用户身份启动的su程序如何能访问&#x2F;etc&#x2F;passwd文件呢？窍门就在EUID。用ls命令可以查看到，su程序的所有者是root，并且它被设置了set-user-id标志。这个标志表示，任何普通用户运行su程序时，其有效用户就是该程序的所有者root。那么，根据有效用户的含义，任何运行su程序的普通用户都能够访问&#x2F;etc&#x2F;passwd文件。有效用户为root的进程称为特权进程（privilegedprocesses）。EGID的含义与EUID类似：给运行目标程序的组用户提供有效组的权限<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
+<pre class="line-numbers language-none"><code class="language-none">比如su程序，任何用户都可以使用它来修改自己的账户信息，但修改账户时su程序不得不访问/etc/passwd文件，而访问该文件是需要root权限的。那么以普通用户身份启动的su程序如何能访问/etc/passwd文件呢？窍门就在EUID。用ls命令可以查看到，su程序的所有者是root，并且它被设置了set-user-id标志。这个标志表示，任何普通用户运行su程序时，其有效用户就是该程序的所有者root。那么，根据有效用户的含义，任何运行su程序的普通用户都能够访问/etc/passwd文件。有效用户为root的进程称为特权进程（privilegedprocesses）。EGID的含义与EUID类似：给运行目标程序的组用户提供有效组的权限<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
 <h3 id="切换用户"><a href="#切换用户" class="headerlink" title="切换用户"></a>切换用户</h3><p><strong>将root身份启动的进程切换为以一个普通用户身份运行</strong></p>
-<pre class="line-numbers language-c" data-language="c"><code class="language-c"><span class="token keyword">static</span> bool <span class="token function">switch_to_user</span><span class="token punctuation">(</span><span class="token class-name">uid_t</span> user_id<span class="token punctuation">,</span><span class="token class-name">gid_t</span> gp_id<span class="token punctuation">)</span><span class="token punctuation">&#123;</span>
+<pre class="line-numbers language-c" data-language="c"><code class="language-c"><span class="token keyword">static</span> bool <span class="token function">switch_to_user</span><span class="token punctuation">(</span><span class="token class-name">uid_t</span> user_id<span class="token punctuation">,</span><span class="token class-name">gid_t</span> gp_id<span class="token punctuation">)</span><span class="token punctuation">{</span>
     <span class="token comment">/*先确保目标用户不是root*/</span>
-    <span class="token keyword">if</span><span class="token punctuation">(</span><span class="token punctuation">(</span>user_id<span class="token operator">==</span><span class="token number">0</span><span class="token punctuation">)</span><span class="token operator">&amp;&amp;</span><span class="token punctuation">(</span>gp_id<span class="token operator">==</span><span class="token number">0</span><span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">&#123;</span>
+    <span class="token keyword">if</span><span class="token punctuation">(</span><span class="token punctuation">(</span>user_id<span class="token operator">==</span><span class="token number">0</span><span class="token punctuation">)</span><span class="token operator">&amp;&amp;</span><span class="token punctuation">(</span>gp_id<span class="token operator">==</span><span class="token number">0</span><span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">{</span>
     	<span class="token keyword">return</span> false<span class="token punctuation">;</span>
-    <span class="token punctuation">&#125;</span>
+    <span class="token punctuation">}</span>
     <span class="token comment">/*确保当前用户是合法用户：root或者目标用户*/</span>
     <span class="token class-name">gid_t</span> gid<span class="token operator">=</span><span class="token function">getgid</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
     <span class="token class-name">uid_t</span> uid<span class="token operator">=</span><span class="token function">getuid</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
-    <span class="token keyword">if</span><span class="token punctuation">(</span><span class="token punctuation">(</span><span class="token punctuation">(</span>gid<span class="token operator">!=</span><span class="token number">0</span><span class="token punctuation">)</span><span class="token operator">||</span><span class="token punctuation">(</span>uid<span class="token operator">!=</span><span class="token number">0</span><span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token operator">&amp;&amp;</span><span class="token punctuation">(</span><span class="token punctuation">(</span>gid<span class="token operator">!=</span>gp_id<span class="token punctuation">)</span><span class="token operator">||</span><span class="token punctuation">(</span>uid<span class="token operator">!=</span>user_id<span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">&#123;</span>
+    <span class="token keyword">if</span><span class="token punctuation">(</span><span class="token punctuation">(</span><span class="token punctuation">(</span>gid<span class="token operator">!=</span><span class="token number">0</span><span class="token punctuation">)</span><span class="token operator">||</span><span class="token punctuation">(</span>uid<span class="token operator">!=</span><span class="token number">0</span><span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token operator">&amp;&amp;</span><span class="token punctuation">(</span><span class="token punctuation">(</span>gid<span class="token operator">!=</span>gp_id<span class="token punctuation">)</span><span class="token operator">||</span><span class="token punctuation">(</span>uid<span class="token operator">!=</span>user_id<span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">{</span>
     	<span class="token keyword">return</span> false<span class="token punctuation">;</span>
-    <span class="token punctuation">&#125;</span>
+    <span class="token punctuation">}</span>
     <span class="token comment">/*如果不是root，则已经是目标用户*/</span>
-    <span class="token keyword">if</span><span class="token punctuation">(</span>uid<span class="token operator">!=</span><span class="token number">0</span><span class="token punctuation">)</span><span class="token punctuation">&#123;</span>
+    <span class="token keyword">if</span><span class="token punctuation">(</span>uid<span class="token operator">!=</span><span class="token number">0</span><span class="token punctuation">)</span><span class="token punctuation">{</span>
     	<span class="token keyword">return</span> true<span class="token punctuation">;</span>
-    <span class="token punctuation">&#125;</span>
+    <span class="token punctuation">}</span>
     <span class="token comment">/*切换到目标用户*/</span>
-    <span class="token keyword">if</span><span class="token punctuation">(</span><span class="token punctuation">(</span><span class="token function">setgid</span><span class="token punctuation">(</span>gp_id<span class="token punctuation">)</span>＜<span class="token number">0</span><span class="token punctuation">)</span><span class="token operator">||</span><span class="token punctuation">(</span><span class="token function">setuid</span><span class="token punctuation">(</span>user_id<span class="token punctuation">)</span>＜<span class="token number">0</span><span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">&#123;</span>
+    <span class="token keyword">if</span><span class="token punctuation">(</span><span class="token punctuation">(</span><span class="token function">setgid</span><span class="token punctuation">(</span>gp_id<span class="token punctuation">)</span>＜<span class="token number">0</span><span class="token punctuation">)</span><span class="token operator">||</span><span class="token punctuation">(</span><span class="token function">setuid</span><span class="token punctuation">(</span>user_id<span class="token punctuation">)</span>＜<span class="token number">0</span><span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">{</span>
     	<span class="token keyword">return</span> false<span class="token punctuation">;</span>
-    <span class="token punctuation">&#125;</span>
+    <span class="token punctuation">}</span>
     <span class="token keyword">return</span> true<span class="token punctuation">;</span>
-<span class="token punctuation">&#125;</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
-<h2 id="进程间关系"><a href="#进程间关系" class="headerlink" title="进程间关系"></a>进程间关系</h2><h3 id="进程组"><a href="#进程组" class="headerlink" title="进程组"></a>进程组</h3><pre class="line-numbers language-c" data-language="c"><code class="language-c"><span class="token macro property"><span class="token directive-hash">#</span><span class="token directive keyword">include</span> <span class="token string">&lt;unistd.h></span></span>
+<span class="token punctuation">}</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<h2 id="进程间关系"><a href="#进程间关系" class="headerlink" title="进程间关系"></a>进程间关系</h2><h3 id="进程组"><a href="#进程组" class="headerlink" title="进程组"></a>进程组</h3><pre class="line-numbers language-c" data-language="c"><code class="language-c"><span class="token macro property"><span class="token directive-hash">#</span><span class="token directive keyword">include</span> <span class="token string">&lt;unistd.h&gt;</span></span>
 <span class="token class-name">pid_t</span> <span class="token function">getpgid</span><span class="token punctuation">(</span><span class="token class-name">pid_t</span> pid<span class="token punctuation">)</span><span class="token punctuation">;</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span></span></code></pre>
 <ul>
 <li>Linux下每个进程都隶属于一个进程组，因此进程除了PID信息外，还有进程组ID（PGID），可以使用该函数来获取指定进程的PGID</li>
@@ -2155,7 +2159,7 @@ int setlogmask(int maskpri);<span aria-hidden="true" class="line-numbers-rows"><
 <li>每个进程组都有一个首领进程，其PGID和PID相同，进程组将一直存在直到其中所有进程都退出或者加入到其他进程组</li>
 </ul>
 <hr>
-<pre class="line-numbers language-c" data-language="c"><code class="language-c"><span class="token macro property"><span class="token directive-hash">#</span><span class="token directive keyword">include</span> <span class="token string">&lt;unistd.h></span></span>
+<pre class="line-numbers language-c" data-language="c"><code class="language-c"><span class="token macro property"><span class="token directive-hash">#</span><span class="token directive keyword">include</span> <span class="token string">&lt;unistd.h&gt;</span></span>
 <span class="token keyword">int</span> <span class="token function">setpgid</span><span class="token punctuation">(</span><span class="token class-name">pid_t</span> pid<span class="token punctuation">,</span> <span class="token class-name">pid_t</span> pgid<span class="token punctuation">)</span><span class="token punctuation">;</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span></span></code></pre>
 <ul>
 <li>该函数将PID为pid的进程的PGID设置为pgid</li>
@@ -2166,7 +2170,7 @@ int setlogmask(int maskpri);<span aria-hidden="true" class="line-numbers-rows"><
 <li>一个进程只能设置自己或者其子进程的PGID，并且当子进程调用exec系列函数后，我们也不能再在父进程中对它设置PGID</li>
 </ul>
 <h3 id="会话"><a href="#会话" class="headerlink" title="会话"></a>会话</h3><p>一些有关联的进程组形成一个会话</p>
-<pre class="line-numbers language-c" data-language="c"><code class="language-c"><span class="token macro property"><span class="token directive-hash">#</span><span class="token directive keyword">include</span> <span class="token string">&lt;unistd.h></span></span>
+<pre class="line-numbers language-c" data-language="c"><code class="language-c"><span class="token macro property"><span class="token directive-hash">#</span><span class="token directive keyword">include</span> <span class="token string">&lt;unistd.h&gt;</span></span>
 <span class="token class-name">pid_t</span> <span class="token function">setsid</span><span class="token punctuation">(</span><span class="token keyword">void</span><span class="token punctuation">)</span><span class="token punctuation">;</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span></span></code></pre>
 <ul>
 <li>该函数用于创建一个会话</li>
@@ -2183,7 +2187,7 @@ int setlogmask(int maskpri);<span aria-hidden="true" class="line-numbers-rows"><
 <li>该函数常用于创建守护进程，通过调用该函数，守护进程可以脱离终端和控制终端的会话，独立运行，并且不受终端会话的影响（即不受父进程影响）</li>
 </ul>
 <hr>
-<pre class="line-numbers language-c" data-language="c"><code class="language-c"><span class="token macro property"><span class="token directive-hash">#</span><span class="token directive keyword">include</span> <span class="token string">&lt;unistd.h></span></span>
+<pre class="line-numbers language-c" data-language="c"><code class="language-c"><span class="token macro property"><span class="token directive-hash">#</span><span class="token directive keyword">include</span> <span class="token string">&lt;unistd.h&gt;</span></span>
 <span class="token class-name">pid_t</span> <span class="token function">getsid</span><span class="token punctuation">(</span><span class="token class-name">pid_t</span> pid<span class="token punctuation">)</span><span class="token punctuation">;</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span></span></code></pre>
 <ul>
 <li>Linux进程并未提供所谓会话ID（SID）的概念，Linux系统认为它等同于会话首领所在进程组的PGID，该函数用于读取SID</li>
@@ -2197,7 +2201,7 @@ int setlogmask(int maskpri);<span aria-hidden="true" class="line-numbers-rows"><
 <p>在bash shell下执行ps和less命令的，所以ps和less命令的父进程是bash命令，这可以从PPID（父进程PID）一列看出。这3条命令创建了1个会话（SID是1943）和2个进程组（PGID分别是1943和2298）。bash命令的PID、PGID和SID都相同，很明显它既是会话的首领，也是组1943的首领。ps命令则是组2298的首领，因为其PID也是2298</p>
 <p>~注：默认情况下，子进程与父进程同属一个进程组~</p>
 <h2 id="系统资源限制"><a href="#系统资源限制" class="headerlink" title="系统资源限制"></a>系统资源限制</h2><p>Linux上运行的程序都会收到资源限制的影响，比如物理设备限制（CPU数量、内存数量等）、系统策略限制（CPU时间等），以及具体实现的限制（比如文件名的最大长度），Linux系统资源限制可以通过如下一堆函数来读取和设置</p>
-<pre class="line-numbers language-c" data-language="c"><code class="language-c"><span class="token macro property"><span class="token directive-hash">#</span><span class="token directive keyword">include</span> <span class="token string">&lt;sys/resource.h></span></span>
+<pre class="line-numbers language-c" data-language="c"><code class="language-c"><span class="token macro property"><span class="token directive-hash">#</span><span class="token directive keyword">include</span> <span class="token string">&lt;sys/resource.h&gt;</span></span>
 <span class="token keyword">int</span> <span class="token function">getrlimit</span><span class="token punctuation">(</span><span class="token keyword">int</span> resource<span class="token punctuation">,</span> <span class="token keyword">struct</span> <span class="token class-name">rlimit</span><span class="token operator">*</span> rlim<span class="token punctuation">)</span><span class="token punctuation">;</span>
 <span class="token keyword">int</span> <span class="token function">setrlimit</span><span class="token punctuation">(</span><span class="token keyword">int</span> resource<span class="token punctuation">,</span> <span class="token keyword">const</span> <span class="token keyword">struct</span> <span class="token class-name">rlimit</span><span class="token operator">*</span> rlim<span class="token punctuation">)</span><span class="token punctuation">;</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span></span></code></pre>
 <ul>
@@ -2216,16 +2220,16 @@ rlim_t rlim_max;
 
 - resource参数指定资源限制类型
 
-  - ![image-20231231181318589](https:&#x2F;&#x2F;gitee.com&#x2F;renmale-sztu&#x2F;image&#x2F;raw&#x2F;master&#x2F;202312311813347.png)
+  - ![image-20231231181318589](https://gitee.com/renmale-sztu/image/raw/master/202312311813347.png)
 
 - 成功时返回0，失败时返回-1并设置errno
 
 ## 改变工作目录和根目录
 
-&#96;&#96;&#96;c
+```c
 #include &lt;unistd.h&gt;
-char* getcwd(char* buf, size_t size);&#x2F;&#x2F;获取进程当前工作目录
-int chdir(const char* path);&#x2F;&#x2F;改变进程工作目录<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+char* getcwd(char* buf, size_t size);//获取进程当前工作目录
+int chdir(const char* path);//改变进程工作目录<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
 </li>
 </ul>
 </li>
@@ -2247,7 +2251,7 @@ int chdir(const char* path);&#x2F;&#x2F;改变进程工作目录<span aria-hidde
 </li>
 </ul>
 <hr>
-<pre class="line-numbers language-c" data-language="c"><code class="language-c"><span class="token macro property"><span class="token directive-hash">#</span><span class="token directive keyword">include</span> <span class="token string">&lt;unistd.h></span></span>
+<pre class="line-numbers language-c" data-language="c"><code class="language-c"><span class="token macro property"><span class="token directive-hash">#</span><span class="token directive keyword">include</span> <span class="token string">&lt;unistd.h&gt;</span></span>
 <span class="token keyword">int</span> <span class="token function">chroot</span><span class="token punctuation">(</span><span class="token keyword">const</span> <span class="token keyword">char</span><span class="token operator">*</span> path<span class="token punctuation">)</span><span class="token punctuation">;</span><span class="token comment">//改变进程根目录</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span></span></code></pre>
 <ul>
 <li>path参数指定要切换到的目标根目录</li>
@@ -2257,26 +2261,26 @@ int chdir(const char* path);&#x2F;&#x2F;改变进程工作目录<span aria-hidde
 <li>只有特权进程才能改变根目录~有效用户为root的进程~</li>
 </ul>
 <h2 id="服务器程序后台化"><a href="#服务器程序后台化" class="headerlink" title="服务器程序后台化"></a>服务器程序后台化</h2><p><strong>将服务器程序以守护进程的方式运行</strong></p>
-<pre class="line-numbers language-c" data-language="c"><code class="language-c">bool <span class="token function">daemonize</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">&#123;</span>
+<pre class="line-numbers language-c" data-language="c"><code class="language-c">bool <span class="token function">daemonize</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">{</span>
     <span class="token comment">/*创建子进程，关闭父进程，这样可以使程序在后台运行*/</span>
     <span class="token class-name">pid_t</span> pid<span class="token operator">=</span><span class="token function">fork</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
-    <span class="token keyword">if</span><span class="token punctuation">(</span>pid＜<span class="token number">0</span><span class="token punctuation">)</span><span class="token punctuation">&#123;</span>
+    <span class="token keyword">if</span><span class="token punctuation">(</span>pid＜<span class="token number">0</span><span class="token punctuation">)</span><span class="token punctuation">{</span>
     	<span class="token keyword">return</span> false<span class="token punctuation">;</span>
-    <span class="token punctuation">&#125;</span>
-    <span class="token keyword">else</span> <span class="token keyword">if</span><span class="token punctuation">(</span>pid＞<span class="token number">0</span><span class="token punctuation">)</span><span class="token punctuation">&#123;</span>
+    <span class="token punctuation">}</span>
+    <span class="token keyword">else</span> <span class="token keyword">if</span><span class="token punctuation">(</span>pid＞<span class="token number">0</span><span class="token punctuation">)</span><span class="token punctuation">{</span>
     	<span class="token function">exit</span><span class="token punctuation">(</span><span class="token number">0</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
-    <span class="token punctuation">&#125;</span>
+    <span class="token punctuation">}</span>
     <span class="token comment">/*设置文件权限掩码。当进程创建新文件（使用open(const char*pathname,intflags,mode_t mode)系统调用）时，文件的权限将是mode＆0777*/</span>
     <span class="token function">umask</span><span class="token punctuation">(</span><span class="token number">0</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
     <span class="token comment">/*创建新的会话，设置本进程为进程组的首领*/</span>
     <span class="token class-name">pid_t</span> sid<span class="token operator">=</span><span class="token function">setsid</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
-    <span class="token keyword">if</span><span class="token punctuation">(</span>sid＜<span class="token number">0</span><span class="token punctuation">)</span><span class="token punctuation">&#123;</span>
+    <span class="token keyword">if</span><span class="token punctuation">(</span>sid＜<span class="token number">0</span><span class="token punctuation">)</span><span class="token punctuation">{</span>
     	<span class="token keyword">return</span> false<span class="token punctuation">;</span>
-    <span class="token punctuation">&#125;</span>
+    <span class="token punctuation">}</span>
     <span class="token comment">/*切换工作目录*/</span>
-    <span class="token keyword">if</span><span class="token punctuation">(</span><span class="token punctuation">(</span><span class="token function">chdir</span><span class="token punctuation">(</span><span class="token string">"/"</span><span class="token punctuation">)</span><span class="token punctuation">)</span>＜<span class="token number">0</span><span class="token punctuation">)</span><span class="token punctuation">&#123;</span>
+    <span class="token keyword">if</span><span class="token punctuation">(</span><span class="token punctuation">(</span><span class="token function">chdir</span><span class="token punctuation">(</span><span class="token string">"/"</span><span class="token punctuation">)</span><span class="token punctuation">)</span>＜<span class="token number">0</span><span class="token punctuation">)</span><span class="token punctuation">{</span>
     	<span class="token keyword">return</span> false<span class="token punctuation">;</span>
-    <span class="token punctuation">&#125;</span>
+    <span class="token punctuation">}</span>
     <span class="token comment">/*关闭标准输入设备、标准输出设备和标准错误输出设备*/</span>
     <span class="token function">close</span><span class="token punctuation">(</span>STDIN_FILENO<span class="token punctuation">)</span><span class="token punctuation">;</span>
     <span class="token function">close</span><span class="token punctuation">(</span>STDOUT_FILENO<span class="token punctuation">)</span><span class="token punctuation">;</span>
@@ -2287,10 +2291,10 @@ int chdir(const char* path);&#x2F;&#x2F;改变进程工作目录<span aria-hidde
     <span class="token function">open</span><span class="token punctuation">(</span><span class="token string">"/dev/null"</span><span class="token punctuation">,</span>O_RDWR<span class="token punctuation">)</span><span class="token punctuation">;</span>
     <span class="token function">open</span><span class="token punctuation">(</span><span class="token string">"/dev/null"</span><span class="token punctuation">,</span>O_RDWR<span class="token punctuation">)</span><span class="token punctuation">;</span>
     <span class="token keyword">return</span> true<span class="token punctuation">;</span>
-<span class="token punctuation">&#125;</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<span class="token punctuation">}</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
 <hr>
 <p>linux提供了完成上述功能的库函数</p>
-<pre class="line-numbers language-c" data-language="c"><code class="language-c"><span class="token macro property"><span class="token directive-hash">#</span><span class="token directive keyword">include</span> <span class="token string">&lt;unistd.h></span></span>
+<pre class="line-numbers language-c" data-language="c"><code class="language-c"><span class="token macro property"><span class="token directive-hash">#</span><span class="token directive keyword">include</span> <span class="token string">&lt;unistd.h&gt;</span></span>
 <span class="token keyword">int</span> <span class="token function">daemon</span><span class="token punctuation">(</span><span class="token keyword">int</span> nochdir<span class="token punctuation">,</span> <span class="token keyword">int</span> noclose<span class="token punctuation">)</span><span class="token punctuation">;</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span></span></code></pre>
 <ul>
 <li>nochdir参数用于指定是否改变工作目录，为0时，工作目录将被设置为”/“（根目录），否则继续使用当前目录</li>
@@ -2298,6 +2302,9 @@ int chdir(const char* path);&#x2F;&#x2F;改变进程工作目录<span aria-hidde
 <li>成功时返回0，失败时返回-1并设置errno</li>
 </ul>
 ]]></content>
+      <tags>
+        <tag>C++ socket</tag>
+      </tags>
   </entry>
   <entry>
     <title>高性能服务器程序框架</title>
@@ -2310,6 +2317,7 @@ int chdir(const char* path);&#x2F;&#x2F;改变进程工作目录<span aria-hidde
 <li>逻辑单元</li>
 <li>存储单元</li>
 </ul>
+<span id="more"></span>
 <h2 id="服务器模型"><a href="#服务器模型" class="headerlink" title="服务器模型"></a>服务器模型</h2><h3 id="C-S模型"><a href="#C-S模型" class="headerlink" title="C/S模型"></a>C/S模型</h3><p><img src="https://gitee.com/renmale-sztu/image/raw/master/202401022340788.png" alt="image-20240102234004705"></p>
 <hr>
 <ul>
@@ -2917,24 +2925,25 @@ HTTP_CODE <span class="token function">parse_content</span><span class="token pu
     <url>/2023/11/29/2-Linux%E9%AB%98%E7%BA%A7IO%E5%87%BD%E6%95%B0/</url>
     <content><![CDATA[<meta name="referrer" content="no-referrer">    
 
-<h2 id="用于创建文件描述符"><a href="#用于创建文件描述符" class="headerlink" title="用于创建文件描述符"></a>用于创建文件描述符</h2><h3 id="pipe函数"><a href="#pipe函数" class="headerlink" title="pipe函数"></a>pipe函数</h3><pre class="line-numbers language-c" data-language="c"><code class="language-c"><span class="token macro property"><span class="token directive-hash">#</span><span class="token directive keyword">include</span><span class="token string">&lt;unistd.h&gt;</span></span>
-<span class="token keyword">int</span> <span class="token function">pipe</span><span class="token punctuation">(</span><span class="token keyword">int</span> fd<span class="token punctuation">[</span><span class="token number">2</span><span class="token punctuation">]</span><span class="token punctuation">)</span><span class="token punctuation">;</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span></span></code></pre>
+<h2 id="用于创建文件描述符"><a href="#用于创建文件描述符" class="headerlink" title="用于创建文件描述符"></a>用于创建文件描述符</h2><h3 id="pipe函数"><a href="#pipe函数" class="headerlink" title="pipe函数"></a>pipe函数</h3><pre class="line-numbers language-c++" data-language="c++"><code class="language-c++">#include&lt;unistd.h&gt;
+int pipe(int fd[2]);<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span></span></code></pre>
 <ul>
 <li>pipe函数用于创建一个单向管道，以实现进程间的通信</li>
 <li>pipe函数的参数是一个包含两个int型整数的数组指针，该函数成功时返回0，并将一对打开的文件描述符值填入其参数指向的数组；如果失败，则返回-1并设置errno。</li>
 </ul>
+<span id="more"></span>
 <hr>
-<pre class="line-numbers language-c" data-language="c"><code class="language-c"><span class="token macro property"><span class="token directive-hash">#</span><span class="token directive keyword">include</span><span class="token string">&lt;sys/types.h&gt;</span></span>
-<span class="token macro property"><span class="token directive-hash">#</span><span class="token directive keyword">include</span><span class="token string">&lt;sys/socket.h&gt;</span></span>
-<span class="token keyword">int</span> socketpair<span class="token operator">&lt;</span><span class="token keyword">int</span> domain<span class="token punctuation">,</span> <span class="token keyword">int</span> type<span class="token punctuation">,</span> <span class="token keyword">int</span> protocol<span class="token punctuation">,</span> <span class="token keyword">int</span> fd<span class="token punctuation">[</span><span class="token number">2</span><span class="token punctuation">]</span><span class="token punctuation">)</span><span class="token punctuation">;</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span></span></code></pre>
+<pre class="line-numbers language-c++" data-language="c++"><code class="language-c++">#include&lt;sys/types.h&gt;
+#include&lt;sys/socket.h&gt;
+int socketpair&lt;int domain, int type, int protocol, int fd[2]);<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span></span></code></pre>
 <ul>
 <li>socket基础API，能方便地创建双向管道</li>
 <li>前三个参数与socket系统调用一致，但domain只能使用UNIX本地域协议族AF_UNIX，因此只能在本地使用这个双向管道</li>
 <li>成功返回0，失败返回-1并设置errno。</li>
 </ul>
-<h3 id="dup函数和dup2函数"><a href="#dup函数和dup2函数" class="headerlink" title="dup函数和dup2函数"></a>dup函数和dup2函数</h3><pre class="line-numbers language-c" data-language="c"><code class="language-c"><span class="token macro property"><span class="token directive-hash">#</span><span class="token directive keyword">include</span><span class="token string">&lt;unistd.h&gt;</span></span>
-<span class="token keyword">int</span> <span class="token function">dup</span><span class="token punctuation">(</span><span class="token keyword">int</span> file_descriptor<span class="token punctuation">)</span><span class="token punctuation">;</span>
-<span class="token keyword">int</span> <span class="token function">dup2</span><span class="token punctuation">(</span><span class="token keyword">int</span> file_descriptor_one<span class="token punctuation">,</span> <span class="token keyword">int</span> file_descriptor_two<span class="token punctuation">)</span><span class="token punctuation">;</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span></span></code></pre>
+<h3 id="dup函数和dup2函数"><a href="#dup函数和dup2函数" class="headerlink" title="dup函数和dup2函数"></a>dup函数和dup2函数</h3><pre class="line-numbers language-c++" data-language="c++"><code class="language-c++">#include&lt;unistd.h&gt;
+int dup(int file_descriptor);
+int dup2(int file_descriptor_one, int file_descriptor_two);<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span></span></code></pre>
 <ul>
 <li>dup函数创建一个新的文件描述符，该新文件描述符和原有原件描述符file_descriptor指向相同的文件、管道或者网络连接</li>
 <li>dup总是返回系统当前可用的最小整数值</li>
@@ -2942,9 +2951,9 @@ HTTP_CODE <span class="token function">parse_content</span><span class="token pu
 <li>调用失败时返回-1并设置errno</li>
 <li>通过dup/dup2函数创建的文件描述符并不继承原有文件描述符的属性</li>
 </ul>
-<h2 id="用于读写数据"><a href="#用于读写数据" class="headerlink" title="用于读写数据"></a>用于读写数据</h2><h3 id="readv函数和writev函数"><a href="#readv函数和writev函数" class="headerlink" title="readv函数和writev函数"></a>readv函数和writev函数</h3><pre class="line-numbers language-c" data-language="c"><code class="language-c"><span class="token macro property"><span class="token directive-hash">#</span><span class="token directive keyword">include</span><span class="token string">&lt;sys/uio.h&gt;</span></span>
-<span class="token class-name">ssize_t</span> <span class="token function">readv</span><span class="token punctuation">(</span><span class="token keyword">int</span> fd<span class="token punctuation">,</span> <span class="token keyword">const</span> <span class="token keyword">struct</span> <span class="token class-name">iovec</span><span class="token operator">*</span> vector<span class="token punctuation">,</span> <span class="token keyword">int</span> count<span class="token punctuation">)</span><span class="token punctuation">;</span>
-<span class="token class-name">ssize_t</span> <span class="token function">writev</span><span class="token punctuation">(</span><span class="token keyword">int</span> fd<span class="token punctuation">,</span> <span class="token keyword">const</span> <span class="token keyword">struct</span> <span class="token class-name">iovec</span><span class="token operator">*</span> vector<span class="token punctuation">,</span> <span class="token keyword">int</span> count<span class="token punctuation">)</span><span class="token punctuation">;</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span></span></code></pre>
+<h2 id="用于读写数据"><a href="#用于读写数据" class="headerlink" title="用于读写数据"></a>用于读写数据</h2><h3 id="readv函数和writev函数"><a href="#readv函数和writev函数" class="headerlink" title="readv函数和writev函数"></a>readv函数和writev函数</h3><pre class="line-numbers language-c++" data-language="c++"><code class="language-c++">#include&lt;sys/uio.h&gt;
+ssize_t readv(int fd, const struct iovec* vector, int count);
+ssize_t writev(int fd, const struct iovec* vector, int count);<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span></span></code></pre>
 <ul>
 <li>readv函数将数据从文件描述符读到分散的内存块中，即分散读</li>
 <li>writev函数将多块分散的内存数据一并写入文件描述符中，即集中写</li>
@@ -2952,9 +2961,9 @@ HTTP_CODE <span class="token function">parse_content</span><span class="token pu
 <li>vector是内存块数组</li>
 <li>count是数组的长度</li>
 </ul>
-<h3 id="mmap函数和munmap函数"><a href="#mmap函数和munmap函数" class="headerlink" title="mmap函数和munmap函数"></a>mmap函数和munmap函数</h3><pre class="line-numbers language-c" data-language="c"><code class="language-c"><span class="token macro property"><span class="token directive-hash">#</span><span class="token directive keyword">include</span><span class="token string">&lt;sys/mman.h&gt;</span></span>
-<span class="token keyword">void</span><span class="token operator">*</span> <span class="token function">mmap</span><span class="token punctuation">(</span><span class="token keyword">void</span><span class="token operator">*</span> start<span class="token punctuation">,</span> <span class="token class-name">size_t</span> length<span class="token punctuation">,</span> <span class="token keyword">int</span> port<span class="token punctuation">,</span> <span class="token keyword">int</span> flags<span class="token punctuation">,</span> <span class="token keyword">int</span> fd<span class="token punctuation">,</span> <span class="token class-name">off_t</span> offset<span class="token punctuation">)</span><span class="token punctuation">;</span>
-<span class="token keyword">int</span> <span class="token function">munmap</span><span class="token punctuation">(</span><span class="token keyword">void</span><span class="token operator">*</span> start<span class="token punctuation">,</span> <span class="token class-name">size_t</span> length<span class="token punctuation">)</span><span class="token punctuation">;</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span></span></code></pre>
+<h3 id="mmap函数和munmap函数"><a href="#mmap函数和munmap函数" class="headerlink" title="mmap函数和munmap函数"></a>mmap函数和munmap函数</h3><pre class="line-numbers language-c++" data-language="c++"><code class="language-c++">#include&lt;sys/mman.h&gt;
+void* mmap(void* start, size_t length, int port, int flags, int fd, off_t offset);
+int munmap(void* start, size_t length);<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span></span></code></pre>
 <ul>
 <li>mmap函数用于申请一段内存空间，成功时返回指向目标内存区域的指针，失败则返回MAP_FAILED((void*)-1)并设置errno</li>
 <li>munmap函数则释放由mmap创建的这段内存空间，成功时返回0，失败时返回-1并设置errno</li>
@@ -2974,8 +2983,8 @@ HTTP_CODE <span class="token function">parse_content</span><span class="token pu
 <li>fd参数是被映射文件的文件描述符</li>
 <li>offset参数设置从文件的何处开始映射</li>
 </ul>
-<h3 id="splice函数"><a href="#splice函数" class="headerlink" title="splice函数"></a>splice函数</h3><pre class="line-numbers language-c" data-language="c"><code class="language-c"><span class="token macro property"><span class="token directive-hash">#</span><span class="token directive keyword">include</span><span class="token string">&lt;fcntl.h&gt;</span></span>
-<span class="token class-name">ssize_t</span> <span class="token function">splice</span><span class="token punctuation">(</span><span class="token keyword">int</span> fd_in<span class="token punctuation">,</span> <span class="token class-name">loff_t</span><span class="token operator">*</span> off_in<span class="token punctuation">,</span> <span class="token keyword">int</span> fd_out<span class="token punctuation">,</span> <span class="token class-name">loff_t</span><span class="token operator">*</span> off_out<span class="token punctuation">,</span> <span class="token class-name">size_t</span> len<span class="token punctuation">,</span> <span class="token keyword">unsigned</span> <span class="token keyword">int</span> flags<span class="token punctuation">)</span><span class="token punctuation">;</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span></span></code></pre>
+<h3 id="splice函数"><a href="#splice函数" class="headerlink" title="splice函数"></a>splice函数</h3><pre class="line-numbers language-c++" data-language="c++"><code class="language-c++">#include&lt;fcntl.h&gt;
+ssize_t splice(int fd_in, loff_t* off_in, int fd_out, loff_t* off_out, size_t len, unsigned int flags);<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span></span></code></pre>
 <ul>
 <li>splice函数用于在两个文件描述符之间移动数据，也就是零拷贝操作，成功时返回移动字节的数量，失败时返回-1并设置errno<ul>
 <li><img src="https://gitee.com/renmale-sztu/image/raw/master/202312282213040.png" alt="image-20231228221323161"></li>
@@ -2995,15 +3004,15 @@ HTTP_CODE <span class="token function">parse_content</span><span class="token pu
 </li>
 <li>fd_in和fd_out必须至少有一个是管道文件描述符</li>
 </ul>
-<h3 id="tee函数"><a href="#tee函数" class="headerlink" title="tee函数"></a>tee函数</h3><pre class="line-numbers language-c" data-language="c"><code class="language-c"><span class="token macro property"><span class="token directive-hash">#</span><span class="token directive keyword">include</span> <span class="token string">&lt;fcntl.h&gt;</span></span>
-<span class="token class-name">ssize_t</span> <span class="token function">tee</span><span class="token punctuation">(</span><span class="token keyword">int</span> fd_in<span class="token punctuation">,</span> <span class="token keyword">int</span> fd_out<span class="token punctuation">,</span> <span class="token class-name">size_t</span> len<span class="token punctuation">,</span> <span class="token keyword">unsigned</span> <span class="token keyword">int</span> flags<span class="token punctuation">)</span><span class="token punctuation">;</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span></span></code></pre>
+<h3 id="tee函数"><a href="#tee函数" class="headerlink" title="tee函数"></a>tee函数</h3><pre class="line-numbers language-c++" data-language="c++"><code class="language-c++">#include &lt;fcntl.h&gt;
+ssize_t tee(int fd_in, int fd_out, size_t len, unsigned int flags);<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span></span></code></pre>
 <ul>
 <li>tee函数在两个管道文件描述符之间复制数据，也是零拷贝操作</li>
 <li>各参数含义与splice函数一致</li>
 <li>成功时返回在两个文件描述符之间复制的数据数量（字节数），失败时返回-1并设置errno</li>
 </ul>
-<h2 id="用于控制I-O行为和属性"><a href="#用于控制I-O行为和属性" class="headerlink" title="用于控制I/O行为和属性"></a>用于控制I/O行为和属性</h2><h3 id="fcntl函数"><a href="#fcntl函数" class="headerlink" title="fcntl函数"></a>fcntl函数</h3><pre class="line-numbers language-c" data-language="c"><code class="language-c"><span class="token macro property"><span class="token directive-hash">#</span><span class="token directive keyword">include</span><span class="token string">&lt;fcntl.h&gt;</span></span>
-<span class="token keyword">int</span> <span class="token function">fcntl</span><span class="token punctuation">(</span><span class="token keyword">int</span> fd<span class="token punctuation">,</span> <span class="token keyword">int</span> cmd<span class="token punctuation">,</span> <span class="token punctuation">.</span><span class="token punctuation">.</span><span class="token punctuation">.</span><span class="token punctuation">)</span><span class="token punctuation">;</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span></span></code></pre>
+<h2 id="用于控制I-O行为和属性"><a href="#用于控制I-O行为和属性" class="headerlink" title="用于控制I/O行为和属性"></a>用于控制I/O行为和属性</h2><h3 id="fcntl函数"><a href="#fcntl函数" class="headerlink" title="fcntl函数"></a>fcntl函数</h3><pre class="line-numbers language-c++" data-language="c++"><code class="language-c++">#include&lt;fcntl.h&gt;
+int fcntl(int fd, int cmd, ...);<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span></span></code></pre>
 <ul>
 <li>fcntl函数提供了对文件描述符的各种控制操作</li>
 <li>fd参数是被操作的文件描述符</li>
@@ -3028,6 +3037,7 @@ HTTP_CODE <span class="token function">parse_content</span><span class="token pu
 <li>服务器要同时处理TCP请求和UDP请求</li>
 <li>服务器要同时监听多个端口</li>
 </ul>
+<span id="more"></span>
 <hr>
 <p>I/O复用虽然能同时监听多个文件描述符，但它本身是阻塞的，并且当多个文件描述符同时就绪时，如果不采用额外的措施，程序就只能按顺序依次处理其中的每一个文件描述符，这使得服务器程序看起来像是串行工作的，如果要实现并发，只能使用多进程或多线程等编程手段</p>
 <h2 id="select系统调用"><a href="#select系统调用" class="headerlink" title="select系统调用"></a>select系统调用</h2><h3 id="select-API"><a href="#select-API" class="headerlink" title="select API"></a>select API</h3><pre class="line-numbers language-c" data-language="c"><code class="language-c"><span class="token macro property"><span class="token directive-hash">#</span><span class="token directive keyword">include</span> <span class="token string">&lt;sys/select.h&gt;</span></span>
@@ -3615,13 +3625,16 @@ epoll_data_t data     //用户数据
     <url>/2023/11/29/6-IO%E5%A4%8D%E7%94%A8%E5%BA%94%E7%94%A8/</url>
     <content><![CDATA[<meta name="referrer" content="no-referrer">    
 
-<h1 id="I-O复用高级应用"><a href="#I-O复用高级应用" class="headerlink" title="I/O复用高级应用"></a>I/O复用高级应用</h1><h2 id="非阻塞connect"><a href="#非阻塞connect" class="headerlink" title="非阻塞connect"></a>非阻塞connect</h2><p><strong>EINPROGRESS错误</strong></p>
+
+
+<h2 id="非阻塞connect"><a href="#非阻塞connect" class="headerlink" title="非阻塞connect"></a>非阻塞connect</h2><p><strong>EINPROGRESS错误</strong></p>
 <pre class="line-numbers language-none"><code class="language-none">The socket is nonblocking and the connection cannot be completed immediately.It is possible to select(2)or poll(2)for completion by selecting the socket for writing.After select(2)indicates writability,use getsockopt(2)to read the SO_ERROR option at level SOL_SOCKET to determine whether connect()completed successfully(SO_ERROR is zero)or unsuccessfully(SO_ERROR is one of the usual error codes listed here,explaining the reason for the failure).<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
 <ul>
 <li>这种错误发生在对非阻塞的socket调用connect，而连接又没有立即建立时</li>
 <li>在这种情况下，我们可以调用select、poll等函数来监听这个连接失败的socket上的可写事件，等select、poll等函数返回后，再利用getsockopt来读取错误码并清除该socket上的错误；如果错误码是0，表示连接建立成功，否则连接失败</li>
 <li>通过这种方式，我们能够同时发起多个连接并一起等待</li>
 </ul>
+<span id="more"></span>
 <hr>
 <p><strong>代码实现</strong></p>
 <pre class="line-numbers language-c" data-language="c"><code class="language-c"><span class="token macro property"><span class="token directive-hash">#</span><span class="token directive keyword">include</span> <span class="token string">&lt;sys/types.h&gt;</span></span>
@@ -4451,12 +4464,17 @@ for(int i=0;i&lt;len;++i){
     <url>/2023/11/29/8-%E5%AE%9A%E6%97%B6%E5%99%A8/</url>
     <content><![CDATA[<meta name="referrer" content="no-referrer">    
 
-<h1 id="定时器"><a href="#定时器" class="headerlink" title="定时器"></a>定时器</h1><ul>
+
+
+<ul>
 <li>两种高效的管理定时器的容器<ul>
 <li>时间轮</li>
 <li>时间堆</li>
 </ul>
 </li>
+</ul>
+<span id="more"></span>
+<ul>
 <li>定时<ul>
 <li>定时是指在一段时间之后触发某段代码的机制，可以在这段代码中依次处理所有到期的定时器</li>
 </ul>
@@ -5399,7 +5417,9 @@ int num[100000]; //表示该字符串一共出现多少次，为0表示不存在
     <url>/2023/11/29/7-%E4%BF%A1%E5%8F%B7/</url>
     <content><![CDATA[<meta name="referrer" content="no-referrer">    
 
-<h1 id="信号"><a href="#信号" class="headerlink" title="信号"></a>信号</h1><h2 id="Linux信号产生的条件"><a href="#Linux信号产生的条件" class="headerlink" title="Linux信号产生的条件"></a>Linux信号产生的条件</h2><ul>
+
+
+<h2 id="Linux信号产生的条件"><a href="#Linux信号产生的条件" class="headerlink" title="Linux信号产生的条件"></a>Linux信号产生的条件</h2><ul>
 <li>对于前台进程，用户可以通过输入特殊的终端字符来给它发送信号<ul>
 <li>比如输入CRTL+C通常会给进程发送一个中断信号</li>
 </ul>
@@ -5414,6 +5434,7 @@ int num[100000]; //表示该字符串一共出现多少次，为0表示不存在
 </li>
 <li>运行kill命令或调用kill函数</li>
 </ul>
+<span id="more"></span>
 <h2 id="Linux信号概述"><a href="#Linux信号概述" class="headerlink" title="Linux信号概述"></a>Linux信号概述</h2><h3 id="发送信号"><a href="#发送信号" class="headerlink" title="发送信号"></a>发送信号</h3><pre class="line-numbers language-c" data-language="c"><code class="language-c"><span class="token macro property"><span class="token directive-hash">#</span><span class="token directive keyword">include</span> <span class="token string">&lt;sys/types.h&gt;</span></span>
 <span class="token macro property"><span class="token directive-hash">#</span><span class="token directive keyword">include</span> <span class="token string">&lt;signal.h&gt;</span></span>
 <span class="token keyword">int</span> <span class="token function">kill</span><span class="token punctuation">(</span><span class="token class-name">pid_t</span> pid<span class="token punctuation">,</span> <span class="token keyword">int</span> sig<span class="token punctuation">)</span><span class="token punctuation">;</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span></span></code></pre>

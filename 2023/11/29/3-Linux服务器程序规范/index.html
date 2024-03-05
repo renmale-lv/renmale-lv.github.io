@@ -20,24 +20,25 @@
     var CONFIG = {"hostname":"example.com","root":"/","scheme":"Muse","version":"7.8.0","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12,"onmobile":false},"copycode":{"enable":false,"show_result":false,"style":null},"back2top":{"enable":true,"sidebar":false,"scrollpercent":false},"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"algolia":{"hits":{"per_page":10},"labels":{"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}},"localsearch":{"enable":false,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},"path":"search.xml"};
   </script>
 
-  <meta name="description" content="title: Linux服务器程序规范date: 2023-11-29 01:36:05tags: C++ socket mathjax: true      Linux服务器程序规范 Linux服务器程序一般以后台进程形式运行，后台进程又称守护进程，没有控制终端，因而不会意外接收到用户输入，守护进程的父进程通常是init进程 Linux服务器程序通常有一套日志系统，它至少能输出日志到文件，有的">
+  <meta name="description" content="Linux服务器程序一般以后台进程形式运行，后台进程又称守护进程，没有控制终端，因而不会意外接收到用户输入，守护进程的父进程通常是init进程 Linux服务器程序通常有一套日志系统，它至少能输出日志到文件，有的高级服务器还能输出日志到专门的UDP服务器。大部分后台进程都在&#x2F;var&#x2F;log目录下拥有自己的日志目录 Linux服务器程序一般以某个专门的非root身份运行，比如mysq">
 <meta property="og:type" content="article">
-<meta property="og:title" content="renmale-lv blog">
-<meta property="og:url" content="http://example.com/2024/03/05/3-Linux%E6%9C%8D%E5%8A%A1%E5%99%A8%E7%A8%8B%E5%BA%8F%E8%A7%84%E8%8C%83/index.html">
+<meta property="og:title" content="Linux服务器程序规范">
+<meta property="og:url" content="http://example.com/2023/11/29/3-Linux%E6%9C%8D%E5%8A%A1%E5%99%A8%E7%A8%8B%E5%BA%8F%E8%A7%84%E8%8C%83/index.html">
 <meta property="og:site_name" content="renmale-lv blog">
-<meta property="og:description" content="title: Linux服务器程序规范date: 2023-11-29 01:36:05tags: C++ socket mathjax: true      Linux服务器程序规范 Linux服务器程序一般以后台进程形式运行，后台进程又称守护进程，没有控制终端，因而不会意外接收到用户输入，守护进程的父进程通常是init进程 Linux服务器程序通常有一套日志系统，它至少能输出日志到文件，有的">
+<meta property="og:description" content="Linux服务器程序一般以后台进程形式运行，后台进程又称守护进程，没有控制终端，因而不会意外接收到用户输入，守护进程的父进程通常是init进程 Linux服务器程序通常有一套日志系统，它至少能输出日志到文件，有的高级服务器还能输出日志到专门的UDP服务器。大部分后台进程都在&#x2F;var&#x2F;log目录下拥有自己的日志目录 Linux服务器程序一般以某个专门的非root身份运行，比如mysq">
 <meta property="og:locale" content="en_US">
 <meta property="og:image" content="https://gitee.com/renmale-sztu/image/raw/master/202312311545712.png">
 <meta property="og:image" content="https://gitee.com/renmale-sztu/image/raw/master/202312311740160.png">
 <meta property="og:image" content="https://gitee.com/renmale-sztu/image/raw/master/202312311741255.png">
 <meta property="og:image" content="https://gitee.com/renmale-sztu/image/raw/master/202312311741583.png">
-<meta property="article:published_time" content="2024-03-05T02:31:07.865Z">
-<meta property="article:modified_time" content="2024-03-05T02:33:31.030Z">
+<meta property="article:published_time" content="2023-11-28T17:36:05.000Z">
+<meta property="article:modified_time" content="2024-03-05T02:38:24.392Z">
 <meta property="article:author" content="renmale-lv">
+<meta property="article:tag" content="C++ socket">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:image" content="https://gitee.com/renmale-sztu/image/raw/master/202312311545712.png">
 
-<link rel="canonical" href="http://example.com/2024/03/05/3-Linux%E6%9C%8D%E5%8A%A1%E5%99%A8%E7%A8%8B%E5%BA%8F%E8%A7%84%E8%8C%83/">
+<link rel="canonical" href="http://example.com/2023/11/29/3-Linux%E6%9C%8D%E5%8A%A1%E5%99%A8%E7%A8%8B%E5%BA%8F%E8%A7%84%E8%8C%83/">
 
 
 <script id="page-configurations">
@@ -50,7 +51,7 @@
   };
 </script>
 
-  <title> | renmale-lv blog</title>
+  <title>Linux服务器程序规范 | renmale-lv blog</title>
   
 
 
@@ -82,7 +83,119 @@
 </noscript>
 
 <link rel="alternate" href="/atom.xml" title="renmale-lv blog" type="application/atom+xml">
-</head>
+<style>mjx-container[jax="SVG"] {
+  direction: ltr;
+}
+
+mjx-container[jax="SVG"] > svg {
+  overflow: visible;
+}
+
+mjx-container[jax="SVG"][display="true"] {
+  display: block;
+  text-align: center;
+  margin: 1em 0;
+}
+
+mjx-container[jax="SVG"][justify="left"] {
+  text-align: left;
+}
+
+mjx-container[jax="SVG"][justify="right"] {
+  text-align: right;
+}
+
+g[data-mml-node="merror"] > g {
+  fill: red;
+  stroke: red;
+}
+
+g[data-mml-node="merror"] > rect[data-background] {
+  fill: yellow;
+  stroke: none;
+}
+
+g[data-mml-node="mtable"] > line[data-line] {
+  stroke-width: 70px;
+  fill: none;
+}
+
+g[data-mml-node="mtable"] > rect[data-frame] {
+  stroke-width: 70px;
+  fill: none;
+}
+
+g[data-mml-node="mtable"] > .mjx-dashed {
+  stroke-dasharray: 140;
+}
+
+g[data-mml-node="mtable"] > .mjx-dotted {
+  stroke-linecap: round;
+  stroke-dasharray: 0,140;
+}
+
+g[data-mml-node="mtable"] > svg {
+  overflow: visible;
+}
+
+[jax="SVG"] mjx-tool {
+  display: inline-block;
+  position: relative;
+  width: 0;
+  height: 0;
+}
+
+[jax="SVG"] mjx-tool > mjx-tip {
+  position: absolute;
+  top: 0;
+  left: 0;
+}
+
+mjx-tool > mjx-tip {
+  display: inline-block;
+  padding: .2em;
+  border: 1px solid #888;
+  font-size: 70%;
+  background-color: #F8F8F8;
+  color: black;
+  box-shadow: 2px 2px 5px #AAAAAA;
+}
+
+g[data-mml-node="maction"][data-toggle] {
+  cursor: pointer;
+}
+
+mjx-status {
+  display: block;
+  position: fixed;
+  left: 1em;
+  bottom: 1em;
+  min-width: 25%;
+  padding: .2em .4em;
+  border: 1px solid #888;
+  font-size: 90%;
+  background-color: #F8F8F8;
+  color: black;
+}
+
+foreignObject[data-mjx-xml] {
+  font-family: initial;
+  line-height: normal;
+  overflow: visible;
+}
+
+.MathJax path {
+  stroke-width: 3;
+}
+
+mjx-container[display="true"] {
+  overflow: auto hidden;
+}
+
+mjx-container[display="true"] + br {
+  display: none;
+}
+</style></head>
 
 <body itemscope itemtype="http://schema.org/WebPage">
   <div class="container use-motion">
@@ -157,7 +270,7 @@
   
   
   <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="en">
-    <link itemprop="mainEntityOfPage" href="http://example.com/2024/03/05/3-Linux%E6%9C%8D%E5%8A%A1%E5%99%A8%E7%A8%8B%E5%BA%8F%E8%A7%84%E8%8C%83/">
+    <link itemprop="mainEntityOfPage" href="http://example.com/2023/11/29/3-Linux%E6%9C%8D%E5%8A%A1%E5%99%A8%E7%A8%8B%E5%BA%8F%E8%A7%84%E8%8C%83/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="image" content="/images/avatar.gif">
@@ -170,7 +283,7 @@
     </span>
       <header class="post-header">
         <h1 class="post-title" itemprop="name headline">
-          
+          Linux服务器程序规范
         </h1>
 
         <div class="post-meta">
@@ -179,10 +292,16 @@
                 <i class="far fa-calendar"></i>
               </span>
               <span class="post-meta-item-text">Posted on</span>
-              
 
-              <time title="Created: 2024-03-05 10:31:07 / Modified: 10:33:31" itemprop="dateCreated datePublished" datetime="2024-03-05T10:31:07+08:00">2024-03-05</time>
+              <time title="Created: 2023-11-29 01:36:05" itemprop="dateCreated datePublished" datetime="2023-11-29T01:36:05+08:00">2023-11-29</time>
             </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="far fa-calendar-check"></i>
+                </span>
+                <span class="post-meta-item-text">Edited on</span>
+                <time title="Modified: 2024-03-05 10:38:24" itemprop="dateModified" datetime="2024-03-05T10:38:24+08:00">2024-03-05</time>
+              </span>
 
           <br>
             <span class="post-meta-item" title="Symbols count in article">
@@ -190,7 +309,7 @@
                 <i class="far fa-file-word"></i>
               </span>
                 <span class="post-meta-item-text">Symbols count in article: </span>
-              <span>6.3k</span>
+              <span>6.2k</span>
             </span>
             <span class="post-meta-item" title="Reading time">
               <span class="post-meta-item-icon">
@@ -209,11 +328,10 @@
     <div class="post-body" itemprop="articleBody">
 
       
-        <hr>
-<p>title: Linux服务器程序规范<br>date: 2023-11-29 01:36:05<br>tags: C++ socket</p>
-<h2 id="mathjax-true"><a href="#mathjax-true" class="headerlink" title="mathjax: true"></a>mathjax: true</h2><meta name="referrer" content="no-referrer" />    
+        <meta name="referrer" content="no-referrer">    
 
-<h1 id="Linux服务器程序规范"><a href="#Linux服务器程序规范" class="headerlink" title="Linux服务器程序规范"></a>Linux服务器程序规范</h1><ul>
+
+<ul>
 <li>Linux服务器程序一般以后台进程形式运行，后台进程又称守护进程，没有控制终端，因而不会意外接收到用户输入，守护进程的父进程通常是init进程</li>
 <li>Linux服务器程序通常有一套日志系统，它至少能输出日志到文件，有的高级服务器还能输出日志到专门的UDP服务器。大部分后台进程都在/var/log目录下拥有自己的日志目录</li>
 <li>Linux服务器程序一般以某个专门的非root身份运行，比如mysqld、httpd、syslogd等后台进程，分别拥有自己的运行账户mysql、apache和syslog</li>
@@ -221,6 +339,7 @@
 <li>Linux服务器进程通常会在启动的时候生成一个PID文件并存入/var/run目录中，以记录改后台进程的PID</li>
 <li>Linux服务器程序需要考虑系统资源和限制，已预测自身能承受多大负荷，比如进程可用文件描述符总数和内存总量</li>
 </ul>
+<span id="more"></span>
 <h2 id="日志"><a href="#日志" class="headerlink" title="日志"></a>日志</h2><h3 id="Linux系统日志"><a href="#Linux系统日志" class="headerlink" title="Linux系统日志"></a>Linux系统日志</h3><p>linux提供一个守护进程来处理系统日志——rsyslogd</p>
 <ul>
 <li>rsyslogd守护进程既能接收用户进程输出的日志，又能接收内核日志<ul>
@@ -236,7 +355,7 @@
 </li>
 <li><img src="https://gitee.com/renmale-sztu/image/raw/master/202312311545712.png" alt="image-20231231154522607"></li>
 </ul>
-<h3 id="syslog函数"><a href="#syslog函数" class="headerlink" title="syslog函数"></a>syslog函数</h3><pre class="line-numbers language-c" data-language="c"><code class="language-c"><span class="token macro property"><span class="token directive-hash">#</span><span class="token directive keyword">include</span> <span class="token string">&lt;syslog.h></span></span>
+<h3 id="syslog函数"><a href="#syslog函数" class="headerlink" title="syslog函数"></a>syslog函数</h3><pre class="line-numbers language-c" data-language="c"><code class="language-c"><span class="token macro property"><span class="token directive-hash">#</span><span class="token directive keyword">include</span> <span class="token string">&lt;syslog.h&gt;</span></span>
 <span class="token keyword">void</span> <span class="token function">syslog</span><span class="token punctuation">(</span><span class="token keyword">int</span> priority<span class="token punctuation">,</span> <span class="token keyword">const</span> <span class="token keyword">char</span><span class="token operator">*</span> message<span class="token punctuation">,</span> <span class="token punctuation">.</span><span class="token punctuation">.</span><span class="token punctuation">.</span><span class="token punctuation">)</span><span class="token punctuation">;</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span></span></code></pre>
 <ul>
 <li><p>应用程序使用syslog函数与rsyslogd守护进程通信</p>
@@ -260,7 +379,7 @@
 </li>
 </ul>
 <hr>
-<pre class="line-numbers language-c" data-language="c"><code class="language-c"><span class="token macro property"><span class="token directive-hash">#</span><span class="token directive keyword">include</span> <span class="token string">&lt;syslog.h></span></span>
+<pre class="line-numbers language-c" data-language="c"><code class="language-c"><span class="token macro property"><span class="token directive-hash">#</span><span class="token directive keyword">include</span> <span class="token string">&lt;syslog.h&gt;</span></span>
 <span class="token keyword">void</span> <span class="token function">openlog</span><span class="token punctuation">(</span><span class="token keyword">const</span> <span class="token keyword">char</span><span class="token operator">*</span> ident<span class="token punctuation">,</span> <span class="token keyword">int</span> logopt<span class="token punctuation">,</span> <span class="token keyword">int</span> facility<span class="token punctuation">)</span><span class="token punctuation">;</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span></span></code></pre>
 <ul>
 <li><p>该函数可以改变syslog的默认输出方式，进一步结构化日志内容</p>
@@ -274,7 +393,7 @@
 
 -----
 
-&#96;&#96;&#96;c
+```c
 #include &lt;syslog.h&gt;
 int setlogmask(int maskpri);<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
 </li>
@@ -286,7 +405,7 @@ int setlogmask(int maskpri);<span aria-hidden="true" class="line-numbers-rows"><
 <li>该函数始终会成功，返回调用进程先前的日志掩码值</li>
 </ul>
 <hr>
-<pre class="line-numbers language-c" data-language="c"><code class="language-c"><span class="token macro property"><span class="token directive-hash">#</span><span class="token directive keyword">include</span> <span class="token string">&lt;syslog.h></span></span>
+<pre class="line-numbers language-c" data-language="c"><code class="language-c"><span class="token macro property"><span class="token directive-hash">#</span><span class="token directive keyword">include</span> <span class="token string">&lt;syslog.h&gt;</span></span>
 <span class="token keyword">void</span> <span class="token function">closelog</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span></span></code></pre>
 <ul>
 <li>该函数用户关闭日志功能</li>
@@ -309,30 +428,30 @@ int setlogmask(int maskpri);<span aria-hidden="true" class="line-numbers-rows"><
 </ul>
 <hr>
 <p><strong>EUID和EGID的作用</strong>——方便资源访问，使运行程序的用户拥有该程序的有效用户的权限</p>
-<pre class="line-numbers language-none"><code class="language-none">比如su程序，任何用户都可以使用它来修改自己的账户信息，但修改账户时su程序不得不访问&#x2F;etc&#x2F;passwd文件，而访问该文件是需要root权限的。那么以普通用户身份启动的su程序如何能访问&#x2F;etc&#x2F;passwd文件呢？窍门就在EUID。用ls命令可以查看到，su程序的所有者是root，并且它被设置了set-user-id标志。这个标志表示，任何普通用户运行su程序时，其有效用户就是该程序的所有者root。那么，根据有效用户的含义，任何运行su程序的普通用户都能够访问&#x2F;etc&#x2F;passwd文件。有效用户为root的进程称为特权进程（privilegedprocesses）。EGID的含义与EUID类似：给运行目标程序的组用户提供有效组的权限<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
+<pre class="line-numbers language-none"><code class="language-none">比如su程序，任何用户都可以使用它来修改自己的账户信息，但修改账户时su程序不得不访问/etc/passwd文件，而访问该文件是需要root权限的。那么以普通用户身份启动的su程序如何能访问/etc/passwd文件呢？窍门就在EUID。用ls命令可以查看到，su程序的所有者是root，并且它被设置了set-user-id标志。这个标志表示，任何普通用户运行su程序时，其有效用户就是该程序的所有者root。那么，根据有效用户的含义，任何运行su程序的普通用户都能够访问/etc/passwd文件。有效用户为root的进程称为特权进程（privilegedprocesses）。EGID的含义与EUID类似：给运行目标程序的组用户提供有效组的权限<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
 <h3 id="切换用户"><a href="#切换用户" class="headerlink" title="切换用户"></a>切换用户</h3><p><strong>将root身份启动的进程切换为以一个普通用户身份运行</strong></p>
-<pre class="line-numbers language-c" data-language="c"><code class="language-c"><span class="token keyword">static</span> bool <span class="token function">switch_to_user</span><span class="token punctuation">(</span><span class="token class-name">uid_t</span> user_id<span class="token punctuation">,</span><span class="token class-name">gid_t</span> gp_id<span class="token punctuation">)</span><span class="token punctuation">&#123;</span>
+<pre class="line-numbers language-c" data-language="c"><code class="language-c"><span class="token keyword">static</span> bool <span class="token function">switch_to_user</span><span class="token punctuation">(</span><span class="token class-name">uid_t</span> user_id<span class="token punctuation">,</span><span class="token class-name">gid_t</span> gp_id<span class="token punctuation">)</span><span class="token punctuation">{</span>
     <span class="token comment">/*先确保目标用户不是root*/</span>
-    <span class="token keyword">if</span><span class="token punctuation">(</span><span class="token punctuation">(</span>user_id<span class="token operator">==</span><span class="token number">0</span><span class="token punctuation">)</span><span class="token operator">&amp;&amp;</span><span class="token punctuation">(</span>gp_id<span class="token operator">==</span><span class="token number">0</span><span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">&#123;</span>
+    <span class="token keyword">if</span><span class="token punctuation">(</span><span class="token punctuation">(</span>user_id<span class="token operator">==</span><span class="token number">0</span><span class="token punctuation">)</span><span class="token operator">&amp;&amp;</span><span class="token punctuation">(</span>gp_id<span class="token operator">==</span><span class="token number">0</span><span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">{</span>
     	<span class="token keyword">return</span> false<span class="token punctuation">;</span>
-    <span class="token punctuation">&#125;</span>
+    <span class="token punctuation">}</span>
     <span class="token comment">/*确保当前用户是合法用户：root或者目标用户*/</span>
     <span class="token class-name">gid_t</span> gid<span class="token operator">=</span><span class="token function">getgid</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
     <span class="token class-name">uid_t</span> uid<span class="token operator">=</span><span class="token function">getuid</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
-    <span class="token keyword">if</span><span class="token punctuation">(</span><span class="token punctuation">(</span><span class="token punctuation">(</span>gid<span class="token operator">!=</span><span class="token number">0</span><span class="token punctuation">)</span><span class="token operator">||</span><span class="token punctuation">(</span>uid<span class="token operator">!=</span><span class="token number">0</span><span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token operator">&amp;&amp;</span><span class="token punctuation">(</span><span class="token punctuation">(</span>gid<span class="token operator">!=</span>gp_id<span class="token punctuation">)</span><span class="token operator">||</span><span class="token punctuation">(</span>uid<span class="token operator">!=</span>user_id<span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">&#123;</span>
+    <span class="token keyword">if</span><span class="token punctuation">(</span><span class="token punctuation">(</span><span class="token punctuation">(</span>gid<span class="token operator">!=</span><span class="token number">0</span><span class="token punctuation">)</span><span class="token operator">||</span><span class="token punctuation">(</span>uid<span class="token operator">!=</span><span class="token number">0</span><span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token operator">&amp;&amp;</span><span class="token punctuation">(</span><span class="token punctuation">(</span>gid<span class="token operator">!=</span>gp_id<span class="token punctuation">)</span><span class="token operator">||</span><span class="token punctuation">(</span>uid<span class="token operator">!=</span>user_id<span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">{</span>
     	<span class="token keyword">return</span> false<span class="token punctuation">;</span>
-    <span class="token punctuation">&#125;</span>
+    <span class="token punctuation">}</span>
     <span class="token comment">/*如果不是root，则已经是目标用户*/</span>
-    <span class="token keyword">if</span><span class="token punctuation">(</span>uid<span class="token operator">!=</span><span class="token number">0</span><span class="token punctuation">)</span><span class="token punctuation">&#123;</span>
+    <span class="token keyword">if</span><span class="token punctuation">(</span>uid<span class="token operator">!=</span><span class="token number">0</span><span class="token punctuation">)</span><span class="token punctuation">{</span>
     	<span class="token keyword">return</span> true<span class="token punctuation">;</span>
-    <span class="token punctuation">&#125;</span>
+    <span class="token punctuation">}</span>
     <span class="token comment">/*切换到目标用户*/</span>
-    <span class="token keyword">if</span><span class="token punctuation">(</span><span class="token punctuation">(</span><span class="token function">setgid</span><span class="token punctuation">(</span>gp_id<span class="token punctuation">)</span>＜<span class="token number">0</span><span class="token punctuation">)</span><span class="token operator">||</span><span class="token punctuation">(</span><span class="token function">setuid</span><span class="token punctuation">(</span>user_id<span class="token punctuation">)</span>＜<span class="token number">0</span><span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">&#123;</span>
+    <span class="token keyword">if</span><span class="token punctuation">(</span><span class="token punctuation">(</span><span class="token function">setgid</span><span class="token punctuation">(</span>gp_id<span class="token punctuation">)</span>＜<span class="token number">0</span><span class="token punctuation">)</span><span class="token operator">||</span><span class="token punctuation">(</span><span class="token function">setuid</span><span class="token punctuation">(</span>user_id<span class="token punctuation">)</span>＜<span class="token number">0</span><span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">{</span>
     	<span class="token keyword">return</span> false<span class="token punctuation">;</span>
-    <span class="token punctuation">&#125;</span>
+    <span class="token punctuation">}</span>
     <span class="token keyword">return</span> true<span class="token punctuation">;</span>
-<span class="token punctuation">&#125;</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
-<h2 id="进程间关系"><a href="#进程间关系" class="headerlink" title="进程间关系"></a>进程间关系</h2><h3 id="进程组"><a href="#进程组" class="headerlink" title="进程组"></a>进程组</h3><pre class="line-numbers language-c" data-language="c"><code class="language-c"><span class="token macro property"><span class="token directive-hash">#</span><span class="token directive keyword">include</span> <span class="token string">&lt;unistd.h></span></span>
+<span class="token punctuation">}</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<h2 id="进程间关系"><a href="#进程间关系" class="headerlink" title="进程间关系"></a>进程间关系</h2><h3 id="进程组"><a href="#进程组" class="headerlink" title="进程组"></a>进程组</h3><pre class="line-numbers language-c" data-language="c"><code class="language-c"><span class="token macro property"><span class="token directive-hash">#</span><span class="token directive keyword">include</span> <span class="token string">&lt;unistd.h&gt;</span></span>
 <span class="token class-name">pid_t</span> <span class="token function">getpgid</span><span class="token punctuation">(</span><span class="token class-name">pid_t</span> pid<span class="token punctuation">)</span><span class="token punctuation">;</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span></span></code></pre>
 <ul>
 <li>Linux下每个进程都隶属于一个进程组，因此进程除了PID信息外，还有进程组ID（PGID），可以使用该函数来获取指定进程的PGID</li>
@@ -340,7 +459,7 @@ int setlogmask(int maskpri);<span aria-hidden="true" class="line-numbers-rows"><
 <li>每个进程组都有一个首领进程，其PGID和PID相同，进程组将一直存在直到其中所有进程都退出或者加入到其他进程组</li>
 </ul>
 <hr>
-<pre class="line-numbers language-c" data-language="c"><code class="language-c"><span class="token macro property"><span class="token directive-hash">#</span><span class="token directive keyword">include</span> <span class="token string">&lt;unistd.h></span></span>
+<pre class="line-numbers language-c" data-language="c"><code class="language-c"><span class="token macro property"><span class="token directive-hash">#</span><span class="token directive keyword">include</span> <span class="token string">&lt;unistd.h&gt;</span></span>
 <span class="token keyword">int</span> <span class="token function">setpgid</span><span class="token punctuation">(</span><span class="token class-name">pid_t</span> pid<span class="token punctuation">,</span> <span class="token class-name">pid_t</span> pgid<span class="token punctuation">)</span><span class="token punctuation">;</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span></span></code></pre>
 <ul>
 <li>该函数将PID为pid的进程的PGID设置为pgid</li>
@@ -351,7 +470,7 @@ int setlogmask(int maskpri);<span aria-hidden="true" class="line-numbers-rows"><
 <li>一个进程只能设置自己或者其子进程的PGID，并且当子进程调用exec系列函数后，我们也不能再在父进程中对它设置PGID</li>
 </ul>
 <h3 id="会话"><a href="#会话" class="headerlink" title="会话"></a>会话</h3><p>一些有关联的进程组形成一个会话</p>
-<pre class="line-numbers language-c" data-language="c"><code class="language-c"><span class="token macro property"><span class="token directive-hash">#</span><span class="token directive keyword">include</span> <span class="token string">&lt;unistd.h></span></span>
+<pre class="line-numbers language-c" data-language="c"><code class="language-c"><span class="token macro property"><span class="token directive-hash">#</span><span class="token directive keyword">include</span> <span class="token string">&lt;unistd.h&gt;</span></span>
 <span class="token class-name">pid_t</span> <span class="token function">setsid</span><span class="token punctuation">(</span><span class="token keyword">void</span><span class="token punctuation">)</span><span class="token punctuation">;</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span></span></code></pre>
 <ul>
 <li>该函数用于创建一个会话</li>
@@ -368,7 +487,7 @@ int setlogmask(int maskpri);<span aria-hidden="true" class="line-numbers-rows"><
 <li>该函数常用于创建守护进程，通过调用该函数，守护进程可以脱离终端和控制终端的会话，独立运行，并且不受终端会话的影响（即不受父进程影响）</li>
 </ul>
 <hr>
-<pre class="line-numbers language-c" data-language="c"><code class="language-c"><span class="token macro property"><span class="token directive-hash">#</span><span class="token directive keyword">include</span> <span class="token string">&lt;unistd.h></span></span>
+<pre class="line-numbers language-c" data-language="c"><code class="language-c"><span class="token macro property"><span class="token directive-hash">#</span><span class="token directive keyword">include</span> <span class="token string">&lt;unistd.h&gt;</span></span>
 <span class="token class-name">pid_t</span> <span class="token function">getsid</span><span class="token punctuation">(</span><span class="token class-name">pid_t</span> pid<span class="token punctuation">)</span><span class="token punctuation">;</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span></span></code></pre>
 <ul>
 <li>Linux进程并未提供所谓会话ID（SID）的概念，Linux系统认为它等同于会话首领所在进程组的PGID，该函数用于读取SID</li>
@@ -382,7 +501,7 @@ int setlogmask(int maskpri);<span aria-hidden="true" class="line-numbers-rows"><
 <p>在bash shell下执行ps和less命令的，所以ps和less命令的父进程是bash命令，这可以从PPID（父进程PID）一列看出。这3条命令创建了1个会话（SID是1943）和2个进程组（PGID分别是1943和2298）。bash命令的PID、PGID和SID都相同，很明显它既是会话的首领，也是组1943的首领。ps命令则是组2298的首领，因为其PID也是2298</p>
 <p>~注：默认情况下，子进程与父进程同属一个进程组~</p>
 <h2 id="系统资源限制"><a href="#系统资源限制" class="headerlink" title="系统资源限制"></a>系统资源限制</h2><p>Linux上运行的程序都会收到资源限制的影响，比如物理设备限制（CPU数量、内存数量等）、系统策略限制（CPU时间等），以及具体实现的限制（比如文件名的最大长度），Linux系统资源限制可以通过如下一堆函数来读取和设置</p>
-<pre class="line-numbers language-c" data-language="c"><code class="language-c"><span class="token macro property"><span class="token directive-hash">#</span><span class="token directive keyword">include</span> <span class="token string">&lt;sys/resource.h></span></span>
+<pre class="line-numbers language-c" data-language="c"><code class="language-c"><span class="token macro property"><span class="token directive-hash">#</span><span class="token directive keyword">include</span> <span class="token string">&lt;sys/resource.h&gt;</span></span>
 <span class="token keyword">int</span> <span class="token function">getrlimit</span><span class="token punctuation">(</span><span class="token keyword">int</span> resource<span class="token punctuation">,</span> <span class="token keyword">struct</span> <span class="token class-name">rlimit</span><span class="token operator">*</span> rlim<span class="token punctuation">)</span><span class="token punctuation">;</span>
 <span class="token keyword">int</span> <span class="token function">setrlimit</span><span class="token punctuation">(</span><span class="token keyword">int</span> resource<span class="token punctuation">,</span> <span class="token keyword">const</span> <span class="token keyword">struct</span> <span class="token class-name">rlimit</span><span class="token operator">*</span> rlim<span class="token punctuation">)</span><span class="token punctuation">;</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span></span></code></pre>
 <ul>
@@ -401,16 +520,16 @@ rlim_t rlim_max;
 
 - resource参数指定资源限制类型
 
-  - ![image-20231231181318589](https:&#x2F;&#x2F;gitee.com&#x2F;renmale-sztu&#x2F;image&#x2F;raw&#x2F;master&#x2F;202312311813347.png)
+  - ![image-20231231181318589](https://gitee.com/renmale-sztu/image/raw/master/202312311813347.png)
 
 - 成功时返回0，失败时返回-1并设置errno
 
 ## 改变工作目录和根目录
 
-&#96;&#96;&#96;c
+```c
 #include &lt;unistd.h&gt;
-char* getcwd(char* buf, size_t size);&#x2F;&#x2F;获取进程当前工作目录
-int chdir(const char* path);&#x2F;&#x2F;改变进程工作目录<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+char* getcwd(char* buf, size_t size);//获取进程当前工作目录
+int chdir(const char* path);//改变进程工作目录<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
 </li>
 </ul>
 </li>
@@ -432,7 +551,7 @@ int chdir(const char* path);&#x2F;&#x2F;改变进程工作目录<span aria-hidde
 </li>
 </ul>
 <hr>
-<pre class="line-numbers language-c" data-language="c"><code class="language-c"><span class="token macro property"><span class="token directive-hash">#</span><span class="token directive keyword">include</span> <span class="token string">&lt;unistd.h></span></span>
+<pre class="line-numbers language-c" data-language="c"><code class="language-c"><span class="token macro property"><span class="token directive-hash">#</span><span class="token directive keyword">include</span> <span class="token string">&lt;unistd.h&gt;</span></span>
 <span class="token keyword">int</span> <span class="token function">chroot</span><span class="token punctuation">(</span><span class="token keyword">const</span> <span class="token keyword">char</span><span class="token operator">*</span> path<span class="token punctuation">)</span><span class="token punctuation">;</span><span class="token comment">//改变进程根目录</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span></span></code></pre>
 <ul>
 <li>path参数指定要切换到的目标根目录</li>
@@ -442,26 +561,26 @@ int chdir(const char* path);&#x2F;&#x2F;改变进程工作目录<span aria-hidde
 <li>只有特权进程才能改变根目录~有效用户为root的进程~</li>
 </ul>
 <h2 id="服务器程序后台化"><a href="#服务器程序后台化" class="headerlink" title="服务器程序后台化"></a>服务器程序后台化</h2><p><strong>将服务器程序以守护进程的方式运行</strong></p>
-<pre class="line-numbers language-c" data-language="c"><code class="language-c">bool <span class="token function">daemonize</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">&#123;</span>
+<pre class="line-numbers language-c" data-language="c"><code class="language-c">bool <span class="token function">daemonize</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">{</span>
     <span class="token comment">/*创建子进程，关闭父进程，这样可以使程序在后台运行*/</span>
     <span class="token class-name">pid_t</span> pid<span class="token operator">=</span><span class="token function">fork</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
-    <span class="token keyword">if</span><span class="token punctuation">(</span>pid＜<span class="token number">0</span><span class="token punctuation">)</span><span class="token punctuation">&#123;</span>
+    <span class="token keyword">if</span><span class="token punctuation">(</span>pid＜<span class="token number">0</span><span class="token punctuation">)</span><span class="token punctuation">{</span>
     	<span class="token keyword">return</span> false<span class="token punctuation">;</span>
-    <span class="token punctuation">&#125;</span>
-    <span class="token keyword">else</span> <span class="token keyword">if</span><span class="token punctuation">(</span>pid＞<span class="token number">0</span><span class="token punctuation">)</span><span class="token punctuation">&#123;</span>
+    <span class="token punctuation">}</span>
+    <span class="token keyword">else</span> <span class="token keyword">if</span><span class="token punctuation">(</span>pid＞<span class="token number">0</span><span class="token punctuation">)</span><span class="token punctuation">{</span>
     	<span class="token function">exit</span><span class="token punctuation">(</span><span class="token number">0</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
-    <span class="token punctuation">&#125;</span>
+    <span class="token punctuation">}</span>
     <span class="token comment">/*设置文件权限掩码。当进程创建新文件（使用open(const char*pathname,intflags,mode_t mode)系统调用）时，文件的权限将是mode＆0777*/</span>
     <span class="token function">umask</span><span class="token punctuation">(</span><span class="token number">0</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
     <span class="token comment">/*创建新的会话，设置本进程为进程组的首领*/</span>
     <span class="token class-name">pid_t</span> sid<span class="token operator">=</span><span class="token function">setsid</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
-    <span class="token keyword">if</span><span class="token punctuation">(</span>sid＜<span class="token number">0</span><span class="token punctuation">)</span><span class="token punctuation">&#123;</span>
+    <span class="token keyword">if</span><span class="token punctuation">(</span>sid＜<span class="token number">0</span><span class="token punctuation">)</span><span class="token punctuation">{</span>
     	<span class="token keyword">return</span> false<span class="token punctuation">;</span>
-    <span class="token punctuation">&#125;</span>
+    <span class="token punctuation">}</span>
     <span class="token comment">/*切换工作目录*/</span>
-    <span class="token keyword">if</span><span class="token punctuation">(</span><span class="token punctuation">(</span><span class="token function">chdir</span><span class="token punctuation">(</span><span class="token string">"/"</span><span class="token punctuation">)</span><span class="token punctuation">)</span>＜<span class="token number">0</span><span class="token punctuation">)</span><span class="token punctuation">&#123;</span>
+    <span class="token keyword">if</span><span class="token punctuation">(</span><span class="token punctuation">(</span><span class="token function">chdir</span><span class="token punctuation">(</span><span class="token string">"/"</span><span class="token punctuation">)</span><span class="token punctuation">)</span>＜<span class="token number">0</span><span class="token punctuation">)</span><span class="token punctuation">{</span>
     	<span class="token keyword">return</span> false<span class="token punctuation">;</span>
-    <span class="token punctuation">&#125;</span>
+    <span class="token punctuation">}</span>
     <span class="token comment">/*关闭标准输入设备、标准输出设备和标准错误输出设备*/</span>
     <span class="token function">close</span><span class="token punctuation">(</span>STDIN_FILENO<span class="token punctuation">)</span><span class="token punctuation">;</span>
     <span class="token function">close</span><span class="token punctuation">(</span>STDOUT_FILENO<span class="token punctuation">)</span><span class="token punctuation">;</span>
@@ -472,10 +591,10 @@ int chdir(const char* path);&#x2F;&#x2F;改变进程工作目录<span aria-hidde
     <span class="token function">open</span><span class="token punctuation">(</span><span class="token string">"/dev/null"</span><span class="token punctuation">,</span>O_RDWR<span class="token punctuation">)</span><span class="token punctuation">;</span>
     <span class="token function">open</span><span class="token punctuation">(</span><span class="token string">"/dev/null"</span><span class="token punctuation">,</span>O_RDWR<span class="token punctuation">)</span><span class="token punctuation">;</span>
     <span class="token keyword">return</span> true<span class="token punctuation">;</span>
-<span class="token punctuation">&#125;</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<span class="token punctuation">}</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
 <hr>
 <p>linux提供了完成上述功能的库函数</p>
-<pre class="line-numbers language-c" data-language="c"><code class="language-c"><span class="token macro property"><span class="token directive-hash">#</span><span class="token directive keyword">include</span> <span class="token string">&lt;unistd.h></span></span>
+<pre class="line-numbers language-c" data-language="c"><code class="language-c"><span class="token macro property"><span class="token directive-hash">#</span><span class="token directive keyword">include</span> <span class="token string">&lt;unistd.h&gt;</span></span>
 <span class="token keyword">int</span> <span class="token function">daemon</span><span class="token punctuation">(</span><span class="token keyword">int</span> nochdir<span class="token punctuation">,</span> <span class="token keyword">int</span> noclose<span class="token punctuation">)</span><span class="token punctuation">;</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span></span></code></pre>
 <ul>
 <li>nochdir参数用于指定是否改变工作目录，为0时，工作目录将被设置为”/“（根目录），否则继续使用当前目录</li>
@@ -490,6 +609,9 @@ int chdir(const char* path);&#x2F;&#x2F;改变进程工作目录<span aria-hidde
     
 
       <footer class="post-footer">
+          <div class="post-tags">
+              <a href="/tags/C-socket/" rel="tag"># C++ socket</a>
+          </div>
 
         
 
@@ -497,10 +619,13 @@ int chdir(const char* path);&#x2F;&#x2F;改变进程工作目录<span aria-hidde
         
     <div class="post-nav">
       <div class="post-nav-item">
-    <a href="/2023/11/29/1-socket%E5%9C%B0%E5%9D%80API/" rel="prev" title="socket地址API">
-      <i class="fa fa-chevron-left"></i> socket地址API
+    <a href="/2023/11/29/4-%E9%AB%98%E6%80%A7%E8%83%BD%E6%9C%8D%E5%8A%A1%E5%99%A8%E7%A8%8B%E5%BA%8F%E6%A1%86%E6%9E%B6/" rel="prev" title="高性能服务器程序框架">
+      <i class="fa fa-chevron-left"></i> 高性能服务器程序框架
     </a></div>
-      <div class="post-nav-item"></div>
+      <div class="post-nav-item">
+    <a href="/2023/11/29/11-%E5%A4%9A%E7%BA%BF%E7%A8%8B%E7%BC%96%E7%A8%8B/" rel="next" title="多线程编程">
+      多线程编程 <i class="fa fa-chevron-right"></i>
+    </a></div>
     </div>
       </footer>
     
@@ -559,7 +684,7 @@ int chdir(const char* path);&#x2F;&#x2F;改变进程工作目录<span aria-hidde
 
       <!--noindex-->
       <div class="post-toc-wrap sidebar-panel">
-          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#mathjax-true"><span class="nav-text">mathjax: true</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#Linux%E6%9C%8D%E5%8A%A1%E5%99%A8%E7%A8%8B%E5%BA%8F%E8%A7%84%E8%8C%83"><span class="nav-text">Linux服务器程序规范</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E6%97%A5%E5%BF%97"><span class="nav-text">日志</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#Linux%E7%B3%BB%E7%BB%9F%E6%97%A5%E5%BF%97"><span class="nav-text">Linux系统日志</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#syslog%E5%87%BD%E6%95%B0"><span class="nav-text">syslog函数</span></a></li></ol></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#define-LOG-PID-0x01-%E5%9C%A8%E6%97%A5%E5%BF%97%E6%B6%88%E6%81%AF%E4%B8%AD%E5%8C%85%E5%90%AB%E7%A8%8B%E5%BA%8FPID"><span class="nav-text">define LOG_PID 0x01&#x2F;在日志消息中包含程序PID&#x2F;</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#define-LOG-CONS-0x02-%E5%A6%82%E6%9E%9C%E6%B6%88%E6%81%AF%E4%B8%8D%E8%83%BD%E8%AE%B0%E5%BD%95%E5%88%B0%E6%97%A5%E5%BF%97%E6%96%87%E4%BB%B6%EF%BC%8C%E5%88%99%E6%89%93%E5%8D%B0%E8%87%B3%E7%BB%88%E7%AB%AF"><span class="nav-text">define LOG_CONS 0x02&#x2F;如果消息不能记录到日志文件，则打印至终端&#x2F;</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#define-LOG-ODELAY-0x04-%E5%BB%B6%E8%BF%9F%E6%89%93%E5%BC%80%E6%97%A5%E5%BF%97%E5%8A%9F%E8%83%BD%E7%9B%B4%E5%88%B0%E7%AC%AC%E4%B8%80%E6%AC%A1%E8%B0%83%E7%94%A8syslog"><span class="nav-text">define LOG_ODELAY 0x04&#x2F;延迟打开日志功能直到第一次调用syslog&#x2F;</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#define-LOG-NDELAY-0x08-%E4%B8%8D%E5%BB%B6%E8%BF%9F%E6%89%93%E5%BC%80%E6%97%A5%E5%BF%97%E5%8A%9F%E8%83%BD"><span class="nav-text">define LOG_NDELAY 0x08&#x2F;不延迟打开日志功能&#x2F;</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E7%94%A8%E6%88%B7%E4%BF%A1%E6%81%AF"><span class="nav-text">用户信息</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#UID%E3%80%81EUID%E3%80%81GID%E5%92%8CEGID"><span class="nav-text">UID、EUID、GID和EGID</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%88%87%E6%8D%A2%E7%94%A8%E6%88%B7"><span class="nav-text">切换用户</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E8%BF%9B%E7%A8%8B%E9%97%B4%E5%85%B3%E7%B3%BB"><span class="nav-text">进程间关系</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E8%BF%9B%E7%A8%8B%E7%BB%84"><span class="nav-text">进程组</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E4%BC%9A%E8%AF%9D"><span class="nav-text">会话</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E7%94%A8ps%E5%91%BD%E4%BB%A4%E6%9F%A5%E7%9C%8B%E8%BF%9B%E7%A8%8B%E5%85%B3%E7%B3%BB"><span class="nav-text">用ps命令查看进程关系</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E7%B3%BB%E7%BB%9F%E8%B5%84%E6%BA%90%E9%99%90%E5%88%B6"><span class="nav-text">系统资源限制</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E6%9C%8D%E5%8A%A1%E5%99%A8%E7%A8%8B%E5%BA%8F%E5%90%8E%E5%8F%B0%E5%8C%96"><span class="nav-text">服务器程序后台化</span></a></li></ol></div>
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E6%97%A5%E5%BF%97"><span class="nav-text">日志</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#Linux%E7%B3%BB%E7%BB%9F%E6%97%A5%E5%BF%97"><span class="nav-text">Linux系统日志</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#syslog%E5%87%BD%E6%95%B0"><span class="nav-text">syslog函数</span></a></li></ol></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#define-LOG-PID-0x01-%E5%9C%A8%E6%97%A5%E5%BF%97%E6%B6%88%E6%81%AF%E4%B8%AD%E5%8C%85%E5%90%AB%E7%A8%8B%E5%BA%8FPID"><span class="nav-text">define LOG_PID 0x01&#x2F;在日志消息中包含程序PID&#x2F;</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#define-LOG-CONS-0x02-%E5%A6%82%E6%9E%9C%E6%B6%88%E6%81%AF%E4%B8%8D%E8%83%BD%E8%AE%B0%E5%BD%95%E5%88%B0%E6%97%A5%E5%BF%97%E6%96%87%E4%BB%B6%EF%BC%8C%E5%88%99%E6%89%93%E5%8D%B0%E8%87%B3%E7%BB%88%E7%AB%AF"><span class="nav-text">define LOG_CONS 0x02&#x2F;如果消息不能记录到日志文件，则打印至终端&#x2F;</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#define-LOG-ODELAY-0x04-%E5%BB%B6%E8%BF%9F%E6%89%93%E5%BC%80%E6%97%A5%E5%BF%97%E5%8A%9F%E8%83%BD%E7%9B%B4%E5%88%B0%E7%AC%AC%E4%B8%80%E6%AC%A1%E8%B0%83%E7%94%A8syslog"><span class="nav-text">define LOG_ODELAY 0x04&#x2F;延迟打开日志功能直到第一次调用syslog&#x2F;</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#define-LOG-NDELAY-0x08-%E4%B8%8D%E5%BB%B6%E8%BF%9F%E6%89%93%E5%BC%80%E6%97%A5%E5%BF%97%E5%8A%9F%E8%83%BD"><span class="nav-text">define LOG_NDELAY 0x08&#x2F;不延迟打开日志功能&#x2F;</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E7%94%A8%E6%88%B7%E4%BF%A1%E6%81%AF"><span class="nav-text">用户信息</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#UID%E3%80%81EUID%E3%80%81GID%E5%92%8CEGID"><span class="nav-text">UID、EUID、GID和EGID</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%88%87%E6%8D%A2%E7%94%A8%E6%88%B7"><span class="nav-text">切换用户</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E8%BF%9B%E7%A8%8B%E9%97%B4%E5%85%B3%E7%B3%BB"><span class="nav-text">进程间关系</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E8%BF%9B%E7%A8%8B%E7%BB%84"><span class="nav-text">进程组</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E4%BC%9A%E8%AF%9D"><span class="nav-text">会话</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E7%94%A8ps%E5%91%BD%E4%BB%A4%E6%9F%A5%E7%9C%8B%E8%BF%9B%E7%A8%8B%E5%85%B3%E7%B3%BB"><span class="nav-text">用ps命令查看进程关系</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E7%B3%BB%E7%BB%9F%E8%B5%84%E6%BA%90%E9%99%90%E5%88%B6"><span class="nav-text">系统资源限制</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E6%9C%8D%E5%8A%A1%E5%99%A8%E7%A8%8B%E5%BA%8F%E5%90%8E%E5%8F%B0%E5%8C%96"><span class="nav-text">服务器程序后台化</span></a></li></ol></div>
       </div>
       <!--/noindex-->
 
